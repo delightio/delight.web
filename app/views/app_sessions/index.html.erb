@@ -1,0 +1,23 @@
+<h1>Listing app_sessions</h1>
+
+<table>
+  <tr>
+    <th>Duration</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @app_sessions.each do |app_session| %>
+  <tr>
+    <td><%= app_session.duration %></td>
+    <td><%= link_to 'Show', app_session %></td>
+    <td><%= link_to 'Edit', edit_app_session_path(app_session) %></td>
+    <td><%= link_to 'Destroy', app_session, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New App session', new_app_session_path %>

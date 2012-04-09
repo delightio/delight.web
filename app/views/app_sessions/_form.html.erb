@@ -1,0 +1,21 @@
+<%= form_for(@app_session) do |f| %>
+  <% if @app_session.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@app_session.errors.count, "error") %> prohibited this app_session from being saved:</h2>
+
+      <ul>
+      <% @app_session.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :duration %><br />
+    <%= f.text_field :duration %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
