@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120409231711) do
+ActiveRecord::Schema.define(:version => 20120410195503) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -21,9 +21,13 @@ ActiveRecord::Schema.define(:version => 20120409231711) do
 
   create_table "app_sessions", :force => true do |t|
     t.decimal  "duration"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "app_id"
+    t.string   "app_user_id"
+    t.string   "locale"
+    t.string   "app_version"
+    t.string   "delight_version"
   end
 
   create_table "apps", :force => true do |t|
