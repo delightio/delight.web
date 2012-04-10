@@ -21,35 +21,43 @@ class AppSessionsController < ApplicationController
     end
   end
 
-  # GET /app_sessions/new
-  # GET /app_sessions/new.json
-  def new
-    @app_session = AppSession.new
+  # # GET /app_sessions/new
+  # # GET /app_sessions/new.json
+  # def new
+  #   @app_session = AppSession.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @app_session }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html # new.html.erb
+  #     format.json { render json: @app_session }
+  #   end
+  # end
 
-  # GET /app_sessions/1/edit
-  def edit
-    @app_session = AppSession.find(params[:id])
-  end
+  # # GET /app_sessions/1/edit
+  # def edit
+  #   @app_session = AppSession.find(params[:id])
+  # end
 
   # POST /app_sessions
   # POST /app_sessions.json
   def create
-    @app_session = AppSession.new(params[:app_session])
+    @app = App.find_by_token params[:app_token]
+    if @app.nil?
+      render json: "Missing App Token", status: :bad_request
+      return
+    end
 
-    respond_to do |format|
-      if @app_session.save
-        format.html { redirect_to @app_session, notice: 'App session was successfully created.' }
-        format.json { render json: @app_session, status: :created, location: @app_session }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @app_session.errors, status: :unprocessable_entity }
-      end
+    required = { app_id: @app.id,
+                 app_version: params[:app_version],
+                 locale: params[:locale],
+                 delight_version: params[:delight_version] }
+    render json: required, status: :bad_request if required.has_value? nil
+    options= required.merge app_user_id: params[:app_user_id]
+    @app_session = AppSession.new required
+
+    if @app_session.save
+      render json: @app_session, status: :created
+    else
+      render json: @app_session.errors, status: :bad_request
     end
   end
 
