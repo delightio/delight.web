@@ -13,14 +13,11 @@ describe AppSessionsController do
                  locale: locale,
                  delight_version: delight_version }
       post :create, params
-puts response.body.inspect
-
       response.should be_success
     end
 
     it "returns 400 if missing parameters" do
       post :create
-puts response.body.inspect
       response.should_not be_success
     end
   end
