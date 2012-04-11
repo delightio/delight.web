@@ -7,4 +7,8 @@ FactoryGirl.define do
     a.name 'Nowbox'
     a.association :account
   end
+
+  factory :app_session do |a|
+    a.association :app
+  end
 end

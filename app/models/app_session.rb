@@ -1,6 +1,6 @@
 class AppSession < ActiveRecord::Base
   belongs_to :app
-  has_many :videos
+  has_one :video
 
   def record?
     true

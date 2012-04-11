@@ -65,15 +65,21 @@ class AppSessionsController < ApplicationController
   # PUT /app_sessions/1.json
   def update
     @app_session = AppSession.find(params[:id])
+    as_params = params[:app_session]
 
-    respond_to do |format|
-      if @app_session.update_attributes(params[:app_session])
-        format.html { redirect_to @app_session, notice: 'App session was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @app_session.errors, status: :unprocessable_entity }
-      end
+    # TODO: This seems fishy and maybe we should have the iOS to create
+    # a video resource (and later gesture resource) before we update the
+    # app session.
+    if as_params.has_key? :video_url
+      video = Video.create url: as_params[:video_url],
+                           app_session_id: @app_session.id
+      as_params.delete :video_url
+    end
+
+    if @app_session.update_attributes(as_params)
+      head :no_content
+    else
+      render json: @app_session.errors, status: :unprocessable_entity
     end
   end
 

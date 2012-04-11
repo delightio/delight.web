@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Video do
-  let(:path) { "abc/jkj/kjlkj.mp4" }
-  subject { Video.create path: path }
+  let(:url) { "abc/jkj/kjlkj.mp4" }
+  subject { Video.create url: url }
 
-  its(:path) { should_not be_empty }
+  its(:url) { should_not be_empty }
 end
