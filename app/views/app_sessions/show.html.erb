@@ -1,8 +1,25 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <p>
+  <b>Account name:</b>
+  <%= @app_session.app.account.name %>
+
+  <p>
+  <b>App name:</b>
+  <%= @app_session.app.name %>
+
+  <p>
   <b>Duration:</b>
   <%= @app_session.duration %>
+
+  <p>
+  <b>Video id:</b>
+  <%= @app_session.video.id %>
+
+  <p>
+  <b>Video URL:</b>
+  <%= @app_session.video.url %>
 </p>
 
 
