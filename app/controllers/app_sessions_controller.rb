@@ -40,19 +40,14 @@ class AppSessionsController < ApplicationController
   # POST /app_sessions
   # POST /app_sessions.json
   def create
-    @app = App.find_by_token params[:app_token]
+    as_params = params[:app_session]
+    @app = App.find_by_token(as_params.delete :app_token)
     if @app.nil?
       render json: "Missing App Token", status: :bad_request
       return
     end
-
-    required = { app_id: @app.id,
-                 app_version: params[:app_version],
-                 locale: params[:locale],
-                 delight_version: params[:delight_version] }
-    render json: required, status: :bad_request if required.has_value? nil
-    options= required.merge app_user_id: params[:app_user_id]
-    @app_session = AppSession.new required
+    as_params.merge! app_id: @app.id
+    @app_session = AppSession.new as_params
 
     if @app_session.save
       render json: @app_session, status: :created

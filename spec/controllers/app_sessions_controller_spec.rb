@@ -12,12 +12,12 @@ describe AppSessionsController do
                  app_version: app_version,
                  locale: locale,
                  delight_version: delight_version }
-      post :create, params
+      post :create, app_session: params
       response.should be_success
     end
 
     it "returns 400 if missing parameters" do
-      post :create
+      post :create, app_session: {}
       response.should_not be_success
     end
   end
