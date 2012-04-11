@@ -2,15 +2,27 @@
 
 <table>
   <tr>
+    <th>App Session id</th>
+    <th>App name</th>
+    <th>App user id</th>
+    <th>App version</th>
+    <th>Delight version</th>
     <th>Duration</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>Video id</th>
+    <th>Video URL</th>
   </tr>
 
 <% @app_sessions.each do |app_session| %>
   <tr>
+    <td><%= app_session.id %></td>
+    <td><%= app_session.app.name %></td>
+    <td><%= app_session.app_user_id %></td>
+    <td><%= app_session.app_version %></td>
+    <td><%= app_session.delight_version %></td>
     <td><%= app_session.duration %></td>
+    <td><%= app_session.video.id %></td>
+    <td><%= app_session.video.url %></td>
+
     <td><%= link_to 'Show', app_session %></td>
     <td><%= link_to 'Edit', edit_app_session_path(app_session) %></td>
     <td><%= link_to 'Destroy', app_session, confirm: 'Are you sure?', method: :delete %></td>
