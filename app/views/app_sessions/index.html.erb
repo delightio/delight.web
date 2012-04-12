@@ -20,8 +20,8 @@
     <td><%= app_session.app_version %></td>
     <td><%= app_session.delight_version %></td>
     <td><%= app_session.duration %></td>
-    <td><%= app_session.video.id %></td>
-    <td><%= app_session.video.uri %></td>
+    <td><%= app_session.video.id if app_session.video %></td>
+    <td><%= app_session.video.uri if app_session.video %></td>
 
     <td><%= link_to 'Show', app_session %></td>
     <td><%= link_to 'Edit', edit_app_session_path(app_session) %></td>
