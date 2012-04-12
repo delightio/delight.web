@@ -65,10 +65,10 @@ class AppSessionsController < ApplicationController
     # TODO: This seems fishy and maybe we should have the iOS to create
     # a video resource (and later gesture resource) before we update the
     # app session.
-    if as_params.has_key? :video_url
-      video = Video.create url: as_params[:video_url],
+    if as_params.has_key? :video_uri
+      video = Video.create uri: as_params[:video_uri],
                            app_session_id: @app_session.id
-      as_params.delete :video_url
+      as_params.delete :video_uri
     end
 
     if @app_session.update_attributes(as_params)

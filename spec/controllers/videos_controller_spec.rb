@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe VideosController do
-  let(:path) { "abc" }
+  let(:uri) { "abc" }
+  let(:app_session) { FactoryGirl.create :app_session}
   describe "post" do
     it "creates new video object" do
-      params = { url: path }
-      post :create, video: params
+      params = { uri: uri, app_session_id: app_session.id }
+      post :create, format: :xml, video: params
       response.should be_success
     end
 

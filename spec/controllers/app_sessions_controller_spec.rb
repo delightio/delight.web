@@ -41,12 +41,12 @@ describe AppSessionsController do
       app_session.reload.app_user_id.should == app_user_id
     end
 
-    let(:video_url) { "http://abc.mp4" }
+    let(:video_uri) { "http://abc.mp4" }
     it "updates video association" do
-      params = { video_url: video_url }
+      params = { video_uri: video_uri }
       put :update, id: app_session.id, app_session: params
       response.should be_success
-      app_session.reload.video.url.should == video_url
+      app_session.reload.video.uri.should == video_uri
     end
   end
 end
