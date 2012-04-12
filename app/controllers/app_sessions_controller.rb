@@ -37,8 +37,7 @@ class AppSessionsController < ApplicationController
   #   @app_session = AppSession.find(params[:id])
   # end
 
-  # POST /app_sessions
-  # POST /app_sessions.json
+  # POST /app_sessions.xml
   def create
     as_params = params[:app_session]
     @app = App.find_by_token(as_params.delete :app_token)
@@ -49,32 +48,25 @@ class AppSessionsController < ApplicationController
     as_params.merge! app_id: @app.id
     @app_session = AppSession.new as_params
 
-    if @app_session.save
-      render json: @app_session, status: :created
-    else
-      render json: @app_session.errors, status: :bad_request
+    respond_to do |format|
+      if @app_session.save
+        format.xml
+      else
+        format.xml { render xml: @app_session.errors, status: :bad_request }
+      end
     end
   end
 
-  # PUT /app_sessions/1
-  # PUT /app_sessions/1.json
+  # PUT /app_sessions/1.xml
   def update
     @app_session = AppSession.find(params[:id])
-    as_params = params[:app_session]
 
-    # TODO: This seems fishy and maybe we should have the iOS to create
-    # a video resource (and later gesture resource) before we update the
-    # app session.
-    if as_params.has_key? :video_uri
-      video = Video.create uri: as_params[:video_uri],
-                           app_session_id: @app_session.id
-      as_params.delete :video_uri
-    end
-
-    if @app_session.update_attributes(as_params)
-      head :no_content
-    else
-      render json: @app_session.errors, status: :unprocessable_entity
+    respond_to do |format|
+      if @app_session.update_attributes(params[:app_session])
+        format.xml { head :no_content }
+      else
+        format.xml { render xml: @app_session.errors, status: :unprocessable_entity }
+      end
     end
   end
 
