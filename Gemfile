@@ -7,6 +7,7 @@ gem 'thin'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
+gem 'aws-sdk'
 
 group :development, :test do
   gem 'rspec-rails'
