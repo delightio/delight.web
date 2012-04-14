@@ -16,9 +16,13 @@ describe AppSessionsController do
       response.should be_success
     end
 
-    it "returns 400 if missing parameters" do
-      post :create, app_session: {}, format: :xml
-      response.should_not be_success
+    context 'When missing parameters' do
+      let(:bad_params) { {} }
+      it 'returns 400'
+      it 'returns non 2xx code' do
+        post :create, app_session: bad_params, format: :xml
+        response.should_not be_success
+      end
     end
   end
 
