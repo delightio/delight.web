@@ -1,5 +1,10 @@
 class VideosController < ApplicationController
   def create
+    if params[:video].nil?
+      render xml: "Missing video key", status: :bad_request
+      return
+    end
+
     @video = Video.new params[:video]
 
     respond_to do |format|

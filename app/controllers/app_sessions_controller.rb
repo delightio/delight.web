@@ -39,6 +39,11 @@ class AppSessionsController < ApplicationController
 
   # POST /app_sessions.xml
   def create
+    if params[:app_session].nil?
+      render xml: "Missing app_session key", status: :bad_request
+      return
+    end
+
     as_params = params[:app_session]
     @app = App.find_by_token(as_params.delete :app_token)
     if @app.nil?
