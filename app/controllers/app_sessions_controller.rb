@@ -42,7 +42,7 @@ class AppSessionsController < ApplicationController
     as_params = params[:app_session]
     @app = App.find_by_token(as_params.delete :app_token)
     if @app.nil?
-      render json: "Missing App Token", status: :bad_request
+      render xml: "Missing App Token", status: :bad_request
       return
     end
     as_params.merge! app_id: @app.id
@@ -70,15 +70,15 @@ class AppSessionsController < ApplicationController
     end
   end
 
-  # DELETE /app_sessions/1
-  # DELETE /app_sessions/1.json
-  def destroy
-    @app_session = AppSession.find(params[:id])
-    @app_session.destroy
+  # # DELETE /app_sessions/1
+  # # DELETE /app_sessions/1.json
+  # def destroy
+  #   @app_session = AppSession.find(params[:id])
+  #   @app_session.destroy
 
-    respond_to do |format|
-      format.html { redirect_to app_sessions_url }
-      format.json { head :no_content }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html { redirect_to app_sessions_url }
+  #     format.json { head :no_content }
+  #   end
+  # end
 end
