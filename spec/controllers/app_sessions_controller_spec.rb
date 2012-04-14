@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe AppSessionsController do
-  describe "post" do
+  describe 'post' do
     let(:app) { FactoryGirl.create :app }
-    let(:app_version) { "1.4" }
-    let(:delight_version) { "0.1" }
-    let(:locale) { "en-US" }
+    let(:app_version) { '1.4' }
+    let(:delight_version) { '0.1' }
+    let(:locale) { 'en-US' }
 
-    it "creates" do
+    it 'creates' do
       params = { app_token: app.token,
                  app_version: app_version,
                  locale: locale,
@@ -16,7 +16,7 @@ describe AppSessionsController do
       response.should be_success
     end
 
-    context 'When missing parameters' do
+    context 'when missing parameters' do
       let(:bad_params) { {} }
       it 'returns 400'
       it 'returns non 2xx code' do
@@ -26,19 +26,19 @@ describe AppSessionsController do
     end
   end
 
-  describe "put" do
+  describe 'put' do
     let(:app_session) { FactoryGirl.create :app_session }
 
     let(:duration) { 10.2 }
-    it "updates duration" do
+    it 'updates duration' do
       params = { duration: duration }
       put :update, id: app_session.id, app_session: params, format: :xml
       response.should be_success
       app_session.reload.duration.should == duration
     end
 
-    let(:app_user_id) { "10" }
-    it "updates app_user_id" do
+    let(:app_user_id) { '10' }
+    it 'updates app_user_id' do
       params = { app_user_id: app_user_id }
       put :update, id: app_session.id, app_session: params, format: :xml
       response.should be_success
