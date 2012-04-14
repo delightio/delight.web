@@ -5,6 +5,7 @@ development:
 test:
   adapter: postgresql
   database: delight_test
+  min_messages: warning
 
 production:
   adapter: postgresql
