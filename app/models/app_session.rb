@@ -1,6 +1,9 @@
 class AppSession < ActiveRecord::Base
-  belongs_to :app
+  attr_reader :upload_uris
+
   has_one :video
+  belongs_to :app
+  validates_presence_of :app_id, :app_version, :delight_version, :locale
 
   def record?
     true
