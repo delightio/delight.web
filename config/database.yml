@@ -1,6 +1,6 @@
 development:
   adapter: postgresql
-  database: delight.dev
+  database: delight_dev
 
 test:
   adapter: postgresql
@@ -9,4 +9,4 @@ test:
 
 production:
   adapter: postgresql
-  database: delight.live
+  database: delight_live
