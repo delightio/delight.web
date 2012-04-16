@@ -8,6 +8,14 @@
 </head>
 <body>
 
+<div>
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+</div>
+
+<%= link_to "Sign in", "/users/sign_in" %>
+<%= link_to "Sign out", "/users/sign_out", :method => :delete %>
+
 <%= yield %>
 
 </body>
