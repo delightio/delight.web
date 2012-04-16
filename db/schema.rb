@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120412200713) do
+ActiveRecord::Schema.define(:version => 20120416105736) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -20,9 +20,9 @@ ActiveRecord::Schema.define(:version => 20120412200713) do
   end
 
   create_table "app_sessions", :force => true do |t|
-    t.decimal  "duration"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.decimal  "duration",        :precision => 10, :scale => 0
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.integer  "app_id"
     t.string   "app_user_id"
     t.string   "locale"
@@ -37,6 +37,26 @@ ActiveRecord::Schema.define(:version => 20120412200713) do
     t.datetime "updated_at", :null => false
     t.integer  "account_id"
   end
+
+  create_table "users", :force => true do |t|
+    t.integer  "account_id"
+    t.string   "twitter_id"
+    t.string   "github_id"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+  end
+
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "videos", :force => true do |t|
     t.string   "uri"

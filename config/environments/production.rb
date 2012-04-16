@@ -1,3 +1,6 @@
+secret_env = File.join(::Rails.root.to_s, 'config', 'secret.rb')
+load(secret_env) if File.exist?(secret_env)
+
 DelightWeb::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -50,6 +53,7 @@ DelightWeb::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.default_url_options = { :host => 'delight.herokuapp.com' }
 
   # Enable threaded mode
   # config.threadsafe!

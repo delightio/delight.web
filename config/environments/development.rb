@@ -1,3 +1,6 @@
+secret_env = File.join(::Rails.root.to_s, 'config', 'secret.rb')
+load(secret_env) if File.exist?(secret_env)
+
 DelightWeb::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -15,6 +18,7 @@ DelightWeb::Application.configure do
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.default_url_options = { :host => 'delight.dev' }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

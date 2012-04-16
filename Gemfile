@@ -12,7 +12,20 @@ gem 'aws-sdk'
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'mysql2', '~> 0.3.11'
 end
+
+group :test do 
+  gem "factory_girl_rails"
+  gem "capybara"
+  gem "guard-rspec"
+  gem "rspec-prof" #https://github.com/sinisterchipmunk/rspec-prof
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
+  gem 'guard-cucumber' 
+  gem 'spork'
+  gem 'guard-spork' 
+end 
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -44,3 +57,10 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+# Signin
+gem 'devise' 
+
+# OAuth 
+gem 'omniauth-twitter' 
+gem 'omniauth-github'
