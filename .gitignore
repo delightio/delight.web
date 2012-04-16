@@ -17,3 +17,7 @@
 /log/*.log
 /tmp
 .DS_Store*
+
+# Ignore config/database.yml to allow using different DB for local development 
+# Heroku does not read the file anyway
+config/database.yml
