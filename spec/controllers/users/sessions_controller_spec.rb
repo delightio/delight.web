@@ -2,17 +2,17 @@ require 'spec_helper'
 
 describe Users::SessionsController do
 
-  describe "GET 'create'" do
+  describe "GET 'new'" do
     it "returns http success" do
-      get 'create'
+      get 'new'
       response.should be_success
     end
   end
 
-  describe "GET 'destroy'" do
+  describe "DELETE 'destroy'" do
     it "returns http success" do
-      get 'destroy'
-      response.should be_success
+      delete 'destroy'
+      response.should redirect_to(root_path)
     end
   end
 
