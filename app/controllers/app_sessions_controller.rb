@@ -21,22 +21,6 @@ class AppSessionsController < ApplicationController
     end
   end
 
-  # # GET /app_sessions/new
-  # # GET /app_sessions/new.json
-  # def new
-  #   @app_session = AppSession.new
-
-  #   respond_to do |format|
-  #     format.html # new.html.erb
-  #     format.json { render json: @app_session }
-  #   end
-  # end
-
-  # # GET /app_sessions/1/edit
-  # def edit
-  #   @app_session = AppSession.find(params[:id])
-  # end
-
   # POST /app_sessions.xml
   def create
     if params[:app_session].nil?
@@ -75,15 +59,4 @@ class AppSessionsController < ApplicationController
     end
   end
 
-  # # DELETE /app_sessions/1
-  # # DELETE /app_sessions/1.json
-  # def destroy
-  #   @app_session = AppSession.find(params[:id])
-  #   @app_session.destroy
-
-  #   respond_to do |format|
-  #     format.html { redirect_to app_sessions_url }
-  #     format.json { head :no_content }
-  #   end
-  # end
 end
