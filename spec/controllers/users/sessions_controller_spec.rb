@@ -10,6 +10,18 @@ describe Users::SessionsController do
   end
 
   describe "DELETE 'destroy'" do
+    describe "user signed in" do 
+      before(:each) do 
+        @user = FactoryGirl.create(:user) 
+        sign_in(@user) 
+      end 
+
+      it "returns http success" do
+        delete 'destroy'
+        response.should redirect_to(root_path)
+      end
+    end 
+
     it "returns http success" do
       delete 'destroy'
       response.should redirect_to(root_path)
