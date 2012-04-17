@@ -1,5 +1,4 @@
 DelightWeb::Application.routes.draw do
-
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   devise_scope :user do
     get '/users/auth/:provider' => 'users/omniauth_callbacks#passthru'
@@ -8,9 +7,10 @@ DelightWeb::Application.routes.draw do
   end
 
   resources :accounts, :except => [:index, :destroy] 
-  resources :app_sessions
-  match 'videos' => 'videos#create'
-  match 'apps' => 'apps#index'
+  resources :app_sessions, :only => [:index, :show, :create, :update]
+  resources :videos, :only => [:create]
+  resources :apps, :only => [:index]
+  resources :beta_signups, :only => [:create]
   root :to => 'home#index'
 
   # The priority is based upon order of creation:

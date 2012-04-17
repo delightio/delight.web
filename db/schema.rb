@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120417064334) do
+ActiveRecord::Schema.define(:version => 20120417074832) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -39,6 +39,16 @@ ActiveRecord::Schema.define(:version => 20120417064334) do
     t.integer  "account_id"
   end
 
+  create_table "beta_signups", :force => true do |t|
+    t.string   "email"
+    t.string   "app_name"
+    t.string   "platform"
+    t.boolean  "opengl"
+    t.boolean  "unity3d"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "permissions", :force => true do |t|
     t.integer  "viewer_id"
     t.integer  "app_id"
@@ -49,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20120417064334) do
   add_index "permissions", ["viewer_id"], :name => "index_permissions_on_viewer_id"
 
   create_table "users", :force => true do |t|
+    t.integer  "account_id"
     t.string   "twitter_id"
     t.string   "github_id"
     t.datetime "created_at",                             :null => false
