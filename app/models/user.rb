@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   def self.find_or_create_for_twitter_oauth(auth_hash, signed_in_resouce=nil) 
     #data = access_token.extra.raw_info 
-    uid = auth_hash['uid'] 
+    uid = auth_hash['uid'].to_s 
     if user = self.find_by_twitter_id(uid)
       user 
     else 
@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
 
   def self.find_or_create_for_github_oauth(auth_hash, signed_in_resouce=nil) 
     #data = access_token.extra.raw_info 
-    uid = auth_hash['uid'] 
+    uid = auth_hash['uid'].to_s 
     if user = self.find_by_github_id(uid)
       user 
     else 
