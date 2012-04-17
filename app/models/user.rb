@@ -9,16 +9,16 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :twitter_id, :github_id
 
-  belongs_to :account
-  #validates :account_id, :presence => true
-
   def self.find_or_create_for_twitter_oauth(auth_hash, signed_in_resouce=nil) 
     #data = access_token.extra.raw_info 
     uid = auth_hash['uid'] 
     if user = self.find_by_twitter_id(uid)
       user 
     else 
-      self.create!(:twitter_id => uid) 
+      user = self.create(:twitter_id => uid) 
+      #user = self.new(:twitter_id => uid) 
+      #user.save(:validate => false) 
+      #user 
     end 
   end
 
@@ -28,7 +28,10 @@ class User < ActiveRecord::Base
     if user = self.find_by_github_id(uid)
       user 
     else 
-      self.create!(:github_id => uid) 
+      user = self.create(:github_id => uid) 
+      #user = self.new(:github_id => uid) 
+      #user.save(:validate => false) 
+      #user 
     end 
   end
 

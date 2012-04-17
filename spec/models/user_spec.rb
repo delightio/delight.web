@@ -5,13 +5,6 @@ describe User do
     @user = FactoryGirl.create(:user) 
   end 
 
-  describe "during validation" do 
-    it "should require an account_id" do 
-      @user.account_id = nil 
-      @user.should have(1).error_on(:account_id)
-    end
-  end 
-
   describe "find_or_create_for_twitter_oauth" do 
     before(:each) do 
       @auth_hash = { 
@@ -34,14 +27,21 @@ describe User do
          }
       }
     end 
+
     describe "no existing user" do 
       it "should retrieve existing user" do 
-        count = User.count 
+        num_user = User.count 
+#        num_account = Account.count 
         user = User.find_or_create_for_twitter_oauth(@auth_hash)
         user.twitter_id.should == 'twitter_uid'  
-        User.count.should == (count+1)
+        User.count.should == (num_user+1)
+
+#        # should have created an account
+#        Account.count.should == (num_account+1)
+#        user.account.should be_valid
       end 
     end 
+
     describe "there is existing user" do 
       before(:each) do 
         @twitter_user = FactoryGirl.create(:user, :twitter_id => 'twitter_uid') 

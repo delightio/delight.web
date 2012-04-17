@@ -1,6 +1,8 @@
 FactoryGirl.define do
-  factory :account do
-    name 'Pipely Inc.'
+  factory :account do |a|
+    a.name 'Pipely Inc.'
+    administrator
+    #a.association :administrator
   end
 
   factory :app do |a|

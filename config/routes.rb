@@ -7,6 +7,7 @@ DelightWeb::Application.routes.draw do
     delete 'sign_out', :to => 'users/sessions#destroy', :as => :destroy_user_session
   end
 
+  resources :accounts, :except => [:index, :destroy] 
   resources :app_sessions
   match 'videos' => 'videos#create'
   match 'apps' => 'apps#index'

@@ -2,6 +2,14 @@
 
 FactoryGirl.define do
   factory :user do 
-    association :account
+    type 'User'
   end
+
+  factory :administrator do 
+    type 'Administrator'
+  end 
+
+  factory :viewer do 
+    type 'Viewer'
+  end 
 end

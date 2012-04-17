@@ -23,7 +23,7 @@ group :test do
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'guard-cucumber' 
-  gem 'spork'
+  gem 'spork', '~> 1.0rc'
   gem 'guard-spork' 
 end 
 
