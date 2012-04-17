@@ -1,28 +1,28 @@
 development:
-  #adapter: postgresql
-  #database: delight_dev
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
+  adapter: postgresql
   database: delight_dev
-  pool: 5
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  # adapter: mysql2
+  # encoding: utf8
+  # reconnect: false
+  # database: delight_dev
+  # pool: 5
+  # username: root
+  # password:
+  # socket: /tmp/mysql.sock
 
 
 test:
-  #adapter: postgresql
-  #database: delight_test
-  #min_messages: warning
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
+  adapter: postgresql
   database: delight_test
-  pool: 5
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  min_messages: warning
+  # adapter: mysql2
+  # encoding: utf8
+  # reconnect: false
+  # database: delight_test
+  # pool: 5
+  # username: root
+  # password:
+  # socket: /tmp/mysql.sock
 
 
 production:
