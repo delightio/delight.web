@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120416105736) do
+ActiveRecord::Schema.define(:version => 20120417074832) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -36,6 +36,16 @@ ActiveRecord::Schema.define(:version => 20120416105736) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "account_id"
+  end
+
+  create_table "beta_signups", :force => true do |t|
+    t.string   "email"
+    t.string   "app_name"
+    t.string   "platform"
+    t.boolean  "opengl"
+    t.boolean  "unity3d"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
