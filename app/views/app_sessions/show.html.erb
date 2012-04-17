@@ -14,14 +14,8 @@
   <%= @app_session.duration %>
 
   <p>
-  <b>Video id:</b>
-  <%= @app_session.video.id %>
-
-  <p>
   <b>Video URL:</b>
-  <%= @app_session.video.url %>
+  <%= @app_session.video.try(:url) %>
 </p>
 
-
-<%= link_to 'Edit', edit_app_session_path(@app_session) %> |
 <%= link_to 'Back', app_sessions_path %>
