@@ -1,7 +1,6 @@
 class BetaSignupsController < ApplicationController
   # POST /beta_signups.json
   def create
-puts "Asked to create: #{params.inspect}"
     @beta_signup = BetaSignup.new(params[:beta_signup])
 
     respond_to do |format|
