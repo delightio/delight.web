@@ -2,7 +2,11 @@ require 'spec_helper'
 
 describe "apps/index" do
   before(:each) do
-    assign(:apps, [
+    assign(:viewer_apps, [
+      stub_model(App),
+      stub_model(App)
+    ])
+    assign(:admin_apps, [
       stub_model(App),
       stub_model(App)
     ])
