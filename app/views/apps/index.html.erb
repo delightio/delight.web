@@ -12,7 +12,10 @@
     <th></th>
   </tr>
 
-<% @admin_apps.each do |app| %>
+  <% 
+    if not @admin_apps.blank? 
+      @admin_apps.each do |app| 
+  %>
   <tr>
     <td><%= app.id %></td>
     <td><%= app.name %></td>
@@ -22,7 +25,10 @@
     <td><%= link_to 'Edit', edit_app_path(app) %></td>
     <td><%= link_to 'Destroy', app, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
-<% end %>
+  <% 
+      end 
+    end 
+  %>
 </table>
 
 <br />
