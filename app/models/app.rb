@@ -10,7 +10,6 @@ class App < ActiveRecord::Base
 
   include Redis::Objects
   hash_key :settings # recordings to get, paused?, wifi only?
-  after_create :set_default_recording_settings
 
   module Scopes
     def administered_by(user)
@@ -25,12 +24,6 @@ class App < ActiveRecord::Base
 
   def generate_token
     self.token = "#{SecureRandom.hex 12}#{id}"
-  end
-
-  def set_default_recording_settings
-    resume_recording
-    add_recordings 10
-    set_uploading_on_wifi_only true
   end
 
   def recording?

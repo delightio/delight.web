@@ -4,24 +4,13 @@ describe App do
 
   subject { FactoryGirl.create :app }
   its(:token) { should_not be_empty }
+  it { should_not be_recording }
 
   describe '#generate_token' do
     it 'is a combination of random keys and own id' do
       SecureRandom.should_receive(:hex).at_least(1).and_return('FFFF')
 
       subject.generate_token.should == "FFFF#{subject.id}"
-    end
-  end
-
-  describe '#set_default_recording_settings' do
-    it 'is called after creation' do
-      App.any_instance.should_receive :set_default_recording_settings
-
-      subject
-    end
-
-    it 'makes all app to be recording by default' do
-      subject.should be_recording
     end
   end
 

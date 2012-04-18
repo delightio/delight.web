@@ -17,18 +17,6 @@ describe Account do
     end
   end
 
-  describe '#set_default_credits' do
-    it 'is called after creation' do
-      Account.any_instance.should_receive :set_default_credits
-
-      subject
-    end
-
-    it 'gives any new Account some credits' do
-      subject.remaining_credits.should > 0
-    end
-  end
-
   describe '#remaining_credits' do
     it 'is a number' do
       subject.remaining_credits.should be_an_instance_of Fixnum
