@@ -6,7 +6,7 @@ class App < ActiveRecord::Base
   validate :token, :presence => true, :uniqueness => true
 
   def generate_token
-    self.token = SecureRandom.hex 12
+    self.token = "#{SecureRandom.hex 12}#{id}"
   end
 
   def recording?

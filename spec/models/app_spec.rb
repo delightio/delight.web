@@ -2,12 +2,15 @@ require 'spec_helper'
 
 describe App do
 
-  let(:name) { "Nowbox" }
   subject { FactoryGirl.create :app }
   its(:token) { should_not be_empty }
 
-  describe "#generate_token" do
-    it "returns unique token"
+  describe '#generate_token' do
+    it 'is a combination of random keys and own id' do
+      SecureRandom.should_receive(:hex).at_least(1).and_return('FFFF')
+
+      subject.generate_token.should == "FFFF#{subject.id}"
+    end
   end
 
   describe '#recording?' do
