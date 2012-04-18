@@ -6,7 +6,7 @@ class S3Uploader
     @presigned_bucket = upload_bucket
   end
 
-private
+  private
   UploadBucket = 'delight_upload'
   def upload_bucket
     policy = AWS::STS::Policy.new
