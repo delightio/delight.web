@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-  <title>DelightWeb</title>
+  <meta charset="utf-8">
+  <title>Delight.io</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag("/stylesheets/screen.css", :media => 'screen')  %>
+  <%= stylesheet_link_tag("/stylesheets/smoothness/jquery-ui-1.8.18.custom.css", :media => 'screen')  %>
+  <%= stylesheet_link_tag("/stylesheets/font-awesome.css", :media => 'screen')  %>
+  <%= stylesheet_link_tag("/stylesheets/colorbox.css", :media => 'screen')  %>
+  <%= stylesheet_link_tag("/stylesheets/print.css", :media => 'print')  %>
+  <!--[if IE]>
+    <%= stylesheet_link_tag("/stylesheets/ie.css", :media => 'screen')  %>
+  <![endif]-->
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+
+<%= render :partial => "shared/topbar" %>
 
 <div>
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>
 </div>
 
-<%= link_to "Sign in", "/sign_in" %>
-<%= link_to "Sign out", "/sign_out", :method => :delete %>
+<div class="container">
+  
+  <%= yield %>
 
-<%= yield %>
+  <hr>
+  
+  <footer>
+    <p>&copy; delight.io 2012</p>
+  </footer>
+
+</div><!--/.container-->
+
+
+<%= javascript_include_tag "/javascripts/jquery.colorbox-min.js" %>
 
 </body>
 </html>

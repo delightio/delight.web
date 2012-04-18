@@ -35,4 +35,12 @@ class User < ActiveRecord::Base
     end 
   end
 
+  def administrator? 
+    self.type == 'Administrator' 
+  end 
+
+  def viewer? 
+    self.type == 'Viewer'
+  end 
+
 end

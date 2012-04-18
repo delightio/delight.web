@@ -14,7 +14,6 @@ gem 'redis-objects'
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'mysql2', '~> 0.3.11'
 end
 
 group :test do

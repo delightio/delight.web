@@ -2,12 +2,26 @@ class App < ActiveRecord::Base
   belongs_to :account
   has_many :app_sessions
 
+  has_many :permissions
+  has_many :viewers, :through => :permissions
+
   before_validation :generate_token, :on => :create
   validate :token, :presence => true, :uniqueness => true
 
   include Redis::Objects
   hash_key :settings # recordings to get, paused?, wifi only?
   after_create :set_default_recording_settings
+
+  module Scopes
+    def administered_by(user)
+      joins(:account).where(:accounts => { :administrator_id => user.id })
+    end
+
+    def viewable_by(user)
+      joins(:permissions).where(:permissions => { :viewer_id => user.id })
+    end
+  end
+  extend Scopes
 
   def generate_token
     self.token = "#{SecureRandom.hex 12}#{id}"

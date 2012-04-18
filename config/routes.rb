@@ -9,7 +9,7 @@ DelightWeb::Application.routes.draw do
   resources :accounts, :except => [:index, :destroy] 
   resources :app_sessions, :only => [:index, :show, :create, :update]
   resources :videos, :only => [:create]
-  resources :apps, :only => [:index]
+  resources :apps
   resources :beta_signups, :only => [:create]
   root :to => 'home#index'
 
