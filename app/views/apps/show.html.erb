@@ -1,5 +1,210 @@
 <p id="notice"><%= notice %></p>
 
+  <div class="row">
+    <div class="span8">
+      <h2>Account Name <span class="font-normal">> <%= @app.name %></span></h2>
+    </div>
+    <div class="span4 align-r">
+      <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0">15 Sessions Scheduled</h3>
+      <a class="btn btn-danger btn-large " href="#"><i class="icon-pause"></i> Pause Recording</a>
+      <a class="btn btn-success btn-large hide" href="#"><i class="icon-play"></i> Start Recording</a>
+    </div>
+  </div><!--/row-->
+  <hr />
+  <div class="row">
+    <div class="span3">
+      <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+          <li class="active"><a href="#">Feed<span class="badge badge-white pull-right">10</span></a></li>
+          <li><a href="#">Favorites<span class="badge badge-inverse pull-right">3</span></a></li>
+          <li><a href="#">Credits<span class="badge badge-inverse pull-right">100</span></a></li>
+          <hr />
+          <form>
+            <li class="nav-header">Versions</li>
+            <li>
+              <label class="checkbox">
+                <input type="checkbox"> All <span class="badge pull-right">30</span>
+              </label>
+            </li>
+            <li>
+              <label class="checkbox">
+                <input type="checkbox"> 1.3 <span class="badge pull-right">20</span>
+              </label>
+            </li>
+            <li>
+              <label class="checkbox">
+                <input type="checkbox"> 1.2 <span class="badge pull-right">10</span>
+              </label>
+            </li>
+          </form>
+          <hr />
+          <li class="nav-header">Duration <input type="text" id="duration-amount" class="pull-right" /></li>
+          <li>
+            <div id="duration-range"></div>
+          </li>
+          <hr />
+          <li class="nav-header">Date <input type="text" id="date-amount" class="pull-right" /></li>
+          <li>
+            <div id="date-range"></div>
+          </li>
+        </ul>
+      </div><!--/.well -->
+    </div><!--/span-->
+    <div class="span9">
+      <% @app.app_sessions.each do |session| %>
+      <div class="row">
+        <div class="span4">
+          <a href="#" class="float-l star"><i class="icon-star-empty"></i></a>
+          <ul class="thumbnails" style="margin-bottom:0">
+            <li class="span3">
+              <a href="http://www.jacklmoore.com/colorbox/content/ohoopee1.jpg" class="thumbnail group-video">
+                <img src="http://placehold.it/260x180" alt="">
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="span2 ml-0">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>Version:</td>
+                <td class="align-r"><%= session.app_version %></td>
+              </tr>
+              <tr>
+                <td>Duration:</td>
+                <td class="align-r"><%= session.duration %>s</td>
+              </tr>
+              <tr>
+                <td>Date:</td>
+                <td class="align-r">2 days ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="span2">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>User ID:</td>
+                <td class="align-r"><%= session.app_user_id %></td>
+              </tr>
+              <tr>
+                <td>Avg duration:</td>
+                <td class="align-r">30 s ??</td>
+              </tr>
+              <tr>
+                <td>Lifetime:</td>
+                <td class="align-r">100 m ??</td>
+              </tr>
+            </tbody>
+          </table>
+        </div><!--/span-->
+      </div><!--/row-->
+      
+      <hr style="margin:0 0 20px 0" />
 
-<%= link_to 'Edit', edit_app_path(@app) %> |
-<%= link_to 'Back', apps_path %>
+      <% end %>
+     <!-- 
+      <div class="row">
+        <div class="span4">
+          <a href="#" class="float-l star"><i class="icon-star"></i></a>
+          <ul class="thumbnails" style="margin-bottom:0">
+            <li class="span3">
+              <a href="http://www.jacklmoore.com/colorbox/content/ohoopee2.jpg" class="thumbnail group-video">
+                <img src="http://placehold.it/260x180" alt="">
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="span2 ml-0">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>Version:</td>
+                <td class="align-r">1.3</td>
+              </tr>
+              <tr>
+                <td>Duration:</td>
+                <td class="align-r">20s</td>
+              </tr>
+              <tr>
+                <td>Date:</td>
+                <td class="align-r">2 days ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="span2">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>User ID:</td>
+                <td class="align-r">232534</td>
+              </tr>
+              <tr>
+                <td>Avg duration:</td>
+                <td class="align-r">30 s</td>
+              </tr>
+              <tr>
+                <td>Lifetime:</td>
+                <td class="align-r">100 m</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <hr style="margin:0 0 20px 0" />
+      
+      <div class="row">
+        <div class="span4">
+          <a href="#" class="float-l star"><i class="icon-star-empty"></i></a>
+          <ul class="thumbnails" style="margin-bottom:0">
+            <li class="span3">
+              <a href="http://www.jacklmoore.com/colorbox/content/ohoopee3.jpg" class="thumbnail group-video">
+                <img src="http://placehold.it/260x180" alt="">
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="span2 ml-0">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>Version:</td>
+                <td class="align-r">1.3</td>
+              </tr>
+              <tr>
+                <td>Duration:</td>
+                <td class="align-r">20s</td>
+              </tr>
+              <tr>
+                <td>Date:</td>
+                <td class="align-r">2 days ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="span2">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>User ID:</td>
+                <td class="align-r">232534</td>
+              </tr>
+              <tr>
+                <td>Avg duration:</td>
+                <td class="align-r">30 s</td>
+              </tr>
+              <tr>
+                <td>Lifetime:</td>
+                <td class="align-r">100 m</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  -->
