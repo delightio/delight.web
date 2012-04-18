@@ -1,7 +1,4 @@
 class Account < ActiveRecord::Base
-  include Redis::Objects
-  counter :credits
-
   has_many :apps
   belongs_to :administrator
   has_many :permissions
@@ -9,6 +6,9 @@ class Account < ActiveRecord::Base
 
   validates :administrator_id, :presence => true
   validates :name, :presence => true
+
+  include Redis::Objects
+  counter :credits
 
   def remaining_credits
     credits.to_i
