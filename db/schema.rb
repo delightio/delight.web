@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(:version => 20120417074832) do
   end
 
   create_table "app_sessions", :force => true do |t|
-    t.decimal  "duration",        :precision => 10, :scale => 0
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.decimal  "duration"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "app_id"
     t.string   "app_user_id"
     t.string   "locale"
