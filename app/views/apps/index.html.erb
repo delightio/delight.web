@@ -1,21 +1,55 @@
 <h1>Listing apps</h1>
 
+<h2>account apps</h2>
 <table>
   <tr>
     <th>App id</th>
     <th>App name</th>
     <th>App token</th>
     <th>Number of App Sessions</th>
+    <th></th>
+    <th></th>
+    <th></th>
   </tr>
 
-<% @apps.each do |app| %>
+<% @admin_apps.each do |app| %>
   <tr>
     <td><%= app.id %></td>
     <td><%= app.name %></td>
     <td><%= app.token %></td>
     <td><%= app.app_sessions.count %></td>
+    <td><%= link_to 'Show', app %></td>
+    <td><%= link_to 'Edit', edit_app_path(app) %></td>
+    <td><%= link_to 'Destroy', app, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
+
+<h2>viewer apps</h2>
+<table>
+  <tr>
+    <th>App id</th>
+    <th>App name</th>
+    <th>App token</th>
+    <th>Number of App Sessions</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @viewer_apps.each do |app| %>
+  <tr>
+    <td><%= app.id %></td>
+    <td><%= app.name %></td>
+    <td><%= app.token %></td>
+    <td><%= app.app_sessions.count %></td>
+    <td><%= link_to 'Show', app %></td>
+    <td><%= link_to 'Edit', edit_app_path(app) %></td>
+    <td><%= link_to 'Destroy', app, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'New App', new_app_path %>
