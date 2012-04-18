@@ -18,4 +18,5 @@ class App < ActiveRecord::Base
   def uploading_on_wifi_only?
     true
   end
+
 end
