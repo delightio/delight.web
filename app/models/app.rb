@@ -10,4 +10,12 @@ class App < ActiveRecord::Base
   def generate_token
     self.token = SecureRandom.hex 12
   end
+
+  def recording?
+    true
+  end
+
+  def uploading_on_wifi_only?
+    true
+  end
 end

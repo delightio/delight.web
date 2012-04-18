@@ -5,12 +5,12 @@ class AppSession < ActiveRecord::Base
   belongs_to :app
   validates_presence_of :app_id, :app_version, :delight_version, :locale
 
-  def record?
-    true
+  def recording?
+    app.recording?
   end
 
-  def wifi_transmission_only?
-    true
+  def uploading_on_wifi_only?
+    app.uploading_on_wifi_only?
   end
 
   def upload_uris
