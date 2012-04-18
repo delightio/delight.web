@@ -5,10 +5,8 @@ class App < ActiveRecord::Base
   has_many :permissions
   has_many :viewers, :through => :permissions 
 
-  validates_presence_of :token
-  validates_uniqueness_of :token
-
   before_validation :generate_token, :on => :create
+  validate :token, :presence => true, :uniqueness => true
 
   module Scopes
     def administered_by(user) 

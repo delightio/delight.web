@@ -138,6 +138,7 @@ describe AppsController do
 
       it "assigns a new app as @app" do
         get :new, {}
+        response.should be_ok
         new_app = assigns(:app)
         new_app.should be_a_new(App)
         new_app.account.administrator.should == app.account.administrator
