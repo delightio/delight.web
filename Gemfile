@@ -8,6 +8,8 @@ gem 'thin'
 
 gem 'pg'
 gem 'aws-sdk'
+gem 'redis'
+gem 'redis-objects'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -15,17 +17,17 @@ group :development, :test do
   gem 'mysql2', '~> 0.3.11'
 end
 
-group :test do 
+group :test do
   gem "factory_girl_rails"
   gem "capybara"
   gem "guard-rspec"
   gem "rspec-prof" #https://github.com/sinisterchipmunk/rspec-prof
   gem 'cucumber-rails'
   gem 'database_cleaner'
-  gem 'guard-cucumber' 
+  gem 'guard-cucumber'
   gem 'spork', '~> 1.0rc'
-  gem 'guard-spork' 
-end 
+  gem 'guard-spork'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -59,8 +61,8 @@ gem 'jquery-rails'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 # Signin
-gem 'devise' 
+gem 'devise'
 
-# OAuth 
-gem 'omniauth-twitter' 
+# OAuth
+gem 'omniauth-twitter'
 gem 'omniauth-github'
