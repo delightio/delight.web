@@ -7,12 +7,12 @@ describe AccountsController do
   end 
 
   describe "POST 'create'" do
-    it "returns http success" do
+    it "redirect to apps index" do 
       post 'create', { :account => { :name => 'account name' } } 
       assigns(:account).name.should == 'account name' 
       @user.reload 
       @user.type.should == 'Administrator'
-      response.should redirect_to(:controller => 'accounts', :action => :show, :id => assigns(:account).id)
+      response.should redirect_to(apps_path)
     end
 
     it "should fail for missing name" do 

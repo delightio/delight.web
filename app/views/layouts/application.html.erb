@@ -19,17 +19,13 @@
 
 <%= render :partial => "shared/topbar" %>
 
-<div>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-</div>
-
 <div class="container">
-  
+
+  <%= render :partial => "shared/error_message" %>
   <%= yield %>
 
   <hr>
-  
+
   <footer>
     <p>&copy; delight.io 2012</p>
   </footer>

@@ -7,31 +7,27 @@ class User < ActiveRecord::Base
   devise :omniauthable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :twitter_id, :github_id
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :twitter_id, :github_id, :nickname, :image_url
 
   def self.find_or_create_for_twitter_oauth(auth_hash, signed_in_resouce=nil) 
-    #data = access_token.extra.raw_info 
     uid = auth_hash['uid'].to_s 
     if user = self.find_by_twitter_id(uid)
       user 
     else 
-      user = self.create(:twitter_id => uid) 
-      #user = self.new(:twitter_id => uid) 
-      #user.save(:validate => false) 
-      #user 
+      user = self.create(:twitter_id => uid, 
+                         :nickname => auth_hash['info']['nickname'],
+                         :image_url => auth_hash['info']['image']) 
     end 
   end
 
   def self.find_or_create_for_github_oauth(auth_hash, signed_in_resouce=nil) 
-    #data = access_token.extra.raw_info 
     uid = auth_hash['uid'].to_s 
     if user = self.find_by_github_id(uid)
       user 
     else 
-      user = self.create(:github_id => uid) 
-      #user = self.new(:github_id => uid) 
-      #user.save(:validate => false) 
-      #user 
+      user = self.create(:github_id => uid,
+                         :nickname => auth_hash['info']['nickname'],
+                         :image_url => defined?(auth_hash['extra']['raw_info']['avatar_url']) ? auth_hash['extra']['raw_info']['avatar_url'] : nil) 
     end 
   end
 

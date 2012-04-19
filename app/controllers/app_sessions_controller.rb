@@ -1,4 +1,13 @@
 class AppSessionsController < ApplicationController
+
+  rescue_from ActiveRecord::RecordNotFound do
+    flash[:type] = 'error'
+    flash[:notice] = 'Invalid operation'
+    redirect_to apps_path
+    return
+  end
+
+  # TODO: remove
   # GET /app_sessions
   # GET /app_sessions.json
   def index
@@ -11,13 +20,18 @@ class AppSessionsController < ApplicationController
   end
 
   # GET /app_sessions/1
-  # GET /app_sessions/1.json
   def show
-    @app_session = AppSession.find(params[:id])
+    authenticate_user!
+
+    @app_session = nil
+    if current_user.administrator?
+      @app_session ||= AppSession.administered_by(current_user).find(params[:id])
+    end
+
+    @app_session ||= AppSession.viewable_by(current_user).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @app_session }
     end
   end
 
