@@ -10,7 +10,6 @@ class AppsController < ApplicationController
 
   # GET /apps
   def index
-
     @viewer_apps = App.viewable_by(current_user).all
     if current_user.administrator? 
       @admin_apps = App.administered_by(current_user).all
@@ -68,7 +67,8 @@ class AppsController < ApplicationController
 
     respond_to do |format|
       if @app.save
-        format.html { redirect_to @app, notice: 'App was successfully created.' }
+        flash[:notice] = 'App was successfully created.'
+        format.html { redirect_to :action => :index } 
       else
         format.html { render action: "new" }
       end
@@ -81,7 +81,8 @@ class AppsController < ApplicationController
 
     respond_to do |format|
       if @app.update_attributes(params[:app])
-        format.html { redirect_to @app, notice: 'App was successfully updated.' }
+        flash[:notice] = 'App was successfully updated.'
+        format.html { redirect_to :action => :index } 
       else
         format.html { render action: "edit" }
       end

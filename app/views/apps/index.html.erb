@@ -1,61 +1,110 @@
-<h1>Listing apps</h1>
+  <div class="row">
+    <div class="span12">
+      <h2>App Manager</h2>
+    </div>
+  </div><!--/row-->
+  <hr />
 
-<h2>account apps</h2>
-<table>
-  <tr>
-    <th>App id</th>
-    <th>App name</th>
-    <th>App token</th>
-    <th>Number of App Sessions</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+      <!--
+  <div class="row">
+    <div class="span12">
+      <div class="btn-group">
+        <button class="btn dropdown-toggle" data-toggle="dropdown">Account name #1 <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Switch account context</a></li>
+          <li class="divider"></li>
+          <li><a href="#"><i class="icon-th-list"></i> Account name #2</a></li>
+          <li><a href="#"><i class="icon-th-list"></i> Account name #3</a></li>
+          <li><a href="#"><i class="icon-th-list"></i> Account name #4</a></li>
+          <li class="divider"></li>
+          <li><a href="accountnew.htm"><i class="icon-plus"></i> New account</a></li>
+        </ul>
+      </div>
+      <br/>
+      <div class="well">
+        <h3><a href="app.htm">App name #1</a></h3>
+        <ul class="unstyled">
+          <li>App name: 1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+      </div>
+      <div class="well"><a href="app.htm">App name #2</a></div>
+      <div class="well"><a href="app.htm">App name #3</a></div>
+      <div class="well"><a href="app.htm">App name #4</a></div>
+    </div>
+  </div>
+-->
+<% if not current_user.administrator? %>
+  <div class="row">
+    <div class="span12">
+      <div class="well">
+        <h3>You do not have an account yet.</h3>
+        <%= link_to "Create account", new_account_path, :class => "btn" %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="span12">
+  <%
+    if not @admin_apps.blank?
+      @admin_apps.each do |app|
+  %>
+      <div class="well">
+        <h3><%= link_to(app.name, app_path(app)) %></h3>
+        <ul class="unstyled">
+          <li>id: 1</li>
+          <li>token: <%= app.token %></li>
+          <li>number of sessions: <%= app.app_sessions.count %></li>
+          <li>
+            <%= link_to 'Show', app, :class => "btn" %>
+            &nbsp;
+            <%= link_to 'Edit', edit_app_path(app), :class => "btn" %>
+            &nbsp;
+            <%= link_to 'Destroy', app, confirm: 'Are you sure?', method: :delete, :class => "btn" %>
+          </li>
+        </ul>
+      </div>
+  <%
+      end
+    end
+  %>
+    </div>
+  </div>
 
-  <% 
-    if not @admin_apps.blank? 
-      @admin_apps.each do |app| 
-  %>
-  <tr>
-    <td><%= app.id %></td>
-    <td><%= app.name %></td>
-    <td><%= app.token %></td>
-    <td><%= app.app_sessions.count %></td>
-    <td><%= link_to 'Show', app %></td>
-    <td><%= link_to 'Edit', edit_app_path(app) %></td>
-    <td><%= link_to 'Destroy', app, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-  <% 
-      end 
-    end 
-  %>
-</table>
+  <div class="row">
+    <div class="span12">
+      <%= link_to 'New App', new_app_path, :class => "btn" %>
+    </div>
+  </div>
 
 <br />
-
-<h2>viewer apps</h2>
-<table>
-  <tr>
-    <th>App id</th>
-    <th>App name</th>
-    <th>App token</th>
-    <th>Number of App Sessions</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @viewer_apps.each do |app| %>
-  <tr>
-    <td><%= app.id %></td>
-    <td><%= app.name %></td>
-    <td><%= app.token %></td>
-    <td><%= app.app_sessions.count %></td>
-    <td><%= link_to 'Show', app %></td>
-    <td><%= link_to 'Edit', edit_app_path(app) %></td>
-    <td><%= link_to 'Destroy', app, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
 <% end %>
-</table>
 
-<%= link_to 'New App', new_app_path %>
+<% if not @viewer_apps.blank? %>
+  <div class="row">
+    <div class="span12">
+      <h2>Apps as viewer</h2>
+    </div>
+  </div><!--/row-->
+  <hr />
+
+  <div class="row">
+    <div class="span12">
+      <% @viewer_apps.each do |app| %>
+      <div class="well">
+        <h3><%= link_to(app.name, app_path(app)) %></h3>
+        <ul class="unstyled">
+          <li>id: 1</li>
+          <li>token: <%= app.token %></li>
+          <li>number of sessions: <%= app.app_sessions.count %></li>
+          <li>
+            <%= link_to 'Show', app, :class => "btn" %>
+          </li>
+        </ul>
+      </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

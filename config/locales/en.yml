@@ -3,3 +3,6 @@
 
 en:
   hello: "Hello world"
+  topnav:
+    home: "Home"
+    brand: "delight.io"

@@ -1,4 +1,12 @@
-<h1>Sign in<h1>
-
-<%= link_to "Sign in with Twitter", omniauth_authorize_path('user', 'twitter') %>
-<%= link_to "Sign in with Github", omniauth_authorize_path('user', 'github') %>
+  <div class="row">
+    <div class="span12">
+      <h2>Login <span class="font-normal">to delight.io</span></h2>
+    </div>
+  </div><!--/row-->
+  <hr />
+  <div class="row">
+    <div class="span12" style="text-align:center;padding:60px 0">
+      <%= link_to raw('<i class="icon-github-sign icon-large"></i> Login with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+      <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Login in with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+    </div><!--/span-->
+  </div><!--/row-->

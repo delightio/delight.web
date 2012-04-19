@@ -234,9 +234,9 @@ describe AppsController do
           assigns(:app).account.should == app.account
         end
   
-        it "redirects to the created app" do
+        it "redirects to app listing" do
           post :create, {:app => valid_attributes}
-          response.should redirect_to(App.last)
+          response.should redirect_to(apps_path)
         end
       end
   
@@ -298,9 +298,9 @@ describe AppsController do
           assigns(:app).name.should == valid_attributes[:name]
         end
   
-        it "redirects to the app" do
+        it "redirects to app listing" do
           put :update, {:id => app.to_param, :app => valid_attributes}
-          response.should redirect_to(app)
+          response.should redirect_to(apps_path)
         end
       end
   

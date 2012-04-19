@@ -11,7 +11,7 @@ describe Users::OmniauthCallbacksController do
 
       it "returns http success" do
         get 'twitter'
-        response.should redirect_to(app_sessions_path)
+        response.should redirect_to(apps_path)
       end
     end 
 
@@ -37,7 +37,7 @@ describe Users::OmniauthCallbacksController do
   
       it "returns http success" do
         get 'github'
-        response.should redirect_to(app_sessions_path)
+        response.should redirect_to(apps_path)
       end
     end 
 

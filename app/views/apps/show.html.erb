@@ -5,7 +5,7 @@
       <h2>Account Name <span class="font-normal">> <%= @app.name %></span></h2>
     </div>
     <div class="span4 align-r">
-      <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0">15 Sessions Scheduled</h3>
+      <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= @app.app_sessions.count %> Sessions Scheduled</h3>
       <a class="btn btn-danger btn-large " href="#"><i class="icon-pause"></i> Pause Recording</a>
       <a class="btn btn-success btn-large hide" href="#"><i class="icon-play"></i> Start Recording</a>
     </div>
