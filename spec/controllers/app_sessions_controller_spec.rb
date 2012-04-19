@@ -47,4 +47,78 @@ describe AppSessionsController do
       app_session.reload.app_user_id.should == app_user_id
     end
   end
+
+  describe 'GET show' do
+    let(:app_session) { FactoryGirl.create :app_session }
+    let(:viewer) { FactoryGirl.create :viewer }
+    let(:user) { FactoryGirl.create :user }
+
+    describe 'signed in' do
+      describe 'as admin' do
+        before(:each) do
+          sign_in(app_session.app.account.administrator)
+        end
+
+        it "should return ok" do
+          get 'show', { :id => app_session.id }
+          response.should be_ok
+          assigns(:app_session).should == app_session
+        end
+      end
+
+      describe 'as viewer' do
+        before(:each) do
+          app_session.app.viewers << viewer
+          sign_in(viewer)
+        end
+
+        it "should return ok" do
+          get 'show', { :id => app_session.id }
+          response.should be_ok
+          assigns(:app_session).should == app_session
+        end
+      end
+
+      describe 'user not authorized' do
+        before(:each) do
+          sign_in(user)
+        end
+
+        it "should redirect to apps listing" do
+          get 'show', { :id => app_session.id }
+          response.should redirect_to(apps_path)
+        end
+      end
+
+      describe 'viewer not authorized' do
+        before(:each) do
+          sign_in(viewer)
+        end
+
+        it "should redirect to apps listing" do
+          get 'show', { :id => app_session.id }
+          response.should redirect_to(apps_path)
+        end
+      end
+
+      describe 'admin not authorized' do
+        let(:admin2) { FactoryGirl.create(:administrator) }
+        before(:each) do
+          sign_in(admin2)
+        end
+
+        it "should redirect to apps listing" do
+          get 'show', { :id => app_session.id }
+          response.should redirect_to(apps_path)
+        end
+      end
+    end
+
+    describe 'not signed in' do
+      it "should redirect to sign in page" do
+        get 'show', { :id => app_session.id }
+      end
+    end
+
+  end
 end

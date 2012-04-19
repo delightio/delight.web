@@ -1,21 +1,21 @@
 class AppsController < ApplicationController
-  before_filter :authenticate_user! 
+  before_filter :authenticate_user!
 
   rescue_from ActiveRecord::RecordNotFound do
     flash[:type] = 'error'
     flash[:notice] = 'Invalid operation'
     redirect_to :action => :index
-    return 
+    return
   end
 
   # GET /apps
   def index
     @viewer_apps = App.viewable_by(current_user).all
-    if current_user.administrator? 
+    if current_user.administrator?
       @admin_apps = App.administered_by(current_user).all
-    else 
-      @admin_apps = nil 
-    end 
+    else
+      @admin_apps = nil
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,10 +24,10 @@ class AppsController < ApplicationController
 
   # GET /apps/1
   def show
-    @app = nil 
-    if current_user.administrator? 
+    @app = nil
+    if current_user.administrator?
       @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
-    end 
+    end
 
     # viewers
     @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
@@ -39,10 +39,10 @@ class AppsController < ApplicationController
 
   # GET /apps/new
   def new
-    if not current_user.administrator? 
-      redirect_to :action => :index 
-      return 
-    end 
+    if not current_user.administrator?
+      redirect_to :action => :index
+      return
+    end
 
     @app = current_user.account.apps.build
 
@@ -58,17 +58,17 @@ class AppsController < ApplicationController
 
   # POST /apps
   def create
-    if not current_user.administrator? 
-      redirect_to :action => :index 
-      return 
-    end 
+    if not current_user.administrator?
+      redirect_to :action => :index
+      return
+    end
 
     @app = current_user.account.apps.build(params[:app])
 
     respond_to do |format|
       if @app.save
         flash[:notice] = 'App was successfully created.'
-        format.html { redirect_to :action => :index } 
+        format.html { redirect_to :action => :index }
       else
         format.html { render action: "new" }
       end
@@ -82,7 +82,7 @@ class AppsController < ApplicationController
     respond_to do |format|
       if @app.update_attributes(params[:app])
         flash[:notice] = 'App was successfully updated.'
-        format.html { redirect_to :action => :index } 
+        format.html { redirect_to :action => :index }
       else
         format.html { render action: "edit" }
       end
@@ -97,6 +97,6 @@ class AppsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to apps_url }
     end
-  end 
+  end
 
 end

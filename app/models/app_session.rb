@@ -6,6 +6,17 @@ class AppSession < ActiveRecord::Base
   validates_presence_of :app_id, :app_version, :app_build
   validates_presence_of :delight_version, :locale
 
+  module Scopes
+    def administered_by(user)
+      joins(:app => :account).where(:accounts => { :administrator_id => user.id })
+    end
+
+    def viewable_by(user)
+      joins(:app => :permissions).where(:permissions => { :viewer_id => user.id })
+    end
+  end
+  extend Scopes
+
   def recording?
     app.recording?
   end
