@@ -14,9 +14,9 @@ describe AppSession do
 
     it 'only generates upload uris if recording' do
       subject.stub :recording? => false
+      subject.send :generate_upload_uris
 
-      expect { subject.generate_upload_uris }.to
-        change { subject.upload_uris }.to({})
+      subject.upload_uris.should == Hash.new
     end
 
     let(:presigned_uri) { 'presigned' }
@@ -24,7 +24,7 @@ describe AppSession do
       subject.stub :recording? => true
       VideoUploader.any_instance.stub :presigned_uri => presigned_uri
 
-      subject.generate_upload_uris
+      subject.send :generate_upload_uris
       subject.upload_uris[:screen].should == presigned_uri
     end
   end

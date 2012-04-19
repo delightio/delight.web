@@ -28,6 +28,7 @@ class AppSession < ActiveRecord::Base
     app.uploading_on_wifi_only?
   end
 
+  private
   def generate_upload_uris
     @upload_uris = {}
     if recording?
