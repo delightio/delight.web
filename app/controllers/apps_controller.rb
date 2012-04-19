@@ -26,11 +26,11 @@ class AppsController < ApplicationController
   def show
     @app = nil
     if current_user.administrator?
-      @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
+      @app ||= App.includes(:app_sessions).administered_by(current_user).order('apps.created_at DESC').find(params[:id])
     end
 
     # viewers
-    @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
+    @app ||= App.includes(:app_sessions).viewable_by(current_user).order('apps.created_at DESC').find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
