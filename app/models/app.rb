@@ -5,7 +5,7 @@ class App < ActiveRecord::Base
   has_many :permissions
   has_many :viewers, :through => :permissions
 
-  before_validation :generate_token, :on => :create
+  after_create :generate_token
   validate :token, :presence => true, :uniqueness => true
 
   include Redis::Objects
@@ -21,10 +21,6 @@ class App < ActiveRecord::Base
     end
   end
   extend Scopes
-
-  def generate_token
-    self.token = "#{SecureRandom.hex 12}#{id}"
-  end
 
   def recording?
     !recording_paused? &&
@@ -63,4 +59,10 @@ class App < ActiveRecord::Base
   def set_uploading_on_wifi_only flag
     settings[:uploading_on_wifi_only] = flag
   end
+
+  private
+  def generate_token
+    update_attribute :token, "#{SecureRandom.hex 12}#{id}"
+  end
+
 end
