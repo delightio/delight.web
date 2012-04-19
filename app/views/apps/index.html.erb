@@ -54,7 +54,7 @@
       <div class="well">
         <h3><%= link_to(app.name, app_path(app)) %></h3>
         <ul class="unstyled">
-          <li>id: 1</li>
+          <li>id: <%= app.id %></li>
           <li>token: <%= app.token %></li>
           <li>number of sessions: <%= app.app_sessions.count %></li>
           <li>

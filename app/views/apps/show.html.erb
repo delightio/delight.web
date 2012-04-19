@@ -2,10 +2,14 @@
 
   <div class="row">
     <div class="span7">
-      <h2>Account Name <span class="font-normal">> <%= @app.name %></span></h2>
+      <h2>
+        <a href=<%= apps_path %>><%= @app.account.name %></a>
+        <span class="divider">/</span>
+       <span class="font-normal"><%= @app.name %></span>
+      </h2>
     </div>
     <div class="span5 align-r">
-      <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= @app.app_sessions.count %> Sessions Scheduled</h3>
+      <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= @app.remaining_recordings %> Sessions Scheduled</h3>
       <a class="btn btn-danger btn-large " href="#"><i class="icon-pause"></i> Pause Recording</a>
       <a class="btn btn-success btn-large hide" href="#"><i class="icon-play"></i> Start Recording</a>
     </div>
@@ -17,13 +21,13 @@
         <ul class="nav nav-list">
           <li class="active"><a href="#">Feed<span class="badge badge-white pull-right">10</span></a></li>
           <li><a href="#">Favorites<span class="badge badge-inverse pull-right">3</span></a></li>
-          <li><a href="#">Credits<span class="badge badge-inverse pull-right">100</span></a></li>
+          <li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li>
           <hr />
           <form>
             <li class="nav-header">Versions</li>
             <li>
               <label class="checkbox">
-                <input type="checkbox"> All <span class="badge pull-right">30</span>
+                <input type="checkbox"> All <span class="badge pull-right"> <%= @app.app_sessions.count %></span>
               </label>
             </li>
             <li>
@@ -100,11 +104,11 @@
           </table>
         </div><!--/span-->
       </div><!--/row-->
-      
+
       <hr style="margin:0 0 20px 0" />
 
       <% end %>
-     <!-- 
+     <!--
       <div class="row">
         <div class="span4">
           <a href="#" class="float-l star"><i class="icon-star"></i></a>
@@ -153,9 +157,9 @@
           </table>
         </div>
       </div>
-      
+
       <hr style="margin:0 0 20px 0" />
-      
+
       <div class="row">
         <div class="span4">
           <a href="#" class="float-l star"><i class="icon-star-empty"></i></a>
@@ -204,7 +208,7 @@
           </table>
         </div>
       </div>
-      
+
     </div>
   </div>
   -->
