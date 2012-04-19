@@ -19,26 +19,9 @@
 
 <%= render :partial => "shared/topbar" %>
 
-<div class="row">
-  <div class="span12">
-    <!--
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-  -->
-    <% if flash[:notice] %>
-    <div class="alert <%= (flash[:type].blank? ? "alert-success" : "alert-" + flash[:type]) %> fade in" data-alert="alert">
-  	  <a class="close" data-dismiss="alert">×</a>
-      <% if flash[:title] %>
-        <strong><%= flash[:title] %></strong>
-      <% end %>
-      <%= flash[:notice] %>
-    </div>
-    <% end %>
-  </div>
-</div>
-
 <div class="container">
 
+  <%= render :partial => "shared/error_message" %>
   <%= yield %>
 
   <hr>
