@@ -28,6 +28,11 @@ class App < ActiveRecord::Base
     account.remaining_credits > 0
   end
 
+  def count_recording
+    use_recordings 1
+    account.use_credits 1
+  end
+
   def recording_paused?
     settings[:recording_state] == 'paused'
   end

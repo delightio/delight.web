@@ -14,6 +14,20 @@ describe App do
     end
   end
 
+  describe '#count_recording' do
+    it 'uses credit from associated account' do
+      subject.account.should_receive(:use_credits).with(1)
+
+      subject.count_recording
+    end
+
+    it 'decrements the recordings we need' do
+      subject.should_receive(:use_recordings).with(1)
+
+      subject.count_recording
+    end
+  end
+
   describe '#recording?' do
     context 'when we have no credits' do
       it 'is always false' do
