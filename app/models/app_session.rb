@@ -3,7 +3,8 @@ class AppSession < ActiveRecord::Base
 
   has_one :video
   belongs_to :app
-  validates_presence_of :app_id, :app_version, :delight_version, :locale
+  validates_presence_of :app_id, :app_version, :app_build
+  validates_presence_of :delight_version, :locale
 
   def recording?
     app.recording?

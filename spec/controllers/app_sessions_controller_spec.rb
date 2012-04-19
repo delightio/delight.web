@@ -4,12 +4,14 @@ describe AppSessionsController do
   describe 'post' do
     let(:app) { FactoryGirl.create :app }
     let(:app_version) { '1.4' }
+    let(:app_build) { 'KJKJ'}
     let(:delight_version) { '0.1' }
     let(:locale) { 'en-US' }
 
     it 'creates' do
       params = { app_token: app.token,
                  app_version: app_version,
+                 app_build: app_build,
                  locale: locale,
                  delight_version: delight_version }
       post :create, app_session: params, format: :xml

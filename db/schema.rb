@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120417074832) do
+ActiveRecord::Schema.define(:version => 20120418220458) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20120417074832) do
     t.string   "locale"
     t.string   "app_version"
     t.string   "delight_version"
+    t.string   "app_build"
   end
 
   create_table "apps", :force => true do |t|
