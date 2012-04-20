@@ -9,11 +9,6 @@ class Account < ActiveRecord::Base
 
   include Redis::Objects
   counter :credits
-  after_create :set_default_credits
-
-  def set_default_credits
-    add_credits 50
-  end
 
   def remaining_credits
     credits.to_i

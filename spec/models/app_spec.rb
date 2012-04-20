@@ -3,25 +3,28 @@ require 'spec_helper'
 describe App do
 
   subject { FactoryGirl.create :app }
+  it { should_not be_recording }
   its(:token) { should_not be_empty }
 
   describe '#generate_token' do
     it 'is a combination of random keys and own id' do
       SecureRandom.should_receive(:hex).at_least(1).and_return('FFFF')
 
-      subject.generate_token.should == "FFFF#{subject.id}"
+      subject.token.should == "FFFF#{subject.id}"
     end
   end
 
-  describe '#set_default_recording_settings' do
-    it 'is called after creation' do
-      App.any_instance.should_receive :set_default_recording_settings
+  describe '#count_recording' do
+    it 'uses credit from associated account' do
+      subject.account.should_receive(:use_credits).with(1)
 
-      subject
+      subject.count_recording
     end
 
-    it 'makes all app to be recording by default' do
-      subject.should be_recording
+    it 'decrements the recordings we need' do
+      subject.should_receive(:use_recordings).with(1)
+
+      subject.count_recording
     end
   end
 

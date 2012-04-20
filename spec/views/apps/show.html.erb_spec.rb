@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe "apps/show" do
+  let(:app) { FactoryGirl.create(:app) }
   before(:each) do
-    @app = assign(:app, stub_model(App))
+    @app = app
   end
 
   it "renders attributes in <p>" do
