@@ -22,7 +22,7 @@ describe AppSession do
 
   describe '#upload_completed' do
     it 'tells associated app to update recording accounting' do
-      subject.app.should_receive :count_recording
+      subject.app.should_receive :use_recording
 
       subject.upload_completed mock
     end
