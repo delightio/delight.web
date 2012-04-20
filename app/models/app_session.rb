@@ -17,6 +17,22 @@ class AppSession < ActiveRecord::Base
     def viewable_by(user)
       joins(:app => :permissions).where(:permissions => { :viewer_id => user.id })
     end
+
+    def date_between(min, max)  #inclusive
+      if min and max 
+        where('created_at >= ? and created_at <= ?', min, max) 
+      else 
+        where('created_at IS NOT NULL')
+      end 
+    end 
+
+    def duration_between(min, max) #inclusive
+      if min and max
+        where('duration >= ? and duration <= ?', min, max)
+      else 
+        where('duration is NOT NULL')
+      end 
+    end 
   end
   extend Scopes
 

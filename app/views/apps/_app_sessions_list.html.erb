@@ -1,0 +1,57 @@
+    <div class="span9" id="app-view-app-sessions">
+      <% unless app_sessions.blank? %>
+      <% app_sessions.each do |session| %>
+      <div class="row">
+        <div class="span4">
+          <a href="#" class="float-l star"><i class="icon-star-empty"></i></a>
+          <ul class="thumbnails" style="margin-bottom:0">
+            <li class="span3">
+              <a href="http://www.jacklmoore.com/colorbox/content/ohoopee1.jpg" class="thumbnail group-video">
+                <img src="http://placehold.it/260x180" alt="">
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="span2 ml-0">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>Version:</td>
+                <td class="align-r"><%= session.app_version %></td>
+              </tr>
+              <tr>
+                <td>Duration:</td>
+                <td class="align-r"><%= session.duration %>s</td>
+              </tr>
+              <tr>
+                <td>Date:</td>
+                <td class="align-r">2 days ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="span2">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>User ID:</td>
+                <td class="align-r"><%= session.app_user_id %></td>
+              </tr>
+              <tr>
+                <td>Avg duration:</td>
+                <td class="align-r">30 s ??</td>
+              </tr>
+              <tr>
+                <td>Lifetime:</td>
+                <td class="align-r">100 m ??</td>
+              </tr>
+            </tbody>
+          </table>
+        </div><!--/span-->
+      </div><!--/row-->
+   
+      <hr style="margin:0 0 20px 0" />
+
+      <% end %>
+      <% end %>
+    </div>

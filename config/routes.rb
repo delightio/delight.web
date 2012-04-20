@@ -6,10 +6,12 @@ DelightWeb::Application.routes.draw do
     delete 'sign_out', :to => 'users/sessions#destroy', :as => :destroy_user_session
   end
 
-  resources :accounts, :except => [:index, :destroy] 
+  resources :accounts, :except => [:index, :destroy]
   resources :app_sessions, :only => [:index, :show, :create, :update]
   resources :videos, :only => [:create]
-  resources :apps
+  resources :apps do
+    put '/recording/update/:state', :to => 'apps#update_recording', :as => :update_recording
+  end
   resources :beta_signups, :only => [:create]
   root :to => 'home#index'
 

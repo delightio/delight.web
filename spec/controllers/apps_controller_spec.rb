@@ -26,115 +26,115 @@ describe AppsController do
   def valid_attributes
     { :name => 'test app name' }
   end
-  
-  let(:app) { FactoryGirl.create(:app) } 
-  let(:user) { FactoryGirl.create(:user) } 
+
+  let(:app) { FactoryGirl.create(:app) }
+  let(:user) { FactoryGirl.create(:user) }
 
   describe "GET index" do
-    let(:app2) { FactoryGirl.create(:app) } 
-    let(:viewer) { FactoryGirl.create(:viewer) } 
-    before(:each) do 
+    let(:app2) { FactoryGirl.create(:app) }
+    let(:viewer) { FactoryGirl.create(:viewer) }
+    before(:each) do
       app.viewers.push viewer
       app2.viewers.push app.account.administrator
-    end 
+    end
 
-    describe "user not signed in" do 
+    describe "user not signed in" do
       it "should redirect to user sign in path" do
         get :index
         response.should redirect_to(new_user_session_path)
-      end 
-    end 
+      end
+    end
 
-    describe "user signed in" do 
-      before(:each) do 
-        sign_in(user) 
-      end 
+    describe "user signed in" do
+      before(:each) do
+        sign_in(user)
+      end
 
-      it "assigns @viewer_apps" do 
+      it "assigns @viewer_apps" do
         get :index, {}
-        assigns(:viewer_apps).should be_blank 
+        assigns(:viewer_apps).should be_blank
         assigns(:admin_apps).should be_blank
       end
-    end 
+    end
 
-    describe "viewer signed in" do 
-      before(:each) do 
-        sign_in(viewer) 
-      end 
+    describe "viewer signed in" do
+      before(:each) do
+        sign_in(viewer)
+      end
 
-      it "assigns @viewer_apps" do 
+      it "assigns @viewer_apps" do
         get :index, {}
         assigns(:viewer_apps).should == [app]
         assigns(:admin_apps).should be_blank
       end
-    end 
+    end
 
-    describe "admin signed in" do 
-      before(:each) do 
-        sign_in(app.account.administrator) 
-      end 
+    describe "admin signed in" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
 
-      it "assigns @viewer_apps and @admin_apps" do 
+      it "assigns @viewer_apps and @admin_apps" do
         get :index, {}
         assigns(:viewer_apps).should == [app2]
         assigns(:admin_apps).should == [app]
-      end 
-    end 
+      end
+    end
   end
 
   describe "GET show" do
 
-    describe "user not signed in" do 
-      it "should redirect to user sign in page" do 
+    describe "user not signed in" do
+      it "should redirect to user sign in page" do
         get :show, {:id => app.to_param}
-        response.should redirect_to(new_user_session_path) 
-      end 
-    end 
+        response.should redirect_to(new_user_session_path)
+      end
+    end
 
-    describe "user signed in" do 
-      before(:each) do 
-        sign_in(user) 
-      end 
+    describe "user signed in" do
+      before(:each) do
+        sign_in(user)
+      end
 
-      it "should return nil app" do 
+      it "should return nil app" do
         get :show, {:id => app.to_param}
         assigns(:app).should be_nil
-      end 
-    end 
+      end
+    end
 
-    describe "viewer signed in" do 
-      let(:viewer) { FactoryGirl.create(:viewer) } 
-      before(:each) do 
-        app.viewers.push viewer 
+    describe "viewer signed in" do
+      let(:viewer) { FactoryGirl.create(:viewer) }
+      before(:each) do
+        app.viewers.push viewer
         sign_out(user)
-        sign_in(viewer) 
-      end 
+        sign_in(viewer)
+      end
 
-      it "should return app as @app" do 
+      it "should return app as @app" do
         get :show, {:id => app.to_param}
         assigns(:app).should == app
-      end 
-    end 
+      end
+    end
 
     describe "admin signed in" do
-      before(:each) do 
-        sign_out(user) 
-        sign_in(app.account.administrator) 
-      end 
+      before(:each) do
+        sign_out(user)
+        sign_in(app.account.administrator)
+      end
 
-      it "should return app as @app" do 
+      it "should return app as @app" do
         get :show, {:id => app.to_param}
         assigns(:app).should == app
-      end 
-    end 
+      end
+    end
 
   end
 
   describe "GET new" do
-    describe "admin signed in" do 
+    describe "admin signed in" do
       before(:each) do
         sign_in(app.account.administrator)
-      end 
+      end
 
       it "assigns a new app as @app" do
         get :new, {}
@@ -143,82 +143,82 @@ describe AppsController do
         new_app.should be_a_new(App)
         new_app.account.administrator.should == app.account.administrator
       end
-    end 
-
-    describe "non admin signed in" do 
-      before(:each) do
-        sign_in(user) 
-      end 
-
-      it "should redirect to index page" do 
-        get :new 
-        response.should redirect_to(apps_url)
-      end 
-    end 
-
-    describe "not signed in" do 
-      it "should redirect to user sign in path" do 
-        get :new
-        response.should redirect_to(new_user_session_path)
-      end 
-    end 
-  end
-
-  describe "GET edit" do
-    describe "admin signed in" do 
-      before(:each) do 
-        sign_in(app.account.administrator)
-      end 
-
-      it "should return app as @app" do 
-        get :edit, { :id => app.to_param } 
-        response.should be_ok
-        assigns(:app).should == app
-      end 
     end
 
     describe "non admin signed in" do
-      before(:each) do 
+      before(:each) do
         sign_in(user)
-      end 
+      end
 
-      it "should redirect to index" do 
-        get :edit, { :id => app.to_param } 
-        response.should redirect_to(apps_path)
-      end 
-    end 
+      it "should redirect to index page" do
+        get :new
+        response.should redirect_to(apps_url)
+      end
+    end
 
-    describe "not signed in" do 
-      it "should redirect to user sign in path" do 
-        get :edit, { :id => app.to_param } 
+    describe "not signed in" do
+      it "should redirect to user sign in path" do
+        get :new
         response.should redirect_to(new_user_session_path)
-      end 
-    end 
+      end
+    end
+  end
+
+  describe "GET edit" do
+    describe "admin signed in" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
+
+      it "should return app as @app" do
+        get :edit, { :id => app.to_param }
+        response.should be_ok
+        assigns(:app).should == app
+      end
+    end
+
+    describe "non admin signed in" do
+      before(:each) do
+        sign_in(user)
+      end
+
+      it "should redirect to index" do
+        get :edit, { :id => app.to_param }
+        response.should redirect_to(apps_path)
+      end
+    end
+
+    describe "not signed in" do
+      it "should redirect to user sign in path" do
+        get :edit, { :id => app.to_param }
+        response.should redirect_to(new_user_session_path)
+      end
+    end
   end
 
   describe "POST create" do
-    describe "not signed in" do 
-      it "should redirect to user sign in path" do 
-        post :create, { :app => valid_attributes } 
+    describe "not signed in" do
+      it "should redirect to user sign in path" do
+        post :create, { :app => valid_attributes }
         response.should redirect_to(new_user_session_path)
-      end 
-    end 
+      end
+    end
 
-    describe "non admin signed in" do 
-      before(:each) do 
+    describe "non admin signed in" do
+      before(:each) do
         sign_in(user)
-      end 
+      end
 
-      it "should redirect to index page" do 
-        post :create, { :app => valid_attributes } 
-        response.should redirect_to(apps_path) 
-      end 
-    end 
+      it "should redirect to index page" do
+        post :create, { :app => valid_attributes }
+        response.should redirect_to(apps_path)
+      end
+    end
 
-    describe "admin signed in" do 
-      before(:each) do 
+    describe "admin signed in" do
+      before(:each) do
         sign_in(app.account.administrator)
-      end 
+      end
 
       describe "with valid params" do
         it "creates a new App" do
@@ -226,20 +226,20 @@ describe AppsController do
             post :create, {:app => valid_attributes}
           }.to change(App, :count).by(1)
         end
-  
+
         it "assigns a newly created app as @app" do
           post :create, {:app => valid_attributes}
           assigns(:app).should be_a(App)
           assigns(:app).should be_persisted
           assigns(:app).account.should == app.account
         end
-  
+
         it "redirects to app listing" do
           post :create, {:app => valid_attributes}
           response.should redirect_to(apps_path)
         end
       end
-  
+
       describe "with invalid params" do
         it "assigns a newly created but unsaved app as @app" do
           # Trigger the behavior that occurs when invalid params are submitted
@@ -247,7 +247,7 @@ describe AppsController do
           post :create, {:app => {}}
           assigns(:app).should be_a_new(App)
         end
-  
+
         it "re-renders the 'new' template" do
           # Trigger the behavior that occurs when invalid params are submitted
           App.any_instance.stub(:save).and_return(false)
@@ -255,32 +255,32 @@ describe AppsController do
           response.should render_template("new")
         end
       end
-    end 
+    end
   end
 
   describe "PUT update" do
-    describe "not signed in" do 
-      it "should redirect to user sign in page" do 
+    describe "not signed in" do
+      it "should redirect to user sign in page" do
         put :update, {:id => app.to_param, :app => valid_attributes}
         response.should redirect_to(new_user_session_path)
-      end 
-    end 
+      end
+    end
 
-    describe "non admin signed in" do 
-      before(:each) do 
-        sign_in(user) 
-      end 
+    describe "non admin signed in" do
+      before(:each) do
+        sign_in(user)
+      end
 
-      it "should redirect to index" do 
+      it "should redirect to index" do
         put :update, {:id => app.to_param, :app => valid_attributes}
         response.should redirect_to(apps_path)
-      end 
-    end 
+      end
+    end
 
-    describe "admin signed in" do 
-      before(:each) do 
+    describe "admin signed in" do
+      before(:each) do
         sign_in(app.account.administrator)
-      end 
+      end
 
       describe "with valid params" do
         it "updates the requested app" do
@@ -291,19 +291,19 @@ describe AppsController do
           App.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
           put :update, {:id => app.to_param, :app => {'these' => 'params'}}
         end
-  
+
         it "assigns the requested app as @app" do
           put :update, {:id => app.to_param, :app => valid_attributes}
           assigns(:app).should eq(app)
           assigns(:app).name.should == valid_attributes[:name]
         end
-  
+
         it "redirects to app listing" do
           put :update, {:id => app.to_param, :app => valid_attributes}
           response.should redirect_to(apps_path)
         end
       end
-  
+
       describe "with invalid params" do
         it "assigns the app as @app" do
           # Trigger the behavior that occurs when invalid params are submitted
@@ -311,7 +311,7 @@ describe AppsController do
           put :update, {:id => app.to_param, :app => {}}
           assigns(:app).should eq(app)
         end
-  
+
         it "re-renders the 'edit' template" do
           # Trigger the behavior that occurs when invalid params are submitted
           App.any_instance.stub(:save).and_return(false)
@@ -319,46 +319,100 @@ describe AppsController do
           response.should render_template("edit")
         end
       end
-    end 
+    end
   end
 
   describe "DELETE destroy" do
-    describe "admin signed in" do 
+    describe "admin signed in" do
       before(:each) do
         sign_in(app.account.administrator)
-      end 
+      end
 
       it "destroys the requested app" do
         expect {
           delete :destroy, {:id => app.to_param}
         }.to change(App, :count).by(-1)
       end
-  
+
       it "redirects to the apps list" do
         delete :destroy, {:id => app.to_param}
         response.should redirect_to(apps_url)
       end
-    end 
+    end
 
-    describe "view signed in" do 
-      let(:viewer) { FactoryGirl.create(:viewer) } 
-      before(:each) do 
+    describe "view signed in" do
+      let(:viewer) { FactoryGirl.create(:viewer) }
+      before(:each) do
         app.viewers << viewer
         sign_in(viewer)
-      end 
+      end
 
       it "does not destroys the requested app" do
         expect {
           delete :destroy, {:id => app.to_param}
         }.to change(App, :count).by(0)
       end
-  
+
       it "redirects to the apps list" do
         delete :destroy, {:id => app.to_param}
         response.should redirect_to(apps_url)
       end
-      
-    end 
+
+    end
+  end
+
+  describe "PUT update_recording" do
+    describe "admin signed in" do
+      describe "owns the app" do
+        before(:each) do
+          sign_in(app.account.administrator)
+        end
+        it "should success" do
+          put 'update_recording', { :app_id => app.id, :state => 'pause', :format => :json }
+          response.should be_success
+          result = JSON.parse(response.body)
+          result['result'].should == 'success'
+          app.recording_paused?.should be_true
+        end
+        it "should fail given invalid state" do
+          put 'update_recording', { :app_id => app.id, :state => 'invalid', :format => :json }
+          response.should be_success
+          result = JSON.parse(response.body)
+          result['result'].should == 'fail'
+          result['reason'].should == 'invalid state'
+          app.recording_paused?.should be_false
+        end
+      end
+
+      describe "does not own app" do
+        let(:admin2) { FactoryGirl.create(:administrator) }
+
+        before(:each) do
+          sign_in(admin2)
+        end
+        it "should fail" do
+          put 'update_recording', { :app_id => app.id, :state => 'pause', :format => :json }
+          response.should be_success
+          result = JSON.parse(response.body)
+          result['result'].should == 'fail'
+          result['reason'].should == 'record not found'
+          app.recording_paused?.should be_false
+        end
+      end
+    end
+    describe "other user signed in" do
+      before(:each) do
+        sign_in(user)
+      end
+      it "should fail" do
+        put 'update_recording', { :app_id => app.id, :state => 'pause', :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'fail'
+        result['reason'].should == 'record not found'
+        app.recording_paused?.should be_false
+      end
+    end
   end
 
 end
