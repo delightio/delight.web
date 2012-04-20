@@ -23,17 +23,38 @@ class AppsController < ApplicationController
   end
 
   # GET /apps/1
+  # GET /apps/1.js
   def show
     @app = nil
+# TODO: seperate session retrieval, move scope from app to app_sessions
+    date_min = params[:'date-min'] ? params[:'date-min'].to_i.days.ago : nil
+    date_max = params[:'date-max'] ? params[:'date-max'].to_i.days.ago : nil
+
     if current_user.administrator?
-      @app ||= App.includes(:app_sessions).administered_by(current_user).order('apps.created_at DESC').find(params[:id])
+      @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
     end
 
     # viewers
-    @app ||= App.includes(:app_sessions).viewable_by(current_user).order('apps.created_at DESC').find(params[:id])
+    @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
 
+    @app_sessions = @app.app_sessions.duration_between(params[:'duration-min'], params[:'duration-max'])
+
+    if params[:'date-min'] and params[:'date-max']
+      @app_sessions = @app_sessions.date_between(
+        params[:'date-min'].to_i.days.ago, 
+        params[:'date-max'].to_i.days.ago
+      )
+    end
+   
+    if params[:versions] 
+      @app_sessions = @app_sessions.where(:app_version => params[:versions])
+    end
+
+    @app_sessions = @app_sessions.order('app_sessions.created_at DESC') 
+   
     respond_to do |format|
       format.html # show.html.erb
+      format.js # show.html.js
     end
   end
 
