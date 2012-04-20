@@ -25,6 +25,8 @@ class AccountsController < ApplicationController
 
     #respond_to do |format|
       if current_user.valid? and @account
+        @account.add_credits 1000
+
         flash[:notice] = I18n.t("account.create.success")
         redirect_to apps_path
       else
