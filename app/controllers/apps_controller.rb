@@ -98,7 +98,7 @@ class AppsController < ApplicationController
 
     respond_to do |format|
       if @app.save
-        @app.schedule_recordings 1000
+        @app.schedule_recordings 100
 
         flash[:notice] = 'App was successfully created.'
         format.html { redirect_to :action => :index }
