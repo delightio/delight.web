@@ -1,6 +1,4 @@
 class S3Uploader
-  attr_reader :session_id, :presigned_bucket
-
   def initialize session_id
     @session_id = session_id
     @presigned_bucket = upload_bucket
@@ -18,7 +16,19 @@ class S3Uploader
 end
 
 class VideoUploader < S3Uploader
-  def presigned_uri
-    @presigned_bucket.objects["#{@session_id}.mp4"].url_for(:write)
+  def filename
+    "#{@session_id}.mp4"
+  end
+
+  def object
+    @presigned_bucket.objects[filename]
+  end
+
+  def presigned_write_uri
+    object.url_for :write
+  end
+
+  def presigned_read_uri
+    object.url_for :read
   end
 end
