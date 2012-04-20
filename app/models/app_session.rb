@@ -28,7 +28,7 @@ class AppSession < ActiveRecord::Base
     app.uploading_on_wifi_only?
   end
 
-  def upload_completed media
+  def complete_upload media
     # Normally we will check if we have got all the media types we expect
     # before counting self as a complete recording
     app.complete_recording

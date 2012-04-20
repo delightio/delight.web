@@ -20,11 +20,11 @@ describe AppSession do
     end
   end
 
-  describe '#upload_completed' do
+  describe '#complete_upload' do
     it 'tells associated app to update recording accounting' do
       subject.app.should_receive :complete_recording
 
-      subject.upload_completed mock
+      subject.complete_upload mock
     end
   end
 
