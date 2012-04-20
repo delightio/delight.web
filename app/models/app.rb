@@ -24,37 +24,33 @@ class App < ActiveRecord::Base
 
   def recording?
     !recording_paused? &&
-    remaining_recordings > 0 &&
+    scheduled_recordings > 0 &&
     account.remaining_credits > 0
   end
 
-  def count_recording
-    use_recordings 1
+  def scheduled_recordings
+    settings[:recordings].to_i
+  end
+
+  def schedule_recordings n
+    settings.incr :recordings, n
+  end
+
+  def complete_recording
+    settings.incr :recordings, -1
     account.use_credits 1
-  end
-
-  def recording_paused?
-    settings[:recording_state] == 'paused'
-  end
-
-  def pause_recording
-    settings[:recording_state] = 'paused'
   end
 
   def resume_recording
     settings[:recording_state] = 'recording'
   end
 
-  def remaining_recordings
-    settings[:recordings].to_i
+  def pause_recording
+    settings[:recording_state] = 'paused'
   end
 
-  def add_recordings n
-    settings.incr :recordings, n
-  end
-
-  def use_recordings n
-    add_recordings -1 * n
+  def recording_paused?
+    settings[:recording_state] == 'paused'
   end
 
   def uploading_on_wifi_only?

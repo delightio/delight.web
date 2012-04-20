@@ -3,5 +3,5 @@ class Video < ActiveRecord::Base
   validates_presence_of :uri
   validates_presence_of :app_session_id
 
-  after_create {|v| app_session.upload_completed self }
+  after_create {|v| app_session.complete_upload self }
 end
