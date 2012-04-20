@@ -6,3 +6,6 @@ en:
   topnav:
     home: "Home"
     brand: "delight.io"
+  account:
+    create:
+      success: "Successfully created account"
