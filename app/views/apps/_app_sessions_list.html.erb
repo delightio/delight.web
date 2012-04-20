@@ -6,7 +6,7 @@
           <a href="#" class="float-l star"><i class="icon-star-empty"></i></a>
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
-              <a href="http://www.jacklmoore.com/colorbox/content/ohoopee1.jpg" class="thumbnail group-video">
+              <a href=<%= session.video.presigned_read_uri %> class="thumbnail group-video">
                 <img src="http://placehold.it/260x180" alt="">
               </a>
             </li>
@@ -49,7 +49,7 @@
           </table>
         </div><!--/span-->
       </div><!--/row-->
-   
+
       <hr style="margin:0 0 20px 0" />
 
       <% end %>

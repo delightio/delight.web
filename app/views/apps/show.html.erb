@@ -56,7 +56,7 @@
         </ul>
       </div><!--/.well -->
     </div><!--/span-->
-    <%= render :partial => "app_sessions_list", :locals => { :app_sessions => @app_sessions } %>
+    <%= render :partial => "app_sessions_list", :locals => { :app_sessions => @app.app_sessions } %>
   </div>
   <% content_for(:javascript) do %>
     <script>
