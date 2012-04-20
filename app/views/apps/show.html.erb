@@ -27,19 +27,17 @@
             <li class="nav-header">Versions</li>
             <li>
               <label class="checkbox">
-                <input type="checkbox" id="app-show-versions-all" CHECKED> All <span class="badge pull-right"> <%= @app.app_sessions.count %></span>
+                <input type="checkbox" id="app-show-versions-all" class="app-show-versions-checkbox" CHECKED> All <span class="badge pull-right"> <%= @app.app_sessions.count %></span>
               </label>
             </li>
+            <% @versions.each do |version| %>
             <li>
               <label class="checkbox">
-                <input type="checkbox" class="app-show-versions-checkbox" name="versions[]" value="1.3" CHECKED> 1.3 <span class="badge pull-right">20</span>
+                <input type="checkbox" class="app-show-versions-checkbox" name="versions[]" value="<%= version.app_version %>" CHECKED> <%= version.app_version %> <span class="badge pull-right"><%= version.count %></span>
               </label>
             </li>
-            <li>
-              <label class="checkbox">
-                <input type="checkbox" class="app-show-versions-checkbox" name="versions[]" value="1.2" CHECKED> 1.2 <span class="badge pull-right">10</span>
-              </label>
-            </li>
+            <% end %>
+            <input type="hidden" name="versions[]" value=""/>
           <hr />
           <li class="nav-header">Duration <input type="text" name="duration" id="duration-amount" class="pull-right" /></li>
           <li>
@@ -69,9 +67,9 @@
     $(function() {
       $( "#duration-range" ).slider({
         range: true,
-        min: 0,
-        max: 20,
-        values: [ 0, 20 ],
+        min: <%= @default_duration_min %>,
+        max: <%= @default_duration_max %>,
+        values: [ <%= @default_duration_min %>, <%= @default_duration_max %> ],
         slide: function( event, ui ) {
           $( "#duration-amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " minutes" );
           $( "#duration-min" ).val( ui.values[0] );
@@ -87,9 +85,9 @@
     $(function() {
       $( "#date-range" ).slider({
         range: true,
-        min: 0,
-        max: 20,
-        values: [ 0, 20 ],
+        min: <%= @default_date_max %>,
+        max: <%= @default_date_min %>,
+        values: [ <%= @default_date_max %>, <%= @default_date_min %> ],
         slide: function( event, ui ) {
           $( "#date-amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " days" );
           $( "#date-min" ).val( ui.values[1] );
@@ -114,6 +112,9 @@
           // uncheck all
           $(".app-show-versions-checkbox").attr('checked', false);
         }
+        //querySessions();
+      });
+      $(".app-show-versions-checkbox").click(function(eventObj) {
         querySessions();
       });
 

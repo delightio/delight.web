@@ -33,9 +33,16 @@ class AppsController < ApplicationController
   # GET /apps/1.js
   def show
     @app = nil
-# TODO: seperate session retrieval, move scope from app to app_sessions
-    date_min = params[:'date-min'] ? params[:'date-min'].to_i.days.ago : nil
-    date_max = params[:'date-max'] ? params[:'date-max'].to_i.days.ago : nil
+
+    @default_date_min = 20
+    @default_date_max = 0
+    @default_duration_min = 0
+    @default_duration_max = 20
+
+    date_min = params[:'date-min'] ? params[:'date-min'].to_i.days.ago : @default_date_min.days.ago
+    date_max = params[:'date-max'] ? params[:'date-max'].to_i.days.ago : @default_date_max.days.ago
+    duration_min = params[:'duration-min'] || @default_duration_min
+    duration_max = params[:'duration-max'] || @default_duration_max
 
     if current_user.administrator?
       @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
@@ -43,15 +50,8 @@ class AppsController < ApplicationController
 
     # viewers
     @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
-
-    @app_sessions = @app.app_sessions.duration_between(params[:'duration-min'], params[:'duration-max'])
-
-    if params[:'date-min'] and params[:'date-max']
-      @app_sessions = @app_sessions.date_between(
-        params[:'date-min'].to_i.days.ago,
-        params[:'date-max'].to_i.days.ago
-      )
-    end
+    @app_sessions = @app.app_sessions.duration_between(duration_min, duration_max)
+    @app_sessions = @app_sessions.date_between(date_min, date_max)
 
     if params[:versions]
       @app_sessions = @app_sessions.where(:app_version => params[:versions])
@@ -60,7 +60,10 @@ class AppsController < ApplicationController
     @app_sessions = @app_sessions.order('app_sessions.created_at DESC')
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html do
+        @versions = @app.app_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
+        render # show.html.erb
+      end
       format.js # show.html.js
     end
   end
