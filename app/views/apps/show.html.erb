@@ -10,8 +10,8 @@
     </div>
     <div class="span5 align-r">
       <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= @app.remaining_recordings %> Sessions Scheduled</h3>
-      <a class="btn btn-danger btn-large " href="#"><i class="icon-pause"></i> Pause Recording</a>
-      <a class="btn btn-success btn-large hide" href="#"><i class="icon-play"></i> Start Recording</a>
+      <%= link_to raw('<i class="icon-pause"></i> Pause Recording'), app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :id => "app-show-pause-recording-btn" %>
+      <%= link_to raw('<i class="icon-play"></i> Start Recording'), app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :style => 'display:none', :id => "app-show-resume-recording-btn" %>
     </div>
   </div><!--/row-->
   <hr />
@@ -116,6 +116,23 @@
         }
         querySessions();
       });
+
+      $("#app-show-pause-recording-btn")
+      .bind('ajax:success', function(event, data, status, xhr) {
+        if (data["result"] == "success") {
+          $("#app-show-pause-recording-btn").hide();
+          $("#app-show-resume-recording-btn").show();
+        }
+      });
+
+      $("#app-show-resume-recording-btn")
+      .bind('ajax:success', function(event, data, status, xhr) {
+        if (data["result"] == "success") {
+          $("#app-show-resume-recording-btn").hide();
+          $("#app-show-pause-recording-btn").show();
+        }
+      });
+
     });
     </script>
   <% end %>

@@ -2,9 +2,16 @@ class AppsController < ApplicationController
   before_filter :authenticate_user!
 
   rescue_from ActiveRecord::RecordNotFound do
-    flash[:type] = 'error'
-    flash[:notice] = 'Invalid operation'
-    redirect_to :action => :index
+    respond_to do |format|
+      format.html do
+        flash[:type] = 'error'
+        flash[:notice] = 'Invalid operation'
+        redirect_to :action => :index
+      end
+      format.json do
+        render :json => { 'result' => 'fail', 'reason' => 'record not found' }
+      end
+    end
     return
   end
 
@@ -41,17 +48,17 @@ class AppsController < ApplicationController
 
     if params[:'date-min'] and params[:'date-max']
       @app_sessions = @app_sessions.date_between(
-        params[:'date-min'].to_i.days.ago, 
+        params[:'date-min'].to_i.days.ago,
         params[:'date-max'].to_i.days.ago
       )
     end
-   
-    if params[:versions] 
+
+    if params[:versions]
       @app_sessions = @app_sessions.where(:app_version => params[:versions])
     end
 
-    @app_sessions = @app_sessions.order('app_sessions.created_at DESC') 
-   
+    @app_sessions = @app_sessions.order('app_sessions.created_at DESC')
+
     respond_to do |format|
       format.html # show.html.erb
       format.js # show.html.js
@@ -117,6 +124,25 @@ class AppsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to apps_url }
+    end
+  end
+
+  def update_recording
+    @app = App.administered_by(current_user).find(params[:app_id])
+
+    case params[:state]
+    when 'pause'
+      @app.pause_recording
+      result = { 'result' => 'success' }
+    when 'resume'
+      @app.resume_recording
+      result = { 'result' => 'success' }
+    else
+      result = { 'result' => 'fail', 'reason' => 'invalid state' }
+    end
+
+    respond_to do |format|
+      format.json { render :json => result }
     end
   end
 
