@@ -31,7 +31,7 @@ class AppSession < ActiveRecord::Base
   def upload_completed media
     # Normally we will check if we have got all the media types we expect
     # before counting self as a complete recording
-    app.use_recording
+    app.complete_recording
   end
 
   private

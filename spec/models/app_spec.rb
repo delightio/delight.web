@@ -77,7 +77,7 @@ describe App do
       end
 
       it 'can be negative' do
-        (subject.scheduled_recordings+10).times { subject.use_recording }
+        (subject.scheduled_recordings+10).times { subject.complete_recording }
 
         subject.scheduled_recordings.should < 0
       end
@@ -91,16 +91,16 @@ describe App do
       end
     end
 
-    describe '#use_recording' do
+    describe '#complete_recording' do
       it 'decrements recordings to be collected' do
-        expect { subject.use_recording }.
+        expect { subject.complete_recording }.
           to change { subject.scheduled_recordings }.by(-1)
       end
 
       it 'uses credit from associated account' do
         subject.account.should_receive(:use_credits).with(1)
 
-        subject.use_recording
+        subject.complete_recording
       end
     end
   end
