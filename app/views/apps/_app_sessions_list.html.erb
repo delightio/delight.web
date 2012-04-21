@@ -6,9 +6,15 @@
           <a href="#" class="float-l star"><i class="icon-star-empty"></i></a>
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
+              <% if session.video %>
               <a href=<%= session.video.presigned_read_uri %> class="thumbnail group-video">
                 <img src="http://placehold.it/260x180" alt="">
               </a>
+              <% else %>
+              <a href="no-video" class="thumbnail group-video">
+                <img src="http://placehold.it/260x180" alt="">
+              </a>
+              <% end %>
             </li>
           </ul>
         </div>
@@ -25,7 +31,7 @@
               </tr>
               <tr>
                 <td>Date:</td>
-                <td class="align-r"><%= session.video.created_at %></td>
+                <td class="align-r"><%= session.video.created_at if session.video %></td>
               </tr>
             </tbody>
           </table>
