@@ -18,21 +18,21 @@
 <body>
 
 <%= render :partial => "shared/topbar" %>
-
 <div class="container">
-
   <%= render :partial => "shared/error_message" %>
   <%= yield %>
-
-  <hr>
-
-  <footer>
-    <p>&copy; delight.io 2012</p>
-  </footer>
-
+  <div class="row">
+    <div class="span12">
+      <br><br><br>
+      <footer>
+        <hr>
+        &#169; 
+        <%= Time.now.year %>
+        delight.io
+      </footer>
+    </div>
+  </div>
 </div><!--/.container-->
-
-
 <%= javascript_include_tag "/javascripts/jquery.colorbox-min.js" %>
 <%= yield(:javascript) %>
 
