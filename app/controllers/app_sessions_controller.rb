@@ -9,18 +9,6 @@ class AppSessionsController < ApplicationController
     end
   end
 
-  # TODO: remove
-  # GET /app_sessions
-  # GET /app_sessions.json
-  def index
-    @app_sessions = AppSession.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @app_sessions }
-    end
-  end
-
   # GET /app_sessions/1
   def show
     authenticate_user!

@@ -7,7 +7,7 @@ DelightWeb::Application.routes.draw do
   end
 
   resources :accounts, :except => [:index, :destroy]
-  resources :app_sessions, :only => [:index, :show, :create, :update] do
+  resources :app_sessions, :only => [:show, :create, :update] do
     put '/favorite', :to => 'app_sessions#favorite', :as => 'favorite'
     put '/unfavorite', :to => 'app_sessions#unfavorite', :as => 'unfavorite'
   end
