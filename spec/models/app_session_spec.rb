@@ -116,4 +116,15 @@ describe AppSession do
       subject.upload_uris[:screen].should == presigned_write_uri
     end
   end
+
+  describe 'association' do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:app_session) { FactoryGirl.create(:app_session) }
+
+    it "should assign favorite user correctly" do
+      app_session.favorite_users.should == []
+      app_session.favorite_users << user
+      app_session.favorite_users.should == [user]
+    end
+  end
 end

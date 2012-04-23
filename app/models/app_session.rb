@@ -4,6 +4,9 @@ class AppSession < ActiveRecord::Base
   has_one :video
   belongs_to :app
 
+  has_many :favorites
+  has_many :favorite_users, :through => :favorites, :source => :user, :select => 'DISTINCT users.*'
+
   validates_presence_of :app_id, :app_version, :app_build
   validates_presence_of :delight_version, :locale
 

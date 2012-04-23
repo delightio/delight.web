@@ -121,4 +121,69 @@ describe AppSessionsController do
     end
 
   end
+
+  describe 'PUT favorite' do
+    let(:app_session) { FactoryGirl.create :app_session }
+    let(:viewer) { FactoryGirl.create(:viewer) }
+    before(:each) do
+      sign_in(viewer)
+    end
+
+    describe 'user has permission' do
+      before(:each) do
+        viewer.apps << app_session.app
+      end
+      it "should add to favorite" do
+        put 'favorite', { :id => app_session.id, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'success'
+        app_session.reload
+        app_session.favorite_users.should == [viewer]
+      end
+    end
+
+    describe 'user has no permission' do
+      it "should fail" do
+        put 'favorite', { :id => app_session.id, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'fail'
+        result['reason'].should == 'record not found'
+      end
+    end
+  end
+
+  describe 'PUT unfavorite' do
+    let(:app_session) { FactoryGirl.create :app_session }
+    let(:viewer) { FactoryGirl.create(:viewer) }
+    before(:each) do
+      app_session.favorite_users << viewer
+      sign_in(viewer)
+    end
+
+    describe 'user has permission' do
+      before(:each) do
+        viewer.apps << app_session.app
+      end
+      it "should remove from favorite" do
+        put 'unfavorite', { :id => app_session.id, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'success'
+        app_session.reload
+        app_session.favorite_users.should == []
+      end
+    end
+
+    describe 'user has no permission' do
+      it "should fail" do
+        put 'unfavorite', { :id => app_session.id, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'fail'
+        result['reason'].should == 'record not found'
+      end
+    end
+  end
 end

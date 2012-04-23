@@ -3,8 +3,10 @@ class AppSessionsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound do
     flash[:type] = 'error'
     flash[:notice] = 'Invalid operation'
-    redirect_to apps_path
-    return
+    respond_to do |format|
+      format.html { redirect_to apps_path }
+      format.json { render :json => { 'result' => 'fail', 'reason' => 'record not found' } }
+    end
   end
 
   # TODO: remove
@@ -22,16 +24,44 @@ class AppSessionsController < ApplicationController
   # GET /app_sessions/1
   def show
     authenticate_user!
-
-    @app_session = nil
-    if current_user.administrator?
-      @app_session ||= AppSession.administered_by(current_user).find(params[:id])
-    end
-
-    @app_session ||= AppSession.viewable_by(current_user).find(params[:id])
+    @app_session = get_app_session
 
     respond_to do |format|
       format.html # show.html.erb
+    end
+  end
+
+  # PUT /app_sessions/1/favorite
+  def favorite
+    authenticate_user!
+    @app_session = get_app_session
+
+    respond_to do |format|
+      format.json do
+        if @app_session
+          current_user.favorite_app_sessions << @app_session
+          render :json => { 'result' => 'success' }
+        else
+          render :json => { 'result' => 'fail', 'reason' => 'permission denied' }
+        end
+      end
+    end
+  end
+
+  # PUT /app_sessions/1/unfavorite
+  def unfavorite
+    authenticate_user!
+    @app_session = get_app_session
+
+    respond_to do |format|
+      format.json do
+        if @app_session
+          current_user.favorite_app_sessions.delete(@app_session)
+          render :json => { 'result' => 'success' }
+        else
+          render :json => { 'result' => 'fail', 'reason' => 'permission denied' }
+        end
+      end
     end
   end
 
@@ -71,6 +101,18 @@ class AppSessionsController < ApplicationController
         format.xml { render xml: @app_session.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  protected
+
+  # get app session where user has permission
+  # return the app_session, nil if not available
+  def get_app_session
+    app_session = nil
+    if current_user.administrator?
+      app_session ||= AppSession.administered_by(current_user).find(params[:id])
+    end
+    app_session ||= AppSession.viewable_by(current_user).find(params[:id])
   end
 
 end
