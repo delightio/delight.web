@@ -107,13 +107,13 @@ describe AppSession do
       subject.upload_uris.should == Hash.new
     end
 
-    let(:presigned_uri) { 'presigned' }
+    let(:presigned_write_uri) { 'presigned' }
     it 'uses VideoUploader to generate the presigned URI' do
       subject.stub :recording? => true
-      VideoUploader.any_instance.stub :presigned_uri => presigned_uri
+      VideoUploader.any_instance.stub :presigned_write_uri => presigned_write_uri
 
       subject.send :generate_upload_uris
-      subject.upload_uris[:screen].should == presigned_uri
+      subject.upload_uris[:screen].should == presigned_write_uri
     end
   end
 end

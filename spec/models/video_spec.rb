@@ -8,4 +8,12 @@ describe Video do
 
     subject
   end
+
+  describe '#presigned_read_uri' do
+    it 'gets presigned_read_uri fro VideoUploader' do
+      VideoUploader.any_instance.should_receive :presigned_read_uri
+
+      subject.presigned_read_uri
+    end
+  end
 end
