@@ -31,11 +31,11 @@
               </tr>
               <tr>
                 <td>Duration:</td>
-                <td class="align-r"><%= session.duration %>s</td>
+                <td class="align-r"><%= session.duration %> s</td>
               </tr>
               <tr>
                 <td>Date:</td>
-                <td class="align-r"><%= session.video.created_at if session.video %></td>
+                <td class="align-r"><%= session.created_at.to_date if session.video %></td>
               </tr>
             </tbody>
           </table>
