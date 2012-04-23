@@ -15,4 +15,24 @@ class VideosController < ApplicationController
       end
     end
   end
+
+  def show
+    authenticate_user!
+    @video = Video.find(params[:id]) # throws exception if not found
+    app = @video.app_session.app
+    if app.administered_by?(current_user) or app.viewable_by?(current_user)
+      respond_to do |format|
+        format.html { render :layout => 'empty' }
+      end
+    else
+      respond_to do |format|
+        format.html do
+          flash[:type] = 'error'
+          flash[:notice] = 'permission denied'
+          redirect_to apps_path
+        end
+      end
+    end
+  end
+
 end

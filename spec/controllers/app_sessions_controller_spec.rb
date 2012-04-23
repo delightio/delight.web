@@ -134,7 +134,7 @@ describe AppSessionsController do
         viewer.apps << app_session.app
       end
       it "should add to favorite" do
-        put 'favorite', { :id => app_session.id, :format => :json }
+        put 'favorite', { :app_session_id => app_session.id, :format => :json }
         response.should be_success
         result = JSON.parse(response.body)
         result['result'].should == 'success'
@@ -145,7 +145,7 @@ describe AppSessionsController do
 
     describe 'user has no permission' do
       it "should fail" do
-        put 'favorite', { :id => app_session.id, :format => :json }
+        put 'favorite', { :app_session_id => app_session.id, :format => :json }
         response.should be_success
         result = JSON.parse(response.body)
         result['result'].should == 'fail'
@@ -167,7 +167,7 @@ describe AppSessionsController do
         viewer.apps << app_session.app
       end
       it "should remove from favorite" do
-        put 'unfavorite', { :id => app_session.id, :format => :json }
+        put 'unfavorite', { :app_session_id => app_session.id, :format => :json }
         response.should be_success
         result = JSON.parse(response.body)
         result['result'].should == 'success'
@@ -178,7 +178,7 @@ describe AppSessionsController do
 
     describe 'user has no permission' do
       it "should fail" do
-        put 'unfavorite', { :id => app_session.id, :format => :json }
+        put 'unfavorite', { :app_session_id => app_session.id, :format => :json }
         response.should be_success
         result = JSON.parse(response.body)
         result['result'].should == 'fail'
@@ -186,4 +186,5 @@ describe AppSessionsController do
       end
     end
   end
+
 end

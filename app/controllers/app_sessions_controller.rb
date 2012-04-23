@@ -1,6 +1,6 @@
 class AppSessionsController < ApplicationController
 
-  rescue_from ActiveRecord::RecordNotFound do
+  rescue_from ActiveRecord::RecordNotFound do |exception|
     flash[:type] = 'error'
     flash[:notice] = 'Invalid operation'
     respond_to do |format|
@@ -34,7 +34,7 @@ class AppSessionsController < ApplicationController
   # PUT /app_sessions/1/favorite
   def favorite
     authenticate_user!
-    @app_session = get_app_session
+    @app_session = get_app_session(params[:app_session_id])
 
     respond_to do |format|
       format.json do
@@ -51,7 +51,7 @@ class AppSessionsController < ApplicationController
   # PUT /app_sessions/1/unfavorite
   def unfavorite
     authenticate_user!
-    @app_session = get_app_session
+    @app_session = get_app_session(params[:app_session_id])
 
     respond_to do |format|
       format.json do
@@ -107,12 +107,16 @@ class AppSessionsController < ApplicationController
 
   # get app session where user has permission
   # return the app_session, nil if not available
-  def get_app_session
+  def get_app_session(session_id = nil)
+    if session_id.nil?
+      session_id = params[:id]
+    end
+
     app_session = nil
     if current_user.administrator?
-      app_session ||= AppSession.administered_by(current_user).find(params[:id])
+      app_session ||= AppSession.administered_by(current_user).find(session_id)
     end
-    app_session ||= AppSession.viewable_by(current_user).find(params[:id])
+    app_session ||= AppSession.viewable_by(current_user).find(session_id)
   end
 
 end

@@ -61,6 +61,14 @@ class App < ActiveRecord::Base
     settings[:uploading_on_wifi_only] = flag
   end
 
+  def administered_by?(user)
+    self.account.administrator == user
+  end
+
+  def viewable_by?(user)
+    self.viewers.include?(user)
+  end
+
   private
   def generate_token
     update_attribute :token, "#{SecureRandom.hex 12}#{id}"
