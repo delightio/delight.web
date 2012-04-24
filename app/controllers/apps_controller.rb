@@ -57,6 +57,9 @@ class AppsController < ApplicationController
       @app_sessions = @app_sessions.where(:app_version => params[:versions])
     end
 
+    @favorite_app_session = @app_sessions.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user)
+    @favorite_app_session_ids = @favorite_app_session.collect { |as| as.id }
+
     @app_sessions = @app_sessions.order('app_sessions.created_at DESC')
 
     respond_to do |format|

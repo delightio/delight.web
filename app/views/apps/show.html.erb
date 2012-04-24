@@ -1,5 +1,4 @@
 <p id="notice"><%= notice %></p>
-
   <div class="row">
     <div class="span5">
       <h2>
@@ -21,7 +20,7 @@
         <ul class="nav nav-list">
           <li class="active"><a href="#">Feed<span class="badge badge-white pull-right">10</span></a></li>
           <li><a href="#">Favorites<span class="badge badge-inverse pull-right">3</span></a></li>
-          <li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li>
+          <!--li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li-->
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
             <li class="nav-header">Versions</li>
@@ -56,7 +55,7 @@
         </ul>
       </div><!--/.well -->
     </div><!--/span-->
-    <%= render :partial => "app_sessions_list", :locals => { :app_sessions => @app.app_sessions } %>
+    <%= render :partial => "app_sessions_list", :locals => { :app_sessions => @app.app_sessions, :favorite_ids => @favorite_app_session_ids } %>
   </div>
   <% content_for(:javascript) do %>
     <script>

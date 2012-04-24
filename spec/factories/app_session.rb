@@ -4,6 +4,8 @@ FactoryGirl.define do
     a.app_build 'EFKJ'
     a.delight_version '0.1'
     a.locale 'en_US'
+    a.created_at 1.day.ago
+    a.duration 2
 
     a.association :app
   end

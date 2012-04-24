@@ -23,17 +23,17 @@ class AppSession < ActiveRecord::Base
 
     def date_between(min, max)  #inclusive
       if min and max
-        where('created_at >= ? and created_at <= ?', min, max)
+        where('app_sessions.created_at >= ? and app_sessions.created_at <= ?', min, max)
       else
-        where('created_at IS NOT NULL')
+        where('app_sessions.created_at IS NOT NULL')
       end
     end
 
     def duration_between(min, max) #inclusive
       if min and max
-        where('duration >= ? and duration <= ?', min, max)
+        where('app_sessions.duration >= ? and app_sessions.duration <= ?', min, max)
       else
-        where('duration is NOT NULL')
+        where('app_sessions.duration is NOT NULL')
       end
     end
   end

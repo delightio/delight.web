@@ -3,7 +3,11 @@
       <% app_sessions.reverse_each do |session| %>
       <div class="row">
         <div class="span4">
-          <a href="#" class="float-l star"><i class="icon-star-empty"></i></a>
+          <% if favorite_ids.include?(session.id) %>
+            <%= link_to raw('<i class="icon-star"></i>'), app_session_unfavorite_path(:app_session_id => session.id), :method => :put, :remote => true, :class => "float-l star app-session-unfavorite-btn", :'data-session-id' => session.id %>
+          <% else %>
+            <%= link_to raw('<i class="icon-star-empty"></i>'), app_session_favorite_path(:app_session_id => session.id), :method => :put, :remote => true, :class => "float-l star app-session-favorite-btn", :'data-session-id' => session.id %>
+          <% end %>
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
               <% if session.video %>
@@ -65,3 +69,35 @@
       <% end %>
       <% end %>
     </div>
+
+    <script>
+      function favorite_handler(event, data, status, xhr) {
+        if (data['result'] == 'success') {
+          // update ui
+          var $target = $(event.target)
+          var session_id = $target.attr('data-session-id');
+          $target.html('<i class="icon-star"></i>');
+          $target.removeClass('app-session-favorite-btn').addClass('app-session-unfavorite-btn');
+          $target.attr('href', '/app_sessions/' + session_id + '/unfavorite');
+          // rebind handler
+          $target.unbind('ajax:success');
+          $target.bind('ajax:success', unfavorite_handler);
+        }
+      }
+      function unfavorite_handler(event, data, status, xhr) {
+        if (data['result'] == 'success') {
+          // update ui
+          var $target = $(event.target)
+          var session_id = $target.attr('data-session-id');
+          $target.html('<i class="icon-star-empty"></i>');
+          $target.removeClass('app-session-unfavorite-btn').addClass('app-session-favorite-btn');
+          $target.attr('href', '/app_sessions/' + session_id + '/favorite');
+          // rebind handler
+          $target.unbind('ajax:success');
+          $target.bind('ajax:success', favorite_handler);
+        }
+      }
+
+      $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)
+      $(".app-session-unfavorite-btn").bind('ajax:success', unfavorite_handler);
+    </script>
