@@ -56,10 +56,14 @@ class AppsController < ApplicationController
     versions = params[:versions] || @versions.collect { |v| v.app_version }
 
     @app_sessions = @app.app_sessions
-                    .duration_between(duration_min, duration_max)
-                    .date_between(date_min, date_max)
-                    .where(:app_version => versions)
-                    .order('app_sessions.created_at DESC')
+    if (params[:filter_duration])
+      @app_sessions = @app_sessions.duration_between(duration_min, duration_max)
+    end
+    if (params[:filter_date])
+      @app_sessions = @app_sessions.date_between(date_min, date_max)
+    end
+    @app_sessions = @app_sessions.where(:app_version => versions)
+    @app_sessions = @app_sessions.order('app_sessions.created_at DESC')
 
     app_sessions_id = @app_sessions.collect { |as| as.id }
     @favorite_app_session = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
