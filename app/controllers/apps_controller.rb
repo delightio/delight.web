@@ -34,15 +34,17 @@ class AppsController < ApplicationController
   def show
     @app = nil
 
-    @default_date_min = 20
+    @default_date_min = 120
     @default_date_max = 0
     @default_duration_min = 0
-    @default_duration_max = 20
+    @default_duration_max = 60
 
     date_min = params[:'date-min'] ? params[:'date-min'].to_i.days.ago : @default_date_min.days.ago
     date_max = params[:'date-max'] ? params[:'date-max'].to_i.days.ago : @default_date_max.days.ago
     duration_min = params[:'duration-min'] || @default_duration_min
     duration_max = params[:'duration-max'] || @default_duration_max
+
+    logger.debug("date min: #{date_min}, date max: #{date_max}, duration min: #{duration_min}, duration max: #{duration_max}")
 
     if current_user.administrator?
       @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
@@ -50,21 +52,22 @@ class AppsController < ApplicationController
 
     # viewers
     @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
-    @app_sessions = @app.app_sessions.duration_between(duration_min, duration_max)
-    @app_sessions = @app_sessions.date_between(date_min, date_max)
+    @versions = @app.app_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
+    versions = params[:versions] || @versions.collect { |v| v.app_version }
 
-    if params[:versions]
-      @app_sessions = @app_sessions.where(:app_version => params[:versions])
-    end
+    @app_sessions = @app.app_sessions
+                    .duration_between(duration_min, duration_max)
+                    .date_between(date_min, date_max)
+                    .where(:app_version => versions)
+                    .order('app_sessions.created_at DESC')
 
-    @favorite_app_session = @app_sessions.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user)
+    app_sessions_id = @app_sessions.collect { |as| as.id }
+    @favorite_app_session = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
     @favorite_app_session_ids = @favorite_app_session.collect { |as| as.id }
 
-    @app_sessions = @app_sessions.order('app_sessions.created_at DESC')
 
     respond_to do |format|
       format.html do
-        @versions = @app.app_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
         render # show.html.erb
       end
       format.js # show.html.js

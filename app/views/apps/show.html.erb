@@ -55,7 +55,7 @@
         </ul>
       </div><!--/.well -->
     </div><!--/span-->
-    <%= render :partial => "app_sessions_list", :locals => { :app_sessions => @app.app_sessions, :favorite_ids => @favorite_app_session_ids } %>
+    <%= render :partial => "app_sessions_list", :locals => { :app_sessions => @app_sessions, :favorite_ids => @favorite_app_session_ids } %>
   </div>
   <% content_for(:javascript) do %>
     <script>
@@ -70,13 +70,13 @@
         max: <%= @default_duration_max %>,
         values: [ <%= @default_duration_min %>, <%= @default_duration_max %> ],
         slide: function( event, ui ) {
-          $( "#duration-amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " minutes" );
+          $( "#duration-amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " s" );
           $( "#duration-min" ).val( ui.values[0] );
           $( "#duration-max" ).val( ui.values[1] );
           querySessions();
         }
       });
-      $( "#duration-amount" ).val( $( "#duration-range" ).slider( "values", 0 ) + " - " + $( "#duration-range" ).slider( "values", 1 ) + " minutes" );
+      $( "#duration-amount" ).val( $( "#duration-range" ).slider( "values", 0 ) + " - " + $( "#duration-range" ).slider( "values", 1 ) + " s" );
       $( "#duration-min" ).val( $( "#duration-range" ).slider( "values", 0 ) );
       $( "#duration-max" ).val( $( "#duration-range" ).slider( "values", 1 ) );
     });
