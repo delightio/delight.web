@@ -1,5 +1,5 @@
 <div class="container" style="width:100%">
-  <div class="row-fluid" style="z-index:1">
+  <div class="row-fluid" style="position:relative;z-index:100" >
     <div class="span5">
       <div class="btn-group">
         <a href="javascript:void(0)" id="rotate--90" class="btn btn-primary">-90</a>
@@ -12,10 +12,12 @@
   <div class="row-fluid">
     <div class="span12" style="text-align:center">
       <div id="video-container" style="text-align:center">
-      <!--video width="320px">
-      <source src="https://s3.amazonaws.com/delight_upload/39.mp4?AWSAccessKeyId=ASIAJNSU6RC3QPNYFKZQ&Expires=1335173207&Signature=Dedz3dcQAbe4WUaznoEC5bxB9rE%3D&x-amz-security-token=AQoDYXdzECoa8AEBS4GbcndPmWwBYMwtv7J6vWdhJy3c3Y2fBUxlSEkfunw4Ajr37%2BrvNSZrQpst%2BQzv%2FgvO%2FPXZEjlKxtiDqUk0G4pZ%2FEtoaE2dftIR7bOn4OiKZN6exQsl%2F%2BSiOwrIGyqPu%2FZ8FBnMwyLoyEpJFypE8HGdrZVvJZbATN1BPMZJ5QNQQWbaEyKe4Q9DG7yh8qJWLEq%2FuJpIxEuxDbHwP1ErDRdjPPsqAT5D6po4aSbLDlmnsaOSxdfHTsKaQ88pOpaUwu%2FR%2BMh3l6uwBhktYl3h8aQ1Mw8i2CdiCa40INLxqJ6rsbaG0JnpAjYlyVVGTYYgx6TU%2FAQ%3D" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-        </video-->
-        <video width="600px" controls="controls">
+        <!--
+        <video height="480px" controls="controls">
+        <source src="https://s3.amazonaws.com/delight_upload/60.mp4?AWSAccessKeyId=ASIAIDIKZ7P6VF7SAXLA&Expires=1335257902&Signature=qJV1Jm8roVQaOV5gocJ3RUVZZgc%3D&x-amz-security-token=AQoDYXdzEEEa8AEQ6cmnCBWUbR47aHzwtJRyieVYUjxDgTuDsoeuzRWerQ0NIxz%2FhhdN%2FVkygSglEPLWX7YkKBtg%2Bn6n%2FZoPYSBT4Rv4NzDozqFqbJbRDTDulwnFrBMYY30hLxsk4cQROv14AcdhOnkU7OMdKRx9j0gAK2KUbTCh1inaC63eTclcjsUK%2BAG84pb0s%2BXemihwWn1CRZFXVbUULRmuNdjuzcjN6eWtH0eBrAD0JhmY7CgHnxSliOwc6umgUcvxSMEzgdxAMt24oK5iCPa87EAVQvFxHt2pUDgPUg5NIZWDccAsnji2LzzkQYS%2BVB%2FV85LlvoMgnrrZ%2FAQ%3D" type="video/mp4" />
+        </video>
+        -->
+        <video height="480px" controls="controls">
         <source src="<%= @video.presigned_read_uri if @video and @video.presigned_read_uri %>" type='video/mp4' />
         Your browser does not support video tag
         </video>
