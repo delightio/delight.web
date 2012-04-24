@@ -7,7 +7,10 @@ class User < ActiveRecord::Base
   devise :omniauthable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :twitter_id, :github_id, :nickname, :image_url
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :twitter_id, :github_id, :nickname, :image_url, :signup_step
+
+  validates :nickname, :presence => true
+  validates :email, :presence => true, :if => :done_registering?
 
   has_many :favorites
   has_many :favorite_app_sessions, :through => :favorites, :source => :app_session, :select => 'DISTINCT app_sessions.*'
@@ -40,6 +43,10 @@ class User < ActiveRecord::Base
 
   def viewer?
     self.type == 'Viewer'
+  end
+
+  def done_registering?
+    self.signup_step > 1
   end
 
 end
