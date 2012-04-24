@@ -1,9 +1,57 @@
-<!--video width="100%">
-  <source src="https://s3.amazonaws.com/delight_upload/39.mp4?AWSAccessKeyId=ASIAJNSU6RC3QPNYFKZQ&Expires=1335173207&Signature=Dedz3dcQAbe4WUaznoEC5bxB9rE%3D&x-amz-security-token=AQoDYXdzECoa8AEBS4GbcndPmWwBYMwtv7J6vWdhJy3c3Y2fBUxlSEkfunw4Ajr37%2BrvNSZrQpst%2BQzv%2FgvO%2FPXZEjlKxtiDqUk0G4pZ%2FEtoaE2dftIR7bOn4OiKZN6exQsl%2F%2BSiOwrIGyqPu%2FZ8FBnMwyLoyEpJFypE8HGdrZVvJZbATN1BPMZJ5QNQQWbaEyKe4Q9DG7yh8qJWLEq%2FuJpIxEuxDbHwP1ErDRdjPPsqAT5D6po4aSbLDlmnsaOSxdfHTsKaQ88pOpaUwu%2FR%2BMh3l6uwBhktYl3h8aQ1Mw8i2CdiCa40INLxqJ6rsbaG0JnpAjYlyVVGTYYgx6TU%2FAQ%3D" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-  <source src="movie.webm" type='video/webm; codecs="vp8, vorbis"' />
-</video-->
-<video width="100%" controls="controls">
-  <source src="<%= @video.presigned_read_uri if @video and @video.presigned_read_uri %>" type='video/mp4' />
-  <!--source src="movie.webm" type='video/webm; codecs="vp8, vorbis"' /-->
-  Your browser does not support video tag
-</video>
+<div class="container" style="width:100%">
+  <div class="row-fluid" style="z-index:1">
+    <div class="span5">
+      <div class="btn-group">
+        <a href="javascript:void(0)" id="rotate--90" class="btn btn-primary">-90</a>
+        <a href="javascript:void(0)" id="rotate-0" class="btn btn-primary">0</a>
+        <a href="javascript:void(0)" id="rotate-90" class="btn btn-primary">90</a>
+        <a href="javascript:void(0)" id="rotate-180" class="btn btn-primary">180</a>
+      </div>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span12" style="text-align:center">
+      <div id="video-container" style="text-align:center">
+      <!--video width="320px">
+      <source src="https://s3.amazonaws.com/delight_upload/39.mp4?AWSAccessKeyId=ASIAJNSU6RC3QPNYFKZQ&Expires=1335173207&Signature=Dedz3dcQAbe4WUaznoEC5bxB9rE%3D&x-amz-security-token=AQoDYXdzECoa8AEBS4GbcndPmWwBYMwtv7J6vWdhJy3c3Y2fBUxlSEkfunw4Ajr37%2BrvNSZrQpst%2BQzv%2FgvO%2FPXZEjlKxtiDqUk0G4pZ%2FEtoaE2dftIR7bOn4OiKZN6exQsl%2F%2BSiOwrIGyqPu%2FZ8FBnMwyLoyEpJFypE8HGdrZVvJZbATN1BPMZJ5QNQQWbaEyKe4Q9DG7yh8qJWLEq%2FuJpIxEuxDbHwP1ErDRdjPPsqAT5D6po4aSbLDlmnsaOSxdfHTsKaQ88pOpaUwu%2FR%2BMh3l6uwBhktYl3h8aQ1Mw8i2CdiCa40INLxqJ6rsbaG0JnpAjYlyVVGTYYgx6TU%2FAQ%3D" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        </video-->
+        <video width="600px">
+        <source src="<%= @video.presigned_read_uri if @video and @video.presigned_read_uri %>" type='video/mp4' />
+        Your browser does not support video tag
+        </video>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $("#rotate-0").click(function(eventObj) {
+      $("#video-container").css('-moz-transform', 'rotate(0deg)');
+      $("#video-container").css('-webkit-transform', 'rotate(0deg)');
+      $("#video-container").css('-o-transform', 'rotate(0deg)');
+      $("#video-container").css('-ms-transform', 'rotate(0deg)');
+      $("#video-container").css('transform', 'rotate(0deg)');
+    });
+    $("#rotate-90").click(function(eventObj) {
+      $("#video-container").css('-moz-transform', 'rotate(90deg)');
+      $("#video-container").css('-webkit-transform', 'rotate(90deg)');
+      $("#video-container").css('-o-transform', 'rotate(90deg)');
+      $("#video-container").css('-ms-transform', 'rotate(90deg)');
+      $("#video-container").css('transform', 'rotate(90deg)');
+    });
+    $("#rotate-180").click(function(eventObj) {
+      $("#video-container").css('-moz-transform', 'rotate(180deg)');
+      $("#video-container").css('-webkit-transform', 'rotate(180deg)');
+      $("#video-container").css('-o-transform', 'rotate(180deg)');
+      $("#video-container").css('-ms-transform', 'rotate(180deg)');
+      $("#video-container").css('transform', 'rotate(180deg)');
+    });
+    $("#rotate--90").click(function(eventObj) {
+      $("#video-container").css('-moz-transform', 'rotate(-90deg)');
+      $("#video-container").css('-webkit-transform', 'rotate(-90deg)');
+      $("#video-container").css('-o-transform', 'rotate(-90deg)');
+      $("#video-container").css('-ms-transform', 'rotate(-90deg)');
+      $("#video-container").css('transform', 'rotate(-90deg)');
+    });
+  });
+</script>
