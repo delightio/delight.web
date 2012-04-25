@@ -1,0 +1,60 @@
+<div class="container" style="width:100%">
+  <!--
+  <div class="row-fluid" style="position:relative;z-index:100" >
+    <div class="span5">
+      <div class="btn-group">
+        <a href="javascript:void(0)" id="rotate--90" class="btn btn-primary">-90</a>
+        <a href="javascript:void(0)" id="rotate-0" class="btn btn-primary">0</a>
+        <a href="javascript:void(0)" id="rotate-90" class="btn btn-primary">90</a>
+        <a href="javascript:void(0)" id="rotate-180" class="btn btn-primary">180</a>
+      </div>
+    </div>
+  </div>
+  -->
+  <div class="row-fluid">
+    <div class="span12" style="text-align:center">
+      <div id="video-container" style="text-align:center">
+        <iframe type="text/html" class="youtube-player" width="560" height="315" src="http://www.youtube.com/embed/rWKUoabjjxg" frameborder="0" allowfullscreen></iframe>
+        </iframe>
+        <!--
+        <video height="480px" controls="controls">
+        <source src="https://s3.amazonaws.com/delight_upload/60.mp4?AWSAccessKeyId=ASIAIDIKZ7P6VF7SAXLA&Expires=1335257902&Signature=qJV1Jm8roVQaOV5gocJ3RUVZZgc%3D&x-amz-security-token=AQoDYXdzEEEa8AEQ6cmnCBWUbR47aHzwtJRyieVYUjxDgTuDsoeuzRWerQ0NIxz%2FhhdN%2FVkygSglEPLWX7YkKBtg%2Bn6n%2FZoPYSBT4Rv4NzDozqFqbJbRDTDulwnFrBMYY30hLxsk4cQROv14AcdhOnkU7OMdKRx9j0gAK2KUbTCh1inaC63eTclcjsUK%2BAG84pb0s%2BXemihwWn1CRZFXVbUULRmuNdjuzcjN6eWtH0eBrAD0JhmY7CgHnxSliOwc6umgUcvxSMEzgdxAMt24oK5iCPa87EAVQvFxHt2pUDgPUg5NIZWDccAsnji2LzzkQYS%2BVB%2FV85LlvoMgnrrZ%2FAQ%3D" type="video/mp4" />
+        Your browser does not support video tag
+        </video>
+        -->
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $("#rotate-0").click(function(eventObj) {
+      $("#video-container").css('-moz-transform', 'rotate(0deg)');
+      $("#video-container").css('-webkit-transform', 'rotate(0deg)');
+      $("#video-container").css('-o-transform', 'rotate(0deg)');
+      $("#video-container").css('-ms-transform', 'rotate(0deg)');
+      $("#video-container").css('transform', 'rotate(0deg)');
+    });
+    $("#rotate-90").click(function(eventObj) {
+      $("#video-container").css('-moz-transform', 'rotate(90deg)');
+      $("#video-container").css('-webkit-transform', 'rotate(90deg)');
+      $("#video-container").css('-o-transform', 'rotate(90deg)');
+      $("#video-container").css('-ms-transform', 'rotate(90deg)');
+      $("#video-container").css('transform', 'rotate(90deg)');
+    });
+    $("#rotate-180").click(function(eventObj) {
+      $("#video-container").css('-moz-transform', 'rotate(180deg)');
+      $("#video-container").css('-webkit-transform', 'rotate(180deg)');
+      $("#video-container").css('-o-transform', 'rotate(180deg)');
+      $("#video-container").css('-ms-transform', 'rotate(180deg)');
+      $("#video-container").css('transform', 'rotate(180deg)');
+    });
+    $("#rotate--90").click(function(eventObj) {
+      $("#video-container").css('-moz-transform', 'rotate(-90deg)');
+      $("#video-container").css('-webkit-transform', 'rotate(-90deg)');
+      $("#video-container").css('-o-transform', 'rotate(-90deg)');
+      $("#video-container").css('-ms-transform', 'rotate(-90deg)');
+      $("#video-container").css('transform', 'rotate(-90deg)');
+    });
+  });
+</script>

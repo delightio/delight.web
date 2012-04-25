@@ -8,7 +8,7 @@
     your apps are actually being used in real life.
   </p>
   <p class="offset4">
-    <a class="btn btn-primary btn-large btn-success">View sample video</a>
+    <%= link_to "View sample video", sample_video_path, :id => 'sample-video-btn', :class => 'btn btn-primary btn-large btn-success' %>
   </p>
 </div>
 <div class="row">
@@ -65,7 +65,15 @@
     </ul>
   </div>
 </div>
-
+<script>
+  $(document).ready(function() {
+    $("#sample-video-btn").colorbox({
+      transition: "none",
+      width: "600",
+      height: "360"
+    });
+  });
+</script>
 
 
 

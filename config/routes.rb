@@ -14,11 +14,15 @@ DelightWeb::Application.routes.draw do
     put '/favorite', :to => 'app_sessions#favorite', :as => 'favorite'
     put '/unfavorite', :to => 'app_sessions#unfavorite', :as => 'unfavorite'
   end
+
   resources :videos, :only => [:create, :show]
+  get '/video/sample', :to => 'videos#sample', :as => 'sample_video'
+
   resources :apps do
     put '/recording/update/:state', :to => 'apps#update_recording', :as => :update_recording
   end
   resources :beta_signups, :only => [:create]
+
   root :to => 'home#index'
 
   # The priority is based upon order of creation:
