@@ -7,11 +7,18 @@
     interaction on mobile apps. We provide a 100% unbiased view on how
     your apps are actually being used in real life.
   </p>
-  <p class="offset4">
+  <p style="text-align:center">
     <%= link_to "View sample video", sample_video_path, :id => 'sample-video-btn', :class => 'btn btn-primary btn-large btn-success' %>
   </p>
 </div>
+<% if not user_signed_in? %>
 <div class="row">
+  <div class="well span6 offset3" style="text-align:center">
+   <h2>Join our beta list</h2>
+   <%= link_to raw('<i class="icon-github-sign icon-large"></i> Login with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+   <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Login in with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+  </div>
+      <!--
   <div class="span4 offset4">
     <form class="form-inline">
       <h2>
@@ -23,7 +30,9 @@
       </button>
     </form>
   </div>
+      -->
 </div>
+<% end %>
 <div class="row">
   <div class="span4">
     <h2>
