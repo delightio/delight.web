@@ -35,4 +35,10 @@ class VideosController < ApplicationController
     end
   end
 
+  def sample
+    respond_to do |format|
+      format.html { render :layout => 'empty' }
+    end
+  end
+
 end
