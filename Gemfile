@@ -10,6 +10,7 @@ gem 'pg'
 gem 'aws-sdk'
 gem 'redis'
 gem 'redis-objects'
+gem 'resque'
 
 group :development, :test do
   gem 'rspec-rails'
