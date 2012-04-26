@@ -14,6 +14,13 @@
 
   <fieldset>
     <div class="control-group">
+      <%= f.label :nickname, :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :nickname, :class => "span6" %>
+      </div>
+    </div>
+
+    <div class="control-group">
       <%= f.label :email, :class => "control-label" %>
       <div class="controls">
         <%= f.text_field :email, :class => "span6" %>
