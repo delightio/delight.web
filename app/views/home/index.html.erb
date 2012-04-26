@@ -1,38 +1,25 @@
 <div class="hero-unit">
-  <h1>
-    Capture your mobile users
-  </h1>
+  <div class="row-fluid">
+    <h1 class="span10">Observe your real users</h1>
+    <div class="span2 pull-right">
+      <%= link_to "Sample Recording", sample_video_path, :id => 'sample-video-btn', :class => 'btn btn-primary btn-large btn-success' %>
+    </div>
+  </div>
+  <p></p>
   <p>
-    <b>delight.io</b> is a framework that seamlessly captures and records all user
-    interaction on mobile apps. We provide a 100% unbiased view on how
-    your apps are actually being used in real life.
+  <b>delight.io</b> enlightens developers and designers on how their users interacted
+  with their iOS applications. We seamlessly record your application screen
+  and automatically capture all gestures. The recordings are then uploaded to
+  our server for viewing and sharing.
   </p>
-  <p style="text-align:center">
-    <%= link_to "View sample video", sample_video_path, :id => 'sample-video-btn', :class => 'btn btn-primary btn-large btn-success' %>
-  </p>
-</div>
-<% if not user_signed_in? %>
-<div class="row">
-  <div class="well span6 offset3" style="text-align:center">
-   <h2>Join our beta list</h2>
-   <%= link_to raw('<i class="icon-github-sign icon-large"></i> Login with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-   <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Login in with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+  <h2>First 10 recordings are on us!</h2>
+  <div class="row">
+    <div class="span12">
+    <%= link_to raw('<i class="icon-github-sign icon-large"></i> Signup with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+    <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Signup in with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+    </div>
   </div>
-      <!--
-  <div class="span4 offset4">
-    <form class="form-inline">
-      <h2>
-        <b>Join our beta list:</b>
-      </h2>
-      <input type="email" placeholder="mobile@example.com" class="span3">
-      <button type="submit" class="btn btn-primary">
-        Sign Up
-      </button>
-    </form>
-  </div>
-      -->
 </div>
-<% end %>
 <div class="row">
   <div class="span4">
     <h2>
@@ -40,38 +27,44 @@
     </h2>
     <ul>
       <li>
-        Integrate once &#38; forget.
+        2-line integration
       </li>
       <li>
-        No changes required for new iterations.
+        No code change per UI iteration
       </li>
     </ul>
   </div>
   <div class="span4">
     <h2>
-      View &#38; Share
+      Privacy Control
     </h2>
     <ul>
       <li>
-        No special video player is required to view.
+        Private UI views
       </li>
       <li>
-        Securely share with anyone you choose.
+        Auto-hide all keystrokes
       </li>
     </ul>
   </div>
   <div class="span4">
     <h2>
-      Full Privacy
+      No Special Viewer
     </h2>
     <ul>
       <li>
-        Private UI views.
+        View recordings through your favorite web browser
       </li>
       <li>
-        Auto-hide all keystrokes.
+        Securely share with your team
       </li>
     </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="span12">
+    <a href="https://twitter.com/delightio" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @delightio</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
   </div>
 </div>
 <script>
