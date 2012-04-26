@@ -1,7 +1,7 @@
 <div class="hero-unit">
-  <div class="row-fluid">
-    <h1 class="span10">Observe your real users</h1>
-    <div class="span2 pull-right">
+  <div class="row">
+    <h1 class="span9">Observe your real users</h1>
+    <div class="span1 pull-right">
       <%= link_to "Sample Recording", sample_video_path, :id => 'sample-video-btn', :class => 'btn btn-primary btn-large btn-success' %>
     </div>
   </div>
@@ -16,7 +16,7 @@
   <div class="row">
     <div class="span12">
     <%= link_to raw('<i class="icon-github-sign icon-large"></i> Signup with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-    <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Signup in with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+    <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Signup with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
     </div>
   </div>
 </div>
