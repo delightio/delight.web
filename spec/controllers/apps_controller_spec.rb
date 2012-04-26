@@ -261,6 +261,11 @@ describe AppsController do
           post :create, {:app => valid_attributes}
           response.should redirect_to(apps_path)
         end
+
+        it 'schedules some recordings' do
+          post :create, {:app => valid_attributes}
+          @app.scheduled_recordings.should == Account::FreeCredits
+        end
       end
 
       describe "with invalid params" do
