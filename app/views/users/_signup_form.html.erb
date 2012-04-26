@@ -1,0 +1,36 @@
+<%= form_for(@user, :as => :user, :url => user_signup_info_update_path(:user_id => @user.id), :method => :put, :html => { :class => "form-horizontal" }) do |f| %>
+  <% if @user.errors.any? %>
+		<div class="alert alert-error fade in" data-alert="alert">
+		  <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:
+    </div>
+    <% @user.errors.full_messages.each do |msg| %>
+		<div class="alert alert-error fade in" data-alert="alert">
+		  <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <%= msg %>
+    </div>
+    <% end %>
+  <% end %>
+
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :email, :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :email, :class => "span6" %>
+        <p class="help-block">Email for notifying you whne recordings are uploaded.</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label_tag 'app_name', nil, :class=>"control-label" %>
+      <div class="controls">
+        <%= text_field_tag 'app_name', nil, :class=> "span6" %>
+        <p class="help-block">Name of your iOS application</p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Save", :class => "btn btn-primary" %>
+    </div>
+</fieldset>
+<% end %>

@@ -1,6 +1,9 @@
 DelightWeb::Application.routes.draw do
 
-  resources :users, :only => [:edit, :update]
+  resources :users, :only => [:edit, :update] do
+    get 'signup_info_edit' => 'users#signup_info_edit', :as => :signup_info_edit
+    put 'signup_info_update' => 'users#signup_info_update', :as => :signup_info_update
+  end
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   devise_scope :user do

@@ -1,5 +1,8 @@
 class Account < ActiveRecord::Base
   has_many :apps
+  #accepts_nested_attributes_for :apps
+  #attr_accessible :apps_attributes
+
   belongs_to :administrator
   has_many :permissions
   has_many :viewers, :through => :permissions
