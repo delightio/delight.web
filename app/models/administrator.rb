@@ -1,3 +1,3 @@
-class Administrator < Viewer 
-  has_one :account 
-end 
+class Administrator < Viewer
+  has_one :account
+end
