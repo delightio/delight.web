@@ -84,10 +84,14 @@ describe App do
     end
 
     describe '#schedule_recordings' do
-      let(:recordings_change) { 30 }
       it 'increments recordings to be collected' do
-        expect { subject.schedule_recordings recordings_change }.
-          to change { subject.scheduled_recordings }.by recordings_change
+        expect { subject.schedule_recordings 10 }.
+          to change { subject.scheduled_recordings }.by 10
+      end
+
+      it 'saves the time of the scheduling' do
+        subject.schedule_recordings 10
+        subject.settings[:scheduled_at].should_not be_nil
       end
     end
 
@@ -99,6 +103,12 @@ describe App do
 
       it 'uses credit from associated account' do
         subject.account.should_receive(:use_credits).with(1)
+
+        subject.complete_recording
+      end
+
+      it 'notifies users' do
+        subject.should_receive :notify_users
 
         subject.complete_recording
       end
@@ -133,6 +143,76 @@ describe App do
       subject.stub :viewers => viewers
 
       subject.emails.should == ['abc', 'def', 'ghi']
+    end
+  end
+
+  describe '#previously_notified?' do
+    before { subject.schedule_recordings 1 }
+    it 'is false if we have just finished all recordings' do
+      subject.should_not be_previously_notified
+    end
+
+    it 'is true if we have notified users' do
+      subject.complete_recording
+
+      subject.should be_previously_notified
+    end
+  end
+
+  describe '#ready_to_notify?' do
+    context 'when there are still scheduled recordings' do
+      before { subject.stub :scheduled_recordings => 10 }
+      it 'is always false' do
+        subject.should_not be_ready_to_notify
+      end
+    end
+
+    context 'when there is no more scheduled recordings' do
+      before { subject.stub :scheduled_recordings => 0 }
+      it 'is true if we have not notified our users' do
+        subject.stub :previously_notified? => false
+
+        subject.should be_ready_to_notify
+      end
+
+      it 'is false if we have' do
+        subject.stub :previously_notified? => true
+
+        subject.should_not be_ready_to_notify
+      end
+    end
+  end
+
+  describe '#notify_users' do
+    context 'when it is time to notify' do
+      it 'enqueues email notification' do
+        subject.stub :ready_to_notify? => true
+        Resque.should_receive(:enqueue).once.
+          with(AppRecordingCompletion, subject.id)
+
+        subject.notify_users
+      end
+
+      it 'only sends one email' do
+        Resque.should_receive(:enqueue).once.
+          with(AppRecordingCompletion, subject.id)
+
+        # TODO: not happy w/ how this is tested.
+        #       sign of too much coupling?
+        subject.schedule_recordings 1
+        subject.complete_recording
+        subject.complete_recording
+      end
+    end
+
+    context 'when it is not time to notify' do
+      before { subject.stub :ready_to_notify? => false }
+
+      it 'does not enqueue email notification' do
+        Resque.should_not_receive :enqueue
+
+        subject.notify_users
+      end
     end
   end
 end

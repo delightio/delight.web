@@ -1,4 +1,7 @@
 class AppRecordingCompletion < EmailNotification
+  extend WithDatabaseConnection
+  @queue = :email
+
   def self.perform app_id
     app = App.find app_id
     send app.emails,

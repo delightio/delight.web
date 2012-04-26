@@ -1,7 +1,4 @@
 class EmailNotification
-  extend WithDatabaseConnection
-  @queue = :email
-
   def self.credential
     { username: ENV['MAILGUN_USERNAME'],
       password: ENV['MAILGUN_PASSWORD'] }
