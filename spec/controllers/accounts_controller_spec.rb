@@ -15,6 +15,12 @@ describe AccountsController do
       response.should redirect_to(apps_path)
     end
 
+    it 'adds free credits to each newly created account' do
+      post 'create', { :account => { :name => 'account name' } }
+      admin = Administrator.find @user.id
+      admin.account.remaining_credits.should == Account::FreeCredits
+    end
+
     it "should fail for missing name" do
       post 'create', {}
       flash[:type].should == 'error'
