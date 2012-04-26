@@ -61,12 +61,20 @@ class App < ActiveRecord::Base
     settings[:uploading_on_wifi_only] = flag
   end
 
+  def administrator
+    account.administrator
+  end
+
   def administered_by?(user)
-    self.account.administrator == user
+    administrator == user
   end
 
   def viewable_by?(user)
     self.viewers.include?(user)
+  end
+
+  def emails
+    [administrator, *viewers].map &:email
   end
 
   private

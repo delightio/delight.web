@@ -118,4 +118,21 @@ describe App do
       subject.should_not be_uploading_on_wifi_only
     end
   end
+
+  describe '#administrator' do
+    it 'is also the administrator of the parent account' do
+      subject.administrator.should == subject.account.administrator
+    end
+  end
+
+  describe '#emails' do
+    let(:administrator) { mock :email => 'abc' }
+    let(:viewers) { [(mock :email => 'def'), (mock :email => 'ghi')] }
+    it 'combines email from adminstrator and viewers' do
+      subject.stub :administrator => administrator
+      subject.stub :viewers => viewers
+
+      subject.emails.should == ['abc', 'def', 'ghi']
+    end
+  end
 end
