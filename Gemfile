@@ -12,6 +12,9 @@ gem 'redis'
 gem 'redis-objects'
 gem 'resque'
 
+# emailing with mailgun
+gem 'rest-client'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
