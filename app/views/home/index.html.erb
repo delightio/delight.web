@@ -12,7 +12,8 @@
   and automatically capture all gestures. The recordings are then uploaded to
   our server for viewing and sharing.
   </p>
-  <h2>First 10 recordings are on us!</h2>
+  <br><br>
+  <h2>First <%= Account::FreeCredits %> recordings are on us!</h2>
   <div class="row">
     <div class="span12">
     <%= link_to raw('<i class="icon-github-sign icon-large"></i> Signup with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
@@ -21,7 +22,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="span4">
+  <div class="span3 offset1">
     <h2>
       Integrate Once
     </h2>
@@ -34,7 +35,7 @@
       </li>
     </ul>
   </div>
-  <div class="span4">
+  <div class="span3">
     <h2>
       Privacy Control
     </h2>
@@ -53,18 +54,9 @@
     </h2>
     <ul>
       <li>
-        View recordings through your favorite web browser
-      </li>
-      <li>
-        Securely share with your team
+        View recordings through HTML web browser
       </li>
     </ul>
-  </div>
-</div>
-<div class="row">
-  <div class="span12">
-    <a href="https://twitter.com/delightio" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @delightio</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
   </div>
 </div>
 <script>
