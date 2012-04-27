@@ -2,7 +2,8 @@
     <div class="span5">
       <h2>
         <a href=<%= apps_path %>><%= @app.name %></a>
-        <%= link_to 'setup', 'javascript:void(0)', :class => 'btn', :id => 'app-setup-btn' %>
+        <span class="divider">/</span>
+        <%= link_to 'setup', 'javascript:void(0)', :id => 'app-setup-btn' %>
       </h2>
     </div>
     <div class="span7 align-r">
