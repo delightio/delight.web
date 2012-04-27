@@ -34,9 +34,9 @@ class UsersController < ApplicationController
         if @user.account.nil?
           account = @user.create_account(:name => @current_admin.nickname)
         end
-        if @user.account and @user.account.apps.create(:name => params[:app_name])
+        if @user.account and @app = @user.account.apps.create(:name => params[:app_name])
           flash[:notice] = 'Successfully to create app'
-          format.html { redirect_to apps_path }
+          format.html { redirect_to app_path(@app, :setup => true) }
         else
           flash.now[:notice] = 'Failed to complete profile'
           format.html { render action: "signup_info_edit" }

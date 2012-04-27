@@ -111,7 +111,7 @@ describe UsersController do
 
       it "returns http success" do
         get 'signup_info_update', { :user => { :nickname => 'newnick', :email => '123@example.com', :signup_step => 2 } }
-        response.should redirect_to(apps_path)
+        response.should redirect_to(app_path(assigns(:app),:setup => true))
         assigns(:user).should be_valid
         assigns(:user).nickname.should == 'newnick'
         assigns(:user).email.should == '123@example.com'
