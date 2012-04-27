@@ -68,7 +68,7 @@ class AppsController < ApplicationController
     if params[:favorite] == "1"
       @recorded_sessions = @recorded_sessions.favorite_of(current_user)
     end
-    @recorded_sessions = @recorded_sessions.latest
+    @recorded_sessions = @recorded_sessions.latest.page(params[:page]).per(10)
 
     app_sessions_id = @recorded_sessions.collect { |as| as.id }
     @favorite_app_sessions = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
