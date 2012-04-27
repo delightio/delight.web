@@ -3,6 +3,7 @@
     <div class="span5">
       <h2>
         <a href=<%= apps_path %>><%= @app.name %></a>
+        <%= link_to 'setup', 'javascript:void(0)', :class => 'btn', :id => 'app-setup-btn' %>
       </h2>
     </div>
     <div class="span7 align-r">
@@ -141,6 +142,9 @@
       <% if @setup %>
         $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
       <% end %>
+      $("#app-setup-btn").click(function() {
+        $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
+      });
       $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
         if (checked) {
           // check all
