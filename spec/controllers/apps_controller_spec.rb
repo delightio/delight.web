@@ -395,12 +395,19 @@ describe AppsController do
         before(:each) do
           sign_in(app.account.administrator)
         end
-        it "should success" do
+        it "should pause recording" do
           put 'update_recording', { :app_id => app.id, :state => 'pause', :format => :json }
           response.should be_success
           result = JSON.parse(response.body)
           result['result'].should == 'success'
           app.recording_paused?.should be_true
+        end
+        it "should resume recording" do
+          put 'update_recording', { :app_id => app.id, :state => 'resume', :format => :json }
+          response.should be_success
+          result = JSON.parse(response.body)
+          result['result'].should == 'success'
+          app.recording_paused?.should be_false
         end
         it "should fail given invalid state" do
           put 'update_recording', { :app_id => app.id, :state => 'invalid', :format => :json }
@@ -441,6 +448,18 @@ describe AppsController do
         result['reason'].should == 'record not found'
         app.recording_paused?.should be_false
       end
+    end
+  end
+
+  describe "GET setup" do
+    before(:each) do
+      sign_in(app.account.administrator)
+    end
+
+    it "should return success" do
+      get 'setup', { :app_id => app.id }
+      response.should be_success
+      assigns(:app).should == app
     end
   end
 

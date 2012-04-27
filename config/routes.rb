@@ -23,6 +23,7 @@ DelightWeb::Application.routes.draw do
 
   resources :apps do
     put '/recording/update/:state', :to => 'apps#update_recording', :as => :update_recording
+    get '/setup', :to => 'apps#setup', :as => :setup
   end
   resources :beta_signups, :only => [:create]
 

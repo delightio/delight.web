@@ -1,0 +1,21 @@
+<div class="container" style="text-align:center">
+<% if @app %>
+  <h1 style="margin-top: 10px">Setting up for <%= @app.name %></h1>
+  <hr/>
+  <div class="row">
+    <h3>App Token: <%= @app.token %></h3>
+  </div>
+  <div class="row" style="margin-top: 10px">
+    <h3>Download Delight.io Framework</h3>
+    <div class="span12">
+      <%= link_to "Delight.io v1.0", "#", :class => "btn btn-large" %>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 10px">
+    <h3>Follow tutorial on Documentation</h3>
+    <div class="span12">
+      <%= link_to "Open Documentation in new window", "#", :class => "btn btn-large" %>
+    </div>
+  </div>
+<% end %>
+</div>

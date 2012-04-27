@@ -161,4 +161,11 @@ class AppsController < ApplicationController
     end
   end
 
+  def setup
+    @app = App.administered_by(current_user).find(params[:app_id])
+    respond_to do |format|
+      format.html { render :layout => 'iframe' }
+    end
+  end
+
 end
