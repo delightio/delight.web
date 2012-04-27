@@ -65,3 +65,5 @@ gem 'devise'
 # OAuth
 gem 'omniauth-twitter'
 gem 'omniauth-github'
+
+gem 'newrelic_rpm'
