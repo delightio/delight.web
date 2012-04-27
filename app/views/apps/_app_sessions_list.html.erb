@@ -10,21 +10,9 @@
           <% end %>
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
-              <% if session.video %>
               <a href=<%= video_url(session.video) %> class="thumbnail group-video">
-                <!--img src="http://placehold.it/260x180" alt=""-->
-                <div style="width:260px;height:180px;text-align:center;vertical-align:middle">
-                  Video thumbnail not supported in beta
-                </div>
+                <img src="/images/thumbnail_not_supported.png" alt="">
               </a>
-              <% else %>
-              <a href="javascript:void(0)" class="thumbnail">
-                <div style="width:260px;height:180px;text-align:center;vertical-align:middle">
-                  Video thumbnail not supported in beta
-                </div>
-                <!--img style="width:260px;height:180px" src="" alt="Video thumbnail not supported in beta"-->
-              </a>
-              <% end %>
             </li>
           </ul>
         </div>
