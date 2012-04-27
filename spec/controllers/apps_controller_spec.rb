@@ -232,7 +232,7 @@ describe AppsController do
         sign_in(user)
       end
 
-      it "should redirect to index page" do
+      it "should redirect to app listing" do
         post :create, { :app => valid_attributes }
         response.should redirect_to(apps_path)
       end
@@ -257,9 +257,9 @@ describe AppsController do
           assigns(:app).account.should == app.account
         end
 
-        it "redirects to app listing" do
+        it "redirects to app view with setup param" do
           post :create, {:app => valid_attributes}
-          response.should redirect_to(apps_path)
+          response.should redirect_to(app_path(assigns(:app).to_param, :setup => true))
         end
 
         it 'schedules some recordings' do

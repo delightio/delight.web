@@ -44,7 +44,9 @@ class AppsController < ApplicationController
     duration_min = params[:'duration-min'] || @default_duration_min
     duration_max = params[:'duration-max'] || @default_duration_max
 
-    logger.debug("date min: #{date_min}, date max: #{date_max}, duration min: #{duration_min}, duration max: #{duration_max}")
+    @setup = params[:setup]
+
+    #logger.debug("date min: #{date_min}, date max: #{date_max}, duration min: #{duration_min}, duration max: #{duration_max}")
 
     if current_user.administrator?
       @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
@@ -111,7 +113,7 @@ class AppsController < ApplicationController
         @app.schedule_recordings Account::FreeCredits
 
         flash[:notice] = 'App was successfully created.'
-        format.html { redirect_to :action => :index }
+        format.html { redirect_to app_path(@app, :setup => true) }
       else
         format.html { render action: "new" }
       end
