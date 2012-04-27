@@ -77,6 +77,7 @@ class AppsController < ApplicationController
         render # show.html.erb
       end
       format.js # show.html.js
+      format.json { render :json => { 'scheduled_recordings' => @app.scheduled_recordings } }
     end
   end
 
@@ -167,6 +168,29 @@ class AppsController < ApplicationController
     @app = App.administered_by(current_user).find(params[:app_id])
     respond_to do |format|
       format.html { render :layout => 'iframe' }
+    end
+  end
+
+  def schedule_recording_edit
+    @app = App.administered_by(current_user).find(params[:app_id])
+    respond_to do |format|
+      format.html { render :layout => 'iframe' }
+    end
+  end
+
+  def schedule_recording_update
+    @app = App.administered_by(current_user).find(params[:app_id])
+    @schedule_recording = params[:schedule_recording]
+    respond_to do |format|
+      if @schedule_recording and @schedule_recording.to_i > 0 # TODO more checking, etc credits
+        @app.schedule_recordings @schedule_recording
+        flash[:notice] = 'Successfully scheduled recordings'
+        format.html { redirect_to :action => :schedule_recording_edit }
+      else
+        flash.now[:type] = 'error'
+        flash.now[:notice] = 'Failed scheduling recordings'
+        format.html { render action: "schedule_recording_edit", :layout => 'iframe' }
+      end
     end
   end
 
