@@ -9,4 +9,10 @@ FactoryGirl.define do
 
     a.association :app
   end
+
+  factory :recorded_session, :parent => :app_session do |s|
+    after_create do |a|
+      FactoryGirl.create :video, :app_session => a
+    end
+  end
 end

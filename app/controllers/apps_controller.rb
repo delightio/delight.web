@@ -54,22 +54,22 @@ class AppsController < ApplicationController
 
     # viewers
     @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
-    @versions = @app.app_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
+    @recorded_sessions = @app.app_sessions.recorded
+    @versions = @recorded_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
     versions = params[:versions] || @versions.collect { |v| v.app_version }
 
-    @app_sessions = @app.app_sessions
     if (params[:filter_duration])
-      @app_sessions = @app_sessions.duration_between(duration_min, duration_max)
+      @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)
     end
     if (params[:filter_date])
-      @app_sessions = @app_sessions.date_between(date_min, date_max)
+      @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
     end
-    @app_sessions = @app_sessions.where(:app_version => versions)
-    @app_sessions = @app_sessions.order('app_sessions.created_at DESC')
+    @recorded_sessions = @recorded_sessions.where(:app_version => versions)
+    @recorded_sessions = @recorded_sessions.latest
 
-    app_sessions_id = @app_sessions.collect { |as| as.id }
-    @favorite_app_session = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
-    @favorite_app_session_ids = @favorite_app_session.collect { |as| as.id }
+    app_sessions_id = @recorded_sessions.collect { |as| as.id }
+    @favorite_app_sessions = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
+    @favorite_app_session_ids = @favorite_app_sessions.collect { |as| as.id }
 
 
     respond_to do |format|

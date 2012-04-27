@@ -1,6 +1,6 @@
     <div class="span9" id="app-view-app-sessions">
-      <% unless app_sessions.blank? %>
-      <% app_sessions.recorded.latest.each do |session| %>
+      <% unless @recorded_sessions.blank? %>
+      <% @recorded_sessions.each do |session| %>
       <div class="row">
         <div class="span4">
           <% if favorite_ids.include?(session.id) %>

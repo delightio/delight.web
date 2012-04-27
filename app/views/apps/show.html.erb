@@ -16,15 +16,27 @@
     <div class="span3">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
-          <li class="active"><a href="#">Feed<span class="badge badge-white pull-right">10</span></a></li>
-          <li><a href="#">Favorites<span class="badge badge-inverse pull-right">3</span></a></li>
+          <li class="active">
+            <a href="#">Sessions
+              <span class="badge badge-white pull-right">
+                <%= @recorded_sessions.count %>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="#">Favorites
+              <span class="badge badge-inverse pull-right">
+                <%= @favorite_app_sessions.count %>
+              </span>
+            </a>
+          </li>
           <!--li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li-->
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
             <li class="nav-header">Versions</li>
             <li>
               <label class="checkbox">
-                <input type="checkbox" id="app-show-versions-all" class="app-show-versions-checkbox" CHECKED> All <span class="badge pull-right"> <%= @app.app_sessions.count %></span>
+                <input type="checkbox" id="app-show-versions-all" class="app-show-versions-checkbox" CHECKED> All <span class="badge pull-right"> <%= @app.app_sessions.recorded.count %></span>
               </label>
             </li>
             <% @versions.each do |version| %>

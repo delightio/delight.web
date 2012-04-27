@@ -120,18 +120,18 @@ describe AppsController do
       end
 
       it "should have correct favorite ids" do
-        session1 = FactoryGirl.create(:app_session, :app => app)
-        session2 = FactoryGirl.create(:app_session, :app => app)
-        session3 = FactoryGirl.create(:app_session, :app => app)
+        session1 = FactoryGirl.create(:recorded_session, :app => app)
+        session2 = FactoryGirl.create(:recorded_session, :app => app)
+        session3 = FactoryGirl.create(:recorded_session, :app => app)
         app.app_sessions.should have(3).items
         session1.favorite_users << viewer
         session2.favorite_users << viewer
 
         get :show, {:id => app.to_param}
 
-        assigns(:app_sessions).should include session1
-        assigns(:app_sessions).should include session2
-        assigns(:app_sessions).should include session3
+        assigns(:recorded_sessions).should include session1
+        assigns(:recorded_sessions).should include session2
+        assigns(:recorded_sessions).should include session3
 
         assigns(:favorite_app_session_ids).should include session1.id
         assigns(:favorite_app_session_ids).should include session2.id
