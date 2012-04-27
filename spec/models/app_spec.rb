@@ -21,15 +21,24 @@ describe App do
   end
 
   describe '#recording?' do
-    context 'when we have no credits' do
-      it 'is always false' do
-        subject.account.stub :remaining_credits => 0
-        subject.stub :scheduled_recordings => 10
-        subject.resume_recording
+    specify 'credits have no effect' do
+      subject.stub :remaining_credits => 0
+      subject.stub :scheduled_recordings => 10
+      subject.resume_recording
 
-        subject.should_not be_recording
-      end
+      subject.should be_recording
     end
+
+    # context 'when we have no credits' do
+    #   it 'd'
+    #   it 'is always false' do
+    #     subject.account.stub :remaining_credits => 0
+    #     subject.stub :scheduled_recordings => 10
+    #     subject.resume_recording
+
+    #     subject.should_not be_recording
+    #   end
+    # end
 
     context 'when developer has paused recordings' do
       it 'is always false regardless credits or remaining recordings needed' do
