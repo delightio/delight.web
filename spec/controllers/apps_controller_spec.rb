@@ -264,7 +264,7 @@ describe AppsController do
 
         it 'schedules some recordings' do
           post :create, {:app => valid_attributes}
-          @app.scheduled_recordings.should == Account::FreeCredits
+          app.scheduled_recordings.should == Account::FreeCredits
         end
       end
 
@@ -413,7 +413,8 @@ describe AppsController do
       end
 
       describe "does not own app" do
-        let(:admin2) { FactoryGirl.create(:administrator) }
+        let(:app2) { FactoryGirl.create(:app) }
+        let(:admin2) { app2.account.administrator }
 
         before(:each) do
           sign_in(admin2)

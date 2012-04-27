@@ -5,10 +5,10 @@ describe Administrator do
   let(:account) { app.account }
   let(:admin) { account.administrator }
 
-  describe "account apps" do
-    it "should work" do
-      admin.account_apps.should == [app]
-    end
-  end
+  #describe "account apps" do
+  #  it "should work" do
+  #    admin.account_apps.should == [app]
+  #  end
+  #end
 end
 
