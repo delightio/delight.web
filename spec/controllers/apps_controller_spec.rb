@@ -464,4 +464,61 @@ describe AppsController do
     end
   end
 
+  describe "GET schedule_recording_edit" do
+    describe "admin signed in" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
+
+      it "should increment the scheduled recording" do
+        get 'schedule_recording_edit', { :app_id => app }
+        response.should be_success
+      end
+    end
+
+    describe "other account signed in" do
+      before(:each) do
+        sign_in(user)
+      end
+      it "should redirect to apps lisnt" do
+        get 'schedule_recording_edit', { :app_id => app }
+        response.should redirect_to(apps_path)
+      end
+    end
+  end
+
+  describe "PUT schedule_recording_update" do
+    describe "admin signed in" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
+
+      it "should increment the scheduled recording" do
+        orig = app.scheduled_recordings
+        put 'schedule_recording_update', { :app_id => app, :schedule_recording => 3 }
+        response.should redirect_to(app_schedule_recording_edit_path(:app_id => app))
+        flash[:notice].should == 'Successfully scheduled recordings'
+        app.reload
+        app.scheduled_recordings.should == (orig + 3)
+      end
+
+      it "should render edit page with invalid param" do
+        orig = app.scheduled_recordings
+        put 'schedule_recording_update', { :app_id => app }
+        response.should be_success
+        app.reload
+        app.scheduled_recordings.should == orig # no change
+      end
+
+      it "should not allow negative scheduled recording" do
+        orig = app.scheduled_recordings
+        put 'schedule_recording_update', { :app_id => app, :schedule_recording => -1  }
+        response.should be_success
+        app.reload
+        app.scheduled_recordings.should == orig # no change
+        flash.now[:notice].should == "Failed scheduling recordings"
+      end
+    end
+  end
+
 end
