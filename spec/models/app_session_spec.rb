@@ -20,6 +20,19 @@ describe AppSession do
     end
   end
 
+  describe 'favorite_of' do
+    let(:app_session) { FactoryGirl.create(:app_session) }
+    let(:user) { FactoryGirl.create(:user) }
+    before(:each) do
+      user.favorite_app_sessions << app_session
+    end
+
+    it "should get favorite of user" do
+    end
+
+    #it "should not include
+  end
+
   describe 'date_between' do
     let(:start_date) { 10.days.ago }
     let(:end_date) { 1.day.ago }

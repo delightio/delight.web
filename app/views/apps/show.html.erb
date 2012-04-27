@@ -17,14 +17,14 @@
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
           <li class="active">
-            <a href="#">Sessions
+            <a href="javascript:void(0)" id="apps-all-btn">Sessions
               <span class="badge badge-white pull-right">
                 <%= @recorded_sessions.count %>
               </span>
             </a>
           </li>
           <li>
-            <a href="#">Favorites
+            <a href="javascript:void(0)" id="apps-favorite-btn">Favorites
               <span class="badge badge-inverse pull-right">
                 <%= @favorite_app_sessions.count %>
               </span>
@@ -71,6 +71,7 @@
           <input type="hidden" name="date-max" id="date-max" />
           <input type="hidden" name="duration-min" id="duration-min" />
           <input type="hidden" name="duration-max" id="duration-max" />
+          <input type="hidden" name="favorite" id="app-view-favorite" />
         <% end %>
         </ul>
       </div><!--/.well -->
@@ -174,6 +175,17 @@
           $("#app-show-resume-recording-btn").hide();
           $("#app-show-pause-recording-btn").show();
         }
+      });
+
+      $("#apps-all-btn").click(function(eventObj) {
+        var $form = $("#app-show-query-form");
+        $("#app-view-favorite").attr('value', 0);
+        querySessions();
+      });
+      $("#apps-favorite-btn").click(function(eventObj) {
+        var $form = $("#app-show-query-form");
+        $("#app-view-favorite").attr('value', 1);
+        querySessions();
       });
 
     });
