@@ -1,6 +1,6 @@
 <div class="container" style="text-align:center">
   <%= render :partial => "shared/error_message" %>
-  <h1 style="margin-top: 15px">Schedule recording</h1>
+  <h1 style="margin-top: 15px">Schedule recordings for<br><%= @app.name %></h1>
   <hr/>
   <% if @app %>
     <div class="row">
@@ -8,9 +8,7 @@
       <%= form_for(@app, :url => app_schedule_recording_update_path(:app_id => @app.id), :html => { :class => "form-horizontal" }) do |f| %>
       <fieldset>
         <p>
-        We are giving out free recordings during beta stage.
-        asfdsafsadl;fjlksd
-        al;djfsadjf blah blah blah
+        We are giving out free recordings during our beta stage.
         </p>
         <!--
         <div class="row">
