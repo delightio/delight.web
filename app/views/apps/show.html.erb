@@ -4,7 +4,6 @@
       <h2>
         <a href=<%= apps_path %>><%= @app.name %></a>
       </h2>
-      <%= link_to 'Setup', app_setup_path(:app_id => @app.id), :id => 'app-setup' %>
     </div>
     <div class="span7 align-r">
       <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= @app.scheduled_recordings %> Sessions Scheduled</h3>
@@ -114,7 +113,9 @@
 
     $(document).ready(function(){
       $(".group-video").colorbox({rel:'group-video', transition:"none", width:"600px", height:"600px"});
-      $("#app-setup").colorbox({iframe: true, transition:"none", width:"600px", height:"330px"});
+      <% if @setup %>
+        $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
+      <% end %>
       $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
         if (checked) {
           // check all
