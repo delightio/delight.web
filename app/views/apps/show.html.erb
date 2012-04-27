@@ -16,15 +16,15 @@
     <div class="span3">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
-          <li class="active">
-            <a href="javascript:void(0)" id="apps-all-btn">Sessions
+          <li class="active" id="apps-all-btn">
+            <a href="javascript:void(0)">All
               <span class="badge badge-white pull-right">
                 <%= @recorded_sessions.count %>
               </span>
             </a>
           </li>
-          <li>
-            <a href="javascript:void(0)" id="apps-favorite-btn">Favorites
+          <li id="apps-favorite-btn">
+            <a href="javascript:void(0)">Favorites
               <span class="badge badge-inverse pull-right">
                 <%= @favorite_app_sessions.count %>
               </span>
@@ -180,11 +180,15 @@
       $("#apps-all-btn").click(function(eventObj) {
         var $form = $("#app-show-query-form");
         $("#app-view-favorite").attr('value', 0);
+        $("#apps-favorite-btn").removeClass('active');
+        $("#apps-all-btn").addClass('active');
         querySessions();
       });
       $("#apps-favorite-btn").click(function(eventObj) {
         var $form = $("#app-show-query-form");
         $("#app-view-favorite").attr('value', 1);
+        $("#apps-all-btn").removeClass('active');
+        $("#apps-favorite-btn").addClass('active');
         querySessions();
       });
 

@@ -65,9 +65,9 @@ class AppsController < ApplicationController
       @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
     end
     @recorded_sessions = @recorded_sessions.where(:app_version => versions)
-    #if params[:favorite] == 1
-    #  @recorded_sessions = @recorded_sessions.favorite_of(current_user)
-    #end
+    if params[:favorite] == "1"
+      @recorded_sessions = @recorded_sessions.favorite_of(current_user)
+    end
     @recorded_sessions = @recorded_sessions.latest
 
     app_sessions_id = @recorded_sessions.collect { |as| as.id }

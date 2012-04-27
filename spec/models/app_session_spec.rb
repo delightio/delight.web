@@ -21,16 +21,21 @@ describe AppSession do
   end
 
   describe 'favorite_of' do
-    let(:app_session) { FactoryGirl.create(:app_session) }
+    let(:app_session1) { FactoryGirl.create(:app_session) }
+    let(:app_session2) { FactoryGirl.create(:app_session) }
+    let(:app_session3) { FactoryGirl.create(:app_session) }
     let(:user) { FactoryGirl.create(:user) }
     before(:each) do
-      user.favorite_app_sessions << app_session
+      user.favorite_app_sessions << app_session1
+      user.favorite_app_sessions << app_session3
     end
 
     it "should get favorite of user" do
+      as = AppSession.favorite_of(user).all
+      as.should include(app_session1)
+      as.should include(app_session3)
+      as.should_not include(app_session2)
     end
-
-    #it "should not include
   end
 
   describe 'date_between' do
