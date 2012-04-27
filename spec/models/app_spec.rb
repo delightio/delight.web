@@ -14,6 +14,12 @@ describe App do
     end
   end
 
+  describe "creation" do
+    it "should have some scheduled recording" do
+      subject.scheduled_recordings.should == Account::FreeCredits
+    end
+  end
+
   describe '#recording?' do
     context 'when we have no credits' do
       it 'is always false' do
