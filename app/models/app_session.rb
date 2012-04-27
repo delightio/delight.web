@@ -36,6 +36,14 @@ class AppSession < ActiveRecord::Base
         where('app_sessions.duration is NOT NULL')
       end
     end
+
+    def recorded
+      joins(:video).where('videos.app_session_id is NOT NULL')
+    end
+
+    def latest
+      order('updated_at DESC')
+    end
   end
   extend Scopes
 
