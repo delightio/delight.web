@@ -8,8 +8,11 @@
       <%= form_for(@app, :url => app_schedule_recording_update_path(:app_id => @app.id), :html => { :class => "form-horizontal" }) do |f| %>
       <fieldset>
         <p>
-        We are giving out free recordings during our beta stage.
+        <strong>Free</strong> recording credits during our beta stage!
         </p>
+        We will email you at
+          <code><%= current_user.email %></code><br>
+        when all scheduled sessions are received.<br><br>
         <!--
         <div class="row">
           <div class="span12">
@@ -19,7 +22,7 @@
         -->
         <div class="control-group">
           <div class="controls">
-            Schedule recording: <%= text_field_tag 'schedule_recording', @schedule_recording, :class => "input-small" %>
+            Schedule recording: <%= text_field_tag 'schedule_recording', @schedule_recording, :class => "input-small", :value => [@app.scheduled_recordings, 20].max %>
           </div>
         </div>
 
