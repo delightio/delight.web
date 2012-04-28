@@ -114,7 +114,7 @@ class AppsController < ApplicationController
 
     respond_to do |format|
       if @app.save
-        @app.schedule_recordings Account::FreeCredits
+        #@app.schedule_recordings Account::FreeCredits
 
         flash[:notice] = 'App was successfully created.'
         format.html { redirect_to app_path(@app, :setup => true) }

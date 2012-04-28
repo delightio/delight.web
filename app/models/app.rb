@@ -6,6 +6,7 @@ class App < ActiveRecord::Base
   has_many :viewers, :through => :permissions
 
   after_create :generate_token
+  after_create :schedule_initial_recording
   validate :token, :presence => true, :uniqueness => true
   validates :name, :presence => true
 
@@ -73,6 +74,10 @@ class App < ActiveRecord::Base
   private
   def generate_token
     update_attribute :token, "#{SecureRandom.hex 12}#{id}"
+  end
+
+  def schedule_initial_recording
+    schedule_recordings Account::FreeCredits
   end
 
 end

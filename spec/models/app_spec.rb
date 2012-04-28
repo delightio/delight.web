@@ -14,6 +14,12 @@ describe App do
     end
   end
 
+  describe "creation" do
+    it "should have some scheduled recording" do
+      subject.scheduled_recordings.should == Account::FreeCredits
+    end
+  end
+
   describe '#recording?' do
     specify 'credits have no effect' do
       subject.stub :remaining_credits => 0

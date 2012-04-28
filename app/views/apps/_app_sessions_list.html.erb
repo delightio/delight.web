@@ -81,6 +81,7 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', unfavorite_handler);
+          increment_favorite_count();
         }
       }
       function unfavorite_handler(event, data, status, xhr) {
@@ -94,7 +95,16 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', favorite_handler);
+          decrement_favorite_count();
         }
+      }
+      function increment_favorite_count() {
+        $count = $('#favorite-count');
+        $count.html(parseInt($count.html()) + 1);
+      }
+      function decrement_favorite_count() {
+        $count = $('#favorite-count');
+        $count.html(parseInt($count.html()) - 1);
       }
 
       $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)
