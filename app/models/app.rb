@@ -35,7 +35,7 @@ class App < ActiveRecord::Base
   end
 
   def schedule_recordings n
-    settings.incr :recordings, n
+    settings[:recordings] = n
   end
 
   def complete_recording

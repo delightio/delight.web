@@ -99,10 +99,9 @@ describe App do
     end
 
     describe '#schedule_recordings' do
-      let(:recordings_change) { 30 }
-      it 'increments recordings to be collected' do
-        expect { subject.schedule_recordings recordings_change }.
-          to change { subject.scheduled_recordings }.by recordings_change
+      it 'sets the total scheduled recordings' do
+        expect { subject.schedule_recordings 1000 }.
+          to change { subject.scheduled_recordings }.to 1000
       end
     end
 
