@@ -3,7 +3,7 @@ require 'spec_helper'
 describe App do
 
   subject { FactoryGirl.create :app }
-  it { should_not be_recording }
+  it { should be_recording } # We always schedule recordings on creation
   its(:token) { should_not be_empty }
 
   describe '#generate_token' do
