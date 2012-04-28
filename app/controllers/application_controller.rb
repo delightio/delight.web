@@ -10,9 +10,23 @@ class ApplicationController < ActionController::Base
 
   # require user to complete profile before proceed
   def check_user_registration
-    if user_signed_in? and not current_user.done_registering?
-      redirect_to edit_user_path(current_user)
+    if not user_signed_in?
       return
+    end
+
+    redirect_path = current_user.administrator? ? user_signup_info_edit_path(current_user) : edit_user_path(current_user)
+
+    if not current_user.done_registering?
+      redirect_to redirect_path
+      return
+    end
+
+    if current_user.administrator?
+      admin = current_user.becomes(current_user.type.constantize)
+      if admin.account.nil? or admin.account.apps.blank?
+        redirect_to redirect_path
+        return
+      end
     end
   end
 

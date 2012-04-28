@@ -29,13 +29,14 @@ describe User do
     end
 
     describe "no existing user" do
-      it "should retrieve existing user" do
+      it "should create user" do
         num_user = User.count
-        user = User.find_or_create_for_twitter_oauth(@auth_hash)
+        user = User.find_or_create_for_twitter_oauth(@auth_hash, nil, 'Administrator')
         user.twitter_id.should == 'twitter_uid'
         user.nickname.should == 'mistralay'
         user.image_url.should == 'http://example.com/profile_normal.jpg'
         User.count.should == (num_user+1)
+        user.type.should == 'Administrator'
       end
     end
 
@@ -43,12 +44,13 @@ describe User do
       before(:each) do
         @twitter_user = FactoryGirl.create(:user, :twitter_id => 'twitter_uid')
       end
-      it "should create new user" do
+      it "should retrieve existing user" do
         count = User.count
         user = User.find_or_create_for_twitter_oauth(@auth_hash)
         user.twitter_id.should == 'twitter_uid'
         User.count.should == count
         user.should == @twitter_user
+        user.type.should == 'User'
       end
     end
   end
@@ -77,13 +79,14 @@ describe User do
     end
 
     describe "no existing user" do
-      it "should retrieve existing user" do
+      it "should create new user" do
         num_user = User.count
-        user = User.find_or_create_for_github_oauth(@auth_hash)
+        user = User.find_or_create_for_github_oauth(@auth_hash, nil, 'Administrator')
         user.github_id.should == 'github_uid'
         user.nickname.should == 'mistralay'
         user.image_url.should == 'http://example.com/github_avatar.jpg'
         User.count.should == (num_user+1)
+        user.type.should == 'Administrator'
       end
     end
 
@@ -91,12 +94,13 @@ describe User do
       before(:each) do
         @github_user = FactoryGirl.create(:user, :github_id => 'github_uid')
       end
-      it "should create new user" do
+      it "should retrieve existing user" do
         count = User.count
-        user = User.find_or_create_for_github_oauth(@auth_hash)
+        user = User.find_or_create_for_github_oauth(@auth_hash, nil, 'Viewer')
         user.github_id.should == 'github_uid'
         User.count.should == count
         user.should == @github_user
+        user.type.should == 'Viewer'
       end
     end
   end

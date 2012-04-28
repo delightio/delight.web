@@ -1,6 +1,6 @@
     <div class="span9" id="app-view-app-sessions">
-      <% unless app_sessions.blank? %>
-      <% app_sessions.reverse_each do |session| %>
+      <% unless @recorded_sessions.blank? %>
+      <% @recorded_sessions.each do |session| %>
       <div class="row">
         <div class="span4">
           <% if favorite_ids.include?(session.id) %>
@@ -10,15 +10,9 @@
           <% end %>
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
-              <% if session.video %>
               <a href=<%= video_url(session.video) %> class="thumbnail group-video">
-                <img src="http://placehold.it/260x180" alt="">
+                <img src="/images/thumbnail_not_supported.png" alt="">
               </a>
-              <% else %>
-              <a href="javascript:void(0)" class="thumbnail">
-                <img src="http://placehold.it/260x180" alt="">
-              </a>
-              <% end %>
             </li>
           </ul>
         </div>
@@ -44,7 +38,7 @@
             </tbody>
           </table>
         </div>
-        <div class="span2">
+<!--         <div class="span2">
           <table style="width:100%">
             <tbody>
               <tr>
@@ -61,13 +55,18 @@
               </tr>
             </tbody>
           </table>
-        </div><!--/span-->
+        </div> -->
       </div><!--/row-->
 
       <hr style="margin:0 0 20px 0" />
 
       <% end %>
       <% end %>
+      <div class="row">
+        <div class="span7" style="text-align:center">
+          <%= paginate @recorded_sessions %>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -82,6 +81,7 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', unfavorite_handler);
+          increment_favorite_count();
         }
       }
       function unfavorite_handler(event, data, status, xhr) {
@@ -95,7 +95,16 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', favorite_handler);
+          decrement_favorite_count();
         }
+      }
+      function increment_favorite_count() {
+        $count = $('#favorite-count');
+        $count.html(parseInt($count.html()) + 1);
+      }
+      function decrement_favorite_count() {
+        $count = $('#favorite-count');
+        $count.html(parseInt($count.html()) - 1);
       }
 
       $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)

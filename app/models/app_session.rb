@@ -13,6 +13,10 @@ class AppSession < ActiveRecord::Base
   after_create :generate_upload_uris
 
   module Scopes
+    def favorite_of(user)
+      joins(:favorites).where(:favorites => {:user_id => user.id})
+    end
+
     def administered_by(user)
       joins(:app => :account).where(:accounts => { :administrator_id => user.id })
     end
@@ -35,6 +39,14 @@ class AppSession < ActiveRecord::Base
       else
         where('app_sessions.duration is NOT NULL')
       end
+    end
+
+    def recorded
+      joins(:video).where('videos.app_session_id is NOT NULL')
+    end
+
+    def latest
+      order('updated_at DESC')
     end
   end
   extend Scopes

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe App do
 
   subject { FactoryGirl.create :app }
-  it { should_not be_recording }
+  it { should be_recording } # we schedule recordings on creation
   its(:token) { should_not be_empty }
 
   describe '#generate_token' do
@@ -14,16 +14,31 @@ describe App do
     end
   end
 
-  describe '#recording?' do
-    context 'when we have no credits' do
-      it 'is always false' do
-        subject.account.stub :remaining_credits => 0
-        subject.stub :scheduled_recordings => 10
-        subject.resume_recording
-
-        subject.should_not be_recording
-      end
+  describe "creation" do
+    it "should have some scheduled recording" do
+      subject.scheduled_recordings.should == Account::FreeCredits
     end
+  end
+
+  describe '#recording?' do
+    specify 'credits have no effect' do
+      subject.stub :remaining_credits => 0
+      subject.stub :scheduled_recordings => 10
+      subject.resume_recording
+
+      subject.should be_recording
+    end
+
+    # context 'when we have no credits' do
+    #   it 'd'
+    #   it 'is always false' do
+    #     subject.account.stub :remaining_credits => 0
+    #     subject.stub :scheduled_recordings => 10
+    #     subject.resume_recording
+
+    #     subject.should_not be_recording
+    #   end
+    # end
 
     context 'when developer has paused recordings' do
       it 'is always false regardless credits or remaining recordings needed' do
@@ -153,7 +168,7 @@ describe App do
     end
 
     it 'is true if we have notified users' do
-      subject.complete_recording
+      subject.scheduled_recordings.times { subject.complete_recording }
 
       subject.should be_previously_notified
     end
@@ -200,7 +215,7 @@ describe App do
         # TODO: not happy w/ how this is tested.
         #       sign of too much coupling?
         subject.schedule_recordings 1
-        subject.complete_recording
+        subject.scheduled_recordings.times { subject.complete_recording }
         subject.complete_recording
       end
     end

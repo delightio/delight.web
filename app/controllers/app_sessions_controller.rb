@@ -63,7 +63,7 @@ class AppSessionsController < ApplicationController
     as_params = params[:app_session]
     @app = App.find_by_token(as_params.delete :app_token)
     if @app.nil?
-      render xml: "Missing App Token", status: :bad_request
+      render xml: "Missing App Token. Get yours on http://delight.io", status: :bad_request
       return
     end
     as_params.merge! app_id: @app.id

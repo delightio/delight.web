@@ -6,7 +6,9 @@ class App < ActiveRecord::Base
   has_many :viewers, :through => :permissions
 
   after_create :generate_token
+  after_create :schedule_initial_recording
   validate :token, :presence => true, :uniqueness => true
+  validates :name, :presence => true
 
   include Redis::Objects
   hash_key :settings # recordings to get, paused?, wifi only?
@@ -24,8 +26,8 @@ class App < ActiveRecord::Base
 
   def recording?
     !recording_paused? &&
-    scheduled_recordings > 0 &&
-    account.remaining_credits > 0
+    scheduled_recordings > 0
+    # && account.remaining_credits > 0
   end
 
   def scheduled_recordings
@@ -97,6 +99,10 @@ class App < ActiveRecord::Base
   private
   def generate_token
     update_attribute :token, "#{SecureRandom.hex 12}#{id}"
+  end
+
+  def schedule_initial_recording
+    schedule_recordings Account::FreeCredits
   end
 
 end

@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe AppSession do
   subject { FactoryGirl.create :app_session }
-  it { should_not be_recording }
 
   describe '#recording?' do
     it 'reads from its associated app' do
@@ -17,6 +16,24 @@ describe AppSession do
       subject.app.should_receive :uploading_on_wifi_only?
 
       subject.uploading_on_wifi_only?
+    end
+  end
+
+  describe 'favorite_of' do
+    let(:app_session1) { FactoryGirl.create(:app_session) }
+    let(:app_session2) { FactoryGirl.create(:app_session) }
+    let(:app_session3) { FactoryGirl.create(:app_session) }
+    let(:user) { FactoryGirl.create(:user) }
+    before(:each) do
+      user.favorite_app_sessions << app_session1
+      user.favorite_app_sessions << app_session3
+    end
+
+    it "should get favorite of user" do
+      as = AppSession.favorite_of(user).all
+      as.should include(app_session1)
+      as.should include(app_session3)
+      as.should_not include(app_session2)
     end
   end
 

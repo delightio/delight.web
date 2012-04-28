@@ -2,7 +2,7 @@ class Users::OmniauthCallbacksController < ApplicationController
   skip_before_filter :check_user_registration
 
   def twitter
-    @user = User.find_or_create_for_twitter_oauth(auth_hash, current_user)
+    @user = User.find_or_create_for_twitter_oauth(auth_hash, current_user, 'Administrator')
 
     if @user.persisted?
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Twitter"
@@ -14,7 +14,7 @@ class Users::OmniauthCallbacksController < ApplicationController
   end
 
   def github
-    @user = User.find_or_create_for_github_oauth(auth_hash, current_user)
+    @user = User.find_or_create_for_github_oauth(auth_hash, current_user, 'Administrator')
 
     if @user.persisted?
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Github"

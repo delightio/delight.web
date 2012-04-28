@@ -1,14 +1,15 @@
-<p id="notice"><%= notice %></p>
   <div class="row">
     <div class="span5">
       <h2>
         <a href=<%= apps_path %>><%= @app.name %></a>
+        <span class="divider">/</span>
+        <%= link_to 'setup', 'javascript:void(0)', :id => 'app-setup-btn' %>
       </h2>
     </div>
     <div class="span7 align-r">
-      <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= @app.scheduled_recordings %> Sessions Scheduled</h3>
+      <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= link_to(raw("<span id='num-scheduled-recording'>" + @app.scheduled_recordings.to_s + "</span> Sessions Scheduled"), app_schedule_recording_edit_path(:app_id => @app.id), :id => 'app-schedule-recording') %></h3>
       <%= link_to raw('<i class="icon-pause"></i> Pause Recording'), app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :id => "app-show-pause-recording-btn", :style => @app.recording_paused? ? 'display:none' : '' %>
-      <%= link_to raw('<i class="icon-play"></i> Start Recording'), app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :id => "app-show-resume-recording-btn", :style => @app.recording_paused? ? '' : 'display:none' %>
+      <%= link_to raw('<i class="icon-play"></i> Start Recording'), app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :class => "btn btn-success btn-large", :id => "app-show-resume-recording-btn", :style => @app.recording_paused? ? '' : 'display:none' %>
     </div>
   </div><!--/row-->
   <hr />
@@ -16,15 +17,27 @@
     <div class="span3">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
-          <li class="active"><a href="#">Feed<span class="badge badge-white pull-right">10</span></a></li>
-          <li><a href="#">Favorites<span class="badge badge-inverse pull-right">3</span></a></li>
+          <li class="active" id="apps-all-btn">
+            <a href="javascript:void(0)">Sessions
+              <span class="badge badge-white pull-right">
+                <%= @recorded_sessions.count %>
+              </span>
+            </a>
+          </li>
+          <li id="apps-favorite-btn">
+            <a href="javascript:void(0)">Favorites
+              <span class="badge badge-inverse pull-right" id="favorite-count">
+                <%= @favorite_app_sessions.count %>
+              </span>
+            </a>
+          </li>
           <!--li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li-->
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
             <li class="nav-header">Versions</li>
             <li>
               <label class="checkbox">
-                <input type="checkbox" id="app-show-versions-all" class="app-show-versions-checkbox" CHECKED> All <span class="badge pull-right"> <%= @app.app_sessions.count %></span>
+                <input type="checkbox" id="app-show-versions-all" class="app-show-versions-checkbox" CHECKED> All <span class="badge pull-right"> <%= @app.app_sessions.recorded.count %></span>
               </label>
             </li>
             <% @versions.each do |version| %>
@@ -52,13 +65,14 @@
           </li>
           <li>
             <label class="checkbox">
-              <input type="checkbox" id="filter-date" name="filter_date"> Filter by create date
+              <input type="checkbox" id="filter-date" name="filter_date"> Filter by creation date
             </label>
           </li>
           <input type="hidden" name="date-min" id="date-min" />
           <input type="hidden" name="date-max" id="date-max" />
           <input type="hidden" name="duration-min" id="duration-min" />
           <input type="hidden" name="duration-max" id="duration-max" />
+          <input type="hidden" name="favorite" id="app-view-favorite" />
         <% end %>
         </ul>
       </div><!--/.well -->
@@ -113,9 +127,25 @@
 
     $(document).ready(function(){
       $(".group-video").colorbox({rel:'group-video', transition:"none", width:"600px", height:"600px"});
-      $("#app-show-versions-all").click(function(eventObj) {
-        var $checkbox = $(eventObj.target);
-        var checked = $checkbox.attr('checked');
+      $("#app-schedule-recording").colorbox({
+        iframe: true,
+        transition:"none",
+        width:"400px",
+        height:"350px",
+        onClosed:function() {
+          $.get('/apps/<%= @app.id %>.json',
+          function(data) {
+            $("#num-scheduled-recording").html(data['scheduled_recordings']);
+          })
+        }
+      });
+      <% if @setup %>
+        $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
+      <% end %>
+      $("#app-setup-btn").click(function() {
+        $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
+      });
+      $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
         if (checked) {
           // check all
           $(".app-show-versions-checkbox").attr('checked', true);
@@ -149,6 +179,21 @@
           $("#app-show-resume-recording-btn").hide();
           $("#app-show-pause-recording-btn").show();
         }
+      });
+
+      $("#apps-all-btn").click(function(eventObj) {
+        var $form = $("#app-show-query-form");
+        $("#app-view-favorite").attr('value', 0);
+        $("#apps-favorite-btn").removeClass('active');
+        $("#apps-all-btn").addClass('active');
+        querySessions();
+      });
+      $("#apps-favorite-btn").click(function(eventObj) {
+        var $form = $("#app-show-query-form");
+        $("#app-view-favorite").attr('value', 1);
+        $("#apps-all-btn").removeClass('active');
+        $("#apps-favorite-btn").addClass('active');
+        querySessions();
       });
 
     });

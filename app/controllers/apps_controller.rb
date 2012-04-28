@@ -44,7 +44,9 @@ class AppsController < ApplicationController
     duration_min = params[:'duration-min'] || @default_duration_min
     duration_max = params[:'duration-max'] || @default_duration_max
 
-    logger.debug("date min: #{date_min}, date max: #{date_max}, duration min: #{duration_min}, duration max: #{duration_max}")
+    @setup = params[:setup]
+
+    #logger.debug("date min: #{date_min}, date max: #{date_max}, duration min: #{duration_min}, duration max: #{duration_max}")
 
     if current_user.administrator?
       @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
@@ -52,22 +54,25 @@ class AppsController < ApplicationController
 
     # viewers
     @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
-    @versions = @app.app_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
+    @recorded_sessions = @app.app_sessions.recorded
+    @versions = @recorded_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
     versions = params[:versions] || @versions.collect { |v| v.app_version }
 
-    @app_sessions = @app.app_sessions
     if (params[:filter_duration])
-      @app_sessions = @app_sessions.duration_between(duration_min, duration_max)
+      @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)
     end
     if (params[:filter_date])
-      @app_sessions = @app_sessions.date_between(date_min, date_max)
+      @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
     end
-    @app_sessions = @app_sessions.where(:app_version => versions)
-    @app_sessions = @app_sessions.order('app_sessions.created_at DESC')
+    @recorded_sessions = @recorded_sessions.where(:app_version => versions)
+    if params[:favorite] == "1"
+      @recorded_sessions = @recorded_sessions.favorite_of(current_user)
+    end
+    @recorded_sessions = @recorded_sessions.latest.page(params[:page]).per(10)
 
-    app_sessions_id = @app_sessions.collect { |as| as.id }
-    @favorite_app_session = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
-    @favorite_app_session_ids = @favorite_app_session.collect { |as| as.id }
+    app_sessions_id = @recorded_sessions.collect { |as| as.id }
+    @favorite_app_sessions = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
+    @favorite_app_session_ids = @favorite_app_sessions.collect { |as| as.id }
 
 
     respond_to do |format|
@@ -75,6 +80,7 @@ class AppsController < ApplicationController
         render # show.html.erb
       end
       format.js # show.html.js
+      format.json { render :json => { 'scheduled_recordings' => @app.scheduled_recordings } }
     end
   end
 
@@ -108,10 +114,10 @@ class AppsController < ApplicationController
 
     respond_to do |format|
       if @app.save
-        @app.schedule_recordings 100
+        #@app.schedule_recordings Account::FreeCredits
 
         flash[:notice] = 'App was successfully created.'
-        format.html { redirect_to :action => :index }
+        format.html { redirect_to app_path(@app, :setup => true) }
       else
         format.html { render action: "new" }
       end
@@ -158,6 +164,36 @@ class AppsController < ApplicationController
 
     respond_to do |format|
       format.json { render :json => result }
+    end
+  end
+
+  def setup
+    @app = App.administered_by(current_user).find(params[:app_id])
+    respond_to do |format|
+      format.html { render :layout => 'iframe' }
+    end
+  end
+
+  def schedule_recording_edit
+    @app = App.administered_by(current_user).find(params[:app_id])
+    respond_to do |format|
+      format.html { render :layout => 'iframe' }
+    end
+  end
+
+  def schedule_recording_update
+    @app = App.administered_by(current_user).find(params[:app_id])
+    @schedule_recording = params[:schedule_recording]
+    respond_to do |format|
+      if @schedule_recording and @schedule_recording.to_i > 0 # TODO more checking, etc credits
+        @app.schedule_recordings @schedule_recording
+        flash[:notice] = 'Successfully scheduled recordings'
+        format.html { redirect_to :action => :schedule_recording_edit }
+      else
+        flash.now[:type] = 'error'
+        flash.now[:notice] = 'Failed scheduling recordings'
+        format.html { render action: "schedule_recording_edit", :layout => 'iframe' }
+      end
     end
   end
 

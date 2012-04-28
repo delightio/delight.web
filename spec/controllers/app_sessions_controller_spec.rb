@@ -102,7 +102,8 @@ describe AppSessionsController do
       end
 
       describe 'admin not authorized' do
-        let(:admin2) { FactoryGirl.create(:administrator) }
+        let(:app2) { FactoryGirl.create(:app) }
+        let(:admin2) { app2.account.administrator }
         before(:each) do
           sign_in(admin2)
         end

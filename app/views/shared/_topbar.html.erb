@@ -6,11 +6,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <%= link_to I18n.t("topnav.brand"), root_path, :class => 'brand' %>
+      <%= link_to raw(I18n.t("topnav.brand") + image_tag('/images/beta.png', :width => 38, :height => 16, :style => 'margin:0 0 0 5px;vertical-align:-15%')), apps_path, :class => 'brand' %>
       <div class="nav-collapse">
         <ul class="nav">
-          <li class="active"><%= link_to I18n.t("topnav.home"), apps_path %></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="https://github.com/delightio/ios/blob/master/README.md" target="_blank">Documentation</a></li>
+<!--           <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li> -->
         </ul>
         <ul class="nav pull-right">
           <li class="divider-vertical"></li>

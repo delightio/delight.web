@@ -2,7 +2,10 @@ require 'resque/server'
 
 DelightWeb::Application.routes.draw do
 
-  resources :users, :only => [:edit, :update]
+  resources :users, :only => [:edit, :update] do
+    get 'signup_info_edit' => 'users#signup_info_edit', :as => :signup_info_edit
+    put 'signup_info_update' => 'users#signup_info_update', :as => :signup_info_update
+  end
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   devise_scope :user do
@@ -22,6 +25,9 @@ DelightWeb::Application.routes.draw do
 
   resources :apps do
     put '/recording/update/:state', :to => 'apps#update_recording', :as => :update_recording
+    get '/setup', :to => 'apps#setup', :as => :setup
+    get '/schedule_recording_edit', :to => 'apps#schedule_recording_edit', :as => :schedule_recording_edit
+    put '/schedule_recording_update', :to => 'apps#schedule_recording_update', :as => :schedule_recording_update
   end
   resources :beta_signups, :only => [:create]
 

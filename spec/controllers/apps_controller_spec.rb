@@ -120,18 +120,18 @@ describe AppsController do
       end
 
       it "should have correct favorite ids" do
-        session1 = FactoryGirl.create(:app_session, :app => app)
-        session2 = FactoryGirl.create(:app_session, :app => app)
-        session3 = FactoryGirl.create(:app_session, :app => app)
+        session1 = FactoryGirl.create(:recorded_session, :app => app)
+        session2 = FactoryGirl.create(:recorded_session, :app => app)
+        session3 = FactoryGirl.create(:recorded_session, :app => app)
         app.app_sessions.should have(3).items
         session1.favorite_users << viewer
         session2.favorite_users << viewer
 
         get :show, {:id => app.to_param}
 
-        assigns(:app_sessions).should include session1
-        assigns(:app_sessions).should include session2
-        assigns(:app_sessions).should include session3
+        assigns(:recorded_sessions).should include session1
+        assigns(:recorded_sessions).should include session2
+        assigns(:recorded_sessions).should include session3
 
         assigns(:favorite_app_session_ids).should include session1.id
         assigns(:favorite_app_session_ids).should include session2.id
@@ -232,7 +232,7 @@ describe AppsController do
         sign_in(user)
       end
 
-      it "should redirect to index page" do
+      it "should redirect to app listing" do
         post :create, { :app => valid_attributes }
         response.should redirect_to(apps_path)
       end
@@ -257,9 +257,15 @@ describe AppsController do
           assigns(:app).account.should == app.account
         end
 
-        it "redirects to app listing" do
+        it "redirects to app view with setup param" do
           post :create, {:app => valid_attributes}
-          response.should redirect_to(apps_path)
+          response.should redirect_to(app_path(assigns(:app).to_param, :setup => true))
+        end
+
+        it 'schedules some recordings' do
+          post :create, {:app => valid_attributes}
+          new_app = assigns(:app)
+          new_app.scheduled_recordings.should == Account::FreeCredits
         end
       end
 
@@ -390,12 +396,19 @@ describe AppsController do
         before(:each) do
           sign_in(app.account.administrator)
         end
-        it "should success" do
+        it "should pause recording" do
           put 'update_recording', { :app_id => app.id, :state => 'pause', :format => :json }
           response.should be_success
           result = JSON.parse(response.body)
           result['result'].should == 'success'
           app.recording_paused?.should be_true
+        end
+        it "should resume recording" do
+          put 'update_recording', { :app_id => app.id, :state => 'resume', :format => :json }
+          response.should be_success
+          result = JSON.parse(response.body)
+          result['result'].should == 'success'
+          app.recording_paused?.should be_false
         end
         it "should fail given invalid state" do
           put 'update_recording', { :app_id => app.id, :state => 'invalid', :format => :json }
@@ -408,7 +421,8 @@ describe AppsController do
       end
 
       describe "does not own app" do
-        let(:admin2) { FactoryGirl.create(:administrator) }
+        let(:app2) { FactoryGirl.create(:app) }
+        let(:admin2) { app2.account.administrator }
 
         before(:each) do
           sign_in(admin2)
@@ -434,6 +448,75 @@ describe AppsController do
         result['result'].should == 'fail'
         result['reason'].should == 'record not found'
         app.recording_paused?.should be_false
+      end
+    end
+  end
+
+  describe "GET setup" do
+    before(:each) do
+      sign_in(app.account.administrator)
+    end
+
+    it "should return success" do
+      get 'setup', { :app_id => app.id }
+      response.should be_success
+      assigns(:app).should == app
+    end
+  end
+
+  describe "GET schedule_recording_edit" do
+    describe "admin signed in" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
+
+      it "should increment the scheduled recording" do
+        get 'schedule_recording_edit', { :app_id => app }
+        response.should be_success
+      end
+    end
+
+    describe "other account signed in" do
+      before(:each) do
+        sign_in(user)
+      end
+      it "should redirect to apps lisnt" do
+        get 'schedule_recording_edit', { :app_id => app }
+        response.should redirect_to(apps_path)
+      end
+    end
+  end
+
+  describe "PUT schedule_recording_update" do
+    describe "admin signed in" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
+
+      it "should increment the scheduled recording" do
+        orig = app.scheduled_recordings
+        put 'schedule_recording_update', { :app_id => app, :schedule_recording => 3 }
+        response.should redirect_to(app_schedule_recording_edit_path(:app_id => app))
+        flash[:notice].should == 'Successfully scheduled recordings'
+        app.reload
+        app.scheduled_recordings.should == (orig + 3)
+      end
+
+      it "should render edit page with invalid param" do
+        orig = app.scheduled_recordings
+        put 'schedule_recording_update', { :app_id => app }
+        response.should be_success
+        app.reload
+        app.scheduled_recordings.should == orig # no change
+      end
+
+      it "should not allow negative scheduled recording" do
+        orig = app.scheduled_recordings
+        put 'schedule_recording_update', { :app_id => app, :schedule_recording => -1  }
+        response.should be_success
+        app.reload
+        app.scheduled_recordings.should == orig # no change
+        flash.now[:notice].should == "Failed scheduling recordings"
       end
     end
   end

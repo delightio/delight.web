@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   devise :omniauthable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :twitter_id, :github_id, :nickname, :image_url, :signup_step
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :twitter_id, :github_id, :nickname, :image_url, :signup_step, :type
 
   validates :nickname, :presence => true
   validates :email, :presence => true, :if => :done_registering?
@@ -15,25 +15,35 @@ class User < ActiveRecord::Base
   has_many :favorites
   has_many :favorite_app_sessions, :through => :favorites, :source => :app_session, :select => 'DISTINCT app_sessions.*'
 
-  def self.find_or_create_for_twitter_oauth(auth_hash, signed_in_resouce=nil)
+  def self.find_or_create_for_twitter_oauth(auth_hash, signed_in_resouce=nil, type=nil)
     uid = auth_hash['uid'].to_s
     if user = self.find_by_twitter_id(uid)
+      if not type.nil? and not user.type == type
+        user.type = type
+        user.save
+      end
       user
     else
       user = self.create(:twitter_id => uid,
                          :nickname => auth_hash['info']['nickname'],
-                         :image_url => auth_hash['info']['image'])
+                         :image_url => auth_hash['info']['image'],
+                         :type => type ? type : 'User')
     end
   end
 
-  def self.find_or_create_for_github_oauth(auth_hash, signed_in_resouce=nil)
+  def self.find_or_create_for_github_oauth(auth_hash, signed_in_resouce=nil, type=nil)
     uid = auth_hash['uid'].to_s
     if user = self.find_by_github_id(uid)
+      if not type.nil? and not user.type == type
+        user.type = type
+        user.save
+      end
       user
     else
       user = self.create(:github_id => uid,
                          :nickname => auth_hash['info']['nickname'],
-                         :image_url => defined?(auth_hash['extra']['raw_info']['avatar_url']) ? auth_hash['extra']['raw_info']['avatar_url'] : nil)
+                         :image_url => defined?(auth_hash['extra']['raw_info']['avatar_url']) ? auth_hash['extra']['raw_info']['avatar_url'] : nil,
+                         :type => type ? type : 'User')
     end
   end
 
