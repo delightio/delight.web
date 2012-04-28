@@ -35,7 +35,7 @@ class App < ActiveRecord::Base
   end
 
   def schedule_recordings n
-    settings.incr :recordings, n
+    settings[:recordings] = n
     settings[:scheduled_at] = Time.now.to_i
   end
 
@@ -91,7 +91,7 @@ class App < ActiveRecord::Base
 
   def notify_users
     if ready_to_notify?
-      Resque.enqueue AppRecordingCompletion, id
+      Resque.enqueue ::AppRecordingCompletion, id
       REDIS.hdel settings.key, :scheduled_at
     end
   end

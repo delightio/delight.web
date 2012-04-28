@@ -99,14 +99,14 @@ describe App do
     end
 
     describe '#schedule_recordings' do
-      it 'increments recordings to be collected' do
-        expect { subject.schedule_recordings 10 }.
-          to change { subject.scheduled_recordings }.by 10
-      end
-
       it 'saves the time of the scheduling' do
         subject.schedule_recordings 10
         subject.settings[:scheduled_at].should_not be_nil
+      end
+
+      it 'sets the total scheduled recordings' do
+        expect { subject.schedule_recordings 1000 }.
+          to change { subject.scheduled_recordings }.to 1000
       end
     end
 
@@ -203,7 +203,7 @@ describe App do
       it 'enqueues email notification' do
         subject.stub :ready_to_notify? => true
         Resque.should_receive(:enqueue).once.
-          with(AppRecordingCompletion, subject.id)
+          with(::AppRecordingCompletion, subject.id)
 
         subject.notify_users
       end
