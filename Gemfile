@@ -73,3 +73,4 @@ gem 'omniauth-github'
 gem 'newrelic_rpm'
 
 gem "kaminari" # for pagination
+gem "simple_form"

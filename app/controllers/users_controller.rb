@@ -23,24 +23,32 @@ class UsersController < ApplicationController
 
   def signup_info_edit
     @user = @current_admin
+    if @user.account.nil?
+      @user.build_account
+    end
+    if @user.account.apps.blank?
+      @user.account.apps.new
+    else
+      respond_to do |format|
+        format.html { redirect_to(apps_path) }
+      end
+    end
   end
 
   def signup_info_update
     @user = @current_admin
+    if @user.account and not @user.account.apps.blank?
+      respond_to do |format|
+        format.html { redirect_to(apps_path) }
+      end
+      return
+    end
 
     params[:user][:signup_step] = 2
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        if @user.account.nil?
-          account = @user.create_account(:name => @current_admin.nickname)
-        end
-        if @user.account and (@app = @user.account.apps.create(:name => params[:app_name])) and @app.valid?
-          flash[:notice] = 'Successfully to create app'
-          format.html { redirect_to app_path(@app, :setup => true) }
-        else
-          flash.now[:notice] = 'Failed to complete profile'
-          format.html { render action: "signup_info_edit" }
-        end
+        flash[:notice] = 'Successfully to create app'
+        format.html { redirect_to app_path(@user.account.apps.first, :setup => true) }
       else
         flash.now[:notice] = 'Failed to complete profile'
         format.html { render action: "signup_info_edit" }

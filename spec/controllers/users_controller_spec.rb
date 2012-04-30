@@ -110,12 +110,79 @@ describe UsersController do
       end
 
       it "returns http success" do
-        get 'signup_info_update', { :user => { :nickname => 'newnick', :email => '123@example.com', :signup_step => 2 }, :app_name => 'appname' }
-        response.should redirect_to(app_path(assigns(:app),:setup => true))
-        assigns(:user).should be_valid
+        put 'signup_info_update',
+            {
+              "user"=>{
+                "nickname"=>"newnick",
+                "email"=>"test@example.com",
+                "account_attributes"=>{
+                  "name"=>"account_name",
+                  "apps_attributes"=>{
+                    "0"=>{
+                      "name"=>"appname"
+                    }
+                  }
+                }
+              }
+            }
+        u = assigns(:user)
+        u.valid?
+        u.should be_valid
+        u.account.should be_valid
+        a = u.account.apps.first
+        a.should be_valid
+
+        response.should redirect_to(app_path(assigns(:user).account.apps.first,:setup => true))
+        u.nickname.should == 'newnick'
+        u.email.should == 'test@example.com'
+        u.signup_step.should == 2
+        u.account.name.should == 'account_name'
+        a.name.should == 'appname'
+      end
+
+      it "should not save user info when account create fail" do
+        put 'signup_info_update',
+            {
+              "user"=>{
+                "nickname"=>"newnick",
+                "email"=>"test@example.com",
+                "account_attributes"=>{
+                  "name"=>"",
+                  "apps_attributes"=>{
+                    "0"=>{
+                      "name"=>"appname"
+                    }
+                  }
+                }
+              }
+            }
         assigns(:user).nickname.should == 'newnick'
-        assigns(:user).email.should == '123@example.com'
-        assigns(:user).signup_step.should == 2
+        assigns(:user).email.should == 'test@example.com'
+        assigns(:user).account.should_not be_valid
+        response.should render_template('users/signup_info_edit')
+      end
+
+      it "should not save user info when app create fail" do
+        put 'signup_info_update',
+            {
+              "user"=>{
+                "nickname"=>"newnick",
+                "email"=>"test@example.com",
+                "account_attributes"=>{
+                  "name"=>"account_name",
+                  "apps_attributes"=>{
+                    "0"=>{
+                      "name"=>""
+                    }
+                  }
+                }
+              }
+            }
+        assigns(:user).nickname.should == 'newnick'
+        assigns(:user).email.should == 'test@example.com'
+        assigns(:user).account.name.should == 'account_name'
+        assigns(:user).account.apps == nil
+        response.should render_template('users/signup_info_edit')
       end
     end
 
