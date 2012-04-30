@@ -5,6 +5,8 @@ class App < ActiveRecord::Base
   has_many :permissions
   has_many :viewers, :through => :permissions
 
+  attr_accessible :name
+
   after_create :generate_token
   after_create :schedule_initial_recording
   validate :token, :presence => true, :uniqueness => true

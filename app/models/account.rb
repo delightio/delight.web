@@ -1,7 +1,7 @@
 class Account < ActiveRecord::Base
   has_many :apps
-  #accepts_nested_attributes_for :apps
-  #attr_accessible :apps_attributes
+  accepts_nested_attributes_for :apps
+  attr_accessible :apps_attributes, :name, :administrator_id
 
   belongs_to :administrator
   has_many :permissions
