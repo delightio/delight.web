@@ -35,12 +35,14 @@ class App < ActiveRecord::Base
   end
 
   def schedule_recordings n
-    settings.incr :recordings, n
+    settings[:recordings] = n
+    settings[:scheduled_at] = Time.now.to_i
   end
 
   def complete_recording
     settings.incr :recordings, -1
     account.use_credits 1
+    notify_users
   end
 
   def resume_recording
@@ -63,12 +65,35 @@ class App < ActiveRecord::Base
     settings[:uploading_on_wifi_only] = flag
   end
 
+  def administrator
+    account.administrator
+  end
+
   def administered_by?(user)
-    self.account.administrator == user
+    administrator == user
   end
 
   def viewable_by?(user)
     self.viewers.include?(user)
+  end
+
+  def emails
+    [administrator, *viewers].map &:email
+  end
+
+  def previously_notified?
+    settings[:scheduled_at].nil?
+  end
+
+  def ready_to_notify?
+    !previously_notified? && scheduled_recordings==0
+  end
+
+  def notify_users
+    if ready_to_notify?
+      Resque.enqueue ::AppRecordingCompletion, id
+      REDIS.hdel settings.key, :scheduled_at
+    end
   end
 
   private

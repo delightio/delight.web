@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :twitter_id, :github_id, :nickname, :image_url, :signup_step, :type
 
   validates :nickname, :presence => true
-  validates :email, :presence => true, :if => :done_registering?
+  validates :email, :presence => true, :format => /^([^\s]+)((?:[-a-z0-9]\.)[a-z]{2,})$/i, :if => :done_registering?
 
   has_many :favorites
   has_many :favorite_app_sessions, :through => :favorites, :source => :app_session, :select => 'DISTINCT app_sessions.*'

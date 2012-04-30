@@ -1,3 +1,5 @@
+require 'resque/server'
+
 DelightWeb::Application.routes.draw do
 
   resources :users, :only => [:edit, :update] do
@@ -30,6 +32,8 @@ DelightWeb::Application.routes.draw do
   resources :beta_signups, :only => [:create]
 
   root :to => 'home#index'
+
+  mount Resque::Server.new, :at => "/resque"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

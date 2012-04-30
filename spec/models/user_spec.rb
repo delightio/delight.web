@@ -5,6 +5,11 @@ describe User do
     @user = FactoryGirl.create(:user)
   end
 
+  specify 'it has an valid email' do
+    @user.email = 'fdfdsf'
+    @user.should have(1).error_on(:email)
+  end
+
   describe "find_or_create_for_twitter_oauth" do
     before(:each) do
       @auth_hash = {

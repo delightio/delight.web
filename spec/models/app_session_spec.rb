@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe AppSession do
   subject { FactoryGirl.create :app_session }
-  it { should_not be_recording }
 
   describe '#recording?' do
     it 'reads from its associated app' do

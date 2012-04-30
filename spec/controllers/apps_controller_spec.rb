@@ -493,13 +493,12 @@ describe AppsController do
         sign_in(app.account.administrator)
       end
 
-      it "should increment the scheduled recording" do
-        orig = app.scheduled_recordings
+      it "should set the scheduled recording with given amount" do
         put 'schedule_recording_update', { :app_id => app, :schedule_recording => 3 }
         response.should redirect_to(app_schedule_recording_edit_path(:app_id => app))
         flash[:notice].should == 'Successfully scheduled recordings'
         app.reload
-        app.scheduled_recordings.should == (orig + 3)
+        app.scheduled_recordings.should == 3
       end
 
       it "should render edit page with invalid param" do
