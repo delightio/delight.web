@@ -11,6 +11,9 @@ describe VideosController do
       #response.response_code.should == 201
     end
 
+    pending "it should return correct xml"
+    pending "it should return response code 201"
+
     it "returns 400 if missing parameters" do
       post :create, video: {}
       response.should_not be_success

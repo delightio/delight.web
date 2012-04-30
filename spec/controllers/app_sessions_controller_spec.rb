@@ -19,6 +19,8 @@ describe AppSessionsController do
       #response.response_code.should == 201
     end
 
+    pending "it should return code 201"
+
     context 'when missing parameters' do
       let(:bad_params) { {} }
       it 'returns 400'

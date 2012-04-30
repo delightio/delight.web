@@ -9,8 +9,9 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       if @video.save
+        #format.xml # TODO: should use custom show.xml. We also don't return the right status code
         format.xml # TODO: should use custom show.xml. We also don't return the right status code
-        #format.xml { render :status => 201 }# TODO: should use custom show.xml. We also don't return the right status code
+        #format.xml { render :xml => @video, :status => 201 }
       else
         format.xml { render xml: @video.errors, status: :bad_request }
       end
