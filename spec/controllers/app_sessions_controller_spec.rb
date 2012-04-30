@@ -16,6 +16,7 @@ describe AppSessionsController do
                  delight_version: delight_version }
       post :create, app_session: params, format: :xml
       response.should be_success
+      #response.response_code.should == 201
     end
 
     context 'when missing parameters' do

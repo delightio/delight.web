@@ -8,6 +8,7 @@ describe VideosController do
       params = { uri: uri, app_session_id: app_session.id }
       post :create, format: :xml, video: params
       response.should be_success
+      #response.response_code.should == 201
     end
 
     it "returns 400 if missing parameters" do
