@@ -5,6 +5,15 @@ describe VideoUploader do
   subject { VideoUploader.new session_id }
   its(:filename) { should match /.mp4/ }
 
+  describe '#bucket_name' do
+    let(:bucket_name) { 'bucket' }
+    it 'reads from ENV' do
+      ENV['S3_UPLOAD_BUCKET'] = bucket_name
+
+      subject.bucket_name.should == bucket_name
+    end
+  end
+
   context 'when generating presigned uris' do
     let(:object) { mock }
     before { subject.stub :object => object }

@@ -1,17 +1,19 @@
 class S3Uploader
   def initialize session_id
     @session_id = session_id
-    @presigned_bucket = upload_bucket
+    @presigned_bucket = bucket
   end
 
-  private
-  UploadBucket = 'delight_upload'
-  def upload_bucket
+  def bucket_name
+    @bucket_name ||= ENV['S3_UPLOAD_BUCKET']
+  end
+
+  def bucket
     policy = AWS::STS::Policy.new
     policy.allow(:actions => :any, :resource => :any)
     session = AWS::STS.new.new_federated_session("session#{@session_id}", :policy => policy)
     s3 = AWS::S3.new(session.credentials)
-    s3.buckets[UploadBucket]
+    s3.buckets[bucket_name]
   end
 end
 
