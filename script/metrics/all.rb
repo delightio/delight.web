@@ -14,9 +14,9 @@ App.extend Scopes
 puts "Signups:"
 7.times do |n|
   range = (n+1).days.ago..n.days.ago
-  puts "  #{n} days ago:"
-  Account.where(:created_at => range).each do |account|
-    print "    #{account.name}, #{account.administrator.email}: "
+  puts "  #{n} days ago: (#{Account.where(:created_at => range).count})"
+  Account.where(:created_at => range).each_with_index do |account, index|
+    print "#{index.to_s.rjust(3)}.  #{account.name}, #{account.administrator.email}: "
     out = account.apps.map do |app|
       "#{app.name} (#{app.app_sessions.count})"
     end
