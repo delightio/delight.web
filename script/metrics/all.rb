@@ -1,26 +1,28 @@
 require File.expand_path('config/environment.rb')
 
 LaunchDate = Time.utc(2012,4,30,2,00).in_time_zone('Hong Kong')
-class App
-  module Scopes
-    def after_launch
-      where 'created_at >= ?', LaunchDate
-    end
-    def latest
-      order 'created_at DESC'
-    end
+module Scopes
+  def after_launch
+    where 'created_at >= ?', LaunchDate
   end
-  extend Scopes
+  def latest
+    order 'created_at DESC'
+  end
 end
+App.extend Scopes
 
 puts "Signups:"
 7.times do |n|
   range = (n+1).days.ago..n.days.ago
   puts "  #{n} days ago:"
   Account.where(:created_at => range).each do |account|
-    puts "  #{account.name}, #{account.administrator.email}"
-    account.apps.each {|app| puts "   App: #{app.name}, #{app.app_sessions.count} sessions." }
+    print "    #{account.name}, #{account.administrator.email}: "
+    out = account.apps.map do |app|
+      "#{app.name} (#{app.app_sessions.count})"
+    end
+    puts out.join(", ")
   end
+  puts
 end
 puts
 
