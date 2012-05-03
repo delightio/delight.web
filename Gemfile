@@ -74,3 +74,4 @@ gem 'newrelic_rpm'
 
 gem "kaminari" # for pagination
 gem "simple_form"
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'

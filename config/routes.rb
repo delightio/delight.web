@@ -14,7 +14,10 @@ DelightWeb::Application.routes.draw do
     delete 'sign_out', :to => 'users/sessions#destroy', :as => :destroy_user_session
   end
 
-  resources :accounts, :except => [:index, :destroy]
+  resources :accounts, :except => [:index, :destroy] do
+    put 'add_credit', :to => 'accounts#add_credit', :as => 'add_credit'
+  end
+
   resources :app_sessions, :only => [:show, :create, :update] do
     put '/favorite', :to => 'app_sessions#favorite', :as => 'favorite'
     put '/unfavorite', :to => 'app_sessions#unfavorite', :as => 'unfavorite'

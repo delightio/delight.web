@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/stripe/stripe-ruby
+  revision: 69b1e4b0bddf68e2183e4c332b15e235e6e212ff
+  specs:
+    stripe (1.6.3)
+      multi_json (~> 1.1)
+      rest-client (~> 1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -297,6 +305,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   simple_form
   spork (~> 1.0rc)
+  stripe!
   thin
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)

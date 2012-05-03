@@ -129,6 +129,137 @@ describe AccountsController do
     end
   end
 
+  describe "PUT add_credit" do
+    let(:app) { FactoryGirl.create(:app) }
+    let(:admin) { app.account.administrator }
+    before(:each) do
+      sign_in(admin)
+    end
+
+    describe "charge success" do
+      before(:each) do
+        fake_charge = Object.new
+        fake_charge.class.module_eval { attr_accessor :paid }
+        fake_charge.paid = true
+        Stripe::Charge.stub(:create).and_return(fake_charge)
+      end
+
+      it "should succeed" do
+        credits = admin.account.remaining_credits
+        put 'add_credit', {
+                            :account_id => admin.account.id,
+                            :'add-credit-quantity-one' => "0",
+                            :'add-credit-quantity-few' => "0",
+                            :'add-credit-quantity-volume' => "2",
+                            :'stripeToken' => "token",
+                            :'total_price' => "200",
+                            :'total_credits' => "100",
+                            :format => :json
+                          }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "success"
+        result["remaining_credits"].should == (credits + 100)
+      end
+
+      it "should fail with no purchase" do
+        credits = admin.account.remaining_credits
+        put 'add_credit', {
+                            :account_id => admin.account.id,
+                            :'add-credit-quantity-one' => "0",
+                            :'add-credit-quantity-few' => "0",
+                            :'add-credit-quantity-volume' => "0",
+                            :'stripeToken' => "token",
+                            :'total_price' => "0",
+                            :'total_credits' => "0",
+                            :format => :json
+                          }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "fail"
+        result["reason"].should == "You have not purchased anything"
+      end
+
+      it "should fail when quantity does not match with total price" do
+        credits = admin.account.remaining_credits
+        put 'add_credit', {
+                            :account_id => admin.account.id,
+                            :'add-credit-quantity-one' => "0",
+                            :'add-credit-quantity-few' => "0",
+                            :'add-credit-quantity-volume' => "2",
+                            :'stripeToken' => "token",
+                            :'total_price' => "198",
+                            :'total_credits' => "100",
+                            :format => :json
+                          }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "fail"
+        result["reason"].should == "Invalid request"
+      end
+
+      it "should fail when quantity does not match with total credits " do
+        credits = admin.account.remaining_credits
+        put 'add_credit', {
+                            :account_id => admin.account.id,
+                            :'add-credit-quantity-one' => "0",
+                            :'add-credit-quantity-few' => "0",
+                            :'add-credit-quantity-volume' => "2",
+                            :'stripeToken' => "token",
+                            :'total_price' => "200",
+                            :'total_credits' => "101",
+                            :format => :json
+                          }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "fail"
+        result["reason"].should == "Invalid request"
+      end
+
+      describe "add credit fail" do
+        before(:each) do
+          Account.any_instance.stub(:add_credits).and_return(0)
+        end
+        it "should show error failed to add credit" do
+          put 'add_credit', {
+                            :account_id => admin.account.id,
+                            :'add-credit-quantity-one' => "0",
+                            :'add-credit-quantity-few' => "0",
+                            :'add-credit-quantity-volume' => "2",
+                            :'stripeToken' => "token",
+                            :'total_price' => "200",
+                            :'total_credits' => "100",
+                            :format => :json
+                            }
+          response.should be_success
+          result = JSON.parse(response.body)
+          result["result"].should == "fail"
+          result["reason"].should == "Failed to add credit"
+        end
+      end
+    end
+
+# nothing to test. better to throw exception and let us aware of that?
+#    describe "charge fail" do
+#      before(:each) do
+#        Stripe::Charge.stub(:create).and_raise(Stripe::InvalidRequestError.new("Invalid token id: token", 'amount'))
+#      end
+#
+#      it "should fail when charge fail" do
+#        put 'add_credit', {
+#                            :account_id => admin.account.id,
+#                            :'add-credit-quantity-one' => "0",
+#                            :'add-credit-quantity-few' => "0",
+#                            :'add-credit-quantity-volume' => "2",
+#                            :'stripeToken' => "token",
+#                            :'total_price' => "200",
+#                            :'total_credits' => "100",
+#                            :format => :json
+#                          }
+#      end
+#    end
+  end
+
 #  describe "GET 'destroy'" do
 #    it "returns http success" do
 #      get 'destroy'
