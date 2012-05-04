@@ -2,7 +2,7 @@ require 'resque/server'
 
 DelightWeb::Application.routes.draw do
 
-  resources :invitations, :only => [:show] do
+  resources :invitations, :only => [:show, :new, :create] do
     put 'accept' => 'invitations#accept', :as => :accept
   end
 

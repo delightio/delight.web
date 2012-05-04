@@ -1,0 +1,8 @@
+<%= simple_form_for(@invitation, :html => { :class => "form-horizontal"}) do |f| %>
+
+  <%= f.input :email %>
+  <%= f.input :app_id, :as => :hidden %>
+  <% # = f.input :message, :as => :text, :rows => 10 %>
+  <%= f.button :submit, :class => 'btn btn-large btn-primary', :value => 'Invite' %>
+
+<% end %>

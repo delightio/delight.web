@@ -1,6 +1,98 @@
 class InvitationsController < ApplicationController
-  before_filter :check_token
-  before_filter :auth_viewer!
+  before_filter :authenticate_user!, :only => [:new, :create]
+  before_filter :check_token, :except => [:new, :create]
+  before_filter :auth_viewer!, :except => [:new, :create]
+  layout 'iframe', :only => [:new, :create]
+
+  def new
+    if not current_user.administrator?
+      respond_to do |format|
+        flash[:type] = 'error'
+        flash[:notice] = 'Invalid operation'
+        format.html do
+          redirect_to(apps_path) and return
+        end
+      end
+    end
+
+    @app = App.administered_by(current_user).find_by_id(params[:app_id])
+    if @app.nil?
+      respond_to do |format|
+        flash[:type] = 'error'
+        flash[:notice] = 'Invalid operation'
+        format.html do
+          redirect_to(apps_path) and return
+        end
+      end
+    end
+    @invitation = @app.invitations.new
+    @invitation.app_id = params[:app_id]
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def create
+    if not current_user.administrator?
+      respond_to do |format|
+        format.json do
+          render :json => {
+            "result" => "fail",
+            "reason" => "user is not administrator"
+          }
+          return
+        end
+        format.html do
+          flash[:type] = "error"
+          flash[:notice] = "User is not adminstrator"
+          redirect_to :action => :new, :app_id => params[:invitation][:app_id]
+          return
+        end
+      end
+    end
+
+    @app = App.administered_by(current_user).find_by_id(params[:invitation][:app_id])
+    if @app.nil?
+      respond_to do |format|
+        format.json do
+          render :json => {
+            "result"=>"fail",
+            "reason" => "invalid app id"
+          }
+          return
+        end
+        format.html do
+          flash[:type] = "error"
+          flash[:notice] = "Invalid app id"
+          redirect_to :action => :new, :app_id => params[:invitation][:app_id]
+          return
+        end
+      end
+    end
+
+    @invitation = @app.invitations.build(params[:invitation])
+    respond_to do |format|
+      if @invitation.save
+        format.json { render :json => { "result" => "success" } }
+        format.html do
+          flash[:notice] = "Succesfully created invitation"
+          redirect_to :action => :new, :app_id => params[:invitation][:app_id]
+        end
+      else
+        format.json { render :json =>
+            { "result" => "fail",
+              "reason" => "Cannot create new invitation" }
+        }
+        format.html do
+          flash[:type] = "error"
+          flash[:notice] = "Cannot create new invitation"
+          render :action => :new, :app_id => params[:invitation][:app_id]
+        end
+      end
+    end
+
+  end
 
   def show
     @invitation = get_invitation(params[:id], params[:token])

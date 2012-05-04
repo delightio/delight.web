@@ -4,6 +4,152 @@ describe InvitationsController do
 
   let(:invitation) { FactoryGirl.create(:invitation) }
   let(:viewer) { FactoryGirl.create(:viewer) }
+  let(:app) { FactoryGirl.create(:app) }
+
+  describe "GET 'new'" do
+    describe "user not signed in" do
+      it "should redirect to sign in page" do
+        get "new", { :app_id => app.id }
+        response.should redirect_to(new_user_session_path)
+      end
+    end
+
+    describe "signed in as non admin" do
+      before(:each) do
+        sign_in(viewer)
+      end
+      it "should redirect to apps path "do
+        get "new", { :app_id => app.id }
+        response.should redirect_to(apps_path)
+      end
+    end
+
+    describe "signed in as non owner admin" do
+      let(:app2) { FactoryGirl.create(:app) }
+      let(:admin2) { app2.account.administrator }
+      before(:each) do
+        sign_in(admin2)
+      end
+
+      it "should redirect to apps path" do
+        get "new", { :app_id => app.id }
+        response.should redirect_to(apps_path)
+      end
+    end
+
+    describe "signed in as owner admin" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
+      it "should success" do
+        get "new", { :app_id => app.id }
+        response.should be_success
+      end
+    end
+  end
+
+  describe "POST 'create'" do
+    describe "user not signed in" do
+      it "should redirect to sign in page" do
+        post 'create',
+            :invitation => {
+              :app_id => app.id,
+              :email => "test@example.com",
+              :app_session_id => nil,
+              :message => nil
+            }, :format => :json
+        response.response_code.should == 401
+        #response.should redirect_to(new_user_session_path)
+      end
+    end
+
+    describe "signed in as non admin" do
+      before(:each) do
+        sign_in(viewer)
+      end
+      it "should fail" do
+        post 'create',
+            :invitation => {
+              :app_id => app.id,
+              :email => "test@example.com",
+              :app_session_id => nil,
+              :message => nil
+            }, :format => :json
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "fail"
+        result["reason"].should == "user is not administrator"
+      end
+    end
+
+    describe "signed in as non owner admin" do
+      let(:app2) { FactoryGirl.create(:app) }
+      let(:admin2) { app2.account.administrator }
+      before(:each) do
+        sign_in(admin2)
+      end
+      it "should fail" do
+        post 'create',
+            :invitation => {
+              :app_id => app.id,
+              :email => "test@example.com",
+              :app_session_id => nil,
+              :message => nil
+            }, :format => :json
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "fail"
+        result["reason"].should == "invalid app id"
+      end
+    end
+
+    describe "signed in as admin app owner" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
+      it "should create new invitation" do
+        post 'create',
+            :invitation => {
+              :app_id => app.id,
+              :email => "test@example.com",
+              :app_session_id => nil,
+              :message => nil
+            }, :format => :json
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "success"
+        assigns(:invitation).should be_valid
+        assigns(:invitation).app_id.should == app.id
+        assigns(:invitation).email.should == "test@example.com"
+      end
+
+      it "should fail without email" do
+        post 'create',
+             :invitation => {
+                :app_id => app.id,
+                :app_session_id => nil,
+                :message => nil
+             }, :format => :json
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "fail"
+        result["reason"].should == "Cannot create new invitation"
+      end
+
+      it "should fail without app id" do
+        post 'create',
+            :invitation => {
+              :email => "test@example.com",
+              :app_session_id => nil,
+              :message => nil,
+            }, :format => :json
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "fail"
+        result["reason"].should == "invalid app id"
+      end
+    end
+  end
 
   describe "GET 'show'" do
     describe "user not signed in" do
