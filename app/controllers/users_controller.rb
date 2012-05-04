@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   def update
     @user = current_user
 
+    params[:user][:signup_step] = 2
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:notice] = 'Successfully updated profile'

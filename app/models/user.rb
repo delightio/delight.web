@@ -18,10 +18,10 @@ class User < ActiveRecord::Base
   def self.find_or_create_for_twitter_oauth(auth_hash, signed_in_resouce=nil, type=nil)
     uid = auth_hash['uid'].to_s
     if user = self.find_by_twitter_id(uid)
-      if not type.nil? and not user.type == type
-        user.type = type
-        user.save
-      end
+      #if not type.nil? and not user.kind_of?(type.constantize)
+      #  user.type = type
+      #  user.save
+      #end
       user
     else
       user = self.create(:twitter_id => uid,
@@ -34,10 +34,10 @@ class User < ActiveRecord::Base
   def self.find_or_create_for_github_oauth(auth_hash, signed_in_resouce=nil, type=nil)
     uid = auth_hash['uid'].to_s
     if user = self.find_by_github_id(uid)
-      if not type.nil? and not user.type == type
-        user.type = type
-        user.save
-      end
+      #if not type.nil? and not user.type == type
+      #  user.type = type
+      #  user.save
+      #end
       user
     else
       user = self.create(:github_id => uid,

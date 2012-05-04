@@ -1,0 +1,16 @@
+<h1>Invitation</h1>
+<div class="row">
+  <div class="span12">
+    <p>
+    You are invited to view the app <b><%= @invitation.app.name %></b>.
+    </p>
+    <p>
+    You will be able to view the recordings of <% @invitation.app.name %> if you accept the invitation.
+    </p>
+</div>
+</div>
+<div class="row">
+  <div class="span12">
+    <%= link_to "Accept invitation", invitation_accept_path(:invitation_id => @invitation.id, :token => @invitation.token), :method => :put, :class => "btn btn-large" %>
+  </div>
+</div>

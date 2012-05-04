@@ -105,7 +105,7 @@ describe User do
         user.github_id.should == 'github_uid'
         User.count.should == count
         user.should == @github_user
-        user.type.should == 'Viewer'
+        user.type.should == 'User' # should respec original type
       end
     end
   end

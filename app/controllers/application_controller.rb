@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   # require user to complete profile before proceed
   def check_user_registration
+    logger.debug(session.to_yaml)
     if not user_signed_in?
       return
     end
@@ -27,6 +28,12 @@ class ApplicationController < ActionController::Base
         redirect_to redirect_path
         return
       end
+    end
+
+    if session['omniauth.redirect']
+      redirect_to session['omniauth.redirect']
+      session['omniauth.redirect'] = nil
+      return
     end
   end
 

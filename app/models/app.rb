@@ -5,6 +5,8 @@ class App < ActiveRecord::Base
   has_many :permissions
   has_many :viewers, :through => :permissions
 
+  has_many :invitations
+
   attr_accessible :name
 
   after_create :generate_token

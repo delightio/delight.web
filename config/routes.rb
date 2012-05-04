@@ -2,6 +2,10 @@ require 'resque/server'
 
 DelightWeb::Application.routes.draw do
 
+  resources :invitations, :only => [:show] do
+    put 'accept' => 'invitations#accept', :as => :accept
+  end
+
   resources :users, :only => [:edit, :update] do
     get 'signup_info_edit' => 'users#signup_info_edit', :as => :signup_info_edit
     put 'signup_info_update' => 'users#signup_info_update', :as => :signup_info_update
