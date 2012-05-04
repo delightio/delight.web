@@ -3,7 +3,7 @@ class App < ActiveRecord::Base
   has_many :app_sessions
 
   has_many :permissions
-  has_many :viewers, :through => :permissions
+  has_many :viewers, :through => :permissions, :uniq => true
 
   has_many :invitations
 
@@ -19,11 +19,11 @@ class App < ActiveRecord::Base
 
   module Scopes
     def administered_by(user)
-      joins(:account).where(:accounts => { :administrator_id => user.id })
+      select('DISTINCT apps.*').joins(:account).where(:accounts => { :administrator_id => user.id })
     end
 
     def viewable_by(user)
-      joins(:permissions).where(:permissions => { :viewer_id => user.id })
+      select('DISTINCT apps.*').joins(:permissions).where(:permissions => { :viewer_id => user.id })
     end
   end
   extend Scopes

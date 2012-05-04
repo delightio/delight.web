@@ -74,6 +74,7 @@ class InvitationsController < ApplicationController
     @invitation = @app.invitations.build(params[:invitation])
     respond_to do |format|
       if @invitation.save
+        SystemMailer.invitation_email(current_user, @invitation).deliver
         format.json { render :json => { "result" => "success" } }
         format.html do
           flash[:notice] = "Succesfully created invitation"

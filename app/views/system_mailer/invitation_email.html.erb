@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+<h1>Welcome to delightio</h1>
+<p>
+<%= @user.nickname %> would like to invite you to delight.io viewing the app <%= @invitation.app.name %><br/>
+To accept the invitation, please follow the link below:<br/>
+<%= link_to @invitation_url, @invitation_url, :target => "_blank" %>
+</p>
+<p>Thanks for joining and have a great day!</p>
+</body>
+</html>
