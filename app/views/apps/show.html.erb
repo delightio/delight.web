@@ -11,7 +11,9 @@
     <% if current_user.kind_of?(Administrator) %>
     <div class="span7 align-r">
       <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= link_to(raw("<span id='num-scheduled-recording'>" + @app.scheduled_recordings.to_s + "</span> Sessions Scheduled"), app_schedule_recording_edit_path(:app_id => @app.id), :id => 'app-schedule-recording') %></h3>
-      <%= link_to raw('<i class="icon-user"></i> Invite Viewer'), new_invitation_path(:app_id => @app.id), :class => "btn btn-large", :id => "app-show-invite-viewer" %>
+
+<!--       <%= link_to raw('<i class="icon-user"></i> Invite Viewer'), new_invitation_path(:app_id => @app.id), :class => "btn btn-large", :id => "app-show-invite-viewer" %>
+ -->
       <%= link_to raw('<i class="icon-pause"></i> Pause Recording'), app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :id => "app-show-pause-recording-btn", :style => @app.recording_paused? ? 'display:none' : '' %>
       <%= link_to raw('<i class="icon-play"></i> Start Recording'), app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :class => "btn btn-success btn-large", :id => "app-show-resume-recording-btn", :style => @app.recording_paused? ? '' : 'display:none' %>
     </div>
