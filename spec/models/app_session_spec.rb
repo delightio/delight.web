@@ -3,11 +3,44 @@ require 'spec_helper'
 describe AppSession do
   subject { FactoryGirl.create :app_session }
 
+  describe '.recorded' do
+    it 'returns all recorded sessions which are completed and we had expected more than 1 tracks'
+  end
+
+  describe '.completed' do
+    it 'returns completed sessions which we have received the expected number of tracks'
+  end
+
+  describe '#completed?' do
+    it 'is true after we have received the expected number of tracks' do
+      subject.stub :expected_track_count => 0
+      subject.stub :tracks => []
+
+      subject.should be_completed
+    end
+  end
+
+  describe '#recorded?' do
+    it 'is true after session is completed and we had expected more than 1 tracks' do
+      subject.stub :completed? => true
+      subject.stub :expected_track_count => 2
+
+      subject.should be_recorded
+    end
+  end
+
   describe '#recording?' do
     it 'reads from its associated app' do
       subject.app.should_receive :recording?
 
       subject.recording?
+    end
+  end
+
+  describe '#expected_track_count' do
+    subject { FactoryGirl.create :non_recording_app_session }
+    it 'is 0 when not recording' do
+      subject.expected_track_count.should == 0
     end
   end
 
@@ -102,10 +135,34 @@ describe AppSession do
   end
 
   describe '#complete_upload' do
-    it 'tells associated app to update recording accounting' do
-      subject.app.should_receive :complete_recording
+    context 'when sesison is completed' do
+      before { subject.stub :completed? => true }
 
-      subject.complete_upload mock
+      it 'tells associated app to update recording accounting' do
+        subject.app.should_receive :complete_recording
+
+        subject.complete_upload mock
+      end
+    end
+
+    context 'when session is not completed' do
+      before { subject.stub :completed? => false }
+
+      it 'does not update recording accounting' do
+        subject.app.should_not_receive :complete_recording
+
+        subject.complete_upload mock
+      end
+    end
+  end
+
+  context 'named_track' do
+    [:screen_track, :touch_track, :front_track].each do |named_track|
+      specify "#{named_track} returns associated #{named_track}" do
+        track = FactoryGirl.create named_track, app_session: subject
+
+        subject.send(named_track).should == track
+      end
     end
   end
 
@@ -124,13 +181,12 @@ describe AppSession do
       subject.upload_uris.should == Hash.new
     end
 
-    let(:presigned_write_uri) { 'presigned' }
-    it 'uses VideoUploader to generate the presigned URI' do
+    it 'expects a screen track' do
       subject.stub :recording? => true
-      VideoUploader.any_instance.stub :presigned_write_uri => presigned_write_uri
+      ScreenTrack.should_receive(:new).and_return(mock.as_null_object)
 
       subject.send :generate_upload_uris
-      subject.upload_uris[:screen].should == presigned_write_uri
+      subject.expected_track_count.should == 1
     end
   end
 

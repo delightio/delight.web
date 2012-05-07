@@ -27,8 +27,13 @@ DelightWeb::Application.routes.draw do
     put '/unfavorite', :to => 'app_sessions#unfavorite', :as => 'unfavorite'
   end
 
+  resources :tracks, :only => [:create, :show]
+  resources :screen_tracks, :only => [:create]
+  resources :touch_tracks, :only => [:create]
+  resources :front_tracks, :only => [:create]
+
+  # To be removed. This internally maps ScreenTrack
   resources :videos, :only => [:create, :show]
-  get '/video/sample', :to => 'videos#sample', :as => 'sample_video'
 
   resources :apps do
     put '/recording/update/:state', :to => 'apps#update_recording', :as => :update_recording

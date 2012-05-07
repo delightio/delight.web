@@ -1,7 +1,7 @@
 class AppSession < ActiveRecord::Base
   attr_reader :upload_uris
 
-  has_one :video
+  has_many :tracks
   belongs_to :app
 
   has_many :favorites
@@ -42,7 +42,11 @@ class AppSession < ActiveRecord::Base
     end
 
     def recorded
-      joins(:video).where('videos.app_session_id is NOT NULL')
+      completed.where('app_sessions.expected_track_count > 0')
+    end
+
+    def completed
+      where('app_sessions.expected_track_count = app_sessions.tracks_count')
     end
 
     def latest
@@ -50,6 +54,15 @@ class AppSession < ActiveRecord::Base
     end
   end
   extend Scopes
+
+  def completed?
+    expected_track_count == tracks.count
+  end
+
+  def recorded?
+    completed? &&
+    expected_track_count > 0
+  end
 
   def recording?
     app.recording?
@@ -60,16 +73,29 @@ class AppSession < ActiveRecord::Base
   end
 
   def complete_upload media
-    # Normally we will check if we have got all the media types we expect
-    # before counting self as a complete recording
-    app.complete_recording
+    app.complete_recording if completed?
+  end
+
+  def screen_track
+    ScreenTrack.find_by_app_session_id id
+  end
+
+  def touch_track
+    TouchTrack.find_by_app_session_id id
+  end
+
+  def front_track
+    FrontTrack.find_by_app_session_id id
   end
 
   private
   def generate_upload_uris
     @upload_uris = {}
     if recording?
-      @upload_uris = { screen: VideoUploader.new(id).presigned_write_uri }
+      @upload_uris = {
+        screen: ScreenTrack.new(app_session_id: id).presigned_write_uri
+      }
     end
+    update_attribute :expected_track_count, @upload_uris.count
   end
 end

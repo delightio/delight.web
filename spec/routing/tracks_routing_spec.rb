@@ -1,10 +1,10 @@
 require "spec_helper"
 
-describe VideosController do
+describe TracksController do
   describe "routing" do
 
     it "routes to #create" do
-      post("/videos").should route_to("videos#create")
+      post("/tracks").should route_to("tracks#create")
     end
 
   end

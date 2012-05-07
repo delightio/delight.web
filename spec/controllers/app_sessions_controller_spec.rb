@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe AppSessionsController do
   describe 'post' do
-    let(:app) { FactoryGirl.create :app }
+    let(:app) { FactoryGirl.create :non_recording_app }
     let(:app_version) { '1.4' }
     let(:app_build) { 'KJKJ'}
     let(:delight_version) { '0.1' }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120503051630) do
+ActiveRecord::Schema.define(:version => 20120506133521) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -22,14 +22,16 @@ ActiveRecord::Schema.define(:version => 20120503051630) do
 
   create_table "app_sessions", :force => true do |t|
     t.decimal  "duration"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.integer  "app_id"
     t.string   "app_user_id"
     t.string   "locale"
     t.string   "app_version"
     t.string   "delight_version"
     t.string   "app_build"
+    t.integer  "expected_track_count"
+    t.integer  "tracks_count",         :default => 0
   end
 
   create_table "apps", :force => true do |t|
@@ -77,6 +79,13 @@ ActiveRecord::Schema.define(:version => 20120503051630) do
 
   add_index "permissions", ["viewer_id"], :name => "index_permissions_on_viewer_id"
 
+  create_table "tracks", :force => true do |t|
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "app_session_id"
+    t.string   "type"
+  end
+
   create_table "users", :force => true do |t|
     t.integer  "account_id"
     t.string   "twitter_id"
@@ -100,12 +109,5 @@ ActiveRecord::Schema.define(:version => 20120503051630) do
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-
-  create_table "videos", :force => true do |t|
-    t.string   "uri"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-    t.integer  "app_session_id"
-  end
 
 end

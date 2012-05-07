@@ -18,7 +18,7 @@
         </video>
         -->
         <video height="480px" controls="controls">
-        <source src="<%= @video.presigned_read_uri if @video and @video.presigned_read_uri %>" type='video/mp4' />
+        <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
         Your browser does not support video tag
         </video>
       </div>

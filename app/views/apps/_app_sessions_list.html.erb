@@ -10,7 +10,7 @@
           <% end %>
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
-              <a href=<%= video_url(session.video) %> class="thumbnail group-video">
+              <a href=<%= track_url(session.screen_track) %> class="thumbnail group-video">
                 <img src="/images/thumbnail_not_supported.png" alt="">
               </a>
             </li>
@@ -37,7 +37,7 @@
               </tr>
               <tr>
                 <td>Date:</td>
-                <td class="align-r"><%= session.created_at.to_date if session.video %></td>
+                <td class="align-r"><%= session.created_at.to_date %></td>
               </tr>
             </tbody>
           </table>

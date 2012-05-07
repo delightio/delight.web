@@ -104,10 +104,6 @@ describe AppsController do
 
     describe "viewer signed in" do
       let(:viewer) { FactoryGirl.create(:viewer) }
-      #let(:session1) { FactoryGirl.create(:app_session, :app => app) }
-      #let(:session2) { FactoryGirl.create(:app_session, :app => app) }
-      #let(:session3) { FactoryGirl.create(:app_session, :app => app) }
-
       before(:each) do
         app.viewers.push viewer
         sign_out(user)
@@ -120,9 +116,10 @@ describe AppsController do
       end
 
       it "should have correct favorite ids" do
-        session1 = FactoryGirl.create(:recorded_session, :app => app)
-        session2 = FactoryGirl.create(:recorded_session, :app => app)
-        session3 = FactoryGirl.create(:recorded_session, :app => app)
+        session1 = FactoryGirl.create(:recorded_app_session, :app => app)
+        session2 = FactoryGirl.create(:recorded_app_session, :app => app)
+        session3 = FactoryGirl.create(:recorded_app_session, :app => app)
+
         app.app_sessions.should have(3).items
         session1.favorite_users << viewer
         session2.favorite_users << viewer
