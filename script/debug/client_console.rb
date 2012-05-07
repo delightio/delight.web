@@ -5,8 +5,10 @@ require 'yajl'
 require 'pry'
 
 class ClientConsole
-  LocalHost = "localhost:3000"
-  ProductionHost = "delightweb.herokuapp.com"
+  LocalHost = 'localhost:3000'
+  ProductionHost = 'delightweb.herokuapp.com'
+  StagingHost = 'delightweb-staging.herokuapp.com'
+
   def initialize
     @domain = ProductionHost
     @scheme = "http"
@@ -23,6 +25,10 @@ class ClientConsole
 
   def production!
     initialize_conn ProductionHost
+  end
+
+  def staging!
+    initialize_conn StagingHost
   end
 
   def local!
