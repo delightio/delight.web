@@ -7,8 +7,10 @@ class AppSession < ActiveRecord::Base
   has_many :favorites
   has_many :favorite_users, :through => :favorites, :source => :user, :select => 'DISTINCT users.*'
 
+  validates_presence_of :delight_version
   validates_presence_of :app_id, :app_version, :app_build
-  validates_presence_of :delight_version, :locale
+  validates_presence_of :app_locale, :app_connectivity
+  validates_presence_of :device_hw_version, :device_os_version
 
   after_create :generate_upload_uris
 
@@ -96,12 +98,12 @@ class AppSession < ActiveRecord::Base
     if recording?
       @upload_uris = {
         screen_track: {
-          resource_path: url_helpers.screen_tracks_path,
-          presigned_write_uri: ScreenTrack.new(app_session_id: id).presigned_write_uri
+          presigned_write_uri:
+            ScreenTrack.new(app_session_id: id).presigned_write_uri
         },
         touch_track: {
-          resource_path: url_helpers.touch_tracks_path,
-          presigned_write_uri: TouchTrack.new(app_session_id: id).presigned_write_uri
+          presigned_write_uri:
+            TouchTrack.new(app_session_id: id).presigned_write_uri
         }
       }
     end

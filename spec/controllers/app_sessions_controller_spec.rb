@@ -3,16 +3,22 @@ require 'spec_helper'
 describe AppSessionsController do
   describe 'post' do
     let(:app) { FactoryGirl.create :non_recording_app }
+    let(:delight_version) { '0.1' }
     let(:app_version) { '1.4' }
     let(:app_build) { 'KJKJ'}
-    let(:delight_version) { '0.1' }
-    let(:locale) { 'en-US' }
+    let(:app_locale) { 'en-US' }
+    let(:app_connectivity) { 'wifi' }
+    let(:device_hw_version) { 'iPhone 4.1' }
+    let(:device_os_version) { '4.1' }
 
     it 'creates' do
       params = { app_token: app.token,
                  app_version: app_version,
                  app_build: app_build,
-                 locale: locale,
+                 app_locale: app_locale,
+                 app_connectivity: app_connectivity,
+                 device_hw_version: device_hw_version,
+                 device_os_version: device_os_version,
                  delight_version: delight_version }
       post :create, app_session: params, format: :xml
       response.should be_success
