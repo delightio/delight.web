@@ -95,14 +95,8 @@ class AppSession < ActiveRecord::Base
     @upload_uris = {}
     if recording?
       @upload_uris = {
-        screen_track: {
-          presigned_write_uri:
-            ScreenTrack.new(app_session_id: id).presigned_write_uri
-        },
-        touch_track: {
-          presigned_write_uri:
-            TouchTrack.new(app_session_id: id).presigned_write_uri
-        }
+        screen_track: ScreenTrack.new(app_session_id: id).presigned_write_uri,
+        touch_track: TouchTrack.new(app_session_id: id).presigned_write_uri
       }
     end
     update_attribute :expected_track_count, @upload_uris.count

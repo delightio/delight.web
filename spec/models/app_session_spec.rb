@@ -190,10 +190,6 @@ describe AppSession do
       subject.expected_track_count.should == 2
       subject.upload_uris.should have_key :screen_track
       subject.upload_uris.should have_key :touch_track
-      [:screen_track, :touch_track].each do |expected_track|
-        subject.upload_uris.should have_key expected_track
-        subject.upload_uris[expected_track].should have_key :presigned_write_uri
-      end
     end
   end
 
