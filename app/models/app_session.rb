@@ -12,6 +12,8 @@ class AppSession < ActiveRecord::Base
 
   after_create :generate_upload_uris
 
+  delegate :url_helpers, to: 'Rails.application.routes'
+
   module Scopes
     def favorite_of(user)
       joins(:favorites).where(:favorites => {:user_id => user.id})
@@ -93,7 +95,14 @@ class AppSession < ActiveRecord::Base
     @upload_uris = {}
     if recording?
       @upload_uris = {
-        screen: ScreenTrack.new(app_session_id: id).presigned_write_uri
+        screen_track: {
+          resource_path: url_helpers.screen_tracks_path,
+          presigned_write_uri: ScreenTrack.new(app_session_id: id).presigned_write_uri
+        },
+        touch_track: {
+          resource_path: url_helpers.touch_tracks_path,
+          presigned_write_uri: TouchTrack.new(app_session_id: id).presigned_write_uri
+        }
       }
     end
     update_attribute :expected_track_count, @upload_uris.count
