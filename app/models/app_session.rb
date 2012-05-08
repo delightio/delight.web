@@ -14,8 +14,6 @@ class AppSession < ActiveRecord::Base
 
   after_create :generate_upload_uris
 
-  delegate :url_helpers, to: 'Rails.application.routes'
-
   module Scopes
     def favorite_of(user)
       joins(:favorites).where(:favorites => {:user_id => user.id})
