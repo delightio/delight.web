@@ -19,6 +19,11 @@ DelightWeb::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { :host => 'delight.dev' }
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    :api_key  => "key-2g0kzoi319ny0w8sp2q16yocebedta13",
+    :api_host => "delightio.mailgun.org"
+  }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

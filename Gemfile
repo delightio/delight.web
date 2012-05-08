@@ -14,6 +14,7 @@ gem 'resque'
 
 # emailing with mailgun
 gem 'rest-client'
+gem 'mailgun-rails'
 
 group :development, :test do
   gem 'rspec-rails'
