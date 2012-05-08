@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
 
   # require user to complete profile before proceed
   def check_user_registration
-    logger.debug(session.to_yaml)
     if not user_signed_in?
       return
     end

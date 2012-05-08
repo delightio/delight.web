@@ -111,7 +111,6 @@ class InvitationsController < ApplicationController
     if not @invitation
       respond_to do |format|
         format.html do
-          logger.debug "no invitation"
           redirect_to(apps_path) and return
         end
       end
