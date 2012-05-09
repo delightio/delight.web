@@ -13,7 +13,7 @@ class VideoProcessing
 
     presentation_track = PresentationTrack.new app_session: app_session
     presentation_track.upload encoded
-    presentation_track.thumbnail.upload thumbnail
+    # presentation_track.thumbnail.upload thumbnail
     presentation_track.save
   end
 
