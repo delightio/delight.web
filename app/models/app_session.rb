@@ -7,8 +7,11 @@ class AppSession < ActiveRecord::Base
   has_many :favorites
   has_many :favorite_users, :through => :favorites, :source => :user, :select => 'DISTINCT users.*'
 
+  validates_presence_of :delight_version
   validates_presence_of :app_id, :app_version, :app_build
-  validates_presence_of :delight_version, :locale
+  validates_presence_of :app_locale
+  # LH 110 We will need to run a migration to pre fill the empty entries
+  # validates_presence_of :app_connectivity, :device_hw_version, :device_os_version
 
   after_create :generate_upload_uris
 
@@ -65,6 +68,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def recording?
+    return false if delight_version.to_i < 2 # LH 110
     app.recording?
   end
 
@@ -93,7 +97,8 @@ class AppSession < ActiveRecord::Base
     @upload_uris = {}
     if recording?
       @upload_uris = {
-        screen: ScreenTrack.new(app_session_id: id).presigned_write_uri
+        screen_track: ScreenTrack.new(app_session_id: id).presigned_write_uri,
+        touch_track: TouchTrack.new(app_session_id: id).presigned_write_uri
       }
     end
     update_attribute :expected_track_count, @upload_uris.count

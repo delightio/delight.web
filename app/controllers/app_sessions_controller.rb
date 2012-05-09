@@ -67,6 +67,12 @@ class AppSessionsController < ApplicationController
       return
     end
     as_params.merge! app_id: @app.id
+
+    # LH 110
+    if as_params[:delight_version].to_i < 2
+      as_params[:app_locale] = as_params.delete :locale
+    end
+
     @app_session = AppSession.new as_params
 
     respond_to do |format|

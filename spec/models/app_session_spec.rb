@@ -35,6 +35,13 @@ describe AppSession do
 
       subject.recording?
     end
+
+    it 'is always false when version is less than 2' do
+      subject.delight_version = '1.0'
+      subject.app.should_not_receive :recording?
+
+      subject.should_not be_recording
+    end
   end
 
   describe '#expected_track_count' do
@@ -181,12 +188,15 @@ describe AppSession do
       subject.upload_uris.should == Hash.new
     end
 
-    it 'expects a screen track' do
+    it 'expects a screen and a touch track' do
       subject.stub :recording? => true
       ScreenTrack.should_receive(:new).and_return(mock.as_null_object)
+      TouchTrack.should_receive(:new).and_return(mock.as_null_object)
 
       subject.send :generate_upload_uris
-      subject.expected_track_count.should == 1
+      subject.expected_track_count.should == 2
+      subject.upload_uris.should have_key :screen_track
+      subject.upload_uris.should have_key :touch_track
     end
   end
 

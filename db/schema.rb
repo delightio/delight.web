@@ -28,12 +28,15 @@ ActiveRecord::Schema.define(:version => 20120509090655) do
     t.datetime "updated_at",                          :null => false
     t.integer  "app_id"
     t.string   "app_user_id"
-    t.string   "locale"
+    t.string   "app_locale"
     t.string   "app_version"
     t.string   "delight_version"
     t.string   "app_build"
     t.integer  "expected_track_count"
     t.integer  "tracks_count",         :default => 0
+    t.string   "app_connectivity"
+    t.string   "device_hw_version"
+    t.string   "device_os_version"
   end
 
   add_index "app_sessions", ["app_id"], :name => "as_app_id"
