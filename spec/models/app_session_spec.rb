@@ -223,7 +223,7 @@ describe AppSession do
   end
 
   context 'named_track' do
-    [:screen_track, :touch_track, :front_track].each do |named_track|
+    [:screen_track, :touch_track, :front_track, :presentation_track].each do |named_track|
       specify "#{named_track} returns associated #{named_track}" do
         track = FactoryGirl.create named_track, app_session: subject
 
