@@ -3,6 +3,9 @@ class VideoProcessing
   @queue = :video
 
   def self.perform app_session_id
+    start = Time.now
+    puts "AppSession[#{app_session_id}] is processing..."
+
     app_session = AppSession.find app_session_id
 
     touch = app_session.touch_track.download
@@ -12,13 +15,16 @@ class VideoProcessing
     thumbnail = VideoProcessing.thumbnail processed
 
     presentation_track = PresentationTrack.new app_session: app_session
-    presentation_track.upload encoded
+    presentation_track.upload processed
     # presentation_track.thumbnail.upload thumbnail
-    presentation_track.save
+    if presentation_track.save
+      puts "AppSession[#{app_session_id}] is done processing in #{Time.now-start} s."
+    end
   end
 
   def self.enqueue app_session_id
     Resque.enqueue VideoProcessing, app_session_id
+    puts "AppSession[#{app_session_id}] is enqueued for VideoProcessing"
   end
 
   # TODO

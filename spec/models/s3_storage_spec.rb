@@ -29,9 +29,9 @@ describe S3Storage do
 
   describe '#download' do
     subject { S3Storage.new 'Procfile', 'delight_rspec' }
+    let(:original) { File.join Rails.root, subject.filename }
     let(:local_directory) { '/tmp' }
     let(:downloaded) { File.join local_directory, subject.filename }
-    let(:original) { File.join Rails.root, subject.filename }
 
     it 'downloads associated filename to local directory' do
       subject.download local_directory
@@ -40,6 +40,19 @@ describe S3Storage do
 
     it 'returns a File object' do
       subject.download(local_directory).should be_an_instance_of File
+    end
+  end
+
+  describe '#upload' do
+    subject { S3Storage.new 'Procfile', 'delight_rspec' }
+    let(:local_file) { File.new File.join Rails.root, subject.filename }
+
+    it 'uploads given local file to S3' do
+      presigned_object = mock
+      subject.stub :presigned_object => presigned_object
+      presigned_object.should_receive(:write).with(local_file.read)
+
+      subject.upload local_file
     end
   end
 end
