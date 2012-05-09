@@ -121,12 +121,14 @@ class AppSession < ActiveRecord::Base
   private
   def generate_upload_uris
     @upload_uris = {}
+    count = 0
     if recording?
       @upload_uris = {
         screen_track: ScreenTrack.new(app_session_id: id).presigned_write_uri,
         touch_track: TouchTrack.new(app_session_id: id).presigned_write_uri
       }
+      count = 1 + @upload_uris.count # +1 for presentation track
     end
-    update_attribute :expected_track_count, @upload_uris.count
+    update_attribute :expected_track_count, count
   end
 end
