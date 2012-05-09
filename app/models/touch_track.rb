@@ -1,5 +1,5 @@
 class TouchTrack < Track
   def file_extension
-    'xml'
+    'plist'
   end
 end
