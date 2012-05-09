@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Track' do
+describe Track do
   describe '#after_create' do
     let(:app_session) { FactoryGirl.create :app_session }
     subject { FactoryGirl.create(:track, app_session: app_session) }
@@ -47,28 +47,19 @@ describe 'Track' do
     end
   end
 
-  describe '#local_filename' do
-    it 'is the file path at where we will download to' do
-      subject.local_filename.should ==
-        File.join(subject.app_session.working_directory, subject.filename)
-    end
-  end
-
   describe '#download' do
     before do
-      subject.stub :local_filename => File.join(Rails.root, '.gitignore')
+      local_filename = File.join Rails.root, '.gitignore'
+      subject.storage.should_receive(:download).
+        with(subject.app_session.working_directory).
+        and_return(File.new local_filename)
     end
 
     it 'downloads online version to the working directory' do
-      subject.storage.should_receive(:download).
-        with(subject.app_session.working_directory)
-
       subject.download
     end
 
     it 'returns a File object' do
-      subject.stub :storage => mock.as_null_object
-
       subject.download.should be_an_instance_of File
     end
   end

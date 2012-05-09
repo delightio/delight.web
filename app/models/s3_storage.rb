@@ -28,9 +28,10 @@ class S3Storage
   end
 
   def download local_directory
-    download_file = File.join local_directory, filename
+    download_file = File.join local_directory, @filename
     File.open(download_file, 'w') do |file|
       file.write presigned_object.read
     end
+    File.new download_file
   end
 end

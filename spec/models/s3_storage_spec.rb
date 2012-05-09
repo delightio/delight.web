@@ -37,5 +37,9 @@ describe S3Storage do
       subject.download local_directory
       FileUtils.compare_file(original, downloaded).should == true
     end
+
+    it 'returns a File object' do
+      subject.download(local_directory).should be_an_instance_of File
+    end
   end
 end
