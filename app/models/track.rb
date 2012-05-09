@@ -23,6 +23,6 @@ class Track < ActiveRecord::Base
   end
 
   def presigned_read_uri
-    storage.presigned_write_uri
+    storage.presigned_read_uri
   end
 end
