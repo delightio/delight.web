@@ -25,7 +25,12 @@ class Track < ActiveRecord::Base
     storage.presigned_read_uri
   end
 
+  def local_filename
+    File.join app_session.working_directory, filename
+  end
+
   def download
     storage.download app_session.working_directory
+    File.new local_filename
   end
 end

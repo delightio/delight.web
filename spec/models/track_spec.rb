@@ -47,12 +47,29 @@ describe 'Track' do
     end
   end
 
+  describe '#local_filename' do
+    it 'is the file path at where we will download to' do
+      subject.local_filename.should ==
+        File.join(subject.app_session.working_directory, subject.filename)
+    end
+  end
+
   describe '#download' do
+    before do
+      subject.stub :local_filename => File.join(Rails.root, '.gitignore')
+    end
+
     it 'downloads online version to the working directory' do
       subject.storage.should_receive(:download).
         with(subject.app_session.working_directory)
 
       subject.download
+    end
+
+    it 'returns a File object' do
+      subject.stub :storage => mock.as_null_object
+
+      subject.download.should be_an_instance_of File
     end
   end
 end
