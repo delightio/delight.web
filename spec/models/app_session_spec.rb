@@ -179,7 +179,7 @@ describe AppSession do
 
     it 'creates such direction if it does not exists' do
       Dir.stub(:exists?).with(@expected_dir).and_return(false)
-      Dir.should_receive(:mkdir).with(@expected_dir)
+      FileUtils.should_receive(:mkdir_p).with(@expected_dir)
 
       subject.working_directory
     end
