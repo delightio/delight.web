@@ -20,6 +20,39 @@ describe AppSession do
     end
   end
 
+  describe '#expected_presentation_track_count' do
+    it 'is 1 if we are to record' do
+      subject.stub :recording? => true
+
+      subject.expected_presentation_track_count.should == 1
+    end
+
+    it 'is 0 if we are not to record' do
+      subject.stub :recording? => false
+
+      subject.expected_presentation_track_count.should == 0
+    end
+  end
+
+  describe '#ready_for_processing?' do
+    before do
+      subject.stub :expected_presentation_track_count => 1
+      subject.stub :expected_track_count => 3
+    end
+
+    it 'is true when we have received the expected number of tracks (- presentation track)' do
+      subject.stub :tracks => [mock, mock]
+
+      subject.should be_ready_for_processing
+    end
+
+    it 'is false otherwise' do
+      subject.stub :track => [mock]
+
+      subject.should_not be_ready_for_processing
+    end
+  end
+
   describe '#recorded?' do
     it 'is true after session is completed and we had expected more than 1 tracks' do
       subject.stub :completed? => true
@@ -142,8 +175,8 @@ describe AppSession do
   end
 
   describe '#complete_upload' do
-    context 'when sesison is completed' do
-      before { subject.stub :completed? => true }
+    context 'when sesison is recorded' do
+      before { subject.stub :recorded? => true }
 
       it 'tells associated app to update recording accounting' do
         subject.app.should_receive :complete_recording
@@ -153,13 +186,39 @@ describe AppSession do
     end
 
     context 'when session is not completed' do
-      before { subject.stub :completed? => false }
+      before { subject.stub :recorded? => false }
 
       it 'does not update recording accounting' do
         subject.app.should_not_receive :complete_recording
 
         subject.complete_upload mock
       end
+    end
+
+    context 'when ready for processing' do
+      it 'enqueues processing' do
+        subject.stub :ready_for_processing? => true
+        subject.should_receive :enqueue_processing
+
+        subject.complete_upload mock
+      end
+    end
+
+    context 'when not ready for processing' do
+      it 'does not enqueue processing' do
+        subject.stub :ready_for_processing? => false
+        subject.should_not_receive :enqueue_processing
+
+        subject.complete_upload mock
+      end
+    end
+  end
+
+  describe '#enqueue_processing' do
+    it 'enqueues video processing' do
+      VideoProcessing.should_receive(:enqueue).with(subject.id)
+
+      subject.enqueue_processing
     end
   end
 
@@ -170,6 +229,24 @@ describe AppSession do
 
         subject.send(named_track).should == track
       end
+    end
+  end
+
+  describe '#working_directory' do
+    before do
+      @expected_dir = File.join ENV['WORKING_DIRECTORY'], subject.id.to_s
+      Dir.stub(:exists?).with(@expected_dir).and_return(true)
+    end
+
+    it 'is based on id and ENV variable' do
+      subject.working_directory.should == @expected_dir
+    end
+
+    it 'creates such direction if it does not exists' do
+      Dir.stub(:exists?).with(@expected_dir).and_return(false)
+      FileUtils.should_receive(:mkdir_p).with(@expected_dir)
+
+      subject.working_directory
     end
   end
 

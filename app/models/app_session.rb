@@ -67,6 +67,14 @@ class AppSession < ActiveRecord::Base
     expected_track_count > 0
   end
 
+  def expected_presentation_track_count
+    recording? ? 1 : 0
+  end
+
+  def ready_for_processing?
+    expected_track_count == tracks.count + expected_presentation_track_count
+  end
+
   def recording?
     return false if delight_version.to_i < 2 # LH 110
     app.recording?
@@ -77,7 +85,12 @@ class AppSession < ActiveRecord::Base
   end
 
   def complete_upload media
-    app.complete_recording if completed?
+    enqueue_processing if ready_for_processing?
+    app.complete_recording if recorded?
+  end
+
+  def enqueue_processing
+    VideoProcessing.enqueue id
   end
 
   def screen_track
@@ -90,6 +103,15 @@ class AppSession < ActiveRecord::Base
 
   def front_track
     FrontTrack.find_by_app_session_id id
+  end
+
+  def working_directory
+    if @working_directory.nil?
+      working_directory = File.join ENV['WORKING_DIRECTORY'], id.to_s
+      FileUtils.mkdir_p(working_directory) unless Dir.exists? working_directory
+      @working_directory = working_directory
+    end
+    @working_directory
   end
 
   private

@@ -25,4 +25,8 @@ class Track < ActiveRecord::Base
   def presigned_read_uri
     storage.presigned_write_uri
   end
+
+  def download
+    storage.download app_session.working_directory
+  end
 end

@@ -3,12 +3,10 @@ class S3Storage
   SESSION_DURATION = 3600 # 1 hour
   SESSION_RENEW_INTERVAL = 50.minutes # a bit earlier than the session expiration
 
-  def initialize filename
+  attr_reader :filename, :bucket_name
+  def initialize filename, bucket_name=ENV['S3_UPLOAD_BUCKET']
     @filename = filename
-  end
-
-  def bucket_name
-    @bucket_name ||= ENV['S3_UPLOAD_BUCKET']
+    @bucket_name = bucket_name
   end
 
   def presigned_bucket
@@ -20,7 +18,7 @@ class S3Storage
     s3 = AWS::S3.new(session.credentials)
 
     $s3_last_session = Time.now
-    $s3_presigned_bucket = s3.buckets[bucket_name]
+    $s3_presigned_bucket = s3.buckets[@bucket_name]
   end
 
   def presigned_object
@@ -33,5 +31,13 @@ class S3Storage
 
   def presigned_read_uri
     presigned_object.url_for :read
+  end
+
+  def download local_directory
+    download_file = File.join local_directory, @filename
+    File.open(download_file, 'w') do |file|
+      file.write presigned_object.read
+    end
+    File.new download_file
   end
 end

@@ -2,15 +2,7 @@ require 'spec_helper'
 
 describe S3Storage do
   subject { S3Storage.new "blah.mp4" }
-
-  describe '#bucket_name' do
-    let(:bucket_name) { 'bucket' }
-    it 'reads from ENV' do
-      ENV['S3_UPLOAD_BUCKET'] = bucket_name
-
-      subject.bucket_name.should == bucket_name
-    end
-  end
+  its(:bucket_name) { should == ENV['S3_UPLOAD_BUCKET'] }
 
   describe '#presigned_bucket' do
     it 'generates presigned bucket'
@@ -32,6 +24,22 @@ describe S3Storage do
 
         puts subject.presigned_read_uri
       end
+    end
+  end
+
+  describe '#download' do
+    subject { S3Storage.new 'Procfile', 'delight_rspec' }
+    let(:local_directory) { '/tmp' }
+    let(:downloaded) { File.join local_directory, subject.filename }
+    let(:original) { File.join Rails.root, subject.filename }
+
+    it 'downloads associated filename to local directory' do
+      subject.download local_directory
+      FileUtils.compare_file(original, downloaded).should == true
+    end
+
+    it 'returns a File object' do
+      subject.download(local_directory).should be_an_instance_of File
     end
   end
 end
