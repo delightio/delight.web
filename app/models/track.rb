@@ -1,4 +1,7 @@
 class Track < ActiveRecord::Base
+
+  CACHE_DURATION = 1.hour
+
   belongs_to :app_session, :counter_cache => true
   validates :app_session_id, :presence => true
 
@@ -18,10 +21,16 @@ class Track < ActiveRecord::Base
   end
 
   def presigned_write_uri
-    storage.presigned_write_uri
+    if not presigned_write_uri or sign_write_uri_time <= CACHE_DURATION.ago
+      presigned_write_uri = storage.presigned_write_uri
+    end
+    return presigned_write_uri
   end
 
   def presigned_read_uri
-    storage.presigned_read_uri
+    if not presigned_read_uri or sign_read_uri_time <= CACHE_DURATION.ago
+      presigned_read_uri = storage.presigned_read_uri
+    end
+    return presigned_read_uri
   end
 end

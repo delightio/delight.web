@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120506133521) do
+ActiveRecord::Schema.define(:version => 20120508092948) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -80,10 +80,14 @@ ActiveRecord::Schema.define(:version => 20120506133521) do
   add_index "permissions", ["viewer_id"], :name => "index_permissions_on_viewer_id"
 
   create_table "tracks", :force => true do |t|
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.integer  "app_session_id"
     t.string   "type"
+    t.string   "presigned_read_uri"
+    t.string   "presigned_write_uri"
+    t.datetime "sign_read_uri_time"
+    t.datetime "sign_write_uri_time"
   end
 
   create_table "users", :force => true do |t|

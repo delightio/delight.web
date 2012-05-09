@@ -22,6 +22,7 @@ class S3Storage
   end
 
   def presigned_write_uri
+    # presigned_write_url
     presigned_object.url_for :write
   end
 
