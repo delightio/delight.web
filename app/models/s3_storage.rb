@@ -1,4 +1,8 @@
 class S3Storage
+
+  SESSION_DURATION = 3600 # 1 hour
+  SESSION_RENEW_INTERVAL = 50.minutes # a bit earlier than the session expiration
+
   def initialize filename
     @filename = filename
   end
@@ -8,13 +12,15 @@ class S3Storage
   end
 
   def presigned_bucket
-    return @presigned_bucket if @presigned_bucket
+    return $s3_presigned_bucket if $s3_presigned_bucket and $s3_last_session and $s3_last_session >= SESSION_RENEW_INTERVAL.ago
 
     policy = AWS::STS::Policy.new
     policy.allow(:actions => :any, :resource => :any)
-    session = AWS::STS.new.new_federated_session("session", :policy => policy)
+    session = AWS::STS.new.new_federated_session("session", :policy => policy, :duration => SESSION_DURATION)
     s3 = AWS::S3.new(session.credentials)
-    @presigned_bucket = s3.buckets[bucket_name]
+
+    $s3_last_session = Time.now
+    $s3_presigned_bucket = s3.buckets[bucket_name]
   end
 
   def presigned_object
@@ -22,7 +28,6 @@ class S3Storage
   end
 
   def presigned_write_uri
-    # presigned_write_url
     presigned_object.url_for :write
   end
 
