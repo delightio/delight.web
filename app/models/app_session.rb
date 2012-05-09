@@ -82,7 +82,7 @@ class AppSession < ActiveRecord::Base
 
   def complete_upload media
     enqueue_processing if ready_for_processing?
-    app.complete_recording if completed?
+    app.complete_recording if recorded?
   end
 
   def enqueue_processing

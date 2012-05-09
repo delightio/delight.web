@@ -168,8 +168,8 @@ describe AppSession do
   end
 
   describe '#complete_upload' do
-    context 'when sesison is completed' do
-      before { subject.stub :completed? => true }
+    context 'when sesison is recorded' do
+      before { subject.stub :recorded? => true }
 
       it 'tells associated app to update recording accounting' do
         subject.app.should_receive :complete_recording
@@ -179,7 +179,7 @@ describe AppSession do
     end
 
     context 'when session is not completed' do
-      before { subject.stub :completed? => false }
+      before { subject.stub :recorded? => false }
 
       it 'does not update recording accounting' do
         subject.app.should_not_receive :complete_recording
