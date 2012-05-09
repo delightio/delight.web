@@ -34,19 +34,7 @@ class AppsController < ApplicationController
   def show
     @app = nil
 
-    @default_date_min = 120
-    @default_date_max = 0
-    @default_duration_min = 0
-    @default_duration_max = 60
-
-    date_min = params[:'date-min'] ? params[:'date-min'].to_i.days.ago : @default_date_min.days.ago
-    date_max = params[:'date-max'] ? params[:'date-max'].to_i.days.ago : @default_date_max.days.ago
-    duration_min = params[:'duration-min'] || @default_duration_min
-    duration_max = params[:'duration-max'] || @default_duration_max
-
     @setup = params[:setup]
-
-    #logger.debug("date min: #{date_min}, date max: #{date_max}, duration min: #{duration_min}, duration max: #{duration_max}")
 
     if current_user.administrator?
       @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
@@ -57,6 +45,23 @@ class AppsController < ApplicationController
     @recorded_sessions = @app.app_sessions.recorded
     @versions = @recorded_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
     versions = params[:versions] || @versions.collect { |v| v.app_version }
+
+    # decide date and duration range
+    if @recorded_sessions.blank?
+      @default_date_min = 120
+      @default_duration_min = 0
+      @default_duration_max = 60
+    else
+      @default_date_min = ((Time.now - @recorded_sessions.minimum(:created_at)) / 86400).ceil
+      @default_duration_min = @recorded_sessions.minimum(:duration).floor
+      @default_duration_max = @recorded_sessions.maximum(:duration).ceil
+    end
+    @default_date_max = 0
+
+    date_min = params[:'date-min'] ? params[:'date-min'].to_i.days.ago : @default_date_min.days.ago
+    date_max = params[:'date-max'] ? params[:'date-max'].to_i.days.ago : @default_date_max.days.ago
+    duration_min = params[:'duration-min'] || @default_duration_min
+    duration_max = params[:'duration-max'] || @default_duration_max
 
     if (params[:filter_duration])
       @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)

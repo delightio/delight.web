@@ -146,6 +146,28 @@ describe AppsController do
         get :show, {:id => app.to_param}
         assigns(:app).should == app
       end
+
+      it "should show have duration and date range including records in DB" do
+        date_min = 31.days.ago - 15.minutes
+        date_max = 10.seconds.ago
+
+        session1 = FactoryGirl.create(:recorded_app_session, :app => app, :duration => 1, :created_at => 1.day.ago)
+        session2 = FactoryGirl.create(:recorded_app_session, :app => app, :duration => 100.5, :created_at => date_min)
+        session3 = FactoryGirl.create(:recorded_app_session, :app => app, :duration => 4.5, :created_at => date_max)
+        session4 = FactoryGirl.create(:non_recording_app_session, :app => app, :duration => 150, :created_at => 1.year.ago)
+
+        get :show, {:id => app.to_param}
+        assigns(:recorded_sessions).should include session1
+        assigns(:recorded_sessions).should include session2
+        assigns(:recorded_sessions).should include session3
+        assigns(:recorded_sessions).should_not include session4
+
+        assigns(:default_date_min).should == 32 # 32 days ago
+        assigns(:default_date_max).should == 0
+        assigns(:default_duration_min).should == 1
+        assigns(:default_duration_max).should == 101
+
+      end
     end
 
   end
