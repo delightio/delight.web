@@ -155,9 +155,7 @@
       <% if @setup %>
         $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
       <% end %>
-      $("#app-setup-btn").click(function() {
-        $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
-      });
+      $("#app-setup-btn").colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
       $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
         if (checked) {
           // check all
