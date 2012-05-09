@@ -20,6 +20,39 @@ describe AppSession do
     end
   end
 
+  describe '#expected_presentation_track_count' do
+    it 'is 1 if we are to record' do
+      subject.stub :recording? => true
+
+      subject.expected_presentation_track_count.should == 1
+    end
+
+    it 'is 0 if we are not to record' do
+      subject.stub :recording? => false
+
+      subject.expected_presentation_track_count.should == 0
+    end
+  end
+
+  describe '#ready_for_processing?' do
+    before do
+      subject.stub :expected_presentation_track_count => 1
+      subject.stub :expected_track_count => 3
+    end
+
+    it 'is true when we have received the expected number of tracks (- presentation track)' do
+      subject.stub :tracks => [mock, mock]
+
+      subject.should be_ready_for_processing
+    end
+
+    it 'is false otherwise' do
+      subject.stub :track => [mock]
+
+      subject.should_not be_ready_for_processing
+    end
+  end
+
   describe '#recorded?' do
     it 'is true after session is completed and we had expected more than 1 tracks' do
       subject.stub :completed? => true
@@ -153,6 +186,32 @@ describe AppSession do
 
         subject.complete_upload mock
       end
+    end
+
+    context 'when ready for processing' do
+      it 'enqueues processing' do
+        subject.stub :ready_for_processing? => true
+        subject.should_receive :enqueue_processing
+
+        subject.complete_upload mock
+      end
+    end
+
+    context 'when not ready for processing' do
+      it 'does not enqueue processing' do
+        subject.stub :ready_for_processing? => false
+        subject.should_not_receive :enqueue_processing
+
+        subject.complete_upload mock
+      end
+    end
+  end
+
+  describe '#enqueue_processing' do
+    it 'enqueues video processing' do
+      VideoProcessing.should_receive(:enqueue).with(subject.id)
+
+      subject.enqueue_processing
     end
   end
 

@@ -64,6 +64,14 @@ class AppSession < ActiveRecord::Base
     expected_track_count > 0
   end
 
+  def expected_presentation_track_count
+    recording? ? 1 : 0
+  end
+
+  def ready_for_processing?
+    expected_track_count == tracks.count + expected_presentation_track_count
+  end
+
   def recording?
     app.recording?
   end
@@ -73,7 +81,12 @@ class AppSession < ActiveRecord::Base
   end
 
   def complete_upload media
+    enqueue_processing if ready_for_processing?
     app.complete_recording if completed?
+  end
+
+  def enqueue_processing
+    VideoProcessing.enqueue id
   end
 
   def screen_track
