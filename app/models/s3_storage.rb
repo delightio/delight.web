@@ -1,10 +1,8 @@
 class S3Storage
-  def initialize filename
+  attr_reader :filename, :bucket_name
+  def initialize filename, bucket_name=ENV['S3_UPLOAD_BUCKET']
     @filename = filename
-  end
-
-  def bucket_name
-    @bucket_name ||= ENV['S3_UPLOAD_BUCKET']
+    @bucket_name = bucket_name
   end
 
   def presigned_bucket
@@ -14,7 +12,7 @@ class S3Storage
     policy.allow(:actions => :any, :resource => :any)
     session = AWS::STS.new.new_federated_session("session", :policy => policy)
     s3 = AWS::S3.new(session.credentials)
-    @presigned_bucket = s3.buckets[bucket_name]
+    @presigned_bucket = s3.buckets[@bucket_name]
   end
 
   def presigned_object
@@ -27,5 +25,12 @@ class S3Storage
 
   def presigned_read_uri
     presigned_object.url_for :read
+  end
+
+  def download local_directory
+    download_file = File.join local_directory, filename
+    File.open(download_file, 'w') do |file|
+      file.write presigned_object.read
+    end
   end
 end

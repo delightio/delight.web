@@ -19,7 +19,10 @@ describe 'Track' do
     end
   end
 
-  subject { t = Track.new.tap{ |t| t.stub :filename => 'fkjdklfj'} }
+  let(:app_session) { FactoryGirl.create :app_session }
+  subject { FactoryGirl.create(:track, app_session: app_session).tap {
+              |t| t.stub :filename => 'blah.blah' } }
+
   describe '#storage' do
     it 'uses S3' do
       S3Storage.should_receive(:new).with(subject.filename)
@@ -44,4 +47,12 @@ describe 'Track' do
     end
   end
 
+  describe '#download' do
+    it 'downloads online version to the working directory' do
+      subject.storage.should_receive(:download).
+        with(subject.app_session.working_directory)
+
+      subject.download
+    end
+  end
 end
