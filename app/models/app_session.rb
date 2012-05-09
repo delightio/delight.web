@@ -88,6 +88,15 @@ class AppSession < ActiveRecord::Base
     FrontTrack.find_by_app_session_id id
   end
 
+  def working_directory
+    if @working_directory.nil?
+      working_directory = File.join ENV['WORKING_DIRECTORY'], id.to_s
+      Dir.mkdir(working_directory) unless Dir.exists? working_directory
+      @working_directory = working_directory
+    end
+    @working_directory
+  end
+
   private
   def generate_upload_uris
     @upload_uris = {}

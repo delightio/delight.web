@@ -166,6 +166,25 @@ describe AppSession do
     end
   end
 
+  describe '#working_directory' do
+    before do
+      ENV['WORKING_DIRECTORY'] = '/delight_working_directory/app_session'
+      @expected_dir = File.join ENV['WORKING_DIRECTORY'], subject.id.to_s
+      Dir.stub(:exists?).with(@expected_dir).and_return(true)
+    end
+
+    it 'is based on id and ENV variable' do
+      subject.working_directory.should == @expected_dir
+    end
+
+    it 'creates such direction if it does not exists' do
+      Dir.stub(:exists?).with(@expected_dir).and_return(false)
+      Dir.should_receive(:mkdir).with(@expected_dir)
+
+      subject.working_directory
+    end
+  end
+
   describe '#generate_upload_uris' do
     it 'is called after object creation' do
       AppSession.any_instance.
