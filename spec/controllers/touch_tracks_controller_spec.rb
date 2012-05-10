@@ -4,6 +4,7 @@ describe TouchTracksController do
   let(:app_session) { FactoryGirl.create :app_session}
   describe "post" do
     it "creates new touch track object" do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
       params = { app_session_id: app_session.id }
       post :create, format: :xml, touch_track: params
       response.should be_success

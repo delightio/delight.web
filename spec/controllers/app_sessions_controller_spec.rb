@@ -12,8 +12,21 @@ describe AppSessionsController do
     let(:device_os_version) { '4.1' }
 
     it 'creates' do
-      params = { app_token: app.token,
-                 app_version: app_version,
+      params = { app_version: app_version,
+                 app_build: app_build,
+                 app_locale: app_locale,
+                 app_connectivity: app_connectivity,
+                 device_hw_version: device_hw_version,
+                 device_os_version: device_os_version,
+                 delight_version: delight_version }
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app.token
+      post :create, app_session: params, format: :xml
+      response.should be_success
+      #response.response_code.should == 201
+    end
+
+    it "should fail when app token is missing" do
+      params = { app_version: app_version,
                  app_build: app_build,
                  app_locale: app_locale,
                  app_connectivity: app_connectivity,
@@ -21,24 +34,33 @@ describe AppSessionsController do
                  device_os_version: device_os_version,
                  delight_version: delight_version }
       post :create, app_session: params, format: :xml
-      response.should be_success
-      #response.response_code.should == 201
+      response.should be_bad_request
     end
 
-    # LH 110
-    it 'creates with version 1 params' do
-      params = { app_token: app.token,
-                 app_version: app_version,
+    it "should fail if token is wrong" do
+      params = { app_version: app_version,
                  app_build: app_build,
-                 # app_locale: app_locale,
-                 locale: app_locale,
-                 # app_connectivity: app_connectivity,
-                 # device_hw_version: device_hw_version,
-                 # device_os_version: device_os_version,
-                 delight_version: '1.0.1' }
+                 app_locale: app_locale,
+                 app_connectivity: app_connectivity,
+                 device_hw_version: device_hw_version,
+                 device_os_version: device_os_version,
+                 delight_version: delight_version }
+      request.env['HTTP_X_NB_AUTHTOKEN'] = 'wrongtoken'
       post :create, app_session: params, format: :xml
-      response.should be_success
-
+      response.should be_bad_request
+#    # LH 110
+#    it 'creates with version 1 params' do
+#      params = { app_token: app.token,
+#                 app_version: app_version,
+#                 app_build: app_build,
+#                 # app_locale: app_locale,
+#                 locale: app_locale,
+#                 # app_connectivity: app_connectivity,
+#                 # device_hw_version: device_hw_version,
+#                 # device_os_version: device_os_version,
+#                 delight_version: '1.0.1' }
+#      post :create, app_session: params, format: :xml
+#      response.should be_success
     end
 
     pending "it should return code 201"
@@ -58,14 +80,29 @@ describe AppSessionsController do
 
     let(:duration) { 10.2 }
     it 'updates duration' do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
       params = { duration: duration }
       put :update, id: app_session.id, app_session: params, format: :xml
       response.should be_success
       app_session.reload.duration.should == duration
     end
 
+    it "should fail if token is missing" do
+      params = { duration: duration }
+      put :update,  id: app_session.id, app_session: params, format: :xml
+      response.should be_bad_request
+    end
+
+    it "should fail if token is wrong" do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = 'wrongtoken'
+      params = { duration: duration }
+      put :update, id: app_session.id, app_session: params, format: :xml
+      response.should be_bad_request
+    end
+
     let(:app_user_id) { '10' }
     it 'updates app_user_id' do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
       params = { app_user_id: app_user_id }
       put :update, id: app_session.id, app_session: params, format: :xml
       response.should be_success
