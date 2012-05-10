@@ -73,6 +73,7 @@ class AppsController < ApplicationController
     if params[:favorite] == "1"
       @recorded_sessions = @recorded_sessions.favorite_of(current_user)
     end
+    @favorite_count = @recorded_sessions.favorite_of(current_user).count
     @recorded_sessions = @recorded_sessions.latest.page(params[:page]).per(10)
 
     app_sessions_id = @recorded_sessions.collect { |as| as.id }
