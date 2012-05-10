@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :app_session do |a|
-    a.delight_version '0.1'
+    a.delight_version '2.0'
     a.app_version '1.4'
     a.app_build 'EFKJ'
     a.app_locale 'en_US'

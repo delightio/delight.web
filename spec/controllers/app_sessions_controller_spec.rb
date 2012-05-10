@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AppSessionsController do
   describe 'post' do
     let(:app) { FactoryGirl.create :non_recording_app }
-    let(:delight_version) { '0.1' }
+    let(:delight_version) { '2' }
     let(:app_version) { '1.4' }
     let(:app_build) { 'KJKJ'}
     let(:app_locale) { 'en-US' }
@@ -48,6 +48,19 @@ describe AppSessionsController do
       request.env['HTTP_X_NB_AUTHTOKEN'] = 'wrongtoken'
       post :create, app_session: params, format: :xml
       response.should be_bad_request
+#    # LH 110
+#    it 'creates with version 1 params' do
+#      params = { app_token: app.token,
+#                 app_version: app_version,
+#                 app_build: app_build,
+#                 # app_locale: app_locale,
+#                 locale: app_locale,
+#                 # app_connectivity: app_connectivity,
+#                 # device_hw_version: device_hw_version,
+#                 # device_os_version: device_os_version,
+#                 delight_version: '1.0.1' }
+#      post :create, app_session: params, format: :xml
+#      response.should be_success
     end
 
     pending "it should return code 201"

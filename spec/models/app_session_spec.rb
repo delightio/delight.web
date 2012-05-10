@@ -35,6 +35,13 @@ describe AppSession do
 
       subject.recording?
     end
+
+    it 'is always false when version is less than 2' do
+      subject.delight_version = '1.0'
+      subject.app.should_not_receive :recording?
+
+      subject.should_not be_recording
+    end
   end
 
   describe '#expected_track_count' do
