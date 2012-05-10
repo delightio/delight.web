@@ -1,6 +1,6 @@
 require File.expand_path('config/environment.rb')
 
-LaunchDate = Time.utc(2012,4,30,2,00).in_time_zone('Hong Kong')
+LaunchDate = Time.utc(2012,4,28,2,00)
 module Scopes
   def after_launch
     where 'created_at >= ?', LaunchDate
@@ -57,13 +57,11 @@ sorted.each do |app_id, count|
   app = App.find app_id
   last_session = app.app_sessions.latest.first
   puts "  #{app.name}, App[#{app.id}] #{app.app_sessions.recorded.count} / #{count} sessions "+\
-       "(#{app.app_sessions.recorded.where(:created_at=>(24.hours.ago..Time.now)).count} / #{app.app_sessions.where(:created_at=>(24.hours.ago..Time.now)).count} in < 24h), "+\
-       "avg #{app.app_sessions.recorded.average(:duration)} / #{app.app_sessions.average(:duration)} s, "+\
-       "last session: #{last_session.created_at.age}, "
+       "( #{app.app_sessions.recorded.where(:created_at=>(24.hours.ago..Time.now)).count} / #{app.app_sessions.where(:created_at=>(24.hours.ago..Time.now)).count} in < 24h), "+\
+       "avg #{app.app_sessions.recorded.average(:duration).to_i} / #{app.app_sessions.average(:duration).to_i} s, "+\
+       "last session: #{last_session.created_at.age}"
 end
 puts
-
-
 
 puts "#{no_sessions.count} apps have no sessions: "
 puts no_sessions.map {|s| App.find(s.first).name }.join ', '
