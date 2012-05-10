@@ -13,9 +13,10 @@ class AppSessionsController < ApplicationController
   def show
     authenticate_user!
     @app_session = get_app_session
+    @track = @app_session.screen_track
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render :layout => 'empty' } # show.html.erb
     end
   end
 
