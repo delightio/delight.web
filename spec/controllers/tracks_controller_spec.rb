@@ -4,6 +4,7 @@ describe TracksController do
   let(:app_session) { FactoryGirl.create :app_session}
   describe "post" do
     it "creates new track object" do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
       params = { app_session_id: app_session.id }
       post :create, format: :xml, track: params
       response.should be_success
@@ -14,8 +15,22 @@ describe TracksController do
     pending "it should return response code 201"
 
     it "returns 400 if missing parameters" do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
       post :create, track: {}
       response.should_not be_success
+    end
+
+    it "should fail if token is missing" do
+      params = { app_session_id: app_session.id }
+      post :create, format: :xml, track: params
+      response.should be_bad_request
+    end
+
+    it "should fail if token is incorrect" do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = 'wrongtoken'
+      params = { app_session_id: app_session.id }
+      post :create, format: :xml, track: params
+      response.should be_bad_request
     end
   end
 
