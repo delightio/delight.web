@@ -24,12 +24,20 @@
                 <td class="align-r"><%= session.id %></td>
               </tr>
               <tr>
+                <td>User ID:</td>
+                <td class="align-r"><%= session.app_user_id %></td>
+              </tr>
+              <tr>
                 <td>Version:</td>
                 <td class="align-r"><%= session.app_version %></td>
               </tr>
               <tr>
                 <td>Build:</td>
                 <td class="align-r"><%= session.app_build %></td>
+              </tr>
+              <tr>
+                <td>Locale:</td>
+                <td class="align-r"><%= session.app_locale %></td>
               </tr>
               <tr>
                 <td>Duration:</td>
@@ -41,6 +49,25 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="span2">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>Device:</td>
+                <td class="align-r"><%= session.device_hw_version %></td>
+              </tr>
+              <tr>
+                <td>Device OS:</td>
+                <td class="align-r"><%= session.device_os_version %></td>
+              </tr>
+              <tr>
+                <td>Connectivity:</td>
+                <td class="align-r"><%= session.app_connectivity %></td>
+              </tr>
+            </tbody>
+          </table>
+
         </div>
 <!--         <div class="span2">
           <table style="width:100%">
