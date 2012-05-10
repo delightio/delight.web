@@ -60,20 +60,10 @@
           <li>
             <div id="duration-range"></div>
           </li>
-          <li>
-            <label class="checkbox">
-              <input type="checkbox" id="filter-duration" name="filter_duration"> Filter by duration
-            </label>
-          </li>
           <hr />
           <li class="nav-header">Date <input type="text" name="amount" id="date-amount" class="pull-right" /></li>
           <li>
             <div id="date-range"></div>
-          </li>
-          <li>
-            <label class="checkbox">
-              <input type="checkbox" id="filter-date" name="filter_date"> Filter by creation date
-            </label>
           </li>
           <input type="hidden" name="date-min" id="date-min" />
           <input type="hidden" name="date-max" id="date-max" />
@@ -102,9 +92,7 @@
           $( "#duration-amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " s" );
           $( "#duration-min" ).val( ui.values[0] );
           $( "#duration-max" ).val( ui.values[1] );
-          if ($("#filter-duration").attr('checked')) {
-            querySessions();
-          }
+          querySessions();
         }
       });
       $( "#duration-amount" ).val( $( "#duration-range" ).slider( "values", 0 ) + " - " + $( "#duration-range" ).slider( "values", 1 ) + " s" );
@@ -122,9 +110,7 @@
           $( "#date-amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " days" );
           $( "#date-min" ).val( ui.values[1] );
           $( "#date-max" ).val( ui.values[0] );
-          if ($("#filter-date").attr('checked')) {
-            querySessions();
-          }
+          querySessions();
         }
       });
       $( "#date-amount" ).val( $( "#date-range" ).slider( "values", 0 ) + " - " + $( "#date-range" ).slider( "values", 1 ) + " days" );
@@ -167,12 +153,6 @@
         //querySessions();
       });
       $(".app-show-versions-checkbox").click(function(eventObj) {
-        querySessions();
-      });
-      $("#filter-date").click(function(eventObj) {
-        querySessions();
-      });
-      $("#filter-duration").click(function(eventObj) {
         querySessions();
       });
 
