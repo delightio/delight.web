@@ -234,7 +234,8 @@ describe AppSession do
 
   describe '#working_directory' do
     before do
-      @expected_dir = File.join ENV['WORKING_DIRECTORY'], subject.id.to_s
+      @expected_dir = File.join ENV['WORKING_DIRECTORY'],
+                                subject.class.to_s.tableize, subject.id.to_s
       Dir.stub(:exists?).with(@expected_dir).and_return(true)
     end
 

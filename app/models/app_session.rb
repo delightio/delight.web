@@ -111,7 +111,8 @@ class AppSession < ActiveRecord::Base
 
   def working_directory
     if @working_directory.nil?
-      working_directory = File.join ENV['WORKING_DIRECTORY'], id.to_s
+      working_directory = File.join ENV['WORKING_DIRECTORY'],
+                                    self.class.to_s.tableize, id.to_s
       FileUtils.mkdir_p(working_directory) unless Dir.exists? working_directory
       @working_directory = working_directory
     end

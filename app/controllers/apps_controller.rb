@@ -63,16 +63,14 @@ class AppsController < ApplicationController
     duration_min = params[:'duration-min'] || @default_duration_min
     duration_max = params[:'duration-max'] || @default_duration_max
 
-    if (params[:filter_duration])
-      @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)
-    end
-    if (params[:filter_date])
-      @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
-    end
+    @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)
+    @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
+
     @recorded_sessions = @recorded_sessions.where(:app_version => versions)
     if params[:favorite] == "1"
       @recorded_sessions = @recorded_sessions.favorite_of(current_user)
     end
+    @favorite_count = @recorded_sessions.favorite_of(current_user).count
     @recorded_sessions = @recorded_sessions.latest.page(params[:page]).per(10)
 
     app_sessions_id = @recorded_sessions.collect { |as| as.id }

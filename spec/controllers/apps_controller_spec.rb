@@ -134,6 +134,19 @@ describe AppsController do
         assigns(:favorite_app_session_ids).should include session2.id
         assigns(:favorite_app_session_ids).should_not include session3.id
       end
+
+      it "should have correct favorite count including those out of current page" do
+        sessions = (1..20).collect do
+          s = FactoryGirl.create(:recorded_app_session, :app => app)
+          s.favorite_users << viewer
+          s
+        end
+        app.app_sessions.should have(20).items
+
+        get :show, {:id => app.to_param}
+
+        assigns(:favorite_count).should == 20
+      end
     end
 
     describe "admin signed in" do

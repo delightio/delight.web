@@ -1,6 +1,6 @@
 require File.expand_path('config/environment.rb')
 
-LaunchDate = Time.utc(2012,4,30,2,00).in_time_zone('Hong Kong')
+LaunchDate = Time.utc(2012,4,28,2,00)
 module Scopes
   def after_launch
     where 'created_at >= ?', LaunchDate
@@ -11,7 +11,27 @@ module Scopes
 end
 App.extend Scopes
 
-puts "Signups:"
+module AgeFormatter
+  def age from=Time.now
+    diff = from - self
+    return "Just now" if diff==0
+    ago_later = if diff > 0 then "ago" else "later" end
+
+    str = ""
+    [:weeks, :days, :hours, :minutes, :seconds].each do |time_unit|
+      period = 1.send time_unit
+      n = Integer diff / period
+      str += "#{n.abs}#{time_unit[0]} " if n.abs > 0
+      diff -= n * period
+    end
+    str += ago_later
+
+    str
+  end
+end
+Time.send :include, AgeFormatter
+
+puts 'Signups:'
 7.times do |n|
   range = (n+1).days.ago..n.days.ago
   puts "  #{n} days ago: (#{Account.where(:created_at => range).count})"
@@ -26,7 +46,7 @@ puts "Signups:"
 end
 puts
 
-puts "Most active Apps:"
+puts 'Most active Apps:'
 sessions_count = {}
 App.after_launch.latest.find_each do |app|
   sessions_count[app.id.to_s] = app.app_sessions.count
@@ -36,11 +56,10 @@ no_sessions, sorted = sorted.partition { |a| a.last==0 }
 sorted.each do |app_id, count|
   app = App.find app_id
   last_session = app.app_sessions.latest.first
-  puts "  #{app.name}, App[#{app.id}] #{count} sessions, "+\
-       "last session: #{last_session.created_at}, "+\
-       "avg #{app.app_sessions.average(:duration)} s, "+\
-       "#{app.app_sessions.recorded.count} recorded, "+\
-       "avg #{app.app_sessions.recorded.average(:duration)} s."
+  puts "  #{app.name}, App[#{app.id}] #{app.app_sessions.recorded.count} / #{count} sessions "+\
+       "( #{app.app_sessions.recorded.where(:created_at=>(24.hours.ago..Time.now)).count} / #{app.app_sessions.where(:created_at=>(24.hours.ago..Time.now)).count} in < 24h), "+\
+       "avg #{app.app_sessions.recorded.average(:duration).to_i} / #{app.app_sessions.average(:duration).to_i} s, "+\
+       "last session: #{last_session.created_at.age}"
 end
 puts
 
