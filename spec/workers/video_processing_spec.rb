@@ -29,8 +29,6 @@ describe VideoProcessing do
 
   describe '.thumbnail' do
     it 'generates thumbnail from given video file'
-    it 'outputs a File object' do
-      subject.thumbnail(screen_file).should be_an_instance_of(File)
-    end
+    it 'outputs a File object'
   end
 end

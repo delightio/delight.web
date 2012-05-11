@@ -16,7 +16,7 @@ class VideoProcessing
 
     presentation_track = PresentationTrack.new app_session: app_session
     presentation_track.upload processed
-    # presentation_track.thumbnail.upload thumbnail
+    presentation_track.thumbnail.upload thumbnail
     if presentation_track.save
       puts "AppSession[#{app_session_id}] is done processing in #{Time.now-start} s."
     end
@@ -33,6 +33,10 @@ class VideoProcessing
   end
 
   def self.thumbnail video_file
-    video_file
+    dimension = "#{video_file.width}x#{video_file.height}"
+    thumbnail_filename = video_file.path+'.thumbnail.png'
+    `ffmpeg -itsoffset 4 -i "#{video_file.path}" -vcodec png -vframes 1 -an -f rawvideo -s #{dimension} -y "#{thumbnail_filename}"`
+    thumbnail = File.open thumbnail_filename # TODO: may want to return a ImageFile object
+    thumbnail
   end
 end
