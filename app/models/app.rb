@@ -5,6 +5,7 @@ class App < ActiveRecord::Base
   has_many :permissions
   has_many :viewers, :through => :permissions, :uniq => true
 
+  has_many :group_invitations
   has_many :invitations
 
   attr_accessible :name

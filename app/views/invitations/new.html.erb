@@ -2,9 +2,14 @@
   <%= render :partial => "shared/error_message" %>
 
 <div class="row">
-  <div class="span12">
-    <h2>Invite viewer</h2>
+  <div class="span12" style="margin-top:10px">
+    <h2>Invite your team to <%= @app.name %></h2>
   </div>
+  <p style="margin-top:10px">
+    Your team members will have access to all the recordings
+    from this app but they will not be able to invite others or
+    schedule more sessions.
+  </p>
 </div>
 <hr />
 <%= render 'form' %>

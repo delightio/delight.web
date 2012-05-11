@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120509090655) do
+ActiveRecord::Schema.define(:version => 20120511092335) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -73,6 +73,15 @@ ActiveRecord::Schema.define(:version => 20120509090655) do
   add_index "favorites", ["app_session_id"], :name => "fav_as_id"
   add_index "favorites", ["user_id"], :name => "fav_user_id"
 
+  create_table "group_invitations", :force => true do |t|
+    t.integer  "app_id"
+    t.integer  "app_session_id"
+    t.text     "emails"
+    t.text     "message"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "invitations", :force => true do |t|
     t.integer  "app_id"
     t.integer  "app_session_id"
@@ -80,8 +89,9 @@ ActiveRecord::Schema.define(:version => 20120509090655) do
     t.string   "message"
     t.string   "token"
     t.datetime "token_expiration"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "group_invitation_id"
   end
 
   create_table "permissions", :force => true do |t|

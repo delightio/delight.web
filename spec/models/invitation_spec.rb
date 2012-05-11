@@ -16,6 +16,32 @@ describe Invitation do
       invitation.should have(1).error_on(:email)
     end
 
+    it "should validate single email" do
+      invitation.email = 'abc@exmaple.com'
+      invitation.should have(0).error_on(:email)
+      invitation.email = ' abc@exmaple.com'
+      invitation.should have(0).error_on(:email)
+      invitation.email = ' abc@exmaple.com '
+      invitation.should have(0).error_on(:email)
+      invitation.email = 'abcexmaple.com'
+      invitation.should have(1).error_on(:email)
+    end
+
+    it "should validate comma seperated list of emails" do
+      invitation.email = 'abc@example.com,bbc@example.com'
+      invitation.should have(0).error_on(:email)
+      invitation.email = '   abc@example.com   ,   bbc@example.com  '
+      invitation.should have(0).error_on(:email)
+      invitation.email = 'abc@example.com,'
+      invitation.should have(0).error_on(:email)
+      invitation.email = 'abc@exmapl.com,asdfasdfd'
+      invitation.should have(1).error_on(:email)
+      invitation.email = 'asdfa, example@exmple.com'
+      invitation.should have(1).error_on(:email)
+      invitation.email = 'asdfa, asdf'
+      invitation.should have(2).error_on(:email)
+    end
+
 #    it "should require unique email on same app id" do
 #      invitation.app_id = 1
 #      invitation.email = 'test@example.com'
