@@ -11,7 +11,7 @@
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
               <a href=<%= app_session_path(session) %> class="thumbnail group-video">
-                <img src="/images/thumbnail_not_supported.png" alt="">
+                <img src=<%= session.presentation_track.thumbnail.presigned_read_uri %> alt="">
               </a>
             </li>
           </ul>
