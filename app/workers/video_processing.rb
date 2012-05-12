@@ -1,5 +1,3 @@
-STDOUT.sync = true
-
 class VideoProcessing
   extend WithDatabaseConnection
   @queue = :video
