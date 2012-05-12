@@ -25,6 +25,9 @@ class VideoProcessing
       puts "AppSession[#{app_session_id}]: PresentationTrack[#{presentation_track.id}] uploaded in #{Time.now-start} s"
       puts "AppSession[#{app_session_id}]: done processing in #{Time.now-start} s."
     end
+
+    $stdout.flush
+    $stderr.flush
   end
 
   def self.enqueue app_session_id
