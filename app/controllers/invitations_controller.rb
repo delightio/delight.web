@@ -150,6 +150,7 @@ class InvitationsController < ApplicationController
     # session variable used by omniauth
     if not user_signed_in?
       session['omniauth.viewer'] = true
+      session['omniauth.email'] = params[:email] if params[:email]
       session['omniauth.redirect'] = invitation_path(:id => params[:id], :token => params[:token])
       authenticate_user!
     else

@@ -4,7 +4,7 @@ class SystemMailer < ActionMailer::Base
   def invitation_email(user, invitation)
     @user = user
     @invitation = invitation
-    @invitation_url = url_for(:controller => "invitations", :action => "show", :token => @invitation.token, :id => @invitation.id)
+    @invitation_url = url_for(:controller => "invitations", :action => "show", :token => @invitation.token, :id => @invitation.id, :email => @invitation.email)
     mail(:to => invitation.email, :subject => 'You are invited to delighio')
   end
 end
