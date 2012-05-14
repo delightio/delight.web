@@ -1,0 +1,22 @@
+<div class='row'>
+  <div class='span8'>
+    <h3>
+      Our beta users have asked us about our pricing model. We are targetting <strong>US $5 per user session</strong>.
+  If you sign up now, you will be <em>guranteed</em> for this price for the next 12 months.
+    </h3>
+    <br>
+  </div>
+</div>
+<h2>Sign up now to lock in your price!</h2>
+<div class="row">
+  <div class="span12">
+    <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+    <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+  </div>
+</div>
+
+<br><br>
+<p>
+  <strong>Questions? </strong> Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us.
+</p>
+
