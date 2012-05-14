@@ -74,6 +74,7 @@ class AppSessionsController < ApplicationController
       return
     end
     as_params.merge! app_id: @app.id
+    as_params.delete :app_token # since it's not a proper attribute on AppSession
 
     # LH 110
     if as_params[:delight_version].to_i < 2
