@@ -33,6 +33,12 @@ class Users::OmniauthCallbacksController < ApplicationController
     # raise ActionController::RoutingError.new('Not Found')
   end
 
+  def failure
+    flash[:type] = 'error'
+    flash[:notice] = params[:message]
+    redirect_to root_path
+  end
+
   protected
 
   def auth_hash
