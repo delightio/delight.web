@@ -58,6 +58,8 @@
           <li>token: <%= app.token %></li>
           <li>number of sessions: <%= app.app_sessions.count %></li>
           <li>
+            <%= link_to raw('Share'), new_invitation_path(:app_id => app.id), :class => "btn", :id => "app-show-invite-viewer" %>
+            &nbsp;
             <%= link_to 'Show', app, :class => "btn" %>
             &nbsp;
             <%= link_to 'Edit', edit_app_path(app), :class => "btn" %>
