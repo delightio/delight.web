@@ -5,7 +5,8 @@ class TracksController < ApplicationController
       return
     end
 
-    if request.env['HTTP_X_NB_AUTHTOKEN'].nil?
+    token = get_token
+    if token.nil?
       render xml: "Missing HTTP_X_NB_AUTHTOKEN HTTP header", status: :bad_request
       return
     end
@@ -16,8 +17,8 @@ class TracksController < ApplicationController
     end
 
     @app_session = AppSession.find(params[model_param_key][:app_session_id])
-    if request.env['HTTP_X_NB_AUTHTOKEN'] != @app_session.app.token
-      render xml: "Missing HTTP_X_NB_AUTHTOKEN HTTP header", status: :bad_request
+    if token != @app_session.app.token
+      render xml: "Token mismatch", status: :bad_request
       return
     end
 
@@ -65,5 +66,15 @@ class TracksController < ApplicationController
 
   def model_param_key
     :track
+  end
+
+  protected
+
+  def get_token
+    if ENV['USE_URL_PARAM_API_TOKEN'] == 'y'
+      token = params[:token]
+    else
+      token = request.env['HTTP_X_NB_AUTHTOKEN']
+    end
   end
 end

@@ -61,13 +61,14 @@ class AppSessionsController < ApplicationController
       return
     end
 
-    if request.env['HTTP_X_NB_AUTHTOKEN'].nil?
+    token = get_token
+    if token.nil?
       render xml: "Missing HTTP_X_NB_AUTHTOKEN HTTP header", status: :bad_request
       return
     end
 
     as_params = params[:app_session]
-    @app = App.find_by_token(request.env['HTTP_X_NB_AUTHTOKEN'])
+    @app = App.find_by_token(token)
     if @app.nil?
       render xml: "Missing App Token. Get yours on http://delight.io", status: :bad_request
       return
@@ -92,14 +93,15 @@ class AppSessionsController < ApplicationController
 
   # PUT /app_sessions/1.xml
   def update
-    if request.env['HTTP_X_NB_AUTHTOKEN'].nil?
+    token = get_token
+    if token.nil?
       render xml: "Missing HTTP_X_NB_AUTHTOKEN HTTP header", status: :bad_request
       return
     end
 
     @app_session = AppSession.find(params[:id])
-    if @app_session.app.token != request.env['HTTP_X_NB_AUTHTOKEN']
-      render xml: "Missing HTTP_X_NB_AUTHTOKEN HTTP header", status: :bad_request
+    if @app_session.app.token != token
+      render xml: "Token mismatch", status: :bad_request
       return
     end
 
@@ -126,6 +128,14 @@ class AppSessionsController < ApplicationController
       app_session ||= AppSession.administered_by(current_user).find(session_id)
     end
     app_session ||= AppSession.viewable_by(current_user).find(session_id)
+  end
+
+  def get_token
+    if ENV['USE_URL_PARAM_API_TOKEN'] == 'y'
+      token = params[:token]
+    else
+      token = request.env['HTTP_X_NB_AUTHTOKEN']
+    end
   end
 
 end
