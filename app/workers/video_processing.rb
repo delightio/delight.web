@@ -25,6 +25,8 @@ class VideoProcessing
       puts "AppSession[#{app_session_id}]: PresentationTrack[#{presentation_track.id}] uploaded in #{Time.now-start} s"
       puts "AppSession[#{app_session_id}]: done processing in #{Time.now-start} s."
     end
+
+    cleanup app_session.working_directory
   end
 
   def self.enqueue app_session_id
@@ -43,5 +45,9 @@ class VideoProcessing
     `ffmpeg -itsoffset 4 -i "#{video_file.path}" -vcodec png -vframes 1 -an -f rawvideo -s #{dimension} -y "#{thumbnail_filename}"`
     thumbnail = File.open thumbnail_filename # TODO: may want to return a ImageFile object
     thumbnail
+  end
+
+  def self.cleanup working_directory
+    FileUtils.remove_dir working_directory, true
   end
 end

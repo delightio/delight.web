@@ -31,4 +31,14 @@ describe VideoProcessing do
     it 'generates thumbnail from given video file'
     it 'outputs a File object'
   end
+
+  describe '.cleanup' do
+    let(:working_directory) { mock }
+    it 'removes working directory and all content' do
+      FileUtils.should_receive(:remove_dir).
+        with(working_directory, true)
+
+      subject.cleanup working_directory
+    end
+  end
 end
