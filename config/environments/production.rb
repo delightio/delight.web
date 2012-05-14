@@ -1,3 +1,5 @@
+STDOUT.sync = true # to force outputs
+
 secret_env = File.join(::Rails.root.to_s, 'config', 'secret.rb')
 load(secret_env) if File.exist?(secret_env)
 
