@@ -86,12 +86,13 @@ describe User do
     describe "no existing user" do
       it "should create new user" do
         num_user = User.count
-        user = User.find_or_create_for_github_oauth(@auth_hash, nil, 'Administrator')
+        user = User.find_or_create_for_github_oauth(@auth_hash, nil, 'Administrator', 'over@example.com')
         user.github_id.should == 'github_uid'
         user.nickname.should == 'mistralay'
         user.image_url.should == 'http://example.com/github_avatar.jpg'
         User.count.should == (num_user+1)
         user.type.should == 'Administrator'
+        user.email.should == 'over@example.com'
       end
     end
 
@@ -101,11 +102,12 @@ describe User do
       end
       it "should retrieve existing user" do
         count = User.count
-        user = User.find_or_create_for_github_oauth(@auth_hash, nil, 'Viewer')
+        user = User.find_or_create_for_github_oauth(@auth_hash, nil, 'Viewer', 'overide@example.com')
         user.github_id.should == 'github_uid'
         User.count.should == count
         user.should == @github_user
         user.type.should == 'User' # should respec original type
+        user.email.should_not == 'overide@example.com'
       end
     end
   end

@@ -3,7 +3,7 @@ class Users::OmniauthCallbacksController < ApplicationController
 
   def twitter
     user_type = determine_type
-    @user = User.find_or_create_for_twitter_oauth(auth_hash, current_user, user_type)
+    @user = User.find_or_create_for_twitter_oauth(auth_hash, current_user, user_type, determine_email)
 
     if @user.persisted?
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Twitter"
@@ -16,7 +16,7 @@ class Users::OmniauthCallbacksController < ApplicationController
 
   def github
     user_type = determine_type
-    @user = User.find_or_create_for_github_oauth(auth_hash, current_user, user_type)
+    @user = User.find_or_create_for_github_oauth(auth_hash, current_user, user_type, determine_email)
 
     if @user.persisted?
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Github"
@@ -47,6 +47,16 @@ class Users::OmniauthCallbacksController < ApplicationController
     end
     session['omniauth.viewer'] = nil
     type
+  end
+
+  def determine_email
+    if not session['omniauth.email'].blank?
+      email = session['omniauth.email']
+    else
+      email = nil
+    end
+    session['omniauth.email'] = nil
+    email
   end
 
 end

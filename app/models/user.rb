@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   has_many :favorites
   has_many :favorite_app_sessions, :through => :favorites, :source => :app_session, :select => 'DISTINCT app_sessions.*'
 
-  def self.find_or_create_for_twitter_oauth(auth_hash, signed_in_resouce=nil, type=nil)
+  def self.find_or_create_for_twitter_oauth(auth_hash, signed_in_resouce=nil, type=nil, create_email_override = nil)
     uid = auth_hash['uid'].to_s
     if user = self.find_by_twitter_id(uid)
       #if not type.nil? and not user.kind_of?(type.constantize)
@@ -24,14 +24,22 @@ class User < ActiveRecord::Base
       #end
       user
     else
-      user = self.create(:twitter_id => uid,
-                         :nickname => auth_hash['info']['nickname'],
-                         :image_url => auth_hash['info']['image'],
-                         :type => type ? type : 'User')
+      if not create_email_override.blank?
+        user = self.create(:twitter_id => uid,
+                           :nickname => auth_hash['info']['nickname'],
+                           :image_url => auth_hash['info']['image'],
+                           :type => type ? type : 'User',
+                           :email => create_email_override)
+      else
+        user = self.create(:twitter_id => uid,
+                           :nickname => auth_hash['info']['nickname'],
+                           :image_url => auth_hash['info']['image'],
+                           :type => type ? type : 'User')
+      end
     end
   end
 
-  def self.find_or_create_for_github_oauth(auth_hash, signed_in_resouce=nil, type=nil)
+  def self.find_or_create_for_github_oauth(auth_hash, signed_in_resouce=nil, type=nil, create_email_override = nil)
     uid = auth_hash['uid'].to_s
     if user = self.find_by_github_id(uid)
       #if not type.nil? and not user.type == type
@@ -40,10 +48,18 @@ class User < ActiveRecord::Base
       #end
       user
     else
-      user = self.create(:github_id => uid,
-                         :nickname => auth_hash['info']['nickname'],
-                         :image_url => defined?(auth_hash['extra']['raw_info']['avatar_url']) ? auth_hash['extra']['raw_info']['avatar_url'] : nil,
-                         :type => type ? type : 'User')
+      if not create_email_override.blank?
+        user = self.create(:github_id => uid,
+                           :nickname => auth_hash['info']['nickname'],
+                           :image_url => defined?(auth_hash['extra']['raw_info']['avatar_url']) ? auth_hash['extra']['raw_info']['avatar_url'] : nil,
+                           :type => type ? type : 'User',
+                           :email => create_email_override)
+      else
+        user = self.create(:github_id => uid,
+                           :nickname => auth_hash['info']['nickname'],
+                           :image_url => defined?(auth_hash['extra']['raw_info']['avatar_url']) ? auth_hash['extra']['raw_info']['avatar_url'] : nil,
+                           :type => type ? type : 'User')
+      end
     end
   end
 
