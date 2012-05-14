@@ -55,7 +55,8 @@ DelightWeb::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'delight.herokuapp.com' }
+  #config.action_mailer.default_url_options = { :host => 'delight.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => ENV['ACTION_MAILER_DEFAULT_URL_HOST'] }
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = {
     :api_key  => "key-2g0kzoi319ny0w8sp2q16yocebedta13",
