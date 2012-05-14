@@ -8,6 +8,17 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def not_found
+    #raise ActionController::RoutingError.new('Not Found')
+    render :controller => :home, :action => :'404'
+  end
+
+  def allow_only_html_requests
+    if params[:format] && params[:format] != "html"
+      not_found
+    end
+  end
+
   # require user to complete profile before proceed
   def check_user_registration
     if not user_signed_in?
