@@ -25,7 +25,7 @@ class InvitationsController < ApplicationController
         end
       end
     end
-    @group_invitation = @app.group_invitations.new
+    @group_invitation = @app.group_invitations.new(:message => "I would like to invite you to the delight.io to view the app #{@app.name}. You will be able to access all recordings from this app.")
     @group_invitation.app_id = params[:app_id]
 
     respond_to do |format|
