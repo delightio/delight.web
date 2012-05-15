@@ -181,6 +181,54 @@ describe AppsController do
         assigns(:default_duration_max).should == 101
 
       end
+
+      describe "has app use id" do
+        let(:date_min) { 31.days.ago - 15.minutes }
+        let(:date_max) { 10.seconds.ago }
+        let(:session1) { FactoryGirl.create(:recorded_app_session, :app => app, :duration => 1, :created_at => 1.day.ago) }
+        let(:session2) { FactoryGirl.create(:recorded_app_session, :app => app, :duration => 100.5, :created_at => date_min) }
+        let(:session3) { FactoryGirl.create(:recorded_app_session, :app => app, :duration => 4.5, :created_at => date_max) }
+        let(:session4) { FactoryGirl.create(:non_recording_app_session, :app => app, :duration => 150, :created_at => 1.year.ago) }
+        before(:each) do
+          session1.update_properties(:app_user_id => 'app_user_1')
+          session2.update_properties(:app_user_id => 'app_user_1')
+          session3.update_properties(:app_user_id => 'app_user_2')
+          session4.update_properties(:app_user_id => 'app_user_3')
+        end
+
+        it "should filter by app user id if given" do
+          get :show, { :id => app.to_param, :app_user_id => 'app_user_1' }
+          response.should be_success
+          sessions = assigns(:recorded_sessions)
+          sessions.should have(2).items
+          sessions.should include(session1)
+          sessions.should include(session2)
+        end
+
+        it "should return empty id if no match" do
+          get :show, { :id => app.to_param, :app_user_id => 'notexists' }
+          response.should be_success
+          sessions = assigns(:recorded_sessions)
+          sessions.should be_empty
+        end
+
+        it "should not filter by app user id if not given" do
+          get :show, { :id => app.to_param }
+          response.should be_success
+          sessions = assigns(:recorded_sessions)
+          sessions.should have(3).items
+          sessions.should include(session1)
+          sessions.should include(session2)
+          sessions.should include(session3)
+        end
+
+        it "should not filter by app user id if spaces are given" do
+          get :show, { :id => app.to_param, :app_user_id => '   ' }
+          response.should be_success
+          sessions = assigns(:recorded_sessions)
+          sessions.should be_empty
+        end
+      end
     end
 
   end

@@ -56,6 +56,10 @@ class AppSession < ActiveRecord::Base
     def latest
       order('updated_at DESC')
     end
+
+    def has_property(key, value)
+      joins(:properties).where(:properties => { :key => key, :value => value })
+    end
   end
   extend Scopes
 
@@ -123,7 +127,7 @@ class AppSession < ActiveRecord::Base
   def update_properties hash
     if hash && !hash.empty?
       hash.each_pair do |k, v|
-        Property.first_or_create! app_session_id: id, key: k, value: v
+        self.properties.first_or_create! :key => k, :value => v
       end
     end
     true

@@ -39,6 +39,16 @@
           <!--li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li-->
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
+            <li class="nav-header">Filter by app user id</li>
+            <li class="row-fluid">
+              <div class="span10">
+                <input type="text" class="input-small search-query" name="app_user_id">
+              </div>
+              <div class="span2">
+                <a href="javascript:void(0)" id="app-show-filter-by-app-user-id" class="btn btn-small"><i class="icon-large icon-search"></i></a>
+              </div>
+            </li>
+            <hr />
             <li class="nav-header">Versions</li>
             <li>
               <label class="checkbox">
@@ -140,6 +150,9 @@
         $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
       <% end %>
       $("#app-setup-btn").colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
+      $("#app-show-filter-by-app-user-id").click(function(eventObj) {
+        querySessions();
+      });
       $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
         if (checked) {
           // check all

@@ -65,6 +65,9 @@ class AppsController < ApplicationController
 
     @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)
     @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
+    if not params[:app_user_id].blank?
+      @recorded_sessions = @recorded_sessions.has_property('app_user_id', params[:app_user_id])
+    end
 
     @recorded_sessions = @recorded_sessions.where(:app_version => versions)
     if params[:favorite] == "1"

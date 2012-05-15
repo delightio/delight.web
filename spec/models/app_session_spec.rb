@@ -174,6 +174,27 @@ describe AppSession do
     end
   end
 
+  describe "has_property" do
+    let(:session123) { FactoryGirl.create :app_session, :duration => 0.5 }
+    let(:session123_2) { FactoryGirl.create :app_session, :duration => 0.5 }
+    let(:another_session) { FactoryGirl.create :app_session, :duration => 0.5 }
+
+    before(:each) do
+      AppSession.delete_all
+      session123.update_properties :app_user_id  => 123
+      session123_2.update_properties :app_user_id  => 123
+      another_session
+    end
+
+    it "should return sessions with property that match" do
+      sessions = AppSession.has_property('app_user_id', '123')
+      #sessions = AppSession.all
+      sessions.should have(2).item
+      sessions.should include(session123)
+      sessions.should include(session123_2)
+    end
+  end
+
   describe '#complete_upload' do
     context 'when sesison is recorded' do
       before { subject.stub :recorded? => true }
@@ -259,9 +280,8 @@ describe AppSession do
     end
 
     it 'returns true after sucessful update' do
-      Property.should_receive(:first_or_create!).
-        with(app_session_id: subject.id, key: :level, value: 10)
-
+      subject.properties.should_receive(:first_or_create!).
+        with(key: :level, value: 10)
       subject.update_properties(properties).should be_true
     end
   end
