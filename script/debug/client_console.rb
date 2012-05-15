@@ -17,9 +17,10 @@ class ClientConsole
     initialize_conn @domain, ""
   end
 
-  def initialize_conn domain, auth_token
+  def initialize_conn domain, auth_token, scheme='https'
     @headers['X-NB-AuthToken'] = auth_token
     @headers.delete 'X-NB-AuthToken' if auth_token.to_s.empty?
+    @scheme = scheme
     @domain = domain
     @conn = Faraday.new "#{@scheme}://#{@domain}/#{@prefix}",
       :headers => @headers
@@ -34,7 +35,7 @@ class ClientConsole
   end
 
   def local! auth_token
-    initialize_conn LocalHost, auth_token
+    initialize_conn LocalHost, auth_token, 'http'
   end
 
   def parse_response resp
