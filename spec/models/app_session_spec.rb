@@ -182,7 +182,7 @@ describe AppSession do
     before(:each) do
       AppSession.delete_all
       session123.update_properties :app_user_id  => 123
-      session123_2.update_properties :app_user_id  => 123
+      session123_2.update_properties :app_user_id  => 123, :some_key => 'somevalue'
       another_session
     end
 
@@ -192,6 +192,9 @@ describe AppSession do
       sessions.should have(2).item
       sessions.should include(session123)
       sessions.should include(session123_2)
+
+      sessions = AppSession.has_property('some_key', 'somevalue')
+      sessions.should == [session123_2]
     end
   end
 
@@ -280,8 +283,7 @@ describe AppSession do
     end
 
     it 'returns true after sucessful update' do
-      subject.properties.should_receive(:first_or_create!).
-        with(key: :level, value: 10)
+      subject.properties.should_receive(:find_or_create_by_key_and_value).with('level', '10')
       subject.update_properties(properties).should be_true
     end
   end

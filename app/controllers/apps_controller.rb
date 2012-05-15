@@ -65,8 +65,11 @@ class AppsController < ApplicationController
 
     @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)
     @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
-    if not params[:app_user_id].blank?
-      @recorded_sessions = @recorded_sessions.has_property('app_user_id', params[:app_user_id])
+    if not params[:properties].blank?
+      parts = params[:properties].split(':')
+      if parts.count == 2
+        @recorded_sessions = @recorded_sessions.has_property(parts[0].strip, parts[1].strip)
+      end
     end
 
     @recorded_sessions = @recorded_sessions.where(:app_version => versions)

@@ -127,7 +127,8 @@ class AppSession < ActiveRecord::Base
   def update_properties hash
     if hash && !hash.empty?
       hash.each_pair do |k, v|
-        self.properties.first_or_create! :key => k, :value => v
+        #self.properties.first_or_create!({ :key => k, :value => v })
+        self.properties.find_or_create_by_key_and_value(k.to_s, v.to_s)
       end
     end
     true
