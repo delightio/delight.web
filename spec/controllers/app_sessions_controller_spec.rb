@@ -100,15 +100,6 @@ describe AppSessionsController do
       response.should be_bad_request
     end
 
-    let(:app_user_id) { '10' }
-    it 'updates app_user_id' do
-      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
-      params = { app_user_id: app_user_id }
-      put :update, id: app_session.id, app_session: params, format: :xml
-      response.should be_success
-      app_session.reload.app_user_id.should == app_user_id
-    end
-
     it 'updates properties' do
       request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
       params = { properties: { level: 20 } }
