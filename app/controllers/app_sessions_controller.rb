@@ -105,9 +105,10 @@ class AppSessionsController < ApplicationController
       render xml: "Token mismatch", status: :bad_request
       return
     end
-
     respond_to do |format|
-      if @app_session.update_attributes(params[:app_session])
+      properties = params[:app_session].delete :properties
+      if @app_session.update_attributes(params[:app_session]) &&
+         @app_session.update_properties(properties)
         format.xml { head :no_content }
       else
         format.xml { render xml: @app_session.errors, status: :unprocessable_entity }

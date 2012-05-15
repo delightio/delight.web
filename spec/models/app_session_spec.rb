@@ -251,6 +251,21 @@ describe AppSession do
     end
   end
 
+  describe '#update_properties' do
+    let(:properties) { {level: 10} }
+
+    it 'returns true if there is no error' do
+      subject.update_properties(nil).should be_true
+    end
+
+    it 'returns true after sucessful update' do
+      Property.should_receive(:first_or_create!).
+        with(app_session_id: subject.id, key: :level, value: 10)
+
+      subject.update_properties(properties).should be_true
+    end
+  end
+
   describe '#generate_upload_uris' do
     it 'is called after object creation' do
       AppSession.any_instance.

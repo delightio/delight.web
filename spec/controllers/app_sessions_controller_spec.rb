@@ -108,6 +108,15 @@ describe AppSessionsController do
       response.should be_success
       app_session.reload.app_user_id.should == app_user_id
     end
+
+    it 'updates properties' do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
+      params = { properties: { level: 20 } }
+      put :update, id: app_session.id, app_session: params, format: :xml
+      response.should be_success
+      app_session.reload.properties.first.key.should   == 'level'
+      app_session.reload.properties.first.value.should == "20"
+    end
   end
 
   describe 'GET show' do

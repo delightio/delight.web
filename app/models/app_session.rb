@@ -1,6 +1,7 @@
 class AppSession < ActiveRecord::Base
   attr_reader :upload_uris
 
+  has_many :properties
   has_many :tracks
   belongs_to :app
 
@@ -117,6 +118,15 @@ class AppSession < ActiveRecord::Base
       @working_directory = working_directory
     end
     @working_directory
+  end
+
+  def update_properties hash
+    if hash && !hash.empty?
+      hash.each_pair do |k, v|
+        Property.first_or_create! app_session_id: id, key: k, value: v
+      end
+    end
+    true
   end
 
   private
