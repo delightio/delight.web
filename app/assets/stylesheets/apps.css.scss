@@ -1,0 +1,36 @@
+#sticky.stick {
+  position: fixed;
+  top: 50px;
+  z-index: 10000;
+}
+#sticky {
+  width: 180px;
+}
+#sticky.stick {
+  width: 180px;
+}
+@media (min-width: 1200px) {
+  #sticky {
+    width: 242px;
+  }
+  #sticky.stick {
+    width: 242px;
+  }
+}
+@media (min-width: 768px) and (max-width: 979px) {
+  #sticky {
+    width: 138px;
+  }
+  #sticky.stick {
+    width: 138px;
+    top: 0px;
+  }
+}
+@media (max-width: 480px) {
+  #sticky {
+    width: 138px;
+  }
+  #sticky.stick {
+    width: 138px;
+  }
+}
