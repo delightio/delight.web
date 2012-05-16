@@ -182,6 +182,19 @@ describe AppsController do
 
       end
 
+      describe "viewer of an app" do
+        let(:app2) { FactoryGirl.create(:app) }
+        before(:each) {
+          app2.viewers << app.account.administrator
+        }
+
+        it "should able to view the app" do
+          get :show, {:id => app2.to_param}
+          response.should be_success
+          assigns(:app).should == app2
+        end
+      end
+
       describe "has properties" do
         let(:date_min) { 31.days.ago - 15.minutes }
         let(:date_max) { 10.seconds.ago }
@@ -206,7 +219,6 @@ describe AppsController do
         end
 
         it "should filter by any key value given" do
-          puts session1.properties.to_yaml
           get :show, { :id => app.to_param, :properties => ' some_key: some_value ' }
           response.should be_success
           sessions = assigns(:recorded_sessions)

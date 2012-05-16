@@ -37,11 +37,25 @@ class AppsController < ApplicationController
     @setup = params[:setup]
 
     if current_user.administrator?
-      @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
+      @app ||= App.includes(:app_sessions).administered_by(current_user).find_by_id(params[:id])
     end
 
     # viewers
-    @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
+    @app ||= App.includes(:app_sessions).viewable_by(current_user).find_by_id(params[:id])
+    if @app.nil?
+      respond_to do |format|
+        format.html do
+          flash[:type] = 'error'
+          flash[:notice] = 'Invalid operation'
+          redirect_to :action => :index
+        end
+        format.json do
+          render :json => { 'result' => 'fail', 'reason' => 'record not found' }
+        end
+      end
+      return
+    end
+
     @recorded_sessions = @app.app_sessions.recorded
     @versions = @recorded_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
     versions = params[:versions] || @versions.collect { |v| v.app_version }
