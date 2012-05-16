@@ -303,7 +303,16 @@ describe AppSession do
       subject.upload_uris.should == Hash.new
     end
 
-    it 'expects a screen, a touch track and a presentaiton track' do
+    it 'expects a screen and a presentaiton track' do
+      subject.stub :recording? => true
+      ScreenTrack.should_receive(:new).and_return(mock.as_null_object)
+
+      subject.send :generate_upload_uris
+      subject.expected_track_count.should == 2 # 1 more for presentation track
+      subject.upload_uris.should have_key :screen_track
+    end
+
+    xit 'expects a screen, a touch track and a presentaiton track' do
       subject.stub :recording? => true
       ScreenTrack.should_receive(:new).and_return(mock.as_null_object)
       TouchTrack.should_receive(:new).and_return(mock.as_null_object)
