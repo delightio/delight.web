@@ -42,11 +42,11 @@
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
             <li class="nav-header">Filter by properties</li>
             <li class="row-fluid">
-              <div class="span10">
-                <input type="text" class="input-small search-query" name="properties" placeholder="key:value">
-              </div>
-              <div class="span2">
-                <a href="javascript:void(0)" id="app-show-filter-by-app-user-id" class="btn btn-small"><i class="icon-large icon-search"></i></a>
+              <div class="span12">
+                <div class="input-append">
+                  <input type="text" id="app-show-filter-input" class="input-small search-query" name="properties" placeholder="key:value">
+                  <span class="add-on" id="app-show-filter-clear"><i class="icon-remove-sign"></i></span>
+                </div>
               </div>
             </li>
             <hr />
@@ -151,7 +151,14 @@
         $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
       <% end %>
       $("#app-setup-btn").colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
-      $("#app-show-filter-by-app-user-id").click(function(eventObj) {
+      $("#app-show-filter-input").keydown(function(event) {
+        if (event.which == 13) {
+          querySessions();
+          event.preventDefault();
+        }
+      });
+      $("#app-show-filter-clear").click(function(event) {
+        $("#app-show-filter-input").attr("value", "");
         querySessions();
       });
       $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
