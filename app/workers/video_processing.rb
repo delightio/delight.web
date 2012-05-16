@@ -8,7 +8,7 @@ class VideoProcessing
     puts "AppSession[#{app_session_id}] is processing..."
     app_session = AppSession.find app_session_id
 
-    touch = app_session.touch_track.download
+    touch = app_session.touch_track.download if app_session.touch_track
     screen = app_session.screen_track.download
 
     processed = VideoProcessing.draw_touch touch, screen
