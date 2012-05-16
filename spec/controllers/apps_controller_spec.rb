@@ -252,6 +252,29 @@ describe AppsController do
           sessions.should include(session2)
           sessions.should include(session3)
         end
+
+        it "should search by both key and value if a single word is given" do
+          get :show, { :id => app.to_param, :properties => ' app_user_id  ' }
+          response.should be_success
+          sessions = assigns(:recorded_sessions)
+          sessions.should have(3).items
+          sessions.should include(session1)
+          sessions.should include(session2)
+          sessions.should include(session3)
+
+          get :show, { :id => app.to_param, :properties => ' some_value  ' }
+          response.should be_success
+          sessions = assigns(:recorded_sessions)
+          sessions.should have(1).items
+          sessions.should include(session1)
+        end
+
+        it "should return empty list if not match" do
+          get :show, { :id => app.to_param, :properties => ' nomatch  ' }
+          response.should be_success
+          sessions = assigns(:recorded_sessions)
+          sessions.should be_empty
+        end
       end
     end
 

@@ -81,8 +81,17 @@ class AppsController < ApplicationController
     @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
     if not params[:properties].blank?
       parts = params[:properties].split(':')
-      if parts.count == 2
+      num_parts = parts.count
+      case num_parts
+      when 1
+        # search both key and value with the same input
+        keyword = parts[0].strip
+        @recorded_sessions = @recorded_sessions.has_property_key_or_value(keyword)
+      when 2
         @recorded_sessions = @recorded_sessions.has_property(parts[0].strip, parts[1].strip)
+      else
+        keyword = params[:properties].strip
+        @recorded_sessions = @recorded_sessions.has_property_key_or_value(keyword)
       end
     end
 

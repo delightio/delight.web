@@ -60,6 +60,11 @@ class AppSession < ActiveRecord::Base
     def has_property(key, value)
       joins(:properties).where(:properties => { :key => key, :value => value })
     end
+
+    def has_property_key_or_value(word)
+      joins(:properties).where('properties.key = ? or properties.value = ?', word, word)
+    end
+
   end
   extend Scopes
 

@@ -1,5 +1,9 @@
     <div class="span9" id="app-view-app-sessions">
-      <% unless @recorded_sessions.blank? %>
+      <% if @recorded_sessions.blank? %>
+        <div class="alert">
+          No recorded app session or no match
+        </div>
+      <% else %>
       <% @recorded_sessions.each do |session| %>
       <div class="row">
         <div class="span4">
