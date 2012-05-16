@@ -61,6 +61,12 @@
                 <td>Connectivity:</td>
                 <td class="align-r"><%= session.app_connectivity %></td>
               </tr>
+              <% session.properties.each do |property| %>
+              <tr>
+                <td><%= property.key %>:</td>
+                <td class="align-r"><%= property.value %></td>
+              </tr>
+              <% end %>
             </tbody>
           </table>
 
