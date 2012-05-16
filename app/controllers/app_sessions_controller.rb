@@ -13,6 +13,16 @@ class AppSessionsController < ApplicationController
   def show
     authenticate_user!
     @app_session = get_app_session
+    if @app_session.nil?
+      flash[:type] = 'error'
+      flash[:notice] = 'Invalid operation'
+      respond_to do |format|
+        format.html { redirect_to apps_path }
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'record not found' } }
+      end
+
+      return
+    end
     @track = @app_session.screen_track
 
     respond_to do |format|
@@ -24,6 +34,15 @@ class AppSessionsController < ApplicationController
   def favorite
     authenticate_user!
     @app_session = get_app_session(params[:app_session_id])
+    if @app_session.nil?
+      flash[:type] = 'error'
+      flash[:notice] = 'Invalid operation'
+      respond_to do |format|
+        format.html { redirect_to apps_path }
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'record not found' } }
+      end
+      return
+    end
 
     respond_to do |format|
       format.json do
@@ -41,6 +60,15 @@ class AppSessionsController < ApplicationController
   def unfavorite
     authenticate_user!
     @app_session = get_app_session(params[:app_session_id])
+    if @app_session.nil?
+      flash[:type] = 'error'
+      flash[:notice] = 'Invalid operation'
+      respond_to do |format|
+        format.html { redirect_to apps_path }
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'record not found' } }
+      end
+      return
+    end
 
     respond_to do |format|
       format.json do
@@ -127,9 +155,9 @@ class AppSessionsController < ApplicationController
 
     app_session = nil
     if current_user.administrator?
-      app_session ||= AppSession.administered_by(current_user).find(session_id)
+      app_session ||= AppSession.administered_by(current_user).find_by_id(session_id)
     end
-    app_session ||= AppSession.viewable_by(current_user).find(session_id)
+    app_session ||= AppSession.viewable_by(current_user).find_by_id(session_id)
   end
 
   def get_token
