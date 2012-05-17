@@ -1,9 +1,10 @@
   <div class="row">
     <div class="span12">
-      <h2>App Manager</h2>
+      <h2>Your Apps</h2>
+      <%= link_to 'Create a new app', new_app_path, :class => "btn" %>
     </div>
   </div><!--/row-->
-  <hr />
+  <br>
 
       <!--
   <div class="row">
@@ -74,23 +75,15 @@
   %>
     </div>
   </div>
-
-  <div class="row">
-    <div class="span12">
-      <%= link_to 'New App', new_app_path, :class => "btn" %>
-    </div>
-  </div>
-
-<br />
 <% end %>
 
 <% if not @viewer_apps.blank? %>
+  <hr />
   <div class="row">
     <div class="span12">
-      <h2>Apps as viewer</h2>
+      <h2>Shared Apps</h2>
     </div>
   </div><!--/row-->
-  <hr />
 
   <div class="row">
     <div class="span12">
