@@ -1,5 +1,5 @@
 class SystemMailer < ActionMailer::Base
-  default from: "system@delightio.com"
+  default from: "team@delight.io"
 
   def invitation_email(user, invitation)
     @user = user

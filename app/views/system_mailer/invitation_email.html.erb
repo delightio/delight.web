@@ -4,12 +4,17 @@
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 </head>
 <body>
-<h1>Welcome to delightio</h1>
 <p>
-<%= @user.nickname %> would like to invite you to delight.io viewing the app <%= @invitation.app.name %><br/>
+<strong><%= @user.nickname %></strong> would like to invite you to view the recorded sessions of their <strong><%= @invitation.app.name %></strong> app.<br/>
 To accept the invitation, please follow the link below:<br/>
 <%= link_to @invitation_url, raw(@invitation_url), :target => "_blank" %>
 </p>
-<p>Thanks for joining and have a great day!</p>
+<p>Thanks!</p>
+<p>
+  delight.io<br/>
+  iOS remote usability testing framework<br/>
+  More about us: <a href="http://delight.io" target="_blank">http://delight.io</a><br />
+  Follow us on Twitter: <a href="http://twitter.com/delightio" target="_blank">@delightio</a>
+</p>
 </body>
 </html>
