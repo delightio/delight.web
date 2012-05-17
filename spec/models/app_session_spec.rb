@@ -92,6 +92,24 @@ describe AppSession do
     end
   end
 
+  describe '#maximum_frame_rate' do
+    its(:maximum_frame_rate) { should == 10 }
+  end
+
+  describe '#scale_factor' do
+    context 'when device is iPad 3' do
+      before { subject.stub :device_hw_version => 'iPad3,3' }
+
+      its(:scale_factor) { should == 0.25 }
+    end
+
+    context 'when device is not iPad 3' do
+      before { subject.stub :device_hw_version => 'iPhone4,1' }
+
+      its(:scale_factor) { should == 0.5 }
+    end
+  end
+
   describe 'favorite_of' do
     let(:app_session1) { FactoryGirl.create(:app_session) }
     let(:app_session2) { FactoryGirl.create(:app_session) }

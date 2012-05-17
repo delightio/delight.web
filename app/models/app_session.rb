@@ -94,6 +94,19 @@ class AppSession < ActiveRecord::Base
     app.uploading_on_wifi_only?
   end
 
+  def maximum_frame_rate
+    10
+  end
+
+  def scale_factor
+    case device_hw_version.split(',').first
+    when 'iPad3'
+      0.25
+    else
+      0.5
+    end
+  end
+
   def complete_upload media
     enqueue_processing if ready_for_processing?
     app.complete_recording if recorded?
