@@ -65,7 +65,7 @@ DelightWeb::Application.routes.draw do
       twitter_ids.include? request.env['warden'].user.twitter_id \
       or github_ids.include? request.env['warden'].user.github_id
     else
-      true
+      false
     end
   end
   constraints resque_constraint do
