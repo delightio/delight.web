@@ -2,13 +2,13 @@
     <div class="span5">
       <h2>
         <a href=<%= apps_path %>><%= @app.name %></a>
-        <% if current_user.kind_of?(Administrator) %>
+        <% if current_user == @app.account.administrator %>
         <span class="divider">/</span>
         <%= link_to 'Setup', 'javascript:void(0)', :id => 'app-setup-btn' %>
         <% end %>
       </h2>
     </div>
-    <% if current_user.kind_of?(Administrator) %>
+    <% if current_user == @app.account.administrator %>
     <div class="span7 align-r">
       <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= link_to(raw("<span id='num-scheduled-recording'>" + @app.scheduled_recordings.to_s + "</span> Sessions Scheduled"), app_schedule_recording_edit_path(:app_id => @app.id), :id => 'app-schedule-recording') %></h3>
 
