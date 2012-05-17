@@ -48,7 +48,29 @@ DelightWeb::Application.routes.draw do
   match 'faq' => 'home#faq'
   root :to => 'home#index'
 
-  mount Resque::Server.new, :at => "/resque"
+  resque_constraint = lambda do |request|
+    if request.env['warden'].authenticate?
+      if ENV['RESQUE_ADMIN_TWITTER_IDS']
+        twitter_ids = ENV['RESQUE_ADMIN_TWITTER_IDS'].split(',').collect { |s| s.strip }
+      else
+        twitter_ids = []
+      end
+
+      if ENV['RESQUE_ADMIN_GITHUB_IDS']
+        github_ids = ENV['RESQUE_ADMIN_GITHUB_IDS'].split(',').collect { |s| s.strip }
+      else
+        github_ids = []
+      end
+
+      twitter_ids.include? request.env['warden'].user.twitter_id \
+      or github_ids.include? request.env['warden'].user.github_id
+    else
+      true
+    end
+  end
+  constraints resque_constraint do
+    mount Resque::Server.new, :at => "/resque"
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
