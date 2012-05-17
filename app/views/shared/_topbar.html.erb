@@ -9,7 +9,10 @@
       <%= link_to raw(I18n.t("topnav.brand") + image_tag('/images/beta.png', :width => 38, :height => 16, :style => 'margin:0 0 0 5px;vertical-align:-15%')), user_signed_in? ? apps_path : root_path, :class => 'brand' %>
       <div class="nav-collapse">
         <ul class="nav">
+          <li><a href="features">Features</a></li>
           <li><a href="https://github.com/delightio/ios/blob/master/README.md" target="_blank">Documentation</a></li>
+          <li><a href="pricing">Pricing</a></li>
+          <li><a href="faq">FAQ</a></li>
 <!--           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#faq">FAQ</a></li> -->
         </ul>
@@ -28,9 +31,9 @@
           <li class="dropdown">
             <%= link_to "Login", "javascript:void(0)", :class => "dropdown-toggle", :'data-toggle' => "dropdown" %>
             <ul class="dropdown-menu btn-large">
-              <li><%= link_to raw('<i class="icon-github-sign icon-large"></i> Login with Github'), omniauth_authorize_path('user', 'github') %></li>
+              <li><%= link_to raw('<i class="icon-github-sign icon-large"></i> Log in with Github'), omniauth_authorize_path('user', 'github') %></li>
               <li class="divider"></li>
-              <li><%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Login with Twitter'), omniauth_authorize_path('user', 'twitter') %></li>
+              <li><%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Log in with Twitter'), omniauth_authorize_path('user', 'twitter') %></li>
             </ul>
           </li>
           <% end %>

@@ -10,7 +10,7 @@ class S3Storage
   end
 
   def presigned_bucket
-    return $s3_presigned_bucket if $s3_presigned_bucket and $s3_last_session and $s3_last_session >= SESSION_RENEW_INTERVAL.ago
+    return $s3_presigned_bucket if $s3_presigned_bucket and $s3_last_session and $s3_last_session > SESSION_RENEW_INTERVAL.ago
 
     policy = AWS::STS::Policy.new
     policy.allow(:actions => :any, :resource => :any)

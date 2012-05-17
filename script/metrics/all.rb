@@ -9,7 +9,11 @@ module Scopes
     order 'created_at DESC'
   end
 end
+
 App.extend Scopes
+Account.extend Scopes
+AppSession.extend Scopes
+
 
 module AgeFormatter
   def age from=Time.now
@@ -65,3 +69,9 @@ puts
 
 puts "#{no_sessions.count} apps have no sessions: "
 puts no_sessions.map {|s| App.find(s.first).name }.join ', '
+puts
+
+puts "Summary (since launched #{LaunchDate.age}):"
+puts "  Accounts: #{Account.after_launch.count}"
+puts "  Apps: #{App.after_launch.count}"
+puts "  App Sessions: #{AppSession.after_launch.recorded.count} / #{AppSession.after_launch.count}"
