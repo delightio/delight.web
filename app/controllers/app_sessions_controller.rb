@@ -26,7 +26,7 @@ class AppSessionsController < ApplicationController
     @track = @app_session.screen_track
 
     respond_to do |format|
-      format.html { render :layout => 'empty' } # show.html.erb
+      format.html { render :layout => 'iframe_black' } # show.html.erb
     end
   end
 
