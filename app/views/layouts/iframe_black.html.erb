@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Delight.io</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag("/stylesheets/screen.css", :media => 'screen')  %>
+  <%= stylesheet_link_tag("/stylesheets/smoothness/jquery-ui-1.8.18.custom.css", :media => 'screen')  %>
+  <%= stylesheet_link_tag("/stylesheets/font-awesome.css", :media => 'screen')  %>
+  <%= stylesheet_link_tag("/stylesheets/colorbox.css", :media => 'screen')  %>
+  <%= stylesheet_link_tag("/stylesheets/print.css", :media => 'print')  %>
+  <!--[if IE]>
+    <%= stylesheet_link_tag("/stylesheets/ie.css", :media => 'screen')  %>
+  <![endif]-->
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body style="background-color:black">
+  <%= yield %>
+</body>
+</html>
