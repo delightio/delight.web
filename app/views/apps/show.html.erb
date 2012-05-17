@@ -41,12 +41,10 @@
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
             <li class="nav-header">Filter by properties</li>
-            <li class="row-fluid">
-              <div class="span12">
-                <div class="input-append">
-                  <input type="text" id="app-show-filter-input" class="input-small search-query" name="properties" placeholder="key:value">
-                  <span class="add-on" id="app-show-filter-clear"><i class="icon-remove-sign"></i></span>
-                </div>
+            <li>
+              <div class="input-append">
+                <input type="text" id="app-show-filter-input" class="menu-search-box search-query" name="properties" style="height:28px; box-sizing: border-box;" placeholder="key:value">
+                <span class="add-on" id="app-show-filter-clear"><i class="icon-remove-sign"></i></span>
               </div>
             </li>
             <hr />
