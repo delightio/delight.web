@@ -92,6 +92,24 @@ describe AppSession do
     end
   end
 
+  describe '#maximum_frame_rate' do
+    its(:maximum_frame_rate) { should == 10 }
+  end
+
+  describe '#scale_factor' do
+    context 'when device is iPad 3' do
+      before { subject.stub :device_hw_version => 'iPad3,3' }
+
+      its(:scale_factor) { should == 0.25 }
+    end
+
+    context 'when device is not iPad 3' do
+      before { subject.stub :device_hw_version => 'iPhone4,1' }
+
+      its(:scale_factor) { should == 0.5 }
+    end
+  end
+
   describe 'favorite_of' do
     let(:app_session1) { FactoryGirl.create(:app_session) }
     let(:app_session2) { FactoryGirl.create(:app_session) }
@@ -303,7 +321,16 @@ describe AppSession do
       subject.upload_uris.should == Hash.new
     end
 
-    it 'expects a screen, a touch track and a presentaiton track' do
+    it 'expects a screen and a presentaiton track' do
+      subject.stub :recording? => true
+      ScreenTrack.should_receive(:new).and_return(mock.as_null_object)
+
+      subject.send :generate_upload_uris
+      subject.expected_track_count.should == 2 # 1 more for presentation track
+      subject.upload_uris.should have_key :screen_track
+    end
+
+    xit 'expects a screen, a touch track and a presentaiton track' do
       subject.stub :recording? => true
       ScreenTrack.should_receive(:new).and_return(mock.as_null_object)
       TouchTrack.should_receive(:new).and_return(mock.as_null_object)

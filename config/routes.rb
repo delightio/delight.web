@@ -43,6 +43,9 @@ DelightWeb::Application.routes.draw do
   end
   resources :beta_signups, :only => [:create]
 
+  match 'features' => 'home#features'
+  match 'pricing' => 'home#pricing'
+  match 'faq' => 'home#faq'
   root :to => 'home#index'
 
   mount Resque::Server.new, :at => "/resque"

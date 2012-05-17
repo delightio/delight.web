@@ -40,9 +40,10 @@
           <!--li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li-->
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
-            <li class="nav-header">Filter by properties</li>
+            <li class="nav-header">Properties</li>
             <li>
-              <div class="input-append">
+              <div class="input-prepend input-append">
+                <span class="add-on"><i class="icon-search"></i></span>
                 <input type="text" id="app-show-filter-input" class="menu-search-box search-query" name="properties" style="height:28px; box-sizing: border-box;" placeholder="key:value">
                 <span class="add-on" id="app-show-filter-clear"><i class="icon-remove-sign"></i></span>
               </div>

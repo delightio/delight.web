@@ -65,6 +65,9 @@
                 <td>Connectivity:</td>
                 <td class="align-r"><%= session.app_connectivity %></td>
               </tr>
+              <% unless session.properties.blank? %>
+              <tr><td><br></td></tr>
+              <% end %>
               <% session.properties.each do |property| %>
               <tr>
                 <td><%= property.key %>:</td>

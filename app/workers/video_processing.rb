@@ -3,26 +3,21 @@ class VideoProcessing
   @queue = :video
 
   def self.perform app_session_id
-    puts "AppSession[#{app_session_id}] is processing..."
+    start = Time.now
 
+    puts "AppSession[#{app_session_id}] is processing..."
     app_session = AppSession.find app_session_id
 
-    start = Time.now
-    touch = app_session.touch_track.download
+    touch = app_session.touch_track.download if app_session.touch_track
     screen = app_session.screen_track.download
-    puts "AppSession[#{app_session_id}]: 2 tracks (TouchTrack[#{app_session.touch_track.id}], ScreenTrack[#{app_session.screen_track.id}]) downloaded in #{Time.now-start} s"
 
-    start = Time.now
     processed = VideoProcessing.draw_touch touch, screen
     thumbnail = VideoProcessing.thumbnail processed
-    puts "AppSession[#{app_session_id}]: processed in #{Time.now-start} s"
 
-    start = Time.now
     presentation_track = PresentationTrack.new app_session: app_session
     presentation_track.upload processed
     presentation_track.thumbnail.upload thumbnail
     if presentation_track.save
-      puts "AppSession[#{app_session_id}]: PresentationTrack[#{presentation_track.id}] uploaded in #{Time.now-start} s"
       puts "AppSession[#{app_session_id}]: done processing in #{Time.now-start} s."
     end
 
