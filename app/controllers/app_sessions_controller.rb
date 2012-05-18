@@ -135,8 +135,11 @@ class AppSessionsController < ApplicationController
     end
     respond_to do |format|
       properties = params[:app_session].delete :properties
+      metrics = params[:app_session].delete :metrics
+
       if @app_session.update_attributes(params[:app_session]) &&
-         @app_session.update_properties(properties)
+         @app_session.update_properties(properties) &&
+         @app_session.update_metrics(metrics)
         format.xml { head :no_content }
       else
         format.xml { render xml: @app_session.errors, status: :unprocessable_entity }

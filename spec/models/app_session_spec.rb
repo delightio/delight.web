@@ -306,6 +306,21 @@ describe AppSession do
     end
   end
 
+  describe '#update_metrics' do
+    let(:metrics) { { private_view_count: 10 } }
+
+    it 'updates metrics' do
+      2.times { subject.update_metrics metrics }
+
+      subject.metrics(:private_view_count).should == '20'
+    end
+
+    it 'always returns true' do
+      subject.update_metrics(metrics).should be_true
+      subject.update_metrics(nil).should be_true
+    end
+  end
+
   describe '#generate_upload_uris' do
     it 'is called after object creation' do
       AppSession.any_instance.

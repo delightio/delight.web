@@ -16,6 +16,8 @@ class AppSession < ActiveRecord::Base
 
   after_create :generate_upload_uris
 
+  include Mixins::Metric
+
   module Scopes
     def favorite_of(user)
       joins(:favorites).where(:favorites => {:user_id => user.id})

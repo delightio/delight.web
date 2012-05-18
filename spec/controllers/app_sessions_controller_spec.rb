@@ -76,11 +76,11 @@ describe AppSessionsController do
   end
 
   describe 'put' do
+    before { request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token }
     let(:app_session) { FactoryGirl.create :app_session }
 
     let(:duration) { 10.2 }
     it 'updates duration' do
-      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
       params = { duration: duration }
       put :update, id: app_session.id, app_session: params, format: :xml
       response.should be_success
@@ -88,6 +88,7 @@ describe AppSessionsController do
     end
 
     it "should fail if token is missing" do
+      request.env.delete 'HTTP_X_NB_AUTHTOKEN'
       params = { duration: duration }
       put :update,  id: app_session.id, app_session: params, format: :xml
       response.should be_bad_request
@@ -101,12 +102,18 @@ describe AppSessionsController do
     end
 
     it 'updates properties' do
-      request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
       params = { properties: { level: 20 } }
       put :update, id: app_session.id, app_session: params, format: :xml
       response.should be_success
       app_session.reload.properties.first.key.should   == 'level'
-      app_session.reload.properties.first.value.should == "20"
+      app_session.reload.properties.first.value.should == '20'
+    end
+
+    it 'updates metrics' do
+      params = { metrics: { call_count: '10' } }
+      put :update, id: app_session.id, app_session: params, format: :xml
+      response.should be_success
+      app_session.reload.metrics(:call_count).should == '10'
     end
   end
 
