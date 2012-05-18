@@ -161,11 +161,7 @@ class AppSessionsController < ApplicationController
   end
 
   def get_token
-    if ENV['USE_URL_PARAM_API_TOKEN'] == 'y'
-      token = params[:token]
-    else
-      token = request.env['HTTP_X_NB_AUTHTOKEN']
-    end
+    request.env['HTTP_X_NB_AUTHTOKEN']
   end
 
 end
