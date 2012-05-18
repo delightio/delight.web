@@ -1,22 +1,23 @@
-<div class='row'>
-  <div class='span8'>
-    <h1>Preliminary Pricing Model</h1>
-      We are still working on our pricing model right now and we would like to hear your <a href="mailto:info@delight.io">feedback</a>. It'd likely to be pay-as-you-go model where you can purchase individual session or in a bulk package. We are targetting a maximum of <strong>US $5 per user session</strong>.
-  If you sign up now, you will be <em>guranteed</em> for this price for the next 12 months.
-    <br>
-    <br>
-  </div>
+<h1>Pay as you go</h1>
+<h2>First 10 recordings are on us!</h2>
+<hr/>
+<div class="row">
+  <% PAYMENT_CONFIG['plans'].each do |payment| %>
+    <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
+    <h3><%= payment['display'] %></h3>
+    <br/>
+    <p>
+    <span style="font-size:xx-large">$<%= payment['price'] %></span> per
+    <br/>
+    <%= payment['credit'] %> recordings
+    </p>
+  </a>
+  <% end %>
 </div>
-<h2>Sign up now to lock in your price!</h2>
 <div class="row">
   <div class="span12">
-    <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-    <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+    <div class="alert alert-info">
+      * All transaction in USD and we accept common credit cards
+    </div>
   </div>
 </div>
-
-<br><br>
-<p>
-  <strong>Questions? </strong> Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us.
-</p>
-

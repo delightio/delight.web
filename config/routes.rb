@@ -19,6 +19,7 @@ DelightWeb::Application.routes.draw do
   end
 
   resources :accounts, :except => [:index, :destroy] do
+    get 'credit', :to => 'accounts#view_credit', :as => 'view_credit'
     put 'add_credit', :to => 'accounts#add_credit', :as => 'add_credit'
   end
 

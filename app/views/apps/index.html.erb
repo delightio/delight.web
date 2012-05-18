@@ -2,6 +2,9 @@
     <div class="span12">
       <h2>Your Apps</h2>
       <%= link_to 'Create a new app', new_app_path, :class => "btn" %>
+      <% if current_user.administrator? %>
+        <%= link_to 'Credits', account_view_credit_path(:account_id => current_user.account, :plan => @show_credit), :class => "btn", :id => 'app-index-credit-btn' %>
+      <% end %>
     </div>
   </div><!--/row-->
   <br>
@@ -110,6 +113,14 @@
         transition:"none",
         width:"550px",
         height:"500px"
+    });
+    var show_plan = '<%= @show_credit %>';
+    $("#app-index-credit-btn").colorbox({
+        iframe: true,
+        transition:"none",
+        width:"700px",
+        height:"650px",
+        open: show_plan ? true : false
     });
   });
 </script>

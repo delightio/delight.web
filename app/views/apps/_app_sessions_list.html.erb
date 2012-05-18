@@ -103,6 +103,8 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', unfavorite_handler);
+          $target.data('tooltip').options.title = 'Remove this session from your favorites';
+          $target.tooltip('hide');
           increment_favorite_count();
         }
       }
@@ -117,6 +119,8 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', favorite_handler);
+          $target.data('tooltip').options.title = 'Add this session to your favorites';
+          $target.tooltip('hide');
           decrement_favorite_count();
         }
       }
@@ -131,4 +135,7 @@
 
       $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)
       $(".app-session-unfavorite-btn").bind('ajax:success', unfavorite_handler);
+
+      $(".app-session-favorite-btn").tooltip({ 'title' : 'Add this session to your favorites' });
+      $(".app-session-unfavorite-btn").tooltip({ 'title' : 'Remove this session from your favorites' });
     </script>

@@ -1,0 +1,180 @@
+<!-- requires #remaining-credits defined -->
+    <div class="row-fluid">
+      <div class="span12">
+        <div id="payment-alert"></div>
+      </div>
+    </div>
+    <%= form_tag(account_add_credit_path(:account_id => account.id), :remote => true, :method => :put, :id => "payment-form", :class => "form-horizontal") do |add_credit_form| %>
+      <h2>Purchase credits</h2>
+      <div class="row">
+        <div class="span12">
+          <table class="table table-striped">
+            <thead>
+            </thead>
+            <tbody>
+              <% PAYMENT_CONFIG['plans'].each do |payment| %>
+              <tr class="add-credit-row">
+                <td><input type="text" name="add-credit-quantity-<%= payment['name'] %>" id="add-credit-quantity-<%= payment['name'] %>" class="input-small" value="0" style="width:50px"/><span> x $<%= payment['price'] %> for <%= payment['credit'] %> recording</span></td>
+                <td>$<span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price">0</span></td>
+                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="add-credit-subtotal-credit">0</span> credits</td>
+              </tr>
+              <script>
+                $("#add-credit-quantity-<%= payment['name'] %>").keyup(function(eventObj) {
+                  var $target = $(eventObj.target);
+                  var quantity = $target.attr('value');
+
+                  var price = <%= payment['price'] %>;
+                  var credit = <%= payment['credit'] %>;
+                  var name = "<%= payment['name'] %>";
+                  if (!isNaN(parseInt(quantity))) {
+                    var subtotal_price = quantity * price;
+                    var subtotal_credit = quantity * credit;
+                    $("#add-credit-subtotal-price-" + name).text(subtotal_price);
+                    $("#add-credit-subtotal-credit-" + name).text(subtotal_credit);
+                    updateAddCreditTotal();
+                  }
+                });
+              </script>
+              <% end %>
+              <tr>
+                <td>Total:</td>
+                <td>
+                  <div class="input-prepend input-append">
+                    <span class="add-on">$</span>
+                    <input name="total_price" id="add-credit-total-price" type="text" value="0" class="input-small" disabled />
+                    <span class="add-on">.00</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="input-append">
+                    <input name="total_credits" id="add-credit-total-credit" type="text" value="0" class="input-small" disabled />
+                    <span class="add-on">credits</span>
+                </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h2>Credit card information</h2>
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label" for="card-number">Card Number</label>
+          <div class="controls">
+            <input type="text" size="20" autocomplete="off" id="card-number" value="4242424242424242"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="card-cvc">CVC</label>
+          <div class="controls">
+            <input type="text" size="4" autocomplete="off" id="card-cvc" value="123"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="card-expiry-month">Expiration (MM/YYYY)</label>
+          <div class="controls">
+            <input type="text" size="2" id="card-expiry-month" class="input-small" value="12"/>
+            <span> / </span>
+            <input type="text" size="4" id="card-expiry-year" class="input-small" value="2013"/>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="row">
+        <div class="span12">
+          <%= submit_tag "Add credits", :class => "btn btn-success btn-large", :id => "add-credit-submit-btn", :style => "width:100%" %>
+        </div>
+      </div>
+    <% end %>
+<script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+<script type="text/javascript">
+  // this identifies your website in the createToken call below
+  Stripe.setPublishableKey("<%= ENV['STRIP_KEY'] %>");
+  $(document).ready(function() {
+    $("#payment-form").submit(function(event) {
+      // disable the submit button to prevent repeated clicks
+      $('#add-credit-submit-btn').attr("disabled", "disabled");
+
+      Stripe.createToken({
+        number: $('#card-number').val(),
+        cvc: $('#card-cvc').val(),
+        exp_month: $('#card-expiry-month').val(),
+        exp_year: $('#card-expiry-year').val()
+      }, stripeResponseHandler);
+
+      // prevent the form from submitting with the default action
+      return false;
+    });
+
+  <% if not plan.blank? %>
+    // set default plan
+    var $field = $("#add-credit-quantity-<%= plan %>");
+    $field.attr('value', 1);
+    $field.keyup();
+  <% end %>
+  });
+  function stripeResponseHandler(status, response) {
+    if (response.error) {
+      // show the errors on the form
+      $("#payment-alert").html('<div class="alert alert-error">' + response.error.message + '</div>');
+      $('#add-credit-submit-btn').removeAttr("disabled");
+    } else {
+      var form$ = $("#payment-form");
+      // token contains id, last4, and card type
+      var token = response['id'];
+      // insert the token into the form so it gets submitted to the server
+      form$.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+      // submit through ajax
+      var values = {};
+      $.each(form$.serializeArray(), function(i, field) {
+        values[field.name] = field.value;
+      });
+      // credit info
+      $.each($(".add-credit-row"), function(row_num, row) {
+        values["total_price"] = $("#add-credit-total-price").attr('value');
+        values["total_credits"] = $("#add-credit-total-credit").attr('value');
+      });
+
+      $.ajax({
+        type: 'PUT',
+        url: form$.attr('action'),
+        data: values,
+        success: function(data) {
+          $('#add-credit-submit-btn').removeAttr("disabled");
+          if (data['result'] && data['result'] == 'success') {
+            add_credit_success(data);
+          } else {
+            add_credit_error(data['reason']);
+          }
+        } ,
+        error: function() {
+          $('#add-credit-submit-btn').removeAttr("disabled");
+          add_credit_error('No reponse from server');
+        },
+        dataType: 'json'
+        });
+    }
+  }
+  function add_credit_success(data) {
+    $("#payment-alert").html('<div class="alert alert-success">Successfully added credits</div>');
+    if (data['remaining_credits']) {
+      $("#remaining-credits").text(data['remaining_credits']);
+    }
+  }
+  function add_credit_error(msg) {
+    $("#payment-alert").html('<div class="alert alert-error">' + msg + '</div>');
+  }
+  function updateAddCreditTotal() {
+    var total_price = 0;
+    var total_credit = 0;
+    $.each($(".add-credit-subtotal-price"), function(index, element) {
+      total_price += parseInt($(element).text());
+    });
+    $.each($(".add-credit-subtotal-credit"), function(index, element) {
+      total_credit += parseInt($(element).text());
+    });
+    $("#add-credit-total-price").attr('value', total_price);
+    $("#add-credit-total-credit").attr('value', total_credit);
+  }
+</script>

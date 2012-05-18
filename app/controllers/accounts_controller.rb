@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_admin, :only => [:edit, :update, :show, :add_credit]
+  before_filter :get_admin, :only => [:edit, :update, :show, :add_credit, :view_credit]
 
   def create
     # check if user is admin and have account already
@@ -102,6 +102,21 @@ class AccountsController < ApplicationController
 
   end
 
+  def view_credit
+    if @admin.blank?
+      respond_to do |format|
+        format.html { redirect_to root_path }
+      end
+      return
+    end
+    @account = @admin.account
+    @plan = params[:plan]
+
+    respond_to do |format|
+      format.html { render :layout => 'iframe' }
+    end
+  end
+
   def add_credit
     if @admin.blank?
       redirect_to root_path
@@ -163,7 +178,7 @@ class AccountsController < ApplicationController
     token = params[:stripeToken]
 
     charge = Stripe::Charge.create(
-      :amount => params[:total_price].to_i,
+      :amount => params[:total_price].to_i * 100, # amount in cents
       :currency => "usd",
       :card => token,
       :description => "credit purchase from account #{@account.id} - #{@account.name} - #{@account.administrator.email}"
