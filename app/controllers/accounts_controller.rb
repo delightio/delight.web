@@ -110,6 +110,7 @@ class AccountsController < ApplicationController
       return
     end
     @account = @admin.account
+    @plan = params[:plan]
 
     respond_to do |format|
       format.html { render :layout => 'iframe' }

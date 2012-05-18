@@ -1,4 +1,5 @@
 class AppsController < ApplicationController
+  before_filter :show_credit?, :only => [:index]
   before_filter :authenticate_user!
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -17,6 +18,9 @@ class AppsController < ApplicationController
 
   # GET /apps
   def index
+    @show_credit = params[:credit] || session[:credit]
+    session[:credit] = nil
+
     @viewer_apps = App.viewable_by(current_user).all
     if current_user.administrator?
       @admin_apps = App.administered_by(current_user).all
@@ -226,6 +230,12 @@ class AppsController < ApplicationController
         flash.now[:notice] = 'Failed scheduling recordings'
         format.html { render action: "schedule_recording_edit", :layout => 'iframe' }
       end
+    end
+  end
+
+  def show_credit?
+    if params[:credit]
+      session[:credit] = params[:credit]
     end
   end
 

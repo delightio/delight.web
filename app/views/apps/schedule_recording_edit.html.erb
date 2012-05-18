@@ -23,7 +23,7 @@
   <br/>
 
   <div id="add-credit" class="collapse">
-    <%= render :partial => 'accounts/add_credit', :locals => { :account => @app.account }  %>
+    <%= render :partial => 'accounts/add_credit', :locals => { :account => @app.account, :plan => nil }  %>
   </div>
 
   <% if @app %>

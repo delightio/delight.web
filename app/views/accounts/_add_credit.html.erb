@@ -106,6 +106,13 @@
       // prevent the form from submitting with the default action
       return false;
     });
+
+  <% if not plan.blank? %>
+    // set default plan
+    var $field = $("#add-credit-quantity-<%= plan %>");
+    $field.attr('value', 1);
+    $field.keyup();
+  <% end %>
   });
   function stripeResponseHandler(status, response) {
     if (response.error) {

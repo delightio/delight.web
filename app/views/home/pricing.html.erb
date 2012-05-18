@@ -3,7 +3,7 @@
 <hr/>
 <div class="row">
   <% PAYMENT_CONFIG['plans'].each do |payment| %>
-  <a href=#" class="span3 btn" style="margin-bottom: 15px">
+    <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
     <h3><%= payment['display'] %></h3>
     <br/>
     <p>

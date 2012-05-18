@@ -3,5 +3,5 @@
   <h2>Available Credits: <span id="remaining-credits"><%= @account.remaining_credits %></span></h2>
   <hr/>
 
-  <%= render :partial => 'accounts/add_credit', :locals => { :account => @account }  %>
+  <%= render :partial => 'accounts/add_credit', :locals => { :account => @account, :plan => @plan }  %>
 </div>

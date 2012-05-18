@@ -3,7 +3,13 @@ class ApplicationController < ActionController::Base
   before_filter :check_user_registration
 
   def after_sign_in_path_for(resource)
-    apps_path
+    if session[:credit]
+      plan = session[:credit]
+      session[:credit] = nil
+      apps_path({:credit => plan})
+    else
+      apps_path
+    end
   end
 
   protected
