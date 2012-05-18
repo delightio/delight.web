@@ -177,7 +177,7 @@ class AccountsController < ApplicationController
     token = params[:stripeToken]
 
     charge = Stripe::Charge.create(
-      :amount => params[:total_price].to_i,
+      :amount => params[:total_price].to_i * 100, # amount in cents
       :currency => "usd",
       :card => token,
       :description => "credit purchase from account #{@account.id} - #{@account.name} - #{@account.administrator.email}"
