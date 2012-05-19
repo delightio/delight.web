@@ -45,9 +45,20 @@ class App < ActiveRecord::Base
   end
 
   def complete_recording
+    # We got more recordings than we expected
+    if scheduled_recordings <= 0
+      handle_extra_recordings
+      return
+    end
+
     settings.incr :recordings, -1
     account.use_credits 1
     notify_users
+  end
+
+  def handle_extra_recordings
+    schedule_recordings 0
+    # TODO we probably want to log this
   end
 
   def resume_recording
