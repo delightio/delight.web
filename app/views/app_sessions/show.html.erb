@@ -1,21 +1,79 @@
 <div class="container" style="width:100%">
-  <div class="row-fluid" style="position:relative;z-index:100" >
-    <div class="span5">
-      <div class="btn-group">
-        <a href="javascript:void(0)" id="rotate--90" class="btn btn-primary">-90</a>
-        <a href="javascript:void(0)" id="rotate-0" class="btn btn-primary">0</a>
-        <a href="javascript:void(0)" id="rotate-90" class="btn btn-primary">90</a>
-        <a href="javascript:void(0)" id="rotate-180" class="btn btn-primary">180</a>
+  <div class="row">
+    <div class="span9">
+      <div class="row" style="position:relative;z-index:100" >
+        <div class="span3">
+          <div class="btn-group">
+            <a href="javascript:void(0)" id="rotate--90" class="btn btn-primary">-90</a>
+            <a href="javascript:void(0)" id="rotate-0" class="btn btn-primary">0</a>
+            <a href="javascript:void(0)" id="rotate-90" class="btn btn-primary">90</a>
+            <a href="javascript:void(0)" id="rotate-180" class="btn btn-primary">180</a>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:50px">
+        <div class="span9" style="text-align:center">
+          <div id="video-container" style="text-align:center">
+            <!--
+            <video height="480px" controls="controls">
+            -->
+            <video width="450px" controls="controls" autoplay>
+            <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
+            Your browser does not support video tag
+            </video>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row-fluid">
-    <div class="span12" style="text-align:center">
-      <div id="video-container" style="text-align:center">
-        <video height="480px" controls="controls">
-        <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
-        Your browser does not support video tag
-        </video>
+    <div class="span3" style="margin-top:20px">
+      <div class="row">
+        <div class="span2">Session:</div>
+        <div class="span1 pull-right"><%= @app_session.id %></div>
+      </div>
+      <div class="row">
+        <div class="span2">Version:</div>
+        <div class="span1 pull-right"><%= @app_session.app_version %></div>
+      </div>
+      <div class="row">
+        <div class="span2">Build:</div>
+        <div class="span1 pull-right"><%= @app_session.app_build %></div>
+      </div>
+      <div class="row">
+        <div class="span2">Locale:</div>
+        <div class="span1 pull-right"><%= @app_session.app_locale %></div>
+      </div>
+      <div class="row">
+        <div class="span2">Duration:</div>
+        <div class="span1 pull-right"><%= @app_session.duration %></div>
+      </div>
+      <div class="row">
+        <div class="span2">Date:</div>
+        <div class="span1 pull-right"><%= @app_session.created_at.to_date %></div>
+      </div>
+      <div class="row">
+        <div class="span2">Device:</div>
+        <div class="span1 pull-right"><%= @app_session.device_hw_version %></div>
+      </div>
+      <div class="row">
+        <div class="span2">Device OS:</div>
+        <div class="span1 pull-right"><%= @app_session.device_os_version %></div>
+      </div>
+      <div class="row">
+        <div class="span2">Connectivity:</div>
+        <div class="span1 pull-right"><%= @app_session.app_connectivity %></div>
+      </div>
+      <% @app_session.properties.each do |property| %>
+      <div class="row">
+        <div class="span2"><%= property.key %>:</div>
+        <div class="span1 pull-right"><%= property.value %></div>
+      </div>
+      <% end %>
+      <br />
+      <div class="row">
+        <div class="span3">
+          <a href="javascript:void(0)" class="btn">Favorite</a>
+          <a href="javascript:void(0)" class="btn">Share</a>
+        </div>
       </div>
     </div>
   </div>
