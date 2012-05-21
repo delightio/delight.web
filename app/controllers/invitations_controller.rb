@@ -25,7 +25,7 @@ class InvitationsController < ApplicationController
         end
       end
     end
-    @group_invitation = @app.group_invitations.new(:message => "I would like to invite you to Delight to view the user sessions of my app, #{@app.name}.")
+    @group_invitation = @app.group_invitations.new(:message => "I would like to invite you to view the user sessions of my app, #{@app.name}, on Delight.")
     @group_invitation.app_id = params[:app_id]
 
     respond_to do |format|
