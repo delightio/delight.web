@@ -647,4 +647,60 @@ describe AppsController do
     end
   end
 
+  describe "PUT 'upload_on_wifi_only'" do
+    let(:app2) { FactoryGirl.create(:app) }
+    describe "admin signed in" do
+      before(:each) do
+        sign_in(app.account.administrator)
+      end
+
+      it "should success" do
+        put 'upload_on_wifi_only', { :app_id => app.id, :state => 1, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'success'
+        app.reload
+        app.uploading_on_wifi_only?.should be_true
+
+        put 'upload_on_wifi_only', { :app_id => app.id, :state => 0, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'success'
+        app.reload
+        app.uploading_on_wifi_only?.should be_false
+      end
+
+      it "should fail with missing state" do
+        put 'upload_on_wifi_only', { :app_id => app.id, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'fail'
+        result['reason'].should == 'param state is missing'
+      end
+
+      it "should fail on app with no ownership" do
+        sign_in(app2.account.administrator)
+        put 'upload_on_wifi_only', { :app_id => app.id, :state => 1, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'fail'
+        result['reason'].should == 'access denied'
+      end
+    end
+
+    describe "non admin signed in" do
+      before(:each) do
+        sign_in(user)
+      end
+
+      it "should fail" do
+        put 'upload_on_wifi_only', { :app_id => app.id, :state => 1, :format => :json }
+        response.should be_success
+        result = JSON.parse(response.body)
+        result['result'].should == 'fail'
+        result['reason'].should == 'access denied'
+      end
+    end
+  end
+
 end
