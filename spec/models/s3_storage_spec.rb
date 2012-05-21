@@ -4,6 +4,29 @@ describe S3Storage do
   subject { S3Storage.new "blah.mp4" }
   its(:bucket_name) { should == ENV['S3_UPLOAD_BUCKET'] }
 
+  describe '.session' do
+    it 'sets up the policy'
+    it 'creates a new federated session'
+  end
+
+  describe '#cached_credentials' do
+    it 'uses cached value when it can' do
+      subject.instance_variable_get(:@credentials).stub :expired? => false
+      subject.instance_variable_get(:@credentials).should_receive :get
+      AWS::STS::Policy.should_not_receive :new
+
+      subject.cached_credentials
+    end
+
+    it 'cache newly obtained credentials' do
+      subject.instance_variable_get(:@credentials).stub :expired? => true
+      subject.instance_variable_get(:@credentials).should_receive :set
+      subject.class.should_receive(:session).and_return(mock.as_null_object)
+
+      subject.cached_credentials
+    end
+  end
+
   describe '#presigned_bucket' do
     it 'generates presigned bucket'
     it 'creates bucket if it did not exit'
@@ -53,6 +76,49 @@ describe S3Storage do
       presigned_object.should_receive(:write).with(local_file.read)
 
       subject.upload local_file
+    end
+  end
+end
+
+describe CachedHash do
+  subject { CachedHash.new key, ttl}
+  let(:key) { "a key" }
+  let(:ttl) { 10 }
+
+  describe '#expired?' do
+    it 'is true when key does not exist' do
+      subject.should be_expired
+    end
+
+    it 'is false if we have a TTL' do
+      subject.set blah: 123
+
+      subject.should_not be_expired
+    end
+  end
+
+  describe '#set' do
+    it 'sets values to key' do
+      REDIS.should_receive(:hmset).with(key, :blah, 123)
+
+      subject.set blah: 123
+    end
+
+    it 'sets an expirary time' do
+      REDIS.should_receive(:expire).with(key, ttl)
+
+      subject.set blah:123
+    end
+
+    it 'returns values set' do
+      subject.set(blah:123).should == { "blah" => "123" }
+    end
+  end
+
+  describe '#get' do
+    it 'reads from Redis' do
+      REDIS.should_receive(:hgetall).with(key)
+      subject.get
     end
   end
 end

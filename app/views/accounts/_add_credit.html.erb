@@ -14,7 +14,7 @@
             <tbody>
               <% PAYMENT_CONFIG['plans'].each do |payment| %>
               <tr class="add-credit-row">
-                <td><input type="text" name="add-credit-quantity-<%= payment['name'] %>" id="add-credit-quantity-<%= payment['name'] %>" class="input-small" value="0" style="width:50px"/><span> x $<%= payment['price'] %> for <%= payment['credit'] %> recording</span></td>
+                <td><input type="text" name="add-credit-quantity-<%= payment['name'] %>" id="add-credit-quantity-<%= payment['name'] %>" class="input-small" value="0" style="width:50px"/><span> x $<%= payment['price'] %> for <%= "#{pluralize(payment['credit'], 'credit')}" %></span></td>
                 <td>$<span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price">0</span></td>
                 <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="add-credit-subtotal-credit">0</span> credits</td>
               </tr>
