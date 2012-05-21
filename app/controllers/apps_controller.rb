@@ -239,4 +239,39 @@ class AppsController < ApplicationController
     end
   end
 
+  def upload_on_wifi_only
+    if params[:state].nil?
+      respond_to do |format|
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'param state is missing' } }
+      end
+      return
+    end
+
+    # validate app id
+    @app = App.administered_by(current_user).find_by_id(params[:app_id])
+    if @app.nil?
+      respond_to do |format|
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'access denied' } }
+      end
+      return
+    end
+
+    state = params[:state]
+    if state == '1'  # convert to 'true' or 'false'
+      state = 'true'
+    else
+      state = 'false'
+    end
+
+    ret = @app.set_uploading_on_wifi_only state
+
+    respond_to do |format|
+      if ret
+        format.json { render :json => { 'result' => 'success' } }
+      else
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'fail to update state' } }
+      end
+    end
+  end
+
 end

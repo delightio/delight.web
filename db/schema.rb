@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120515065824) do
+ActiveRecord::Schema.define(:version => 20120521063942) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -141,6 +141,8 @@ ActiveRecord::Schema.define(:version => 20120515065824) do
     t.string   "nickname"
     t.string   "image_url"
     t.integer  "signup_step",            :default => 1
+    t.string   "twitter_url"
+    t.string   "github_url"
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

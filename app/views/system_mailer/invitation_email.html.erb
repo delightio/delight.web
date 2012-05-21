@@ -5,7 +5,17 @@
 </head>
 <body>
 <p>
-<strong><%= @user.nickname %></strong> would like to invite you to view the recorded sessions of their <strong><%= @invitation.app.name %></strong> app.<br/>
+<% if @user.twitter_id %>
+  <strong><%= @user.nickname %></strong> ( <a href="<%= @user.twitter_url %>" target="_blank"><%= @user.twitter_url %></a> )
+<% else %>
+  <strong><%= @user.nickname %></strong> ( <a href="<%= @user.github_url %>" target="_blank"><%= @user.github_url %></a> )
+<% end %>
+would like to invite you to view the recorded sessions of their <strong><%= @invitation.app.name %></strong> app.<br/>
+Personal message from <%= @user.nickname %>: <br/>
+<p>
+<%= @invitation.message %>
+</p>
+<br/>
 To accept the invitation, please follow the link below:<br/>
 <%= link_to @invitation_url, raw(@invitation_url), :target => "_blank" %>
 </p>

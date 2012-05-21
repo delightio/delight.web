@@ -40,6 +40,7 @@ describe User do
         user.twitter_id.should == 'twitter_uid'
         user.nickname.should == 'mistralay'
         user.image_url.should == 'http://example.com/profile_normal.jpg'
+        user.twitter_url.should == 'http://twitter.com/mistralay'
         User.count.should == (num_user+1)
         user.type.should == 'Administrator'
       end
@@ -54,10 +55,12 @@ describe User do
         user = User.find_or_create_for_twitter_oauth(@auth_hash)
         user.twitter_id.should == 'twitter_uid'
         User.count.should == count
+        user.twitter_url.should == 'http://twitter.com/mistralay'
         user.should == @twitter_user
         user.type.should == 'User'
       end
     end
+
   end
 
   describe "find_or_create_for_github_oauth" do
@@ -70,6 +73,9 @@ describe User do
           'name' => 'mistralay',
           'location' => 'Hong Kong',
           'description' => '',
+          'urls' => {
+             'GitHub' => 'http://github.com/xxx'
+           }
         },
         'credentials' => {
           'token' => '16660949-jIK5eFanPaBIWB3AU5JmUYOEWx7D61sdKzpas8SQ2',
@@ -93,6 +99,7 @@ describe User do
         User.count.should == (num_user+1)
         user.type.should == 'Administrator'
         user.email.should == 'over@example.com'
+        user.github_url.should == 'http://github.com/xxx'
       end
     end
 
@@ -108,6 +115,7 @@ describe User do
         user.should == @github_user
         user.type.should == 'User' # should respec original type
         user.email.should_not == 'overide@example.com'
+        user.github_url.should == 'http://github.com/xxx'
       end
     end
   end
