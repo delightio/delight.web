@@ -127,7 +127,12 @@ class InvitationsController < ApplicationController
     respond_to do |format|
       format.html do
         flash[:notice] = 'Successfully accepted invitation'
-        redirect_to(app_path(@invitation.app.to_param)) and return
+        if @invitation.app_session_id.blank?
+          redirect_to(app_path(@invitation.app.to_param))
+        else
+          redirect_to(app_path(@invitation.app.to_param, :app_session_id => @invitation.app_session_id))
+        end
+        return
       end
     end
   end

@@ -39,6 +39,7 @@ class AppsController < ApplicationController
     @app = nil
 
     @setup = params[:setup]
+    @app_session_id = params[:app_session_id]
 
     if current_user.administrator?
       @app ||= App.includes(:app_sessions).administered_by(current_user).find_by_id(params[:id])

@@ -14,7 +14,7 @@
           <% end %>
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
-              <a href=<%= app_session_path(session) %> class="thumbnail group-video">
+            <a href=<%= app_session_path(session) %> class="thumbnail group-video <%= (@app_session_id == session.id.to_s) ?  'default-open-video' : '' %>">
                 <img src=<%= session.presentation_track.thumbnail.presigned_read_uri %> alt="">
               </a>
             </li>

@@ -122,6 +122,25 @@ describe InvitationsController do
         assigns(:group_invitation).emails.should == "test@example.com"
       end
 
+      it "should accept invitation for particular session" do
+        new_session = AppSession.create
+        app.app_sessions << new_session
+        post 'create',
+            :group_invitation => {
+              :app_id => app.id,
+              :emails => "test@example.com",
+              :app_session_id => new_session.id,
+              :message => nil
+            }, :format => :json
+        response.should be_success
+        result = JSON.parse(response.body)
+        result["result"].should == "success"
+        assigns(:group_invitation).should be_valid
+        assigns(:group_invitation).app_id.should == app.id
+        assigns(:group_invitation).emails.should == "test@example.com"
+        assigns(:group_invitation).app_session_id.should == new_session.id
+      end
+
       it "should fail without email" do
         post 'create',
              :group_invitation => {
@@ -212,6 +231,18 @@ describe InvitationsController do
       it "should success" do
         put 'accept', { :invitation_id => invitation.id, :token => invitation.token }
         response.should redirect_to(app_path(invitation.app.to_param))
+        assigns(:invitation).should == invitation
+        flash[:notice].should == 'Successfully accepted invitation'
+        invitation.reload
+        invitation.token_expiration.should <= Time.now
+        invitation.app.viewers.should include(viewer)
+      end
+
+      it "should success whne invitation has app_session_id" do
+        invitation.app_session_id = 100
+        invitation.save!
+        put 'accept', { :invitation_id => invitation.id, :token => invitation.token }
+        response.should redirect_to(app_path(invitation.app.to_param, :app_session_id => 100))
         assigns(:invitation).should == invitation
         flash[:notice].should == 'Successfully accepted invitation'
         invitation.reload
