@@ -3,6 +3,7 @@
   <%= f.input :emails, :as => :string, :placeholder => 'Comma seperated list of emails' %>
   <%= f.input :message, :as => :text, :input_html => { :rows => 8 } %>
   <%= f.input :app_id, :as => :hidden %>
+  <%= f.input :app_session_id, :as => :hidden %>
   <%= f.button :submit, :class => 'btn btn-large btn-primary', :value => 'Send' %>
 
 <% end %>

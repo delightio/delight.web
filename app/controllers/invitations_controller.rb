@@ -28,6 +28,7 @@ class InvitationsController < ApplicationController
     @group_invitation = @app.group_invitations.new(
       :message => "Come check out the recordings of my app #{@app.name}'s user sessions on Delight.")
     @group_invitation.app_id = params[:app_id]
+    @group_invitation.app_session_id = params[:app_session_id]
 
     respond_to do |format|
       format.html
@@ -47,7 +48,7 @@ class InvitationsController < ApplicationController
         format.html do
           flash[:type] = "error"
           flash[:notice] = "User is not adminstrator"
-          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id]
+          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id], :app_session_id => params[:group_invitation][:app_session_id]
           return
         end
       end
@@ -66,7 +67,7 @@ class InvitationsController < ApplicationController
         format.html do
           flash[:type] = "error"
           flash[:notice] = "Invalid app id"
-          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id]
+          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id], :app_session_id => params[:group_invitation][:app_session_id]
           return
         end
       end
@@ -81,7 +82,7 @@ class InvitationsController < ApplicationController
         format.json { render :json => { "result" => "success" } }
         format.html do
           flash[:notice] = "Succesfully created invitation"
-          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id]
+          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id], :app_session_id => params[:group_invitation][:app_session_id]
         end
       else
         format.json { render :json =>
@@ -91,7 +92,7 @@ class InvitationsController < ApplicationController
         format.html do
           flash[:type] = "error"
           flash[:notice] = "Cannot create new invitation"
-          render :action => :new, :app_id => params[:group_invitation][:app_id]
+          render :action => :new, :app_id => params[:group_invitation][:app_id], :app_session_id => [:group_invitation][:app_session_id]
         end
       end
     end
