@@ -78,7 +78,9 @@
           <!--
           <%= link_to 'Favorite', app_session_favorite_path(:app_session_id => @app_session.id), :method => :put, :remote => true, :class => "btn" %>
           -->
-          <%= link_to raw('Share'), new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-success", :style => "color:white", :id => "app-session-show-invite-viewer" %>
+          <% if @is_admin %>
+            <%= link_to raw('Share'), new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-success", :style => "color:white", :id => "app-session-show-invite-viewer" %>
+          <% end %>
         </div>
       </div>
     </div>

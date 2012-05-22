@@ -24,6 +24,7 @@ class AppSessionsController < ApplicationController
       return
     end
     @track = @app_session.screen_track
+    @is_admin = @app_session.app.account.administrator == current_user
 
     respond_to do |format|
       format.html { render :layout => 'iframe_black' } # show.html.erb
