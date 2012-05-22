@@ -21,7 +21,7 @@ class VideoProcessing
       puts "AppSession[#{app_session_id}]: done processing in #{Time.now-start} s."
     end
 
-    cleanup app_session.working_directory
+    # cleanup app_session.working_directory
   end
 
   def self.enqueue app_session_id
