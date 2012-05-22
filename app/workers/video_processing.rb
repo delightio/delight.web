@@ -11,7 +11,7 @@ class VideoProcessing
     touch = app_session.touch_track.download
     screen = app_session.screen_track.download
 
-    processed = VideoProcessing.draw_touch touch, screen
+    processed = VideoProcessing.draw_touch screen, touch, app_session
     thumbnail = VideoProcessing.thumbnail processed
 
     presentation_track = PresentationTrack.new app_session: app_session
@@ -30,8 +30,8 @@ class VideoProcessing
   end
 
   # TODO
-  def self.draw_touch touch_file, screen_file
-    screen_file
+  def self.draw_touch screen_file, touch_file, app_session
+    `gesturedrawer -f "#{screen_file.path}" -p "#{touch_file.path}" -d "#{app_session.working_directory}"`
   end
 
   def self.thumbnail video_file
