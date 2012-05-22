@@ -109,6 +109,15 @@ class AppSession < ActiveRecord::Base
     end
   end
 
+  def average_bit_rate
+    # 1 MB per minute video
+    8*1024*1024/60
+  end
+
+  def maximum_key_frame_interval
+    10.minutes * maximum_frame_rate
+  end
+
   def complete_upload media
     enqueue_processing if ready_for_processing?
     app.complete_recording if recorded?

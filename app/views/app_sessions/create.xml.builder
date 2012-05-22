@@ -7,5 +7,7 @@ xml.app_session do
     xml.upload_uris @app_session.upload_uris
     xml.scale_factor @app_session.scale_factor
     xml.maximum_frame_rate @app_session.maximum_frame_rate
+    xml.average_bit_rate @app_session.average_bit_rate
+    xml.maximum_key_frame_interval @app_session.maximum_key_frame_interval
   end
 end

@@ -110,6 +110,20 @@ describe AppSession do
     end
   end
 
+  describe '#average_bit_rate' do
+    it 'generates 1 MB of video per one minute of recording' do
+      bits_per_minute = subject.average_bit_rate * 60
+      bits_per_minute.should be_within(10*1024).of(8*1024*1024)
+    end
+  end
+
+  describe '#maximum_key_frame_interval' do
+    it 'is one frame every 10 minutes of recording' do
+      n_frames_in_10_minutes = subject.maximum_frame_rate * 10.minutes
+      subject.maximum_key_frame_interval.should == n_frames_in_10_minutes
+    end
+  end
+
   describe 'favorite_of' do
     let(:app_session1) { FactoryGirl.create(:app_session) }
     let(:app_session2) { FactoryGirl.create(:app_session) }
