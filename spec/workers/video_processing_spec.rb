@@ -21,8 +21,8 @@ describe VideoProcessing do
   let(:touch_file) { screen_file } # doesn't matter
   describe '.draw_touch' do
     it 'combines given touch and screen file'
-    it 'outputs a File object' do
-      (subject.draw_touch touch_file, screen_file).
+    xit 'outputs a File object' do
+      (subject.draw_touch screen_file, touch_file).
         should be_an_instance_of(File)
     end
   end
