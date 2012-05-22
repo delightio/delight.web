@@ -10,6 +10,6 @@ class SystemMailer < ActionMailer::Base
                               :id => @invitation.id,
                               :email => @invitation.email)
     mail(:to => invitation.email,
-         :subject => "[Delight] #{@user.nickname}'s invitation to #{@invitation.app.name} on Delight")
+         :subject => "[Delight] #{@user.nickname}'s invitation to #{@invitation.app.name}")
   end
 end
