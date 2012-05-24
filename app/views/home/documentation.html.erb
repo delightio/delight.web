@@ -27,9 +27,10 @@
 
   <li>In your build settings, add <code>-ObjC</code> to "Other Linker Flags".</li><br>
 
-  <li>In your <code>AppDelegate.m</code>, <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
-    put the following in <code>application:didFinishLaunchingWithOptions</code> function.<br>
-    <br>
+  <li>In your <code>AppDelegate.m</code>,<br><br>
+    <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
+    put the following in <code>application:didFinishLaunchingWithOptions</code>
+    <br><br>
     <code>
       [Delight startWithAppToken: @"<strong>Your App Token</strong>"]
     </code>
