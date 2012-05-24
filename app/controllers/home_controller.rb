@@ -25,7 +25,7 @@ class HomeController < ApplicationController
     end
   end
 
-  def documentation
+  def docs
     respond_to do |format|
       format.html
     end
