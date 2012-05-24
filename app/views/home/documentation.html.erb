@@ -8,31 +8,31 @@
   <li>Copy the app token.</li>
   <br>
 
-  <li>Get Delight framework from GitHub<br>
+  <li>Get the Delight framework from GitHub<br>
     <code>git clone git@github.com:delightio/ios.git</code>
   </li>
   <br>
 
-  <li>Add <code>Delight.framework</code> to your target along with the followings:
+  <li>Add <code>Delight.framework</code> to your target along with the following:
     <ul>
-      <li>AVFoundation</li>
-      <li>CoreGraphics</li>
-      <li>CoreMedia</li>
-      <li>CoreVideo</li>
-      <li>OpenGLES</li>
-      <li>QuartzCore</li>
-      <li>SystemConfiguration</li>
+      <li type='a'>AVFoundation</li>
+      <li type='a'>CoreGraphics</li>
+      <li type='a'>CoreMedia</li>
+      <li type='a'>CoreVideo</li>
+      <li type='a'>OpenGLES</li>
+      <li type='a'>QuartzCore</li>
+      <li type='a'>SystemConfiguration</li>
     </ul>
   </li><br>
 
   <li>In your build settings, add <code>-ObjC</code> to "Other Linker Flags".</li><br>
 
-  <li>In your <code>AppDelegate.m</code>,<br><br>
+  <li>In your application delegate,<br><br>
     <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
-    put the following in <code>application:didFinishLaunchingWithOptions</code>
+    put the following in the <code>application:didFinishLaunchingWithOptions:</code>:
     <br><br>
     <code>
-      [Delight startWithAppToken: @"<strong>Your App Token</strong>"]
+      [Delight startWithAppToken:@"<strong>Your App Token</strong>"]
     </code>
   </li>
 </ol>
