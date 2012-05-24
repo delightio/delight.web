@@ -2,18 +2,16 @@
     <div class="span5">
       <h2>
         <a href=<%= apps_path %>><%= @app.name %></a>
-        <% if current_user.kind_of?(Administrator) %>
+        <% if current_user == @app.account.administrator %>
         <span class="divider">/</span>
-        <%= link_to 'setup', 'javascript:void(0)', :id => 'app-setup-btn' %>
+        <%= link_to 'Setup', 'javascript:void(0)', :id => 'app-setup-btn' %>
         <% end %>
       </h2>
     </div>
-    <% if current_user.kind_of?(Administrator) %>
+    <% if current_user == @app.account.administrator %>
     <div class="span7 align-r">
       <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= link_to(raw("<span id='num-scheduled-recording'>" + @app.scheduled_recordings.to_s + "</span> Sessions Scheduled"), app_schedule_recording_edit_path(:app_id => @app.id), :id => 'app-schedule-recording') %></h3>
 
-<!--       <%= link_to raw('<i class="icon-user"></i> Invite Viewer'), new_invitation_path(:app_id => @app.id), :class => "btn btn-large", :id => "app-show-invite-viewer" %>
- -->
       <%= link_to raw('<i class="icon-pause"></i> Pause Recording'), app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :id => "app-show-pause-recording-btn", :style => @app.recording_paused? ? 'display:none' : '' %>
       <%= link_to raw('<i class="icon-play"></i> Start Recording'), app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :class => "btn btn-success btn-large", :id => "app-show-resume-recording-btn", :style => @app.recording_paused? ? '' : 'display:none' %>
     </div>
@@ -21,8 +19,9 @@
   </div><!--/row-->
   <hr />
   <div class="row">
-    <div class="span3">
-      <div class="well sidebar-nav">
+    <div class="span3" style="min-height:1px">
+      <div id="sticky-anchor"></div>
+      <div class="well sidebar-nav" id="sticky">
         <ul class="nav nav-list">
           <li class="active" id="apps-all-btn">
             <a href="javascript:void(0)">Sessions
@@ -41,6 +40,15 @@
           <!--li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li-->
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
+            <li class="nav-header">Properties</li>
+            <li>
+              <div class="input-prepend input-append">
+                <span class="add-on"><i class="icon-search"></i></span>
+                <input type="text" id="app-show-filter-input" class="menu-search-box search-query" name="properties" style="height:28px; box-sizing: border-box;" placeholder="key:value">
+                <span class="add-on" id="app-show-filter-clear"><i class="icon-remove-sign"></i></span>
+              </div>
+            </li>
+            <hr />
             <li class="nav-header">Versions</li>
             <li>
               <label class="checkbox">
@@ -119,12 +127,13 @@
     });
 
     $(document).ready(function(){
-      $(".group-video").colorbox({rel:'group-video', transition:"none", width:"600px", height:"600px"});
+      $(".group-video").colorbox({iframe: true, rel:'group-video', transition:"none", width:"800px", height:"600px"});
+      $(".default-open-video").colorbox({iframe: true, rel:'default-group-video', transition:"none", width:"800px", height:"600px", open:true});
       $("#app-show-invite-viewer").colorbox({
         iframe: true,
         transition:"none",
-        width:"600px",
-        height:"300px"
+        width:"550px",
+        height:"500px"
       });
       $("#app-schedule-recording").colorbox({
         iframe: true,
@@ -139,9 +148,19 @@
         }
       });
       <% if @setup %>
-        $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
+        $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
       <% end %>
-      $("#app-setup-btn").colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"330px"});
+      $("#app-setup-btn").colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
+      $("#app-show-filter-input").keydown(function(event) {
+        if (event.which == 13) {
+          querySessions();
+          event.preventDefault();
+        }
+      });
+      $("#app-show-filter-clear").click(function(event) {
+        $("#app-show-filter-input").attr("value", "");
+        querySessions();
+      });
       $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
         if (checked) {
           // check all
@@ -187,6 +206,20 @@
         querySessions();
       });
 
+    });
+
+    function sticky_relocate() {
+      var window_top = $(window).scrollTop();
+      var div_top = $('#sticky-anchor').offset().top;
+      if (window_top > (div_top - 50))
+        $('#sticky').addClass('stick')
+      else
+        $('#sticky').removeClass('stick');
+    }
+
+    $(function() {
+      $(window).scroll(sticky_relocate);
+        sticky_relocate();
     });
     </script>
   <% end %>

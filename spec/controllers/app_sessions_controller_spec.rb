@@ -3,20 +3,64 @@ require 'spec_helper'
 describe AppSessionsController do
   describe 'post' do
     let(:app) { FactoryGirl.create :non_recording_app }
+    let(:delight_version) { '2' }
     let(:app_version) { '1.4' }
     let(:app_build) { 'KJKJ'}
-    let(:delight_version) { '0.1' }
-    let(:locale) { 'en-US' }
+    let(:app_locale) { 'en-US' }
+    let(:app_connectivity) { 'wifi' }
+    let(:device_hw_version) { 'iPhone 4.1' }
+    let(:device_os_version) { '4.1' }
 
     it 'creates' do
-      params = { app_token: app.token,
-                 app_version: app_version,
+      params = { app_version: app_version,
                  app_build: app_build,
-                 locale: locale,
+                 app_locale: app_locale,
+                 app_connectivity: app_connectivity,
+                 device_hw_version: device_hw_version,
+                 device_os_version: device_os_version,
                  delight_version: delight_version }
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app.token
       post :create, app_session: params, format: :xml
       response.should be_success
       #response.response_code.should == 201
+    end
+
+    it "should fail when app token is missing" do
+      params = { app_version: app_version,
+                 app_build: app_build,
+                 app_locale: app_locale,
+                 app_connectivity: app_connectivity,
+                 device_hw_version: device_hw_version,
+                 device_os_version: device_os_version,
+                 delight_version: delight_version }
+      post :create, app_session: params, format: :xml
+      response.should be_bad_request
+    end
+
+    it "should fail if token is wrong" do
+      params = { app_version: app_version,
+                 app_build: app_build,
+                 app_locale: app_locale,
+                 app_connectivity: app_connectivity,
+                 device_hw_version: device_hw_version,
+                 device_os_version: device_os_version,
+                 delight_version: delight_version }
+      request.env['HTTP_X_NB_AUTHTOKEN'] = 'wrongtoken'
+      post :create, app_session: params, format: :xml
+      response.should be_bad_request
+#    # LH 110
+#    it 'creates with version 1 params' do
+#      params = { app_token: app.token,
+#                 app_version: app_version,
+#                 app_build: app_build,
+#                 # app_locale: app_locale,
+#                 locale: app_locale,
+#                 # app_connectivity: app_connectivity,
+#                 # device_hw_version: device_hw_version,
+#                 # device_os_version: device_os_version,
+#                 delight_version: '1.0.1' }
+#      post :create, app_session: params, format: :xml
+#      response.should be_success
     end
 
     pending "it should return code 201"
@@ -32,6 +76,7 @@ describe AppSessionsController do
   end
 
   describe 'put' do
+    before { request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token }
     let(:app_session) { FactoryGirl.create :app_session }
 
     let(:duration) { 10.2 }
@@ -42,12 +87,33 @@ describe AppSessionsController do
       app_session.reload.duration.should == duration
     end
 
-    let(:app_user_id) { '10' }
-    it 'updates app_user_id' do
-      params = { app_user_id: app_user_id }
+    it "should fail if token is missing" do
+      request.env.delete 'HTTP_X_NB_AUTHTOKEN'
+      params = { duration: duration }
+      put :update,  id: app_session.id, app_session: params, format: :xml
+      response.should be_bad_request
+    end
+
+    it "should fail if token is wrong" do
+      request.env['HTTP_X_NB_AUTHTOKEN'] = 'wrongtoken'
+      params = { duration: duration }
+      put :update, id: app_session.id, app_session: params, format: :xml
+      response.should be_bad_request
+    end
+
+    it 'updates properties' do
+      params = { properties: { level: 20 } }
       put :update, id: app_session.id, app_session: params, format: :xml
       response.should be_success
-      app_session.reload.app_user_id.should == app_user_id
+      app_session.reload.properties.first.key.should   == 'level'
+      app_session.reload.properties.first.value.should == '20'
+    end
+
+    it 'updates metrics' do
+      params = { metrics: { call_count: '10' } }
+      put :update, id: app_session.id, app_session: params, format: :xml
+      response.should be_success
+      app_session.reload.metrics(:call_count).should == '10'
     end
   end
 

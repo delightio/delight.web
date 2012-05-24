@@ -1,21 +1,87 @@
 <div class="container" style="width:100%">
-  <div class="row-fluid" style="position:relative;z-index:100" >
-    <div class="span5">
-      <div class="btn-group">
-        <a href="javascript:void(0)" id="rotate--90" class="btn btn-primary">-90</a>
-        <a href="javascript:void(0)" id="rotate-0" class="btn btn-primary">0</a>
-        <a href="javascript:void(0)" id="rotate-90" class="btn btn-primary">90</a>
-        <a href="javascript:void(0)" id="rotate-180" class="btn btn-primary">180</a>
+  <div class="row">
+    <div class="span9">
+      <div class="row" style="position:relative">
+        <div class="span3">
+          <div class="btn-group">
+            <a href="javascript:void(0)" id="rotate--90" class="btn btn-primary">-90</a>
+            <a href="javascript:void(0)" id="rotate-0" class="btn btn-primary">0</a>
+            <a href="javascript:void(0)" id="rotate-90" class="btn btn-primary">90</a>
+            <a href="javascript:void(0)" id="rotate-180" class="btn btn-primary">180</a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span9" style="text-align:center;overflow:hidden">
+          <div id="video-container" style="text-align:center">
+            <video height="480px" controls="controls" autoplay>
+            <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
+            Your browser does not support video tag
+            </video>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row-fluid">
-    <div class="span12" style="text-align:center">
-      <div id="video-container" style="text-align:center">
-        <video height="480px" controls="controls">
-        <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
-        Your browser does not support video tag
-        </video>
+    <div class="span3" style="margin-top:20px">
+      <div class="row-fluid">
+        <h3 style="color:white">Default attributes</h3>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Session:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.id %></div>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Version:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.app_version %></div>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Build:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.app_build %></div>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Locale:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.app_locale %></div>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Duration:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.duration %></div>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Date:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.created_at.to_date %></div>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Device:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.device_hw_version %></div>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Device OS:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.device_os_version %></div>
+      </div>
+      <div class="row-fluid">
+        <div class="span7"><h6>Connectivity:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= @app_session.app_connectivity %></div>
+      </div>
+      <hr />
+      <div class="row-fluid">
+        <h3 style="color:white">Custom attributes</h3>
+      </div>
+      <% @app_session.properties.each do |property| %>
+      <div class="row-fluid">
+        <div class="span7"><h6><%= property.key %>:</h6></div>
+        <div class="span5 pull-right" style="color:white"><%= property.value %></div>
+      </div>
+      <% end %>
+      <br />
+      <div class="row">
+        <div class="span3">
+          <!--
+          <%= link_to 'Favorite', app_session_favorite_path(:app_session_id => @app_session.id), :method => :put, :remote => true, :class => "btn" %>
+          -->
+          <% if @is_admin %>
+            <%= link_to raw('Share'), new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-success", :style => "color:white", :id => "app-session-show-invite-viewer" %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

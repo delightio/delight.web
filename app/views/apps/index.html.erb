@@ -1,9 +1,13 @@
   <div class="row">
     <div class="span12">
-      <h2>App Manager</h2>
+      <h2>Your Apps</h2>
+      <%= link_to 'Create a new app', new_app_path, :class => "btn" %>
+      <% if current_user.administrator? %>
+        <%= link_to 'Credits', account_view_credit_path(:account_id => current_user.account, :plan => @show_credit), :class => "btn", :id => 'app-index-credit-btn' %>
+      <% end %>
     </div>
   </div><!--/row-->
-  <hr />
+  <br>
 
       <!--
   <div class="row">
@@ -58,6 +62,8 @@
           <li>token: <%= app.token %></li>
           <li>number of sessions: <%= app.app_sessions.count %></li>
           <li>
+            <%= link_to raw('Share'), new_invitation_path(:app_id => app.id), :class => "btn", :id => "app-show-invite-viewer" %>
+            &nbsp;
             <%= link_to 'Show', app, :class => "btn" %>
             &nbsp;
             <%= link_to 'Edit', edit_app_path(app), :class => "btn" %>
@@ -72,23 +78,15 @@
   %>
     </div>
   </div>
-
-  <div class="row">
-    <div class="span12">
-      <%= link_to 'New App', new_app_path, :class => "btn" %>
-    </div>
-  </div>
-
-<br />
 <% end %>
 
 <% if not @viewer_apps.blank? %>
+  <hr />
   <div class="row">
     <div class="span12">
-      <h2>Apps as viewer</h2>
+      <h2>Shared Apps</h2>
     </div>
   </div><!--/row-->
-  <hr />
 
   <div class="row">
     <div class="span12">
@@ -108,3 +106,21 @@
     </div>
   </div>
 <% end %>
+<script>
+  $(document).ready(function() {
+    $("#app-show-invite-viewer").colorbox({
+        iframe: true,
+        transition:"none",
+        width:"550px",
+        height:"500px"
+    });
+    var show_plan = '<%= @show_credit %>';
+    $("#app-index-credit-btn").colorbox({
+        iframe: true,
+        transition:"none",
+        width:"700px",
+        height:"650px",
+        open: show_plan ? true : false
+    });
+  });
+</script>

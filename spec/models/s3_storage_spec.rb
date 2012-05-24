@@ -2,13 +2,28 @@ require 'spec_helper'
 
 describe S3Storage do
   subject { S3Storage.new "blah.mp4" }
+  its(:bucket_name) { should == ENV['S3_UPLOAD_BUCKET'] }
 
-  describe '#bucket_name' do
-    let(:bucket_name) { 'bucket' }
-    it 'reads from ENV' do
-      ENV['S3_UPLOAD_BUCKET'] = bucket_name
+  describe '.session' do
+    it 'sets up the policy'
+    it 'creates a new federated session'
+  end
 
-      subject.bucket_name.should == bucket_name
+  describe '#cached_credentials' do
+    it 'uses cached value when it can' do
+      subject.instance_variable_get(:@credentials).stub :expired? => false
+      subject.instance_variable_get(:@credentials).should_receive :get
+      AWS::STS::Policy.should_not_receive :new
+
+      subject.cached_credentials
+    end
+
+    it 'cache newly obtained credentials' do
+      subject.instance_variable_get(:@credentials).stub :expired? => true
+      subject.instance_variable_get(:@credentials).should_receive :set
+      subject.class.should_receive(:session).and_return(mock.as_null_object)
+
+      subject.cached_credentials
     end
   end
 
@@ -35,31 +50,75 @@ describe S3Storage do
     end
   end
 
-  describe "caching" do
-    before(:each) do
-      @s3_new_count = 0
-      AWS::S3.any_instance.stub(:new) do |arg|
-        @s3_new_count += 1
-      end
+  describe '#download' do
+    subject { S3Storage.new 'Procfile', 'delight_rspec' }
+    let(:original) { File.join Rails.root, subject.filename }
+    let(:local_directory) { '/tmp' }
+    let(:downloaded) { File.join local_directory, subject.filename }
+
+    it 'downloads associated filename to local directory' do
+      subject.download local_directory
+      FileUtils.compare_file(original, downloaded).should == true
     end
 
-#    it "should recreate presigned bucket when renew interval is reached" do
-#      S3Storage::SESSION_RENEW_INTERVAL = 0.second
-#      subject.presigned_bucket
-#      @s3_new_count.should == 1
-#      subject.presigned_bucket
-#      @s3_new_count.should == 2
-#    end
-#
-#    it "should cache calls to S3#new" do
-#      S3Storage::SESSION_RENEW_INTERVAL = 0.second
-#      subject.presigned_bucket
-#      @s3_new_count.should == 1
-#      subject.presigned_bucket
-#      @s3_new_count.should == 2
-#      S3Storage::SESSION_RENEW_INTERVAL = 50.minutes
-#      subject.presigned_bucket
-#      @s3_new_count.should == 2
-#    end
+    it 'returns a File object' do
+      subject.download(local_directory).should be_an_instance_of File
+    end
+  end
+
+  describe '#upload' do
+    subject { S3Storage.new 'Procfile', 'delight_rspec' }
+    let(:local_file) { File.new File.join Rails.root, subject.filename }
+
+    it 'uploads given local file to S3' do
+      presigned_object = mock
+      subject.stub :presigned_object => presigned_object
+      presigned_object.should_receive(:write).with(local_file.read)
+
+      subject.upload local_file
+    end
+  end
+end
+
+describe CachedHash do
+  subject { CachedHash.new key, ttl}
+  let(:key) { "a key" }
+  let(:ttl) { 10 }
+
+  describe '#expired?' do
+    it 'is true when key does not exist' do
+      subject.should be_expired
+    end
+
+    it 'is false if we have a TTL' do
+      subject.set blah: 123
+
+      subject.should_not be_expired
+    end
+  end
+
+  describe '#set' do
+    it 'sets values to key' do
+      REDIS.should_receive(:hmset).with(key, :blah, 123)
+
+      subject.set blah: 123
+    end
+
+    it 'sets an expirary time' do
+      REDIS.should_receive(:expire).with(key, ttl)
+
+      subject.set blah:123
+    end
+
+    it 'returns values set' do
+      subject.set(blah:123).should == { "blah" => "123" }
+    end
+  end
+
+  describe '#get' do
+    it 'reads from Redis' do
+      REDIS.should_receive(:hgetall).with(key)
+      subject.get
+    end
   end
 end

@@ -1,8 +1,58 @@
-<%= simple_form_for(@invitation, :html => { :class => "form-horizontal"}) do |f| %>
+<%= simple_form_for(@group_invitation, :url => invitations_path, :html => { :id => 'invitation-form', :class => "form-horizontal"}, :remote => true) do |f| %>
 
-  <%= f.input :email %>
+  <%= f.input :emails, :as => :string, :placeholder => 'Comma seperated list of emails' %>
+  <%= f.input :message, :as => :text, :input_html => { :rows => 8 } %>
   <%= f.input :app_id, :as => :hidden %>
-  <% # = f.input :message, :as => :text, :rows => 10 %>
-  <%= f.button :submit, :class => 'btn btn-large btn-primary', :value => 'Invite' %>
+  <%= f.input :app_session_id, :as => :hidden %>
+  <%= f.button :submit, :class => 'btn btn-large btn-primary', :id => 'invitation-send-btn', :value => 'Send' %>
 
 <% end %>
+<script>
+  $(document).ready(function() {
+    function disableInvitationForm(state) {
+      // disable send button
+      $('#invitation-send-btn').attr('value', state);
+      $('#invitation-send-btn').attr('disabled', 'disabled');
+      // disable input fields
+      $('#invitation-form input').each(function(key, value) {
+        $(value).attr('disabled', 'disabled');
+      });
+      // disable textareas
+      $('#invitation-form textarea').each(function(key, value) {
+        $(value).attr('disabled', 'disabled');
+      });
+    }
+
+    function enableInvitationForm(state) {
+      // disable send button
+      $('#invitation-send-btn').attr('value', state);
+      $('#invitation-send-btn').removeAttr('disabled');
+      // disable input fields
+      $('#invitation-form input').each(function(key, value) {
+        $(value).removeAttr('disabled');
+      });
+      // disable textareas
+      $('#invitation-form textarea').each(function(key, value) {
+        $(value).removeAttr('disabled');
+      });
+    }
+
+    $("#invitation-form")
+    .bind('ajax:beforeSend', function() {
+      disableInvitationForm('Sending...');
+    })
+    .bind('ajax:success', function(event, data) {
+      if (data['result'] == 'success') {
+        displayErrorMessage('alert-success', 'Invitation to xxx is sent successfully');
+      } else {
+        displayErrorMessage('alert-error', 'Failed to send invitation. Please try again');
+      }
+    })
+    .bind('ajax:failure', function() {
+      displayErrorMessage('alert-error', 'Failed to send invitation. Please try again');
+    })
+    .bind('ajax:complete', function() {
+      enableInvitationForm('Send');
+    })
+  });
+</script>

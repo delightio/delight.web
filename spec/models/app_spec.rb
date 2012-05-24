@@ -91,10 +91,10 @@ describe App do
         subject.scheduled_recordings.should be_an_instance_of Fixnum
       end
 
-      it 'can be negative' do
+      it 'cannot be negative' do
         (subject.scheduled_recordings+10).times { subject.complete_recording }
 
-        subject.scheduled_recordings.should < 0
+        subject.scheduled_recordings.should == 0
       end
     end
 
@@ -127,6 +127,30 @@ describe App do
 
         subject.complete_recording
       end
+
+      context 'when we get more recordings than expected' do
+        before { subject.stub :scheduled_recordings => 0 }
+
+        it 'is no op for the case we have received more recordings than expected' do
+          subject.account.should_not_receive :use_credits
+
+          subject.complete_recording
+        end
+
+        it 'handles extra recordings' do
+          subject.should_receive :handle_extra_recordings
+
+          subject.complete_recording
+        end
+      end
+    end
+  end
+
+  describe '#handle_extra_recordings' do
+    it 'reset scheduled recordings back to 0' do
+      subject.should_receive(:schedule_recordings).with(0)
+
+      subject.handle_extra_recordings
     end
   end
 

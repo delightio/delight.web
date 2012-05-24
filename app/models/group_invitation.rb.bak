@@ -1,0 +1,99 @@
+require 'active_record/validations'
+require 'active_record/callbacks'
+require 'active_record/errors'
+
+class GroupInvitation
+
+  attr_accessor :email
+  attr_accessor :message
+  attr_accessor :app_id
+  attr_accessor :app_session_id
+
+  attr_accessor :errors
+  attr_accessor :success
+
+  def initialize(opts = {})
+    # Create an Errors object, which is required by validations and to use some view methods.
+    self.errors = ActiveModel::Errors.new(self)
+  end
+
+  def self.create(args)
+    self._create(args)
+  end
+
+  def self.create!(args)
+    self._create(args)
+  end
+
+  def self._create(args)
+    obj = GroupInvitation.new
+    args.each do |key, value|
+      if obj.respond_to? "#{key}="
+        obj.send("#{key}=", value)
+      end
+    end
+
+    # after create
+    obj.success = true
+    if obj.create_invitations
+      obj
+    else
+      nil
+    end
+  end
+
+  # Dummy stub to make validations happy.
+  def save
+  end
+
+  # Dummy stub to make validations happy.
+  def save!
+  end
+
+  # Dummy stub to make validations happy.
+  def new_record?
+    false
+  end
+
+  # Dummy stub to make validtions happy.
+  def update_attribute
+  end
+
+  include ActiveRecord::Validations
+
+  validates :email, :presence => true
+  validates :app_id, :presence => true
+  validate :validate_email
+
+  def create_invitations
+    ActiveRecord::Base.transaction do
+      self.email.split(",").each do |email|
+        new_invitation = Invitation.create(:email => email.strip,
+                                   :message => self.message,
+                                   :app_id => self.app_id,
+                                   :app_session_id => self.app_session_id)
+        if new_invitation.nil? or not new_invitation.valid?
+          self.success = false
+          errors.add(:create_invitation, "Fail to create new invitation with email #{email.strip}")
+        end
+      end
+    end
+  end
+
+  protected
+
+  def validate_email
+    if not self.email.nil?
+      self.email.split(",").each do |email|
+        if not valid_email?(email)
+          errors.add(:email, "email #{email} is invalid")
+        end
+      end
+    end
+  end
+
+  def valid_email?(email)
+    email.strip =~ /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/
+  end
+
+end

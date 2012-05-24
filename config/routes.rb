@@ -19,6 +19,7 @@ DelightWeb::Application.routes.draw do
   end
 
   resources :accounts, :except => [:index, :destroy] do
+    get 'credit', :to => 'accounts#view_credit', :as => 'view_credit'
     put 'add_credit', :to => 'accounts#add_credit', :as => 'add_credit'
   end
 
@@ -31,6 +32,7 @@ DelightWeb::Application.routes.draw do
   resources :screen_tracks, :only => [:create]
   resources :touch_tracks, :only => [:create]
   resources :front_tracks, :only => [:create]
+  resources :orientation_tracks, :only => [:create]
 
   # To be removed. This internally maps ScreenTrack
   resources :videos, :only => [:create, :show]
@@ -40,15 +42,39 @@ DelightWeb::Application.routes.draw do
     get '/setup', :to => 'apps#setup', :as => :setup
     get '/schedule_recording_edit', :to => 'apps#schedule_recording_edit', :as => :schedule_recording_edit
     put '/schedule_recording_update', :to => 'apps#schedule_recording_update', :as => :schedule_recording_update
+    put '/upload_on_wifi_only', :to => 'apps#upload_on_wifi_only', :as => :upload_on_wifi_only
   end
   resources :beta_signups, :only => [:create]
 
   match 'features' => 'home#features'
   match 'pricing' => 'home#pricing'
   match 'faq' => 'home#faq'
+  match 'docs' => 'home#docs'
   root :to => 'home#index'
 
-  # mount Resque::Server.new, :at => "/resque"
+  resque_constraint = lambda do |request|
+    if request.env['warden'].authenticate?
+      if ENV['RESQUE_ADMIN_TWITTER_IDS']
+        twitter_ids = ENV['RESQUE_ADMIN_TWITTER_IDS'].split(',').collect { |s| s.strip }
+      else
+        twitter_ids = []
+      end
+
+      if ENV['RESQUE_ADMIN_GITHUB_IDS']
+        github_ids = ENV['RESQUE_ADMIN_GITHUB_IDS'].split(',').collect { |s| s.strip }
+      else
+        github_ids = []
+      end
+
+      twitter_ids.include? request.env['warden'].user.twitter_id \
+      or github_ids.include? request.env['warden'].user.github_id
+    else
+      false
+    end
+  end
+  constraints resque_constraint do
+    mount Resque::Server.new, :at => "/resque"
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

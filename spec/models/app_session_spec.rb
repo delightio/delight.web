@@ -20,6 +20,39 @@ describe AppSession do
     end
   end
 
+  describe '#expected_presentation_track_count' do
+    it 'is 1 if we are to record' do
+      subject.stub :recording? => true
+
+      subject.expected_presentation_track_count.should == 1
+    end
+
+    it 'is 0 if we are not to record' do
+      subject.stub :recording? => false
+
+      subject.expected_presentation_track_count.should == 0
+    end
+  end
+
+  describe '#ready_for_processing?' do
+    before do
+      subject.stub :expected_presentation_track_count => 1
+      subject.stub :expected_track_count => 3
+    end
+
+    it 'is true when we have received the expected number of tracks (- presentation track)' do
+      subject.stub :tracks => [mock, mock]
+
+      subject.should be_ready_for_processing
+    end
+
+    it 'is false otherwise' do
+      subject.stub :track => [mock]
+
+      subject.should_not be_ready_for_processing
+    end
+  end
+
   describe '#recorded?' do
     it 'is true after session is completed and we had expected more than 1 tracks' do
       subject.stub :completed? => true
@@ -35,6 +68,13 @@ describe AppSession do
 
       subject.recording?
     end
+
+    it 'is always false when version is less than 2' do
+      subject.delight_version = '1.0'
+      subject.app.should_not_receive :recording?
+
+      subject.should_not be_recording
+    end
   end
 
   describe '#expected_track_count' do
@@ -49,6 +89,38 @@ describe AppSession do
       subject.app.should_receive :uploading_on_wifi_only?
 
       subject.uploading_on_wifi_only?
+    end
+  end
+
+  describe '#maximum_frame_rate' do
+    its(:maximum_frame_rate) { should == 10 }
+  end
+
+  describe '#scale_factor' do
+    context 'when device is iPad 3' do
+      before { subject.stub :device_hw_version => 'iPad3,3' }
+
+      its(:scale_factor) { should == 0.25 }
+    end
+
+    context 'when device is not iPad 3' do
+      before { subject.stub :device_hw_version => 'iPhone4,1' }
+
+      its(:scale_factor) { should == 0.5 }
+    end
+  end
+
+  describe '#average_bit_rate' do
+    it 'generates 1 MB of video per one minute of recording' do
+      bits_per_minute = subject.average_bit_rate * 60
+      bits_per_minute.should be_within(10*1024).of(8*1024*1024)
+    end
+  end
+
+  describe '#maximum_key_frame_interval' do
+    it 'is one frame every 10 minutes of recording' do
+      n_frames_in_10_minutes = subject.maximum_frame_rate * 10.minutes
+      subject.maximum_key_frame_interval.should == n_frames_in_10_minutes
     end
   end
 
@@ -134,9 +206,33 @@ describe AppSession do
     end
   end
 
+  describe "has_property" do
+    let(:session123) { FactoryGirl.create :app_session, :duration => 0.5 }
+    let(:session123_2) { FactoryGirl.create :app_session, :duration => 0.5 }
+    let(:another_session) { FactoryGirl.create :app_session, :duration => 0.5 }
+
+    before(:each) do
+      AppSession.delete_all
+      session123.update_properties :app_user_id  => 123
+      session123_2.update_properties :app_user_id  => 123, :some_key => 'somevalue'
+      another_session
+    end
+
+    it "should return sessions with property that match" do
+      sessions = AppSession.has_property('app_user_id', '123')
+      #sessions = AppSession.all
+      sessions.should have(2).item
+      sessions.should include(session123)
+      sessions.should include(session123_2)
+
+      sessions = AppSession.has_property('some_key', 'somevalue')
+      sessions.should == [session123_2]
+    end
+  end
+
   describe '#complete_upload' do
-    context 'when sesison is completed' do
-      before { subject.stub :completed? => true }
+    context 'when sesison is recorded' do
+      before { subject.stub :recorded? => true }
 
       it 'tells associated app to update recording accounting' do
         subject.app.should_receive :complete_recording
@@ -146,7 +242,7 @@ describe AppSession do
     end
 
     context 'when session is not completed' do
-      before { subject.stub :completed? => false }
+      before { subject.stub :recorded? => false }
 
       it 'does not update recording accounting' do
         subject.app.should_not_receive :complete_recording
@@ -154,15 +250,88 @@ describe AppSession do
         subject.complete_upload mock
       end
     end
+
+    context 'when ready for processing' do
+      it 'enqueues processing' do
+        subject.stub :ready_for_processing? => true
+        subject.should_receive :enqueue_processing
+
+        subject.complete_upload mock
+      end
+    end
+
+    context 'when not ready for processing' do
+      it 'does not enqueue processing' do
+        subject.stub :ready_for_processing? => false
+        subject.should_not_receive :enqueue_processing
+
+        subject.complete_upload mock
+      end
+    end
+  end
+
+  describe '#enqueue_processing' do
+    it 'enqueues video processing' do
+      VideoProcessing.should_receive(:enqueue).with(subject.id)
+
+      subject.enqueue_processing
+    end
   end
 
   context 'named_track' do
-    [:screen_track, :touch_track, :front_track].each do |named_track|
+    [:screen_track, :touch_track, :front_track, :presentation_track].each do |named_track|
       specify "#{named_track} returns associated #{named_track}" do
         track = FactoryGirl.create named_track, app_session: subject
 
         subject.send(named_track).should == track
       end
+    end
+  end
+
+  describe '#working_directory' do
+    before do
+      @expected_dir = File.join ENV['WORKING_DIRECTORY'],
+                                subject.class.to_s.tableize, subject.id.to_s
+      Dir.stub(:exists?).with(@expected_dir).and_return(true)
+    end
+
+    it 'is based on id and ENV variable' do
+      subject.working_directory.should == @expected_dir
+    end
+
+    it 'creates such direction if it does not exists' do
+      Dir.stub(:exists?).with(@expected_dir).and_return(false)
+      FileUtils.should_receive(:mkdir_p).with(@expected_dir)
+
+      subject.working_directory
+    end
+  end
+
+  describe '#update_properties' do
+    let(:properties) { {level: 10} }
+
+    it 'returns true if there is no error' do
+      subject.update_properties(nil).should be_true
+    end
+
+    it 'returns true after sucessful update' do
+      subject.properties.should_receive(:find_or_create_by_key_and_value).with('level', '10')
+      subject.update_properties(properties).should be_true
+    end
+  end
+
+  describe '#update_metrics' do
+    let(:metrics) { { private_view_count: 10 } }
+
+    it 'updates metrics' do
+      2.times { subject.update_metrics metrics }
+
+      subject.metrics(:private_view_count).should == '20'
+    end
+
+    it 'always returns true' do
+      subject.update_metrics(metrics).should be_true
+      subject.update_metrics(nil).should be_true
     end
   end
 
@@ -181,12 +350,19 @@ describe AppSession do
       subject.upload_uris.should == Hash.new
     end
 
-    it 'expects a screen track' do
+    it 'expects a screen, a touch, a orientation and a presentaiton track' do
       subject.stub :recording? => true
-      ScreenTrack.should_receive(:new).and_return(mock.as_null_object)
+      client_tracks = [ScreenTrack, TouchTrack, OrientationTrack]
+      client_tracks.each do |track_class|
+        track_class.should_receive(:new).and_return(mock.as_null_object)
+      end
 
       subject.send :generate_upload_uris
-      subject.expected_track_count.should == 1
+      subject.expected_track_count.should == 1 + client_tracks.count # 1 more for presentation track
+      client_tracks.each do |track_class|
+        key = track_class.to_s.tableize[0..-2].to_sym # no s
+        subject.upload_uris.should have_key key
+      end
     end
   end
 

@@ -4,12 +4,38 @@
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 </head>
 <body>
-<h1>Welcome to delightio</h1>
+
 <p>
-<%= @user.nickname %> would like to invite you to delight.io viewing the app <%= @invitation.app.name %><br/>
-To accept the invitation, please follow the link below:<br/>
-<%= link_to @invitation_url, @invitation_url, :target => "_blank" %>
+<% if @user.twitter_id %>
+  <strong><%= @user.nickname %></strong> ( <a href="<%= @user.twitter_url %>" target="_blank"><%= @user.twitter_url %></a> )
+<% else %>
+  <strong><%= @user.nickname %></strong> ( <a href="<%= @user.github_url %>" target="_blank"><%= @user.github_url %></a> )
+<% end %>
+invites you to their <strong><%= @invitation.app.name %></strong> app on Delight.
 </p>
-<p>Thanks for joining and have a great day!</p>
+
+<p>
+  <i>Personal message from <%= @user.nickname %>:</i><br/>
+  <%= @invitation.message %>
+</p>
+
+<p>
+  <i>What's Delight?</i><br/>
+  <a href="http://delight.io" target="_blank">Delight</a> enlightens developers and designers on how their users interact with their iOS applications. We seamlessly record your application screen and automatically capture all gestures. These recordings are then uploaded in the background to our server for viewing.
+</p>
+
+<p>
+  To accept the invitation, please follow the link below:<br/>
+  <%= link_to @invitation_url, raw(@invitation_url), :target => "_blank" %>
+</p>
+
+<p>
+  Thanks!<br/>
+    <a href="http://delight.io" target="_blank">http://delight.io</a><br/>
+    iOS remote usability testing framework<br/>
+    Follow us on Twitter: <a href="http://twitter.com/delightio" target="_blank">@delightio</a><br/>
+    What people are saying about us: <a href="http://twitter.com/delightio/favorites" target="_blank">@delightio/favorites</a>
+</p>
+
 </body>
 </html>

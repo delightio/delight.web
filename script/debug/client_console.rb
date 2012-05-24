@@ -11,28 +11,31 @@ class ClientConsole
 
   def initialize
     @domain = ProductionHost
-    @scheme = "http"
+    @scheme = "https"
     @prefix = ""
     @headers = {}
-    initialize_conn
+    initialize_conn @domain, ""
   end
 
-  def initialize_conn domain=@domain
+  def initialize_conn domain, auth_token, scheme='https'
+    @headers['X-NB-AuthToken'] = auth_token
+    @headers.delete 'X-NB-AuthToken' if auth_token.to_s.empty?
+    @scheme = scheme
     @domain = domain
     @conn = Faraday.new "#{@scheme}://#{@domain}/#{@prefix}",
       :headers => @headers
   end
 
-  def production!
-    initialize_conn ProductionHost
+  def production! auth_token
+    initialize_conn ProductionHost, auth_token
   end
 
-  def staging!
-    initialize_conn StagingHost
+  def staging! auth_token
+    initialize_conn StagingHost, auth_token
   end
 
-  def local!
-    initialize_conn LocalHost
+  def local! auth_token
+    initialize_conn LocalHost, auth_token, 'http'
   end
 
   def parse_response resp

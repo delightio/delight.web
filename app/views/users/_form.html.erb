@@ -7,7 +7,7 @@
   <% end %>
 
   <%= f.input :nickname %>
-  <%= f.input :email %>
+  <%= f.input :email, :required => true %>
   <%= f.input :signup_step, :as => :hidden, :value => 2 %>
   <div class="form-actions">
     <%= f.button :submit, :class => 'btn btn-primary', :value => 'Save' %>

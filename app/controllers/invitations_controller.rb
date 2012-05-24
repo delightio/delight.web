@@ -25,8 +25,10 @@ class InvitationsController < ApplicationController
         end
       end
     end
-    @invitation = @app.invitations.new
-    @invitation.app_id = params[:app_id]
+    @group_invitation = @app.group_invitations.new(
+      :message => "Come check out the recordings of my app #{@app.name}'s user sessions on Delight.")
+    @group_invitation.app_id = params[:app_id]
+    @group_invitation.app_session_id = params[:app_session_id]
 
     respond_to do |format|
       format.html
@@ -46,13 +48,13 @@ class InvitationsController < ApplicationController
         format.html do
           flash[:type] = "error"
           flash[:notice] = "User is not adminstrator"
-          redirect_to :action => :new, :app_id => params[:invitation][:app_id]
+          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id], :app_session_id => params[:group_invitation][:app_session_id]
           return
         end
       end
     end
 
-    @app = App.administered_by(current_user).find_by_id(params[:invitation][:app_id])
+    @app = App.administered_by(current_user).find_by_id(params[:group_invitation][:app_id])
     if @app.nil?
       respond_to do |format|
         format.json do
@@ -65,20 +67,22 @@ class InvitationsController < ApplicationController
         format.html do
           flash[:type] = "error"
           flash[:notice] = "Invalid app id"
-          redirect_to :action => :new, :app_id => params[:invitation][:app_id]
+          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id], :app_session_id => params[:group_invitation][:app_session_id]
           return
         end
       end
     end
 
-    @invitation = @app.invitations.build(params[:invitation])
+    @group_invitation = @app.group_invitations.build(params[:group_invitation])
     respond_to do |format|
-      if @invitation.save
-        SystemMailer.invitation_email(current_user, @invitation).deliver
+      if @group_invitation.save
+        @group_invitation.invitations.each do |invitation|
+          SystemMailer.invitation_email(current_user, invitation).deliver
+        end
         format.json { render :json => { "result" => "success" } }
         format.html do
           flash[:notice] = "Succesfully created invitation"
-          redirect_to :action => :new, :app_id => params[:invitation][:app_id]
+          redirect_to :action => :new, :app_id => params[:group_invitation][:app_id], :app_session_id => params[:group_invitation][:app_session_id]
         end
       else
         format.json { render :json =>
@@ -88,7 +92,7 @@ class InvitationsController < ApplicationController
         format.html do
           flash[:type] = "error"
           flash[:notice] = "Cannot create new invitation"
-          render :action => :new, :app_id => params[:invitation][:app_id]
+          render :action => :new, :app_id => params[:group_invitation][:app_id], :app_session_id => [:group_invitation][:app_session_id]
         end
       end
     end
@@ -125,7 +129,12 @@ class InvitationsController < ApplicationController
     respond_to do |format|
       format.html do
         flash[:notice] = 'Successfully accepted invitation'
-        redirect_to(app_path(@invitation.app.to_param)) and return
+        if @invitation.app_session_id.blank?
+          redirect_to(app_path(@invitation.app.to_param))
+        else
+          redirect_to(app_path(@invitation.app.to_param, :app_session_id => @invitation.app_session_id))
+        end
+        return
       end
     end
   end
@@ -148,6 +157,7 @@ class InvitationsController < ApplicationController
     # session variable used by omniauth
     if not user_signed_in?
       session['omniauth.viewer'] = true
+      session['omniauth.email'] = params[:email] if params[:email]
       session['omniauth.redirect'] = invitation_path(:id => params[:id], :token => params[:token])
       authenticate_user!
     else

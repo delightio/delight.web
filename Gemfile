@@ -6,6 +6,9 @@ gem 'thin'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# Replace IRB with Pry even in produciton environment
+gem 'pry-rails'
+
 gem 'pg'
 gem 'aws-sdk'
 gem 'redis'

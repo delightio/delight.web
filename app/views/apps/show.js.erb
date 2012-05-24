@@ -1,1 +1,2 @@
 $('#app-view-app-sessions').replaceWith('<%= escape_javascript render(:partial => "app_sessions_list", :locals => { :app_sessions => @app_sessions, :favorite_ids => @favorite_app_session_ids }) %>');
+$(".group-video").colorbox({iframe: true, rel:'group-video', transition:"none", width:"800px", height:"600px"});

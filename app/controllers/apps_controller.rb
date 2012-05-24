@@ -1,4 +1,5 @@
 class AppsController < ApplicationController
+  before_filter :show_credit?, :only => [:index]
   before_filter :authenticate_user!
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -17,6 +18,9 @@ class AppsController < ApplicationController
 
   # GET /apps
   def index
+    @show_credit = params[:credit] || session[:credit]
+    session[:credit] = nil
+
     @viewer_apps = App.viewable_by(current_user).all
     if current_user.administrator?
       @admin_apps = App.administered_by(current_user).all
@@ -35,13 +39,28 @@ class AppsController < ApplicationController
     @app = nil
 
     @setup = params[:setup]
+    @app_session_id = params[:app_session_id]
 
     if current_user.administrator?
-      @app ||= App.includes(:app_sessions).administered_by(current_user).find(params[:id])
+      @app ||= App.includes(:app_sessions).administered_by(current_user).find_by_id(params[:id])
     end
 
     # viewers
-    @app ||= App.includes(:app_sessions).viewable_by(current_user).find(params[:id])
+    @app ||= App.includes(:app_sessions).viewable_by(current_user).find_by_id(params[:id])
+    if @app.nil?
+      respond_to do |format|
+        format.html do
+          flash[:type] = 'error'
+          flash[:notice] = 'Invalid operation'
+          redirect_to :action => :index
+        end
+        format.json do
+          render :json => { 'result' => 'fail', 'reason' => 'record not found' }
+        end
+      end
+      return
+    end
+
     @recorded_sessions = @app.app_sessions.recorded
     @versions = @recorded_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
     versions = params[:versions] || @versions.collect { |v| v.app_version }
@@ -65,6 +84,21 @@ class AppsController < ApplicationController
 
     @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)
     @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
+    if not params[:properties].blank?
+      parts = params[:properties].split(':')
+      num_parts = parts.count
+      case num_parts
+      when 1
+        # search both key and value with the same input
+        keyword = parts[0].strip
+        @recorded_sessions = @recorded_sessions.has_property_key_or_value(keyword)
+      when 2
+        @recorded_sessions = @recorded_sessions.has_property(parts[0].strip, parts[1].strip)
+      else
+        keyword = params[:properties].strip
+        @recorded_sessions = @recorded_sessions.has_property_key_or_value(keyword)
+      end
+    end
 
     @recorded_sessions = @recorded_sessions.where(:app_version => versions)
     if params[:favorite] == "1"
@@ -196,6 +230,47 @@ class AppsController < ApplicationController
         flash.now[:type] = 'error'
         flash.now[:notice] = 'Failed scheduling recordings'
         format.html { render action: "schedule_recording_edit", :layout => 'iframe' }
+      end
+    end
+  end
+
+  def show_credit?
+    if params[:credit]
+      session[:credit] = params[:credit]
+    end
+  end
+
+  def upload_on_wifi_only
+    if params[:state].nil?
+      respond_to do |format|
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'param state is missing' } }
+      end
+      return
+    end
+
+    # validate app id
+    @app = App.administered_by(current_user).find_by_id(params[:app_id])
+    if @app.nil?
+      respond_to do |format|
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'access denied' } }
+      end
+      return
+    end
+
+    state = params[:state]
+    if state == '1'  # convert to 'true' or 'false'
+      state = 'true'
+    else
+      state = 'false'
+    end
+
+    ret = @app.set_uploading_on_wifi_only state
+
+    respond_to do |format|
+      if ret
+        format.json { render :json => { 'result' => 'success' } }
+      else
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'fail to update state' } }
       end
     end
   end

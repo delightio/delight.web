@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Track' do
+describe Track do
   describe '#after_create' do
     let(:app_session) { FactoryGirl.create :app_session }
     subject { FactoryGirl.create(:track, app_session: app_session) }
@@ -19,7 +19,10 @@ describe 'Track' do
     end
   end
 
-  subject { t = Track.new.tap{ |t| t.stub :filename => 'fkjdklfj'} }
+  let(:app_session) { FactoryGirl.create :app_session }
+  subject { FactoryGirl.create(:track, app_session: app_session).tap {
+              |t| t.stub :filename => 'blah.blah' } }
+
   describe '#storage' do
     it 'uses S3' do
       S3Storage.should_receive(:new).with(subject.filename)
@@ -44,4 +47,20 @@ describe 'Track' do
     end
   end
 
+  describe '#download' do
+    before do
+      local_filename = File.join Rails.root, '.gitignore'
+      subject.storage.should_receive(:download).
+        with(subject.app_session.working_directory).
+        and_return(File.new local_filename)
+    end
+
+    it 'downloads online version to the working directory' do
+      subject.download
+    end
+
+    it 'returns a File object' do
+      subject.download.should be_an_instance_of File
+    end
+  end
 end

@@ -5,6 +5,7 @@ class App < ActiveRecord::Base
   has_many :permissions
   has_many :viewers, :through => :permissions, :uniq => true
 
+  has_many :group_invitations
   has_many :invitations
 
   attr_accessible :name
@@ -44,9 +45,20 @@ class App < ActiveRecord::Base
   end
 
   def complete_recording
+    # We got more recordings than we expected
+    if scheduled_recordings <= 0
+      handle_extra_recordings
+      return
+    end
+
     settings.incr :recordings, -1
     account.use_credits 1
     notify_users
+  end
+
+  def handle_extra_recordings
+    schedule_recordings 0
+    # TODO we probably want to log this
   end
 
   def resume_recording

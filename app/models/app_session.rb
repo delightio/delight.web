@@ -1,16 +1,22 @@
 class AppSession < ActiveRecord::Base
   attr_reader :upload_uris
 
+  has_many :properties
   has_many :tracks
   belongs_to :app
 
   has_many :favorites
   has_many :favorite_users, :through => :favorites, :source => :user, :select => 'DISTINCT users.*'
 
+  validates_presence_of :delight_version
   validates_presence_of :app_id, :app_version, :app_build
-  validates_presence_of :delight_version, :locale
+  validates_presence_of :app_locale
+  # LH 110 We will need to run a migration to pre fill the empty entries
+  # validates_presence_of :app_connectivity, :device_hw_version, :device_os_version
 
   after_create :generate_upload_uris
+
+  include Mixins::Metric
 
   module Scopes
     def favorite_of(user)
@@ -52,6 +58,15 @@ class AppSession < ActiveRecord::Base
     def latest
       order('updated_at DESC')
     end
+
+    def has_property(key, value)
+      joins(:properties).where(:properties => { :key => key, :value => value })
+    end
+
+    def has_property_key_or_value(word)
+      joins(:properties).where('properties.key = ? or properties.value = ?', word, word)
+    end
+
   end
   extend Scopes
 
@@ -64,7 +79,16 @@ class AppSession < ActiveRecord::Base
     expected_track_count > 0
   end
 
+  def expected_presentation_track_count
+    recording? ? 1 : 0
+  end
+
+  def ready_for_processing?
+    expected_track_count == tracks.count + expected_presentation_track_count
+  end
+
   def recording?
+    return false if delight_version.to_i < 2 # LH 110
     app.recording?
   end
 
@@ -72,8 +96,35 @@ class AppSession < ActiveRecord::Base
     app.uploading_on_wifi_only?
   end
 
+  def maximum_frame_rate
+    10
+  end
+
+  def scale_factor
+    case device_hw_version.split(',').first
+    when 'iPad3'
+      0.25
+    else
+      0.5
+    end
+  end
+
+  def average_bit_rate
+    # 1 MB per minute video
+    8*1024*1024/60
+  end
+
+  def maximum_key_frame_interval
+    10.minutes * maximum_frame_rate
+  end
+
   def complete_upload media
-    app.complete_recording if completed?
+    enqueue_processing if ready_for_processing?
+    app.complete_recording if recorded?
+  end
+
+  def enqueue_processing
+    VideoProcessing.enqueue id
   end
 
   def screen_track
@@ -88,14 +139,42 @@ class AppSession < ActiveRecord::Base
     FrontTrack.find_by_app_session_id id
   end
 
+  def presentation_track
+    PresentationTrack.find_by_app_session_id id
+  end
+
+  def working_directory
+    if @working_directory.nil?
+      working_directory = File.join ENV['WORKING_DIRECTORY'],
+                                    self.class.to_s.tableize, id.to_s
+      FileUtils.mkdir_p(working_directory) unless Dir.exists? working_directory
+      @working_directory = working_directory
+    end
+    @working_directory
+  end
+
+  def update_properties hash
+    if hash && !hash.empty?
+      hash.each_pair do |k, v|
+        #self.properties.first_or_create!({ :key => k, :value => v })
+        self.properties.find_or_create_by_key_and_value(k.to_s, v.to_s)
+      end
+    end
+    true
+  end
+
   private
   def generate_upload_uris
     @upload_uris = {}
+    count = 0
     if recording?
       @upload_uris = {
-        screen: ScreenTrack.new(app_session_id: id).presigned_write_uri
+        screen_track: ScreenTrack.new(app_session_id: id).presigned_write_uri,
+        touch_track: TouchTrack.new(app_session_id: id).presigned_write_uri,
+        orientation_track: OrientationTrack.new(app_session_id: id).presigned_write_uri
       }
+      count = 1 + @upload_uris.count # +1 for presentation track
     end
-    update_attribute :expected_track_count, @upload_uris.count
+    update_attribute :expected_track_count, count
   end
 end

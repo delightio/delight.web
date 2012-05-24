@@ -24,4 +24,10 @@ class HomeController < ApplicationController
       format.html
     end
   end
+
+  def docs
+    respond_to do |format|
+      format.html
+    end
+  end
 end

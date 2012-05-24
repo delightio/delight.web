@@ -1,10 +1,10 @@
 <div class="container" style="text-align:center">
 <% if @app %>
-  <h1 style="margin-top: 10px">Setting up for <%= @app.name %></h1>
+  <h1 style="margin-top: 10px">Setup for '<%= @app.name %>'</h1>
   <hr/>
   <div class="row">
-    <h3>App Token: <%= @app.token %></h3>
-    <br>
+    <h3>App Token: </h3><code><%= @app.token %></code>
+    <br><br>
   </div>
   <div class="row" style="margin-top: 10px">
     <h3>Get Delight.io Framework from Github:</h3>
@@ -17,7 +17,14 @@
   <div class="row" style="margin-top: 10px">
     <h3>Follow tutorial on Documentation</h3>
     <div class="span12">
-      <%= link_to "Open Documentation in new window", "https://github.com/delightio/ios/blob/master/README.md", :target => "_blank", :class => "btn btn-large" %>
+      <%= link_to "Open Documentation in new window", "/docs", :target => "_blank", :class => "btn btn-large" %>
+    </div>
+  </div>
+  <br>
+  <div class="row" style="margin-top: 10px">
+    <h3>Invite team members</h3>
+    <div class="span12">
+      <%= link_to raw('<i class="icon-user"></i> Email invitation to view recordings'), new_invitation_path(:app_id => @app.id), :class => "btn btn-large", :id => "app-show-invite-viewer" %>
     </div>
   </div>
 <% end %>

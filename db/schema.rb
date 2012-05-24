@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120509090655) do
+ActiveRecord::Schema.define(:version => 20120521063942) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -27,13 +27,15 @@ ActiveRecord::Schema.define(:version => 20120509090655) do
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.integer  "app_id"
-    t.string   "app_user_id"
-    t.string   "locale"
+    t.string   "app_locale"
     t.string   "app_version"
     t.string   "delight_version"
     t.string   "app_build"
     t.integer  "expected_track_count"
     t.integer  "tracks_count",         :default => 0
+    t.string   "app_connectivity"
+    t.string   "device_hw_version"
+    t.string   "device_os_version"
   end
 
   add_index "app_sessions", ["app_id"], :name => "as_app_id"
@@ -70,6 +72,15 @@ ActiveRecord::Schema.define(:version => 20120509090655) do
   add_index "favorites", ["app_session_id"], :name => "fav_as_id"
   add_index "favorites", ["user_id"], :name => "fav_user_id"
 
+  create_table "group_invitations", :force => true do |t|
+    t.integer  "app_id"
+    t.integer  "app_session_id"
+    t.text     "emails"
+    t.text     "message"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "invitations", :force => true do |t|
     t.integer  "app_id"
     t.integer  "app_session_id"
@@ -77,8 +88,9 @@ ActiveRecord::Schema.define(:version => 20120509090655) do
     t.string   "message"
     t.string   "token"
     t.datetime "token_expiration"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "group_invitation_id"
   end
 
   create_table "permissions", :force => true do |t|
@@ -91,6 +103,14 @@ ActiveRecord::Schema.define(:version => 20120509090655) do
   add_index "permissions", ["app_id"], :name => "perm_app_id"
   add_index "permissions", ["viewer_id"], :name => "index_permissions_on_viewer_id"
   add_index "permissions", ["viewer_id"], :name => "perm_viewer_id"
+
+  create_table "properties", :force => true do |t|
+    t.integer  "app_session_id"
+    t.string   "key"
+    t.string   "value"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "tracks", :force => true do |t|
     t.datetime "created_at",     :null => false
@@ -121,6 +141,8 @@ ActiveRecord::Schema.define(:version => 20120509090655) do
     t.string   "nickname"
     t.string   "image_url"
     t.integer  "signup_step",            :default => 1
+    t.string   "twitter_url"
+    t.string   "github_url"
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

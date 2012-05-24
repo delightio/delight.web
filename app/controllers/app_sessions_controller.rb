@@ -13,10 +13,21 @@ class AppSessionsController < ApplicationController
   def show
     authenticate_user!
     @app_session = get_app_session
-    @track = @app_session.screen_track
+    if @app_session.nil?
+      flash[:type] = 'error'
+      flash[:notice] = 'Invalid operation'
+      respond_to do |format|
+        format.html { redirect_to apps_path }
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'record not found' } }
+      end
+
+      return
+    end
+    @track = @app_session.presentation_track
+    @is_admin = @app_session.app.account.administrator == current_user
 
     respond_to do |format|
-      format.html { render :layout => 'empty' } # show.html.erb
+      format.html { render :layout => 'iframe_black' } # show.html.erb
     end
   end
 
@@ -24,6 +35,15 @@ class AppSessionsController < ApplicationController
   def favorite
     authenticate_user!
     @app_session = get_app_session(params[:app_session_id])
+    if @app_session.nil?
+      flash[:type] = 'error'
+      flash[:notice] = 'Invalid operation'
+      respond_to do |format|
+        format.html { redirect_to apps_path }
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'record not found' } }
+      end
+      return
+    end
 
     respond_to do |format|
       format.json do
@@ -41,6 +61,15 @@ class AppSessionsController < ApplicationController
   def unfavorite
     authenticate_user!
     @app_session = get_app_session(params[:app_session_id])
+    if @app_session.nil?
+      flash[:type] = 'error'
+      flash[:notice] = 'Invalid operation'
+      respond_to do |format|
+        format.html { redirect_to apps_path }
+        format.json { render :json => { 'result' => 'fail', 'reason' => 'record not found' } }
+      end
+      return
+    end
 
     respond_to do |format|
       format.json do
@@ -61,13 +90,26 @@ class AppSessionsController < ApplicationController
       return
     end
 
+    token = get_token
+    if token.nil?
+      render xml: "Missing HTTP_X_NB_AUTHTOKEN HTTP header", status: :bad_request
+      return
+    end
+
     as_params = params[:app_session]
-    @app = App.find_by_token(as_params.delete :app_token)
+    @app = App.find_by_token(token)
     if @app.nil?
       render xml: "Missing App Token. Get yours on http://delight.io", status: :bad_request
       return
     end
     as_params.merge! app_id: @app.id
+    as_params.delete :app_token # since it's not a proper attribute on AppSession
+
+    # LH 110
+    if as_params[:delight_version].to_i < 2
+      as_params[:app_locale] = as_params.delete :locale
+    end
+
     @app_session = AppSession.new as_params
 
     respond_to do |format|
@@ -81,10 +123,24 @@ class AppSessionsController < ApplicationController
 
   # PUT /app_sessions/1.xml
   def update
-    @app_session = AppSession.find(params[:id])
+    token = get_token
+    if token.nil?
+      render xml: "Missing HTTP_X_NB_AUTHTOKEN HTTP header", status: :bad_request
+      return
+    end
 
+    @app_session = AppSession.find(params[:id])
+    if @app_session.app.token != token
+      render xml: "Token mismatch", status: :bad_request
+      return
+    end
     respond_to do |format|
-      if @app_session.update_attributes(params[:app_session])
+      properties = params[:app_session].delete :properties
+      metrics = params[:app_session].delete :metrics
+
+      if @app_session.update_attributes(params[:app_session]) &&
+         @app_session.update_properties(properties) &&
+         @app_session.update_metrics(metrics)
         format.xml { head :no_content }
       else
         format.xml { render xml: @app_session.errors, status: :unprocessable_entity }
@@ -103,9 +159,13 @@ class AppSessionsController < ApplicationController
 
     app_session = nil
     if current_user.administrator?
-      app_session ||= AppSession.administered_by(current_user).find(session_id)
+      app_session ||= AppSession.administered_by(current_user).find_by_id(session_id)
     end
-    app_session ||= AppSession.viewable_by(current_user).find(session_id)
+    app_session ||= AppSession.viewable_by(current_user).find_by_id(session_id)
+  end
+
+  def get_token
+    request.env['HTTP_X_NB_AUTHTOKEN']
   end
 
 end

@@ -1,5 +1,9 @@
     <div class="span9" id="app-view-app-sessions">
-      <% unless @recorded_sessions.blank? %>
+      <% if @recorded_sessions.blank? %>
+        <div class="alert">
+          No recorded app session or no match
+        </div>
+      <% else %>
       <% @recorded_sessions.each do |session| %>
       <div class="row">
         <div class="span4">
@@ -10,8 +14,8 @@
           <% end %>
           <ul class="thumbnails" style="margin-bottom:0">
             <li class="span3">
-              <a href=<%= app_session_path(session) %> class="thumbnail group-video">
-                <img src="/images/thumbnail_not_supported.png" alt="">
+            <a href=<%= app_session_path(session) %> class="thumbnail group-video <%= (@app_session_id == session.id.to_s) ?  'default-open-video' : '' %>">
+                <img src=<%= session.presentation_track.thumbnail.presigned_read_uri %> alt="">
               </a>
             </li>
           </ul>
@@ -32,6 +36,10 @@
                 <td class="align-r"><%= session.app_build %></td>
               </tr>
               <tr>
+                <td>Locale:</td>
+                <td class="align-r"><%= session.app_locale %></td>
+              </tr>
+              <tr>
                 <td>Duration:</td>
                 <td class="align-r"><%= session.duration %> s</td>
               </tr>
@@ -42,24 +50,34 @@
             </tbody>
           </table>
         </div>
-<!--         <div class="span2">
+        <div class="span2">
           <table style="width:100%">
             <tbody>
               <tr>
-                <td>User ID:</td>
-                <td class="align-r"><%= session.app_user_id %></td>
+                <td>Device:</td>
+                <td class="align-r"><%= session.device_hw_version %></td>
               </tr>
               <tr>
-                <td>Avg duration:</td>
-                <td class="align-r">30 s ??</td>
+                <td>Device OS:</td>
+                <td class="align-r"><%= session.device_os_version %></td>
               </tr>
               <tr>
-                <td>Lifetime:</td>
-                <td class="align-r">100 m ??</td>
+                <td>Connectivity:</td>
+                <td class="align-r"><%= session.app_connectivity %></td>
               </tr>
+              <% unless session.properties.blank? %>
+              <tr><td><br></td></tr>
+              <% end %>
+              <% session.properties.each do |property| %>
+              <tr>
+                <td><%= property.key %>:</td>
+                <td class="align-r"><%= property.value %></td>
+              </tr>
+              <% end %>
             </tbody>
           </table>
-        </div> -->
+
+        </div>
       </div><!--/row-->
 
       <hr style="margin:0 0 20px 0" />
@@ -85,6 +103,8 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', unfavorite_handler);
+          $target.data('tooltip').options.title = 'Remove this session from your favorites';
+          $target.tooltip('hide');
           increment_favorite_count();
         }
       }
@@ -99,6 +119,8 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', favorite_handler);
+          $target.data('tooltip').options.title = 'Add this session to your favorites';
+          $target.tooltip('hide');
           decrement_favorite_count();
         }
       }
@@ -113,4 +135,7 @@
 
       $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)
       $(".app-session-unfavorite-btn").bind('ajax:success', unfavorite_handler);
+
+      $(".app-session-favorite-btn").tooltip({ 'title' : 'Add this session to your favorites' });
+      $(".app-session-unfavorite-btn").tooltip({ 'title' : 'Remove this session from your favorites' });
     </script>
