@@ -50,7 +50,6 @@ DelightWeb::Application.routes.draw do
   match 'pricing' => 'home#pricing'
   match 'faq' => 'home#faq'
   match 'docs' => 'home#docs'
-  match 'docs/ios/api' => 'home#ios_api'
   root :to => 'home#index'
 
   resque_constraint = lambda do |request|

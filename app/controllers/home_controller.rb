@@ -30,10 +30,4 @@ class HomeController < ApplicationController
       format.html
     end
   end
-
-  def ios_api
-    respond_to do |format|
-      format.html
-    end
-  end
 end
