@@ -6,7 +6,7 @@ class EmailNotification
 
   def self.send tos, subject, text
     data = Hash.new
-    data[:from] = "The Delight.io Team <team@delight.io>"
+    data[:from] = "Team Delight <team@delight.io>"
     data[:to] = tos.join ', '
     data[:subject] = subject
     data[:text] = text
