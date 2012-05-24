@@ -1,0 +1,40 @@
+<h1>QuickStart Guide</h1>
+<br>
+
+<ol>
+  <li>Create your Delight account and application.</li>
+  <br>
+
+  <li>Copy the app token.</li>
+  <br>
+
+  <li>Get Delight framework from GitHub<br>
+    <code>git clone git@github.com:delightio/ios.git</code>
+  </li>
+  <br>
+
+  <li>Add <code>Delight.framework</code> to your target along with the followings:
+    <ul>
+      <li>AVFoundation</li>
+      <li>CoreGraphics</li>
+      <li>CoreMedia</li>
+      <li>CoreVideo</li>
+      <li>OpenGLES</li>
+      <li>QuartzCore</li>
+      <li>SystemConfiguration</li>
+    </ul>
+  </li><br>
+
+  <li>In your build settings, add <code>-ObjC</code> to "Other Linker Flags".</li><br>
+
+  <li>In your <code>AppDelegate.m</code>, <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
+    put the following in <code>application:didFinishLaunchingWithOptions</code> function.<br>
+    <br>
+    <code>
+      [Delight startWithAppToken: @"<strong>Your App Token</strong>"]
+    </code>
+  </li>
+</ol>
+
+<br>
+<h2>Please visit our <a href='ios/api' target='_blank'> iOS API page</a> for more customization including private views</h2>
