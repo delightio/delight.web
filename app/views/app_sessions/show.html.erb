@@ -14,10 +14,13 @@
       <div class="row">
         <div class="span9" style="text-align:center;overflow:hidden">
           <div id="video-container" style="text-align:center">
-            <video height="480px" controls="controls" autoplay>
+            <video style="height:480px;max-width:100%" controls="controls" autoplay>
             <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
-            Your browser does not support video tag
+            Your browser does not support video tag.
             </video>
+            <p id="browser-compatibility" style="color:white;display:none">
+            We currently provide only H264 videos. Please use <a href="http://www.apple.com/safari/download/" target="_blank">Safari 3.1+</a> or <a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
+            </p>
           </div>
         </div>
       </div>
@@ -117,4 +120,7 @@
       $("#video-container").css('transform', 'rotate(-90deg)');
     });
   });
+  if ($.browser['mozilla']) { // to do check IE and version
+    $("#browser-compatibility").show();
+  }
 </script>

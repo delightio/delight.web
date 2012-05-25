@@ -38,7 +38,11 @@ class AppsController < ApplicationController
   def show
     @app = nil
 
-    @setup = params[:setup]
+    #@setup = params[:setup]
+    @setup = session[:app_first]
+    if @setup
+      session[:app_first] = nil
+    end
     @app_session_id = params[:app_session_id]
 
     if current_user.administrator?
@@ -154,7 +158,8 @@ class AppsController < ApplicationController
         #@app.schedule_recordings Account::FreeCredits
 
         flash[:notice] = 'App was successfully created.'
-        format.html { redirect_to app_path(@app, :setup => true) }
+        session[:app_first] = true
+        format.html { redirect_to app_path(@app) }
       else
         format.html { render action: "new" }
       end

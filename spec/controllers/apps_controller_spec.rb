@@ -384,9 +384,10 @@ describe AppsController do
           assigns(:app).account.should == app.account
         end
 
-        it "redirects to app view with setup param" do
+        it "redirects to app view with setup session var" do
           post :create, {:app => valid_attributes}
-          response.should redirect_to(app_path(assigns(:app).to_param, :setup => true))
+          response.should redirect_to(app_path(assigns(:app).to_param))
+          session[:app_first].should be_true
         end
 
         it 'schedules some recordings' do

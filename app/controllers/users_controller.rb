@@ -49,7 +49,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:notice] = 'Successfully to create app'
-        format.html { redirect_to app_path(@user.account.apps.first, :setup => true) }
+        session[:app_first] = true
+        format.html { redirect_to app_path(@user.account.apps.first) }
       else
         flash.now[:notice] = 'Failed to complete profile'
         format.html { render action: "signup_info_edit" }

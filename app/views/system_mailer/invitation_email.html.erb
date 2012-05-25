@@ -6,11 +6,7 @@
 <body>
 
 <p>
-<% if @user.twitter_id %>
-  <strong><%= @user.nickname %></strong> ( <a href="<%= @user.twitter_url %>" target="_blank"><%= @user.twitter_url %></a> )
-<% else %>
-  <strong><%= @user.nickname %></strong> ( <a href="<%= @user.github_url %>" target="_blank"><%= @user.github_url %></a> )
-<% end %>
+<strong><%= @user.nickname %></strong> ( <a href="<%= @user.profile_url %>" target="_blank"><%= @user.profile_url %></a> )
 invites you to their <strong><%= @invitation.app.name %></strong> app on Delight.
 </p>
 
