@@ -132,12 +132,13 @@ describe UsersController do
         a = u.account.apps.first
         a.should be_valid
 
-        response.should redirect_to(app_path(assigns(:user).account.apps.first,:setup => true))
+        response.should redirect_to(app_path(assigns(:user).account.apps.first))
         u.nickname.should == 'newnick'
         u.email.should == 'test@example.com'
         u.signup_step.should == 2
         u.account.name.should == 'account_name'
         a.name.should == 'appname'
+        session[:app_first].should be_true
       end
 
       it "should not save user info when account create fail" do
