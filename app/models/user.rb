@@ -87,4 +87,12 @@ class User < ActiveRecord::Base
     self.signup_step > 1
   end
 
+  def profile_url
+    if twitter_id
+      twitter_url
+    else
+      github_url
+    end
+  end
+
 end

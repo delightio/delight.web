@@ -131,4 +131,29 @@ describe User do
     end
   end
 
+  describe 'profile_url' do
+    let(:user) { FactoryGirl.create(:user) }
+    before(:each) do
+      user.twitter_url = 'turl'
+      user.github_url = 'gurl'
+    end
+
+    describe 'twitter user' do
+      before(:each) do
+        user.twitter_id = '123'
+      end
+      it "should return twitter url" do
+        user.profile_url.should == 'turl'
+      end
+    end
+    describe 'github user' do
+      before(:each) do
+        user.github_id = '123'
+      end
+      it "should return github url" do
+        user.profile_url.should == 'gurl'
+      end
+    end
+  end
+
 end
