@@ -119,6 +119,18 @@
       $("#video-container").css('-ms-transform', 'rotate(-90deg)');
       $("#video-container").css('transform', 'rotate(-90deg)');
     });
+    $("#app-session-show-invite-viewer").colorbox({
+      iframe: true,
+      transition:"none",
+      width:"550px",
+      height:"500px"
+    });
+  });
+  $(document).bind('cbox_open', function() {
+    $("#app-session-show-invite-viewer").text('Processing...');
+  });
+  $(document).bind('cbox_complete', function() {
+    $("#app-session-show-invite-viewer").text('Share');
   });
   if ($.browser['mozilla']) { // to do check IE and version
     $("#browser-compatibility").show();
