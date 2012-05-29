@@ -64,7 +64,7 @@
           <li>App Token: <code><%= app.token %></code></li>
           <li>Recorded Sessions: <%= app.app_sessions.recorded.count %></li>
           <li>
-            <%= link_to raw('Share'), new_invitation_path(:app_id => app.id), :class => "btn", :id => "app-show-invite-viewer" %>
+            <%= link_to raw('Share'), new_invitation_path(:app_id => app.id), :class => "btn app-show-invite-viewer" %>
             &nbsp;
             <%= link_to 'Show', app, :class => "btn" %>
             &nbsp;
@@ -110,7 +110,7 @@
 <% end %>
 <script>
   $(document).ready(function() {
-    $("#app-show-invite-viewer").colorbox({
+    $(".app-show-invite-viewer").colorbox({
         iframe: true,
         transition:"none",
         width:"550px",
