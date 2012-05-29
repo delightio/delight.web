@@ -12,14 +12,14 @@
       <code><%= current_user.email %></code><br>
       when all scheduled sessions are received.
     </p>
-  </div>
-
-  <div class="row">
-    <div class="span3">
-      Record and upload on Wifi connection only:
-      <%= check_box_tag 'wifi-only', '1', @app.uploading_on_wifi_only? %>
+    <div class="row">
+      <div class="span3">
+        Record and upload on Wifi connection only:
+        <%= check_box_tag 'wifi-only', '1', @app.uploading_on_wifi_only? %>
+      </div>
     </div>
   </div>
+
   <br />
 
   <div class="row-fluid">
