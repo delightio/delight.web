@@ -1,12 +1,18 @@
-<%= simple_form_for(@group_invitation, :url => invitations_path, :html => { :id => 'invitation-form', :class => "form-horizontal"}, :remote => true) do |f| %>
+<div class="row">
+  <div class="span2">&nbsp;</div>
+  <div class="span4" style="margin-left:-30px">
 
-  <%= f.input :emails, :as => :string, :placeholder => 'Comma seperated list of emails' %>
-  <%= f.input :message, :as => :text, :input_html => { :rows => 8 } %>
+<%= simple_form_for(@group_invitation, :url => invitations_path, :html => { :id => 'invitation-form', :class => "form-horizontal"}, :remote => true) do |f| %>
+  <fieldset>
+  <%= f.input :emails, :as => :string, :placeholder => 'Comma seperated list of emails', :input_html => { :class => :span4 } %>
+  <%= f.input :message, :as => :text, :input_html => { :rows => 8, :class => :span4 } %>
   <%= f.input :app_id, :as => :hidden %>
   <%= f.input :app_session_id, :as => :hidden %>
   <%= f.button :submit, :class => 'btn btn-large btn-primary', :id => 'invitation-send-btn', :value => 'Send' %>
-
+  </fieldset>
 <% end %>
+  </div>
+</div>
 <script>
   $(document).ready(function() {
     function disableInvitationForm(state) {
