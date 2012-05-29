@@ -393,7 +393,7 @@ describe AppsController do
         it 'schedules some recordings' do
           post :create, {:app => valid_attributes}
           new_app = assigns(:app)
-          new_app.scheduled_recordings.should == Account::FreeCredits
+          new_app.scheduled_recordings.should > 0
         end
       end
 

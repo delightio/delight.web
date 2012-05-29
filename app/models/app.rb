@@ -118,7 +118,8 @@ class App < ActiveRecord::Base
   end
 
   def schedule_initial_recording
-    schedule_recordings Account::FreeCredits
+    schedule_recordings 5 * Account::FreeCredits
+    set_uploading_on_wifi_only false
   end
 
 end
