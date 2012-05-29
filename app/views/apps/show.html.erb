@@ -151,8 +151,8 @@
       $("#app-schedule-recording").colorbox({
         iframe: true,
         transition:"none",
-        width:"700px",
-        height:"600px",
+        width:"500px",
+        height:"420px",
         onClosed:function() {
           $.get('/apps/<%= @app.id %>.json',
           function(data) {
