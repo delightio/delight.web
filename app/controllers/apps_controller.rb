@@ -69,6 +69,9 @@ class AppsController < ApplicationController
     @versions = @recorded_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
     versions = params[:versions] || @versions.collect { |v| v.app_version }
 
+    @builds = @recorded_sessions.select('app_sessions.app_build, count(1)').group(:'app_sessions.app_build')
+    builds = params[:builds] || @builds.collect { |b| b.app_build }
+
     # decide date and duration range
     if @recorded_sessions.blank?
       @default_date_min = 120
@@ -104,7 +107,7 @@ class AppsController < ApplicationController
       end
     end
 
-    @recorded_sessions = @recorded_sessions.where(:app_version => versions)
+    @recorded_sessions = @recorded_sessions.where(:app_version => versions, :app_build => builds)
     if params[:favorite] == "1"
       @recorded_sessions = @recorded_sessions.favorite_of(current_user)
     end
