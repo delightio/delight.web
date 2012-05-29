@@ -50,11 +50,13 @@
             </li>
             <hr />
             <li class="nav-header">Versions</li>
+            <!--
             <li>
               <label class="checkbox">
                 <input type="checkbox" id="app-show-versions-all" class="app-show-versions-checkbox" CHECKED> All <span class="badge pull-right"> <%= @app.app_sessions.recorded.count %></span>
               </label>
             </li>
+            -->
             <% @versions.each do |version| %>
             <li>
               <label class="checkbox">
@@ -63,6 +65,17 @@
             </li>
             <% end %>
             <input type="hidden" name="versions[]" value=""/>
+
+            <li class="nav-header">Build</li>
+            <% @builds.each do |build| %>
+            <li>
+              <label class="checkbox">
+                <input type="checkbox" class="app-show-builds-checkbox" name="builds[]" value="<%= build.app_build %>" CHECKED> <%= build.app_build %> <span class="badge pull-right"><%= build.count %></span>
+              </label>
+            </li>
+            <% end %>
+            <input type="hidden" name="builds[]" value=""/>
+
           <hr />
           <li class="nav-header">Duration <input type="text" name="duration" id="duration-amount" class="pull-right" /></li>
           <li>
@@ -161,6 +174,7 @@
         $("#app-show-filter-input").attr("value", "");
         querySessions();
       });
+      /*
       $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
         if (checked) {
           // check all
@@ -171,7 +185,11 @@
         }
         //querySessions();
       });
+      */
       $(".app-show-versions-checkbox").click(function(eventObj) {
+        querySessions();
+      });
+      $(".app-show-builds-checkbox").click(function(eventObj) {
         querySessions();
       });
 
