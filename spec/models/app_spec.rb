@@ -230,12 +230,16 @@ describe App do
       it 'enqueues email notification' do
         subject.stub :ready_to_notify? => true
         Resque.should_receive(:enqueue).once.
-          with(::AppRecordingCompletion, subject.id)
+          with(AppRecordingCompletion, subject.id)
 
         subject.notify_users
       end
 
       it 'only sends one email' do
+        # TODO: not sure why Account#email_new_signup will trigger the
+        #       expectation below.
+        subject
+
         Resque.should_receive(:enqueue).once.
           with(AppRecordingCompletion, subject.id)
 

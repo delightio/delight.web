@@ -3,9 +3,9 @@ require 'spec_helper'
 describe AppRecordingCompletion do
   subject { AppRecordingCompletion }
 
-  describe '#perform' do
+  describe '.perform' do
     let(:app) { FactoryGirl.create :app }
-    let(:data){ {tos: app.emails,
+    let(:data){ {to: app.emails.join(','),
                  subject: instance_of(String),
                  text: instance_of(String)} }
     it 'sends email to everyone' do

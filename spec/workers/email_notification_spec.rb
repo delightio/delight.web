@@ -5,7 +5,7 @@ describe EmailNotification do
 
   describe 'send_text' do
     let(:credential) { {username: 'fdfd', password: 'fdfds'} }
-    let(:data) { mock }
+    let(:data) { mock.as_null_object }
     it 'posts to mailgun server with api key' do
       subject.should_receive(:credential).twice.and_return(credential)
       RestClient.should_receive(:post).once
