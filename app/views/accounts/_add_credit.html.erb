@@ -17,8 +17,8 @@
               <% PAYMENT_CONFIG['plans'].each do |payment| %>
               <tr class="add-credit-row">
                 <td><input type="text" name="add-credit-quantity-<%= payment['name'] %>" id="add-credit-quantity-<%= payment['name'] %>" class="input-small" value="0" style="width:50px"/><span> x $<%= payment['price'] %> for <%= "#{pluralize(payment['credit'], 'credit')}" %></span></td>
-                <td>$<span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price">0</span></td>
-                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="add-credit-subtotal-credit">0</span> credits</td>
+                <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price pull-right" style="margin-right:150px">0</span></td>
+                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit">0</span></td><td><span class="" style="margin-right:130px">credits</span></td>
               </tr>
               <script>
                 $("#add-credit-quantity-<%= payment['name'] %>").keyup(function(eventObj) {
@@ -41,18 +41,14 @@
               <tr>
                 <td>Total:</td>
                 <td>
-                  <div class="input-prepend input-append">
-                    <span class="add-on">$</span>
-                    <input name="total_price" id="add-credit-total-price" type="text" value="0" class="input-small" disabled />
-                    <span class="add-on">.00</span>
-                  </div>
+                  <span class="pull-left">$</span><span id="add-credit-total-price-text" class="pull-right" style="margin-right:150px">0</span>
+                  <input name="total_price" id="add-credit-total-price" type="hidden" value="0" class="input-small" />
                 </td>
                 <td>
-                  <div class="input-append">
-                    <input name="total_credits" id="add-credit-total-credit" type="text" value="0" class="input-small" disabled />
-                    <span class="add-on">credits</span>
-                </div>
+                  <span id="add-credit-total-credit-text" class="pull-right">0</span>
+                  <input name="total_credits" id="add-credit-total-credit" type="hidden" value="0" class="input-small" />
                 </td>
+                <td><span class="" style="margin-right:130px">credits</span></td>
               </tr>
             </tbody>
           </table>
@@ -184,5 +180,7 @@
     });
     $("#add-credit-total-price").attr('value', total_price);
     $("#add-credit-total-credit").attr('value', total_credit);
+    $("#add-credit-total-price-text").text(total_price);
+    $("#add-credit-total-credit-text").text(total_credit);
   }
 </script>
