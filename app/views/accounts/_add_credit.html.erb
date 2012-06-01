@@ -59,38 +59,50 @@
       </div>
 
       <h2>Credit card information</h2>
+      <!--
       <div class="row">
         <div class="span5">
+          -->
+          <!--
           <fieldset class="span5" style="margin-left:110px">
+          -->
+          <fieldset class="span6" style="align:center;text-align:center;margin-left:100px;margin-top:15px">
             <div class="control-group">
               <label class="control-label" for="card-number">Card Number</label>
               <div class="controls">
-                <input type="text" size="20" autocomplete="off" id="card-number" value=""/>
+                <input type="text" size="20" autocomplete="off" id="card-number" value="" class="pull-left"/>
+                <span class="help-inline" style="height:28px;overflow:hidden"><img id="card-type-img" src="" style="display:none;position:relative;top:-1px;"/></span>
               </div>
             </div>
             <div class="control-group">
               <label class="control-label" for="card-cvc">CVC</label>
               <div class="controls">
-                <input type="text" size="4" autocomplete="off" id="card-cvc" value=""/>
+                <input type="text" size="4" autocomplete="off" id="card-cvc" value="" class="pull-left"/>
               </div>
             </div>
             <div class="control-group">
               <label class="control-label" for="card-expiry-month">Expiration (MM/YYYY)</label>
               <div class="controls">
+                <div class="pull-left">
                 <input type="text" size="2" id="card-expiry-month" class="input-small" value=""/>
                 <span> / </span>
                 <input type="text" size="4" id="card-expiry-year" class="input-small" value=""/>
               </div>
+              </div>
             </div>
+              <%= submit_tag "Add credits", :class => "btn btn-success btn-large", :id => "add-credit-submit-btn" %>
           </fieldset>
+          <!--
         </div>
       </div>
-
+      -->
+<!--
       <div class="row">
         <div class="span12">
           <%= submit_tag "Add credits", :class => "btn btn-success btn-large", :id => "add-credit-submit-btn" %>
         </div>
       </div>
+      -->
     <% end %>
   </div>
 </div>
@@ -113,6 +125,27 @@
       // prevent the form from submitting with the default action
       return false;
     });
+
+    $("#card-number").change((function() {
+      var type_to_img_map = {
+        'Visa':'/assets/visa.png',
+        'MasterCard':'/assets/master.png',
+        'American Express':'/assets/amex.png',
+        'Discover':'/assets/discover.png',
+        'Diners Club':'/assets/dinersclub.png'
+        //'JCB':'/assets/visa.png',
+      };
+      return function() {
+        var card_number = $("#card-number").attr('value');
+        var card_type = Stripe.cardType(card_number);
+        if (type_to_img_map.hasOwnProperty(card_type)) {
+          $("#card-type-img").attr('src', type_to_img_map[card_type]);
+          $("#card-type-img").show();
+        } else {
+          $("#card-type-img").hide();
+        }
+      };
+    })());
 
   <% if not plan.blank? %>
     // set default plan
