@@ -27,6 +27,7 @@ DelightWeb::Application.routes.draw do
     put '/favorite', :to => 'app_sessions#favorite', :as => 'favorite'
     put '/unfavorite', :to => 'app_sessions#unfavorite', :as => 'unfavorite'
   end
+  resources :opengl_app_sessions, :only => [:create, :update]
 
   resources :tracks, :only => [:create, :show]
   resources :screen_tracks, :only => [:create]
@@ -50,6 +51,7 @@ DelightWeb::Application.routes.draw do
   match 'pricing' => 'home#pricing'
   match 'faq' => 'home#faq'
   match 'docs' => 'home#docs'
+  match 'blog' => 'home#blog'
   root :to => 'home#index'
 
   resque_constraint = lambda do |request|

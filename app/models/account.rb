@@ -10,6 +10,8 @@ class Account < ActiveRecord::Base
   validates :administrator_id, :presence => true
   validates :name, :presence => true
 
+  after_create :email_new_signup
+
   include Redis::Objects
   counter :credits
   FreeCredits = 20
@@ -24,5 +26,9 @@ class Account < ActiveRecord::Base
 
   def use_credits n=1
     credits.decrement n
+  end
+
+  def email_new_signup
+    Resque.enqueue ::NewAccountSignup, administrator.email
   end
 end

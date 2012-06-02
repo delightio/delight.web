@@ -34,7 +34,7 @@ class AppSessionsController < ApplicationController
   # PUT /app_sessions/1/favorite
   def favorite
     authenticate_user!
-    @app_session = get_app_session(params[:app_session_id])
+    @app_session = get_app_session(params[model_param_key_id])
     if @app_session.nil?
       flash[:type] = 'error'
       flash[:notice] = 'Invalid operation'
@@ -60,7 +60,7 @@ class AppSessionsController < ApplicationController
   # PUT /app_sessions/1/unfavorite
   def unfavorite
     authenticate_user!
-    @app_session = get_app_session(params[:app_session_id])
+    @app_session = get_app_session(params[model_param_key_id])
     if @app_session.nil?
       flash[:type] = 'error'
       flash[:notice] = 'Invalid operation'
@@ -85,7 +85,7 @@ class AppSessionsController < ApplicationController
 
   # POST /app_sessions.xml
   def create
-    if params[:app_session].nil?
+    if params[model_param_key].nil?
       render xml: "Missing app_session key", status: :bad_request
       return
     end
@@ -96,7 +96,7 @@ class AppSessionsController < ApplicationController
       return
     end
 
-    as_params = params[:app_session]
+    as_params = params[model_param_key]
     @app = App.find_by_token(token)
     if @app.nil?
       render xml: "Missing App Token. Get yours on http://delight.io", status: :bad_request
@@ -110,7 +110,7 @@ class AppSessionsController < ApplicationController
       as_params[:app_locale] = as_params.delete :locale
     end
 
-    @app_session = AppSession.new as_params
+    @app_session = model_class.new as_params
 
     respond_to do |format|
       if @app_session.save
@@ -129,16 +129,16 @@ class AppSessionsController < ApplicationController
       return
     end
 
-    @app_session = AppSession.find(params[:id])
+    @app_session = model_class.find(params[:id])
     if @app_session.app.token != token
       render xml: "Token mismatch", status: :bad_request
       return
     end
     respond_to do |format|
-      properties = params[:app_session].delete :properties
-      metrics = params[:app_session].delete :metrics
+      properties = params[model_param_key].delete :properties
+      metrics = params[model_param_key].delete :metrics
 
-      if @app_session.update_attributes(params[:app_session]) &&
+      if @app_session.update_attributes(params[model_param_key]) &&
          @app_session.update_properties(properties) &&
          @app_session.update_metrics(metrics)
         format.xml { head :no_content }
@@ -146,6 +146,18 @@ class AppSessionsController < ApplicationController
         format.xml { render xml: @app_session.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def model_class
+    AppSession
+  end
+
+  def model_param_key
+    @model_param_key || model_class.to_s.tableize.singularize.to_sym
+  end
+
+  def model_param_key_id
+    @model_param_key_id ||= "#{model_param_key}_id".to_sym
   end
 
   protected
@@ -159,9 +171,9 @@ class AppSessionsController < ApplicationController
 
     app_session = nil
     if current_user.administrator?
-      app_session ||= AppSession.administered_by(current_user).find_by_id(session_id)
+      app_session ||= model_class.administered_by(current_user).find_by_id(session_id)
     end
-    app_session ||= AppSession.viewable_by(current_user).find_by_id(session_id)
+    app_session ||= model_class.viewable_by(current_user).find_by_id(session_id)
   end
 
   def get_token

@@ -49,7 +49,7 @@
     })
     .bind('ajax:success', function(event, data) {
       if (data['result'] == 'success') {
-        displayErrorMessage('alert-success', 'Invitation to xxx is sent successfully');
+        displayErrorMessage('alert-success', 'Invitation is sent successfully');
       } else {
         displayErrorMessage('alert-error', 'Failed to send invitation. Please try again');
       }

@@ -1,13 +1,16 @@
 <div class='row'>
   <div class='span8'>
     <h2>How much bandwidth will it cause my users?</h2>
-    <p>Currently, it’s about 1 MB per minute of user session. We continue optimizing for the optimal recording settings. By default, only user session started with wifi connectivity will be set to record.</p>
+    <p>We do not use more than 1 MB per minute of user session. We continue optimizing for the optimal recording settings. When you schedule recording sessions, you can decide if the sessions should be recorded on wifi connection only or not.</p>
 
     <h2>Do I have control over which sessions to record?</h2>
-    <p>Yes you do. Each time your application is run in the foreground, our framework pings our server to check if there is any scheduled recordings before recording.</p>
+    <p>Yes you do. Our web dashboard allows you to pause and schedule recordings. You also have an option to select if the sessions should only be recorded and uploaded thru Wifi connection or not.</p>
 
-    <h2>Some of my scheduled recordings didn't show up.</h2>
-    <p>Our framework only encodes the current session if it's started under wifi connection.</p>
+    <h2>Some of my scheduled sessions didn't show up.</h2>
+    <p>The sessions may have been started under Wifi connection or you may have paused the recordings.</p>
+
+    <h2>I cannot view my recorded sessions.</h2>
+    <p>Our recorded sessions are encoded with H.264 video codec. H.264 is supported by all major web browsers on mobile devices but it is only supported by <%= link_to 'Safari', 'http://www.apple.com/safari/download/' %> and <%= link_to 'Internet Explorer 9', 'http://windows.microsoft.com/en-US/internet-explorer/downloads/ie-9/worldwide-languages' %> on desktop.</p>
 
     <h2>How much is your service?</h2>
     <p>We are gathering feedback and you can read about our preliminary pricing model at our <a href="pricing">Pricing</a> page.</p>

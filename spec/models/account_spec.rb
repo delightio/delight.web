@@ -17,6 +17,15 @@ describe Account do
     end
   end
 
+  describe 'after_create' do
+    it 'email administrator' do
+      Resque.should_receive(:enqueue).
+        with(::NewAccountSignup, instance_of(String)).once
+
+      FactoryGirl.create :account
+    end
+  end
+
   describe '#remaining_credits' do
     it 'is a number' do
       subject.remaining_credits.should be_an_instance_of Fixnum

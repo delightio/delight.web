@@ -4,14 +4,9 @@ class EmailNotification
       password: ENV['MAILGUN_PASSWORD'] }
   end
 
-  def self.send tos, subject, text
-    data = Hash.new
-    data[:from] = "Team Delight <team@delight.io>"
-    data[:to] = tos.join ', '
-    data[:subject] = subject
-    data[:text] = text
-
+  def self.send_text(data)
+    data.merge! from: 'team@delight.io' if data[:from].nil?
     RestClient.post "https://#{credential[:username]}:#{credential[:password]}"\
-    "@api.mailgun.net/v2/delightio.mailgun.org/messages", data
+                    "@api.mailgun.net/v2/delightio.mailgun.org/messages", data
   end
 end

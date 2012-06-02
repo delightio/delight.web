@@ -111,6 +111,7 @@ GEM
       spork (>= 0.8.4)
     hashie (1.2.0)
     hike (1.2.1)
+    hirefireapp (0.0.3)
     httparty (0.8.2)
       multi_json
       multi_xml
@@ -303,6 +304,7 @@ DEPENDENCIES
   guard-cucumber
   guard-rspec
   guard-spork
+  hirefireapp
   jquery-rails
   kaminari
   mailgun-rails

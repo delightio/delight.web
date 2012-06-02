@@ -16,7 +16,11 @@ describe App do
 
   describe "creation" do
     it "should have some scheduled recording" do
-      subject.scheduled_recordings.should == Account::FreeCredits
+      subject.scheduled_recordings.should > 0
+    end
+
+    it 'will record on mobile data' do
+      subject.should_not be_uploading_on_wifi_only
     end
   end
 
@@ -30,7 +34,6 @@ describe App do
     end
 
     # context 'when we have no credits' do
-    #   it 'd'
     #   it 'is always false' do
     #     subject.account.stub :remaining_credits => 0
     #     subject.stub :scheduled_recordings => 10
@@ -227,12 +230,16 @@ describe App do
       it 'enqueues email notification' do
         subject.stub :ready_to_notify? => true
         Resque.should_receive(:enqueue).once.
-          with(::AppRecordingCompletion, subject.id)
+          with(AppRecordingCompletion, subject.id)
 
         subject.notify_users
       end
 
       it 'only sends one email' do
+        # TODO: not sure why Account#email_new_signup will trigger the
+        #       expectation below.
+        subject
+
         Resque.should_receive(:enqueue).once.
           with(AppRecordingCompletion, subject.id)
 
