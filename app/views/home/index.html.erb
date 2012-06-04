@@ -1,35 +1,49 @@
 <div class="hero-unit">
-  <div class="row">
+
+  <div class='row-fluid'>
+    <div class='span12'>
+      <h1>Easiest way to capture real user interaction on your apps</h1><br>
+    </div>
+  </div>
+  <div class="row-fluid">
     <div class='span7'>
-      <h1>iOS Remote Usability Testing Framework</h1>
-      <br>
       <p>
-        <strong>delight.io</strong> enlightens developers and designers on how their users interact with their iOS applications. We seamlessly <strong>record your application screen</strong> and <strong>automatically capture all gestures</strong>. These recordings are then uploaded in the background to our server for viewing.
+        <strong>Delight</strong> enlightens developers and designers on how their users interact with their iOS applications. We seamlessly <strong>record your application screen</strong> and <strong>automatically capture all gestures</strong>. These recordings are then uploaded in the background to our server for viewing.
       </p>
       <br>
       <h2>Unlimited recordings during our beta!</h2>
-        <div class="row">
-          <div class="span12">
-            <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-            <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-          </div>
+      <div class="row-fluid">
+        <div class="span12">
+          <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+          <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
         </div>
+      </div>
       <br><br>
-      <p>
-        Questions? Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us or visit our <a href="faq">FAQ</a> page.
-      </p>
     </div>
-    <div class='span3'>
-      <iframe title="YouTube video player" src="http://www.youtube.com/embed/92_TYEvBCVQ" width="280" height="440" frameborder="0"></iframe>
+    <div class='span5'>
+      <iframe class='youtube-player' type='text/html' src="http://www.youtube.com/embed/HoFGOZuKhDc?rel=0" width='100%' height="30%" frameborder="0" rel="0"></iframe>
+    </div>
+  </div>
+
+  <p>
+    Questions? Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us or visit our <a href="faq">FAQ</a> page.
+  </p>
+  <h2>What people are saying:</h2>
+
+  <div class="row-fluid">
+    <div class='span4'>
+      <blockquote class="twitter-tweet"><p>Nice tekkers here: <a href="http://t.co/a9V2zkBc" title="http://delight.io/">delight.io</a>iOS plugin for recording onscreen activity and playing it back. Impressive.</p>&mdash; Des Traynor (@destraynor) <a href="https://twitter.com/destraynor/status/196942093611057154" data-datetime="2012-04-30T12:40:28+00:00">April 30, 2012</a></blockquote>
+    </div>
+    <div class='span4'>
+      <blockquote class="twitter-tweet"><p>Very cool.@<a href="https://twitter.com/delightio">delightio</a> allows you to record application screens and user gestures in <a href="https://twitter.com/search/%2523iOS">#iOS</a> for <a href="https://twitter.com/search/%2523usability">#usability</a> research. <a href="http://t.co/VQ4kBbiM" title="http://delight.io/">delight.io</a></p>&mdash; Kevin Hale (@ilikevests) <a href="https://twitter.com/ilikevests/status/197020133359759360" data-datetime="2012-04-30T17:50:34+00:00">April 30, 2012</a></blockquote>
+    </div>
+    <div class='span4'>
+      <blockquote class="twitter-tweet"><p>delight.io is blowing my mind right now. @<a href="https://twitter.com/delightio">delightio</a></p>&mdash; Stephen Martin (@stephenmartin) <a href="https://twitter.com/stephenmartin/status/198464169161396224" data-datetime="2012-05-04T17:28:39+00:00">May 4, 2012</a></blockquote>
+    </div>
+    <div class='span4'>
+      <div class='pull-right'>
+        <a href='https://twitter.com/delightio/favorites' target='_blank'>Show more...</a>
+      </div>
     </div>
   </div>
 </div>
-<script>
-  $(document).ready(function() {
-    $("#sample-video-btn").colorbox({
-      transition: "none",
-      width: "400",
-      height: "550"
-    });
-  });
-</script>

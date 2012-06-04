@@ -15,6 +15,8 @@ gem 'redis'
 gem 'redis-objects'
 gem 'resque'
 
+gem 'hirefireapp'
+
 # emailing with mailgun
 gem 'rest-client'
 gem 'mailgun-rails'

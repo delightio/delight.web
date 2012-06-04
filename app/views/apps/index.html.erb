@@ -3,8 +3,9 @@
       <h2>Your Apps</h2>
       <%= link_to 'Create a new app', new_app_path, :class => "btn" %>
       <% if current_user.administrator? %>
-        <%= link_to 'Credits', account_view_credit_path(:account_id => current_user.account, :plan => @show_credit), :class => "btn", :id => 'app-index-credit-btn' %>
+        <%= link_to 'Add credits', account_view_credit_path(:account_id => current_user.account, :plan => @show_credit), :class => "btn", :id => 'app-index-credit-btn' %>
       <% end %>
+
     </div>
   </div><!--/row-->
   <br>
@@ -58,9 +59,9 @@
       <div class="well">
         <h3><%= link_to(app.name, app_path(app)) %></h3>
         <ul class="unstyled">
-          <li>id: <%= app.id %></li>
-          <li>token: <%= app.token %></li>
-          <li>number of sessions: <%= app.app_sessions.count %></li>
+          <li>App ID: <%= app.id %></li>
+          <li>App Token: <code><%= app.token %></code></li>
+          <li>Recorded Sessions: <%= app.app_sessions.recorded.count %></li>
           <li>
             <%= link_to raw('Share'), new_invitation_path(:app_id => app.id), :class => "btn app-show-invite-viewer" %>
             &nbsp;
@@ -94,9 +95,9 @@
       <div class="well">
         <h3><%= link_to(app.name, app_path(app)) %></h3>
         <ul class="unstyled">
-          <li>id: 1</li>
-          <li>token: <%= app.token %></li>
-          <li>number of sessions: <%= app.app_sessions.count %></li>
+          <li>App ID: <%= app.id %></li>
+          <li>App Token: <code><%= app.token %></code></li>
+          <li>Recorded Sessions: <%= app.app_sessions.recorded.count %></li>
           <li>
             <%= link_to 'Show', app, :class => "btn" %>
           </li>
