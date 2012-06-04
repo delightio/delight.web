@@ -13,15 +13,21 @@
       </div>
       <div class="row">
         <div class="span9" style="text-align:center;overflow:hidden">
-          <div id="video-container" style="text-align:center">
-            <video style="height:480px;max-width:100%" controls="controls" autoplay>
-            <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
+          <!--div id="video-container" style="text-align:center"-->
+            <video id="presentation-track-video" style="max-height:100%;max-width:100%" controls="controls" autoplay>
+            <source src="http://o-o.preferred.hkbn-hkg1.v4.lscache6.c.youtube.com/videoplayback?upn=r96ykGCv9aY&sparams=cp%2Cid%2Cip%2Cipbits%2Citag%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=906717%2C914057%2C907217%2C907335%2C921602%2C919306%2C919316%2C912804%2C913542%2C919324%2C912706&ms=au&itag=43&ip=210.0.0.0&signature=D5205DA2347C6DEE17074EE030282D14BF240D75.CC288462DA00B33CE4EAAB59F8B4166A4F83106F&sver=3&mt=1338798609&ratebypass=yes&source=youtube&expire=1338822357&key=yt1&ipbits=8&cp=U0hSTVhNUF9KUUNOMl9QR1REOnY2OGdUZDZaT3Ru&id=bbc1fdd86001885b" type='video/mp4' />
+            <!--source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' /-->
             Your browser does not support video tag.
             </video>
+            <!--
+            <video id="presentation-track-video2" style="height:480px;max-width:100%" controls="controls" autoplay>
+            <source src="http://o-o.preferred.hkbn-hkg1.v4.lscache6.c.youtube.com/videoplayback?upn=r96ykGCv9aY&sparams=cp%2Cid%2Cip%2Cipbits%2Citag%2Cratebypass%2Csource%2Cupn%2Cexpire&fexp=906717%2C914057%2C907217%2C907335%2C921602%2C919306%2C919316%2C912804%2C913542%2C919324%2C912706&ms=au&itag=43&ip=210.0.0.0&signature=D5205DA2347C6DEE17074EE030282D14BF240D75.CC288462DA00B33CE4EAAB59F8B4166A4F83106F&sver=3&mt=1338798609&ratebypass=yes&source=youtube&expire=1338822357&key=yt1&ipbits=8&cp=U0hSTVhNUF9KUUNOMl9QR1REOnY2OGdUZDZaT3Ru&id=bbc1fdd86001885b" type='video/mp4' />
+            </video>
+            -->
             <p id="browser-compatibility" style="color:white;display:none">
             We currently provide only H264 videos. Please use <a href="http://www.apple.com/safari/download/" target="_blank">Safari 3.1+</a> or <a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
             </p>
-          </div>
+          <!--/div-->
         </div>
       </div>
     </div>
@@ -92,32 +98,32 @@
 <script>
   $(document).ready(function() {
     $("#rotate-0").click(function(eventObj) {
-      $("#video-container").css('-moz-transform', 'rotate(0deg)');
-      $("#video-container").css('-webkit-transform', 'rotate(0deg)');
-      $("#video-container").css('-o-transform', 'rotate(0deg)');
-      $("#video-container").css('-ms-transform', 'rotate(0deg)');
-      $("#video-container").css('transform', 'rotate(0deg)');
+      $("#presentation-track-video").css('-moz-transform', 'rotate(0deg)');
+      $("#presentation-track-video").css('-webkit-transform', 'rotate(0deg)');
+      $("#presentation-track-video").css('-o-transform', 'rotate(0deg)');
+      $("#presentation-track-video").css('-ms-transform', 'rotate(0deg)');
+      $("#presentation-track-video").css('transform', 'rotate(0deg)');
     });
     $("#rotate-90").click(function(eventObj) {
-      $("#video-container").css('-moz-transform', 'rotate(90deg)');
-      $("#video-container").css('-webkit-transform', 'rotate(90deg)');
-      $("#video-container").css('-o-transform', 'rotate(90deg)');
-      $("#video-container").css('-ms-transform', 'rotate(90deg)');
-      $("#video-container").css('transform', 'rotate(90deg)');
+      $("#presentation-track-video").css('-moz-transform', 'rotate(90deg)');
+      $("#presentation-track-video").css('-webkit-transform', 'rotate(90deg)');
+      $("#presentation-track-video").css('-o-transform', 'rotate(90deg)');
+      $("#presentation-track-video").css('-ms-transform', 'rotate(90deg)');
+      $("#presentation-track-video").css('transform', 'rotate(90deg)');
     });
     $("#rotate-180").click(function(eventObj) {
-      $("#video-container").css('-moz-transform', 'rotate(180deg)');
-      $("#video-container").css('-webkit-transform', 'rotate(180deg)');
-      $("#video-container").css('-o-transform', 'rotate(180deg)');
-      $("#video-container").css('-ms-transform', 'rotate(180deg)');
-      $("#video-container").css('transform', 'rotate(180deg)');
+      $("#presentation-track-video").css('-moz-transform', 'rotate(180deg)');
+      $("#presentation-track-video").css('-webkit-transform', 'rotate(180deg)');
+      $("#presentation-track-video").css('-o-transform', 'rotate(180deg)');
+      $("#presentation-track-video").css('-ms-transform', 'rotate(180deg)');
+      $("#presentation-track-video").css('transform', 'rotate(180deg)');
     });
     $("#rotate--90").click(function(eventObj) {
-      $("#video-container").css('-moz-transform', 'rotate(-90deg)');
-      $("#video-container").css('-webkit-transform', 'rotate(-90deg)');
-      $("#video-container").css('-o-transform', 'rotate(-90deg)');
-      $("#video-container").css('-ms-transform', 'rotate(-90deg)');
-      $("#video-container").css('transform', 'rotate(-90deg)');
+      $("#presentation-track-video").css('-moz-transform', 'rotate(-90deg)');
+      $("#presentation-track-video").css('-webkit-transform', 'rotate(-90deg)');
+      $("#presentation-track-video").css('-o-transform', 'rotate(-90deg)');
+      $("#presentation-track-video").css('-ms-transform', 'rotate(-90deg)');
+      $("#presentation-track-video").css('transform', 'rotate(-90deg)');
     });
     $("#app-session-show-invite-viewer").colorbox({
       iframe: true,
@@ -125,6 +131,8 @@
       width:"550px",
       height:"500px"
     });
+    //$("#presentation-track-video", "#presentation-track-video2").acornMediaPlayer();
+    $("#presentation-track-video").acornMediaPlayer();
   });
   $(document).bind('cbox_open', function() {
     $("#app-session-show-invite-viewer").text('Processing...');
