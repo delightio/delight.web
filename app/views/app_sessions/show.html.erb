@@ -51,7 +51,7 @@
       </div>
       <div class="row-fluid">
         <div class="span7"><h6>Date:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.created_at.to_date %></div>
+        <div class="span5 pull-right" style="color:white"><%= session_time_in_words @app_session.created_at %></div>
       </div>
       <div class="row-fluid">
         <div class="span7"><h6>Device:</h6></div>
