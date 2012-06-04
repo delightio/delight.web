@@ -9,10 +9,10 @@
       <%= link_to raw(I18n.t("topnav.brand") + image_tag('/images/beta.png', :width => 38, :height => 16, :style => 'margin:0 0 0 5px;vertical-align:-15%')), user_signed_in? ? apps_path : root_path, :class => 'brand' %>
       <div class="nav-collapse">
         <ul class="nav">
-          <li><a href="/features">Features</a></li>
-          <li><a href="/docs">Documentation</a></li>
-          <li><a href="/pricing">Pricing</a></li>
-          <li><a href="/faq">FAQ</a></li>
+          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'features' %>><a href="/features">Features</a></li>
+          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'docs' %>><a href="/docs">Documentation</a></li>
+          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'pricing' %>><a href="/pricing">Pricing</a></li>
+          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'faq' %>><a href="/faq">FAQ</a></li>
         </ul>
         <ul class="nav pull-right">
           <li class="divider-vertical"></li>
