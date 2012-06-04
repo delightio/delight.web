@@ -153,13 +153,13 @@ describe AccountsController do
                             :'add-credit-quantity-volume' => "2",
                             :'stripeToken' => "token",
                             :'total_price' => "200",
-                            :'total_credits' => "100",
+                            :'total_credits' => "200",
                             :format => :json
                           }
         response.should be_success
         result = JSON.parse(response.body)
         result["result"].should == "success"
-        result["remaining_credits"].should == (credits + 100)
+        result["remaining_credits"].should == (credits + 200)
       end
 
       it "should fail with no purchase" do
@@ -228,7 +228,7 @@ describe AccountsController do
                             :'add-credit-quantity-volume' => "2",
                             :'stripeToken' => "token",
                             :'total_price' => "200",
-                            :'total_credits' => "100",
+                            :'total_credits' => "200",
                             :format => :json
                             }
           response.should be_success
