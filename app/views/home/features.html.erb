@@ -27,8 +27,22 @@
   </div>
   <br>
 </div>
+<br>
+
+<div class='row'>
+  <div class='span8'>
+    <h2>Take the first step.</h2>
+      <div class="row-fluid">
+        <div class="span12">
+          <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+          <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+        </div>
+      </div>
+  </div>
+</div>
 
 <br>
 <p>
-  <strong>We don't have the feature you are looking for? </strong> We'd love to hear from you. Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us.
+  <strong>We don't have the feature you are looking for? </strong><br>
+  We'd love to hear from you. Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us.
 </p>
