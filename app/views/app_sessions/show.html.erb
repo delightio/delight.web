@@ -92,6 +92,8 @@
 </div>
 <script>
   $(document).ready(function() {
+    var player = $(".track-video").acornMediaPlayer();
+    console.log($(player));
     $("#rotate-0").click(function(eventObj) {
       $("#presentation-track-video").css('-moz-transform', 'rotate(0deg)');
       $("#presentation-track-video").css('-webkit-transform', 'rotate(0deg)');
@@ -126,7 +128,6 @@
       width:"550px",
       height:"500px"
     });
-    $(".track-video").acornMediaPlayer();
   });
   $(document).bind('cbox_open', function() {
     $("#app-session-show-invite-viewer").text('Processing...');

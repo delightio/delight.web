@@ -434,7 +434,7 @@
 				
 				// remove the loading element
 				acorn.$self.next('.loading-media').remove();
-				
+			  playMedia();	
 			};
 			
 			/*
