@@ -335,6 +335,8 @@ describe AppSession do
     end
   end
 
+  its(:include_front_track?) { should == false }
+
   describe '#generate_upload_uris' do
     it 'is called after object creation' do
       AppSession.any_instance.
@@ -363,6 +365,15 @@ describe AppSession do
         key = track_class.to_s.tableize[0..-2].to_sym # no s
         subject.upload_uris.should have_key key
       end
+    end
+
+    it 'includes front track if include_front_track? is true' do
+      subject.stub :recording? => true
+      subject.stub :include_front_track? => true
+      subject.send :generate_upload_uris
+
+      # screen, touch, orientation, front
+      subject.upload_uris.should have(4).tracks
     end
   end
 

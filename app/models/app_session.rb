@@ -163,6 +163,10 @@ class AppSession < ActiveRecord::Base
     true
   end
 
+  def include_front_track?
+    false
+  end
+
   private
   def generate_upload_uris
     @upload_uris = {}
@@ -173,6 +177,9 @@ class AppSession < ActiveRecord::Base
         touch_track: TouchTrack.new(app_session_id: id).presigned_write_uri,
         orientation_track: OrientationTrack.new(app_session_id: id).presigned_write_uri
       }
+      if include_front_track?
+        @upload_uris.merge! front_track: FrontTrack.new(app_session_id: id).presigned_write_uri
+      end
       count = 1 + @upload_uris.count # +1 for presentation track
     end
     update_attribute :expected_track_count, count
