@@ -1,10 +1,21 @@
 <div class="row">
   <div class="span10">
-    <span style="font-size:x-large">In celebration of our official launch, we are <strong>doubling the credits</strong> for all packages. Sign up now to take advantage of this limited time offer.</span>
+    <h1>
+      <span style="font-size:xx-large">
+      Pay as you go.
+      100% Satisfaction Guarantee.
+    </span>
+    </h1>
+    <br>
+    <div class='alert alert-info'>
+      <span style="font-size:large">
+        In celebration of our official launch, we are <strong>doubling the credits</strong> for all packages.<br>
+        Sign up now to take advantage of this limited time offer.
+      </span>
+    </div>
   </div>
 </div>
-<br/>
-<h2>Please select a package from below:</h2><br/>
+<h2>Select a package to lock in your savings now:</h2><br/>
 <div class="row-fluid center">
   <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
     <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
@@ -25,13 +36,17 @@
 </div>
 <div class="row-fluid">
   <div class="span10">
-    <div class="alert alert-info">
+    <span style="font-size:large">
+      <strong>Questions?</strong> <a href="mailto:info@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
+    </span>
+    <br><br>
+    <div class="well">
       <ul>
-        <li>1 credit per recorded session</li>
-        <li><%= Account::FreeCredits %> free credits for each new sign up</li>
-        <li>All transaction are in USD and we accept all common credit cards</li>
-        <li>Purchased credits never expire</li>
-        <li>Satisfaction guaranteed. If you are not happy with the results, please email us at <a href='mailto:refund@delight.io'>refund@delight.io</a></li>
+        <li>All plans come with full set of <a href="/features" target='_blank'>features <i class='icon-share'></i></a></li>
+        <li>1 credit per recorded session.</li>
+        <li>Purchased credits never expire.</li>
+        <li>Credits can be used on multiple apps under the same account.</li>
+        <li>All transaction are in USD and we accept all common credit cards.</li>
       </ul>
     </div>
   </div>

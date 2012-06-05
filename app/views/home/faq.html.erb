@@ -1,10 +1,15 @@
 <div class='row'>
-  <div class='span8'>
+  <div class='span10'>
     <h2>How much bandwidth will it cause my users?</h2>
     <p>We do not use more than 1 MB per minute of user session. We continue optimizing for the optimal recording settings. When you schedule recording sessions, you can decide if the sessions should be recorded on wifi connection only or not.</p>
 
     <h2>Do I have control over which sessions to record?</h2>
     <p>Yes you do. Our web dashboard allows you to pause and schedule recordings. You also have an option to select if the sessions should only be recorded and uploaded thru Wifi connection or not.</p>
+
+    <h2>Does Delight support hybrid apps built using HTML5/JS?</h2>
+    <p>We support PhoneGap but it requires an extra step in set up. By default PhoneGap blocks all URL requests unless they're part of a whitelist. So the user needs to add "delightweb.herokuapp.com" and "s3.amazonaws.com" to the PhoneGap plist file.<br>
+      Unfotnately at the moment, we do not support Trigger.io as we need access to a XCode project file.
+    </p>
 
     <h2>Some of my scheduled sessions didn't show up.</h2>
     <p>The sessions may have been started under Wifi connection or you may have paused the recordings.</p>
@@ -17,7 +22,8 @@
   </div>
 </div>
 
-<br><br>
-<p>
-  <strong>Sorry. We didn't answer your question? </strong> Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us.
-</p>
+<br>
+<span style="font-size:large">
+  We didn't answer your question?<br>
+  Please <a href="mailto:info@delight.io">email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
+</span>
