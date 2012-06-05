@@ -12,17 +12,23 @@
         </div>
       </div>
       <div class="row">
-        <div class="span9" style="text-align:center;overflow:hidden">
-          <div class="video-container" style="width:100%">
-            <video class="track-video" id="presentation-track-video" style="width:100%;max-height:80%;max-width:100%;float:left" controls="controls" autoplay>
+        <div class="span9" id="videos-container" style="text-align:center;overflow:hidden;height:450px">
+          <div class="video-container" style="width:50%;height:100%;float:left">
+            <video class="track-video" id="presentation-track-video" style="width:100%;max-height:80%;max-width:100%;float:left" autoplay>
             <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
             Your browser does not support video tag.
             </video>
           </div>
+          <div class="video-container" style="width:50%;float:left">
+            <video class="track-video" id="presentation-track-video2" style="width:100%;max-height:80%;max-width:100%;float:left" autoplay>
+            <source src="<%= @front_track.presigned_read_uri if @front_track and @front_track.presigned_read_uri %>" type='video/mp4' />
+            Your browser does not support video tag.
+            </video>
+          </div>
+
             <p id="browser-compatibility" style="color:white;display:none">
             We currently provide only H264 videos. Please use <a href="http://www.apple.com/safari/download/" target="_blank">Safari 3.1+</a> or <a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
             </p>
-          <!--/div-->
         </div>
       </div>
     </div>
@@ -92,35 +98,53 @@
 </div>
 <script>
   $(document).ready(function() {
-    var player = $(".track-video").acornMediaPlayer();
+    var player = $("#videos-container").acornMediaPlayerParallel();
     console.log($(player));
+    var player_width = player.width();
+    var player_height = player.height();
     $("#rotate-0").click(function(eventObj) {
-      $("#presentation-track-video").css('-moz-transform', 'rotate(0deg)');
-      $("#presentation-track-video").css('-webkit-transform', 'rotate(0deg)');
-      $("#presentation-track-video").css('-o-transform', 'rotate(0deg)');
-      $("#presentation-track-video").css('-ms-transform', 'rotate(0deg)');
-      $("#presentation-track-video").css('transform', 'rotate(0deg)');
+      $(".track-video").css('-moz-transform', 'rotate(0deg)');
+      $(".track-video").css('-webkit-transform', 'rotate(0deg)');
+      $(".track-video").css('-o-transform', 'rotate(0deg)');
+      $(".track-video").css('-ms-transform', 'rotate(0deg)');
+      $(".track-video").css('transform', 'rotate(0deg)');
+      $(".track-video").each(function(index, el) {
+        $el = $(el);
+        $el.attr({ 'height': player_height });
+      });
     });
     $("#rotate-90").click(function(eventObj) {
-      $("#presentation-track-video").css('-moz-transform', 'rotate(90deg)');
-      $("#presentation-track-video").css('-webkit-transform', 'rotate(90deg)');
-      $("#presentation-track-video").css('-o-transform', 'rotate(90deg)');
-      $("#presentation-track-video").css('-ms-transform', 'rotate(90deg)');
-      $("#presentation-track-video").css('transform', 'rotate(90deg)');
+      $(".track-video").css('-moz-transform', 'rotate(90deg)');
+      $(".track-video").css('-webkit-transform', 'rotate(90deg)');
+      $(".track-video").css('-o-transform', 'rotate(90deg)');
+      $(".track-video").css('-ms-transform', 'rotate(90deg)');
+      $(".track-video").css('-moz-transform', 'rotate(90deg)');
+      $(".track-video").each(function(index, el) {
+        $el = $(el);
+        $el.attr({ 'height': (player_width / 2) });
+      });
     });
     $("#rotate-180").click(function(eventObj) {
-      $("#presentation-track-video").css('-moz-transform', 'rotate(180deg)');
-      $("#presentation-track-video").css('-webkit-transform', 'rotate(180deg)');
-      $("#presentation-track-video").css('-o-transform', 'rotate(180deg)');
-      $("#presentation-track-video").css('-ms-transform', 'rotate(180deg)');
-      $("#presentation-track-video").css('transform', 'rotate(180deg)');
+      $(".track-video").css('-moz-transform', 'rotate(180deg)');
+      $(".track-video").css('-webkit-transform', 'rotate(180deg)');
+      $(".track-video").css('-o-transform', 'rotate(180deg)');
+      $(".track-video").css('-ms-transform', 'rotate(180deg)');
+      $(".track-video").css('transform', 'rotate(180deg)');
+      $(".track-video").each(function(index, el) {
+        $el = $(el);
+        $el.attr({ 'height': player_height });
+      });
     });
     $("#rotate--90").click(function(eventObj) {
-      $("#presentation-track-video").css('-moz-transform', 'rotate(-90deg)');
-      $("#presentation-track-video").css('-webkit-transform', 'rotate(-90deg)');
-      $("#presentation-track-video").css('-o-transform', 'rotate(-90deg)');
-      $("#presentation-track-video").css('-ms-transform', 'rotate(-90deg)');
-      $("#presentation-track-video").css('transform', 'rotate(-90deg)');
+      $(".track-video").css('-moz-transform', 'rotate(-90deg)');
+      $(".track-video").css('-webkit-transform', 'rotate(-90deg)');
+      $(".track-video").css('-o-transform', 'rotate(-90deg)');
+      $(".track-video").css('-ms-transform', 'rotate(-90deg)');
+      $(".track-video").css('transform', 'rotate(-90deg)');
+      $(".track-video").each(function(index, el) {
+        $el = $(el);
+        $el.attr({ 'height': (player_width / 2) });
+      });
     });
     $("#app-session-show-invite-viewer").colorbox({
       iframe: true,

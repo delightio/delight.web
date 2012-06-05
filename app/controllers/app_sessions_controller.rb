@@ -24,10 +24,15 @@ class AppSessionsController < ApplicationController
       return
     end
     @track = @app_session.presentation_track
+    @front_track = @app_session.front_track
     @is_admin = @app_session.app.account.administrator == current_user
 
     respond_to do |format|
-      format.html { render :layout => 'iframe_black' } # show.html.erb
+      if not @front_track.blank?
+        format.html { render :template => 'app_sessions/show_two', :layout => 'iframe_black' } # show.html.erb
+      else
+        format.html { render :template => 'app_sessions/show', :layout => 'iframe_black' } # show.html.erb
+      end
     end
   end
 
