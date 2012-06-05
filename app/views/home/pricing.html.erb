@@ -4,7 +4,7 @@
   </div>
 </div>
 <br/>
-<h2>Please select a package from below:</h2><br/>
+<h2>Select a package to lock in your savings now:</h2><br/>
 <div class="row-fluid center">
   <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
     <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
@@ -29,13 +29,12 @@
       <strong>Questions?</strong> <a href="mailto:info@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
     </span>
     <br><br>
-    <div class="alert alert-info">
+    <div class="well">
       <ul>
         <li>1 credit per recorded session</li>
-        <li><%= Account::FreeCredits %> free credits for each new sign up</li>
-        <li>All transaction are in USD and we accept all common credit cards</li>
-        <li>Purchased credits never expire</li>
         <li>100% Satisfaction Money Back Guarantee.</li>
+        <li>Purchased credits never expire</li>
+        <li>All transaction are in USD and we accept all common credit cards</li>
       </ul>
     </div>
   </div>
