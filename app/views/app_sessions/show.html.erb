@@ -15,8 +15,7 @@
         <div class="span9" style="text-align:center;overflow:hidden">
           <div class="video-container" style="width:100%">
             <video class="track-video" id="presentation-track-video" style="width:100%;max-height:80%;max-width:100%;float:left" controls="controls" autoplay>
-            <!--source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' /-->
-            <source src="https://s3.amazonaws.com/delight_upload_staging/session_273_presentationtrack.mp4?AWSAccessKeyId=ASIAIUTGZR6PEN3HCI5Q&Expires=1338806099&Signature=QsCsBQWhf4jsPxuggarNNavKMnA%3D&x-amz-security-token=AQoDYXdzEFoa8AFLJwUh%2FHMDy7qrX%2FXcSqbHVQ2IlX%2B3bAX5b%2BdB1PENXDK4kJs59ilF5SZXT283TWfhJwVscqyRKqZ47%2FDUVRKJ1%2FtyBOaxPNKONA%2F460W175LgvkOrG3SsyRpJ5WNw4D4DZMCu0jTFb%2BybQWGNViOl1ubppB36GBio6vWF0AHLjXZylD3EDs2w7EW2KPPMk5ELsw%2F%2BWdg8Aq2sCVV%2FNWRR0JZ2xYV9L1BSGGLYH0tXsvCLUFAlh88jq4%2FZ1eZXcXEx8sX%2BORoMIDzPucp7rp%2FAkrn1uQNhKuWMNDZjODBqefMHb7%2FuuAQffB%2FEZ631054gkvOx%2FgQ%3D" type='video/mp4' />
+            <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
             Your browser does not support video tag.
             </video>
           </div>
