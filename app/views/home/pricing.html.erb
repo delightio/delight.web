@@ -1,25 +1,38 @@
-<h1>Pay as you go</h1>
-<br/>
-<h2>First <%= Account::FreeCredits %> credits are on us!</h2>
-<p>Please select a plan from below:</p>
 <div class="row">
-  <% PAYMENT_CONFIG['plans'].each do |payment| %>
+  <div class="span10">
+    <span style="font-size:x-large">In celebration of our official launch, we are <strong>doubling the credits</strong> for all packages. Sign up now to take advantage of this limited time offer.</span>
+  </div>
+</div>
+<br/>
+<h2>Please select a package from below:</h2><br/>
+<div class="row-fluid center">
+  <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
     <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
     <h3><%= payment['display'] %></h3>
     <br/>
     <p>
     <span style="font-size:xx-large">$<%= payment['price'] %></span>
     <br/><br/>
-    per <%= "#{pluralize(payment['credit'], 'credit')}" %>
+    per <strike><%= payment['credit']/2 %></strike> <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
     </p>
+    <% if payment['name'] == 'volume' %>
+      <p>
+        <span style="font-size:large">Best deal!</span>
+      </p>
+    <% end %>
   </a>
   <% end %>
 </div>
-<div class="row">
+<div class="row-fluid">
   <div class="span10">
     <div class="alert alert-info">
-      * 1 credit per recorded session<br/>
-      * All transaction are in USD and we accept all common credit cards
+      <ul>
+        <li>1 credit per recorded session</li>
+        <li><%= Account::FreeCredits %> free credits for each new sign up</li>
+        <li>All transaction are in USD and we accept all common credit cards</li>
+        <li>Purchased credits never expire</li>
+        <li>Satisfaction guaranteed. If you are not happy with the results, please email us at <a href='mailto:refund@delight.io'>refund@delight.io</a></li>
+      </ul>
     </div>
   </div>
 </div>
