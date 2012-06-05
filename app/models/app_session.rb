@@ -143,6 +143,10 @@ class AppSession < ActiveRecord::Base
     PresentationTrack.find_by_app_session_id id
   end
 
+  def upload_tracks
+    [:screen_track, :touch_track, :orientation_track]
+  end
+
   def working_directory
     if @working_directory.nil?
       working_directory = File.join ENV['WORKING_DIRECTORY'],
@@ -163,22 +167,15 @@ class AppSession < ActiveRecord::Base
     true
   end
 
-  def include_front_track?
-    false
-  end
-
   private
   def generate_upload_uris
     @upload_uris = {}
     count = 0
     if recording?
-      @upload_uris = {
-        screen_track: ScreenTrack.new(app_session_id: id).presigned_write_uri,
-        touch_track: TouchTrack.new(app_session_id: id).presigned_write_uri,
-        orientation_track: OrientationTrack.new(app_session_id: id).presigned_write_uri
-      }
-      if include_front_track?
-        @upload_uris.merge! front_track: FrontTrack.new(app_session_id: id).presigned_write_uri
+      upload_tracks.each do |track|
+        track_class = track.to_s.camelize.constantize
+        @upload_uris.merge!(
+          track => track_class.new(app_session_id:id).presigned_write_uri)
       end
       count = 1 + @upload_uris.count # +1 for presentation track
     end

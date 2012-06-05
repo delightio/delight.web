@@ -1,5 +1,5 @@
 class UsabilityAppSession < AppSession
-  def include_front_track?
-    true
+  def upload_tracks
+    [:screen_track, :touch_track, :orientation_track, :front_track]
   end
 end
