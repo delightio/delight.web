@@ -13,7 +13,7 @@
  */
 
 (function($) {
-	$.fn.acornMediaPlayer = function(options) {
+	$.fn.acornMediaPlayerParallel = function(options) {
 		/*
 		 * Define default plugin options
 		 */
@@ -60,8 +60,11 @@
 		 */
 		var acornPlayer = function() {
 			// set the acorn object, will contain the needed DOM nodes and others
+      var videos = $(this).find('video'); 
 			var acorn = {
-				$self: $(this)
+				$self: $(this),
+        $video1: $(videos[0]),
+        $video2: $(videos[1])
 			};
 			
 			var seeking; // The user is seeking the media
@@ -91,7 +94,7 @@
 			};
 			
 			// main wrapper element
-			var $wrapper = $('<div class="acorn-player" role="application" style="width:90%;height:90%"></div>').addClass(options.theme);
+			var $wrapper = $('<div class="acorn-player" role="application"></div>').addClass(options.theme);
 
 			/*
 			 * Define attribute tabindex on the main element to make it readchable by keyboard
@@ -116,7 +119,7 @@
 			 * Markup for the fullscreen button
 			 * If the element is not <video> we leave if blank, as the button if useless on <audio> elements
 			 */
-			var fullscreenBtnMarkup = (acorn.$self.is('video')) ? '<button class="acorn-fullscreen-button" title="' + text.fullscreenTitle + '" aria-controls="' + acorn.id + '">' + text.fullscreen + '</button>' : '';
+			//var fullscreenBtnMarkup = (acorn.$self.is('video')) ? '<button class="acorn-fullscreen-button" title="' + text.fullscreenTitle + '" aria-controls="' + acorn.id + '">' + text.fullscreen + '</button>' : '';
 			
 			/*
 			 * Complete markup
@@ -129,7 +132,7 @@
 									'<button class="acorn-volume-button" title="' + text.mute + '" aria-controls="' + acorn.id + '">' + text.mute + '</button>' +
 									'<input type="range" class="acorn-volume-slider" title="' + text.volumeTitle + '" value="1" min="0" max="1" step="0.05" aria-controls="' + acorn.id + '"/>' +
 								'</div>' +
-		//						fullscreenBtnMarkup +
+								//fullscreenBtnMarkup +
 								'<button class="acorn-caption-button" title="' + text.captionsTitle + '"  aria-controls="' + acorn.id + '">' + text.captions + '</button>' +
 								'<div class="acorn-caption-selector"></div>' +
 								'<button class="acorn-transcript-button" title="' + text.transcriptTitle + '">' + text.transcript + '</button>' +
@@ -195,10 +198,12 @@
 			 * It triggers the native Play or Pause events
 			 */
 			var playMedia = function() {
-				if(!acorn.$self.prop('paused')) {
-					acorn.$self.trigger('pause');
+				if(!acorn.$video1.prop('paused')) {
+					acorn.$video1.trigger('pause');
+					acorn.$video2.trigger('pause');
 				} else {
-					acorn.$self.trigger('play');
+					acorn.$video1.trigger('play');
+					acorn.$video2.trigger('play');
 				}
 			};
 			
@@ -226,7 +231,7 @@
 			 * Is called on each "timeupdate"
 			 */
 			var seekUpdate = function() {
-				var currenttime = acorn.$self.prop('currentTime');
+				var currenttime = acorn.$video1.prop('currentTime');
 				acorn.$timer.text(timeFormat(currenttime));	
 				
 				// If the user is not manualy seeking
@@ -291,10 +296,11 @@
 			 * Pauses the media during seek and changes the "currentTime" to the slider's value
 			 */
 			var startSeek = function(e, ui) {					
-				if(!acorn.$self.attr('paused')) {
+				if(!acorn.$video1.attr('paused')) {
 					wasPlaying = true;
 				}
-				acorn.$self.trigger('pause');
+				acorn.$video1.trigger('pause');
+				acorn.$video2.trigger('pause');
 				seeking = true;
 				
 				var seekLocation;
@@ -304,7 +310,8 @@
 					seekLocation = ui.value;
 				}
 				
-				acorn.$self[0].currentTime = seekLocation;
+				acorn.$video1[0].currentTime = seekLocation;
+				acorn.$video2[0].currentTime = seekLocation;
 				
 				// manually blur the Caption Button
 				blurCaptionBtn();
@@ -317,7 +324,8 @@
 			 */
 			var endSeek = function(e, ui) {
 				if(wasPlaying) {
-					acorn.$self.trigger('play');
+					acorn.$video1.trigger('play');
+					acorn.$video2.trigger('play');
 					wasPlaying = false;
 				}
 				seeking = false;			
@@ -386,7 +394,7 @@
 			 */
 			var updateSeek = function() {
 				// Get the duration of the media
-				var duration = acorn.$self[0].duration;			
+				var duration = (acorn.$video1.get()[0]).duration;			
 				
 				// Check for the nativeSliders option
 				if(options.nativeSliders) {
@@ -421,7 +429,7 @@
 					$('.ui-slider-handle', acorn.$seek).click(blurCaptionBtn);
 					
 					// show buffering progress on progress
-					acorn.$self.bind('progress', showBuffer);
+					acorn.$video1.bind('progress', showBuffer);
 				}
 				
 				// remove the loading element
@@ -433,7 +441,7 @@
 			 * Show buffering progress
 			 */
 			var showBuffer = function(e) {
-				var max = parseInt(acorn.$self.prop('duration'), 10);
+				var max = parseInt(acorn.$video1.prop('duration'), 10);
 				var tr = this.buffered;
 				if(tr && tr.length) {
 					var buffer = parseInt(this.buffered.end(0)-this.buffered.start(0), 10);
@@ -456,14 +464,16 @@
 				localStorage.setItem('acornvolume', volume);
 				
 				// check if the volume was muted before
-				if(acorn.$self.prop('muted')) {
-					acorn.$self.prop('muted', false);
+				if(acorn.$video1.prop('muted')) {
+					acorn.$video1.prop('muted', false);
+					acorn.$video2.prop('muted', false);
 					acorn.$volumeBtn.removeClass('acorn-volume-mute');
 					acorn.$volumeBtn.text(text.mute).attr('title', text.mute);
 				}
 				
 				// set the new volume on the media
-				acorn.$self.prop('volume', volume);
+				acorn.$video1.prop('volume', volume);
+				acorn.$video2.prop('volume', volume);
 				
 				// set the ARIA attributes
 				acorn.$volume.$handle.attr("aria-valuenow", Math.round(volume*100));
@@ -477,8 +487,9 @@
 			 * Also add classes and change label on the Volume Button
 			 */
 			var muteVolume = function() {					
-				if(acorn.$self.prop('muted') === true) {						
-					acorn.$self.prop('muted', false);
+				if(acorn.$video1.prop('muted') === true) {						
+					acorn.$video1.prop('muted', false);
+					acorn.$video2.prop('muted', false);
 					if(options.nativeSliders) {
 						acorn.$volume.val(volume);
 					} else {
@@ -488,7 +499,8 @@
 					acorn.$volumeBtn.removeClass('acorn-volume-mute');
 					acorn.$volumeBtn.text(text.mute).attr('title', text.mute);
 				} else {
-					acorn.$self.prop('muted', true);
+					acorn.$video1.prop('muted', true);
+					acorn.$video2.prop('muted', true);
 					
 					if(options.nativeSliders) {
 						acorn.$volume.val('0');
@@ -509,9 +521,11 @@
 			var initVolume = function() {
 				if(options.nativeSliders) {
 					acorn.$volume.bind('change', function() {
-						acorn.$self.prop('muted',false);
+						acorn.$video1.prop('muted',false);
+						acorn.$video2.prop('muted',false);
 						volume = acorn.$volume.val();
-						acorn.$self.prop('volume', volume);
+						acorn.$video1.prop('volume', volume);
+						acorn.$video2.prop('volume', volume);
 					});
 				} else {
 					var volumeClass = acorn.$volume.attr('class');
@@ -556,7 +570,7 @@
 			 * Attached to window.resize 
 			 */
 			var resizeFullscreenVideo = function() {
-				acorn.$self.attr({
+				acorn.$video1.attr({
 					'width': $(window).width(),
 					'height': $(window).height()
 				});
@@ -570,15 +584,15 @@
 			 */
 			var goFullscreen = function() {
 				if(fullscreenMode) {
-					if(acorn.$self[0].webkitSupportsFullscreen) {
-						acorn.$self[0].webkitExitFullScreen();
+					if(acorn.$video1[0].webkitSupportsFullscreen) {
+						acorn.$video1[0].webkitExitFullScreen();
 					} else {
 						$('body').css('overflow', 'auto');
 					
-						var w = acorn.$self.attr('data-width');
-						var h = acorn.$self.attr('data-height');
+						var w = acorn.$video1.attr('data-width');
+						var h = acorn.$video1.attr('data-height');
 					
-						acorn.$self.removeClass('fullscreen-video').attr({
+						acorn.$video1.removeClass('fullscreen-video').attr({
 							'width': w,
 							'height': h
 						});
@@ -591,12 +605,12 @@
 					fullscreenMode = false;
 					
 				} else {						
-					if(acorn.$self[0].webkitSupportsFullscreen) {
-						acorn.$self[0].webkitEnterFullScreen();
+					if(acorn.$video1[0].webkitSupportsFullscreen) {
+						acorn.$video1[0].webkitEnterFullScreen();
 					} else {
 						$('body').css('overflow', 'hidden');							
 					
-						acorn.$self.addClass('fullscreen-video').attr({							
+						acorn.$video1.addClass('fullscreen-video').attr({							
 							width: $(window).width(),
 							height: $(window).height()
 						});
@@ -640,7 +654,7 @@
 			 * http://dev.opera.com/articles/view/accessible-html5-video-with-javascripted-captions/
 			 */
 			var updateCaption = function() {			
-				var now = acorn.$self[0].currentTime; // how soon is now?
+				var now = acorn.$video1[0].currentTime; // how soon is now?
 				var text = "";
 				for (var i = 0; i < captions.length; i++) {
 					if (now >= captions[i].start && now <= captions[i].end) {
@@ -757,7 +771,7 @@
 						captionsActive = true;
 						
 						// in case the media is paused and timeUpdate is not triggered, trigger it
-						if(acorn.$self.prop('paused')) {
+						if(acorn.$video1.prop('paused')) {
 							updateCaption();
 						}
 						
@@ -791,7 +805,7 @@
 			 */
 			var initCaption = function() {
 				// get all <track> elements
-				acorn.$track = $('track', acorn.$self);
+				acorn.$track = $('track', acorn.$video1);
 				
 				// if there is at least one <track> element, show the Caption Button
 				if(acorn.$track.length) {
@@ -861,6 +875,14 @@
 				// attach event to Transcript Button
 				acorn.$transcriptBtn.bind('click', showTranscript);
 			};
+/*
+      var resize = function() {
+        acorn.$container.attr({
+          'width': '100%',
+          'height': '100%'
+        });
+      }; 
+      */
 			
 			/*
 			 * Initialization self-invoking function
@@ -876,27 +898,26 @@
 				acorn.$self.bind('ended', stopPlayback);
 				
 				// update the Seek Slider when timeupdate is triggered
-				acorn.$self.bind('timeupdate', seekUpdate);
+				//acorn.$self.bind('timeupdate', seekUpdate);
+				acorn.$video1.bind('timeupdate', seekUpdate);
 				
 				// bind Fullscreen Button
 				acorn.$fullscreenBtn.click(goFullscreen);
 				
 				// initialize volume controls
 				initVolume();				
-				
 				// add the loading class
 				$wrapper.addClass('');
 				
 				if(!options.nativeSliders) initSeek();
-				
 				// once the metadata has loaded
-				acorn.$self.bind('loadedmetadata', function() {					
+				acorn.$video1.bind('loadedmetadata', function() {					
 					/* I use an interval to make sure the video has the right readyState
 					 * to bypass a known webkit bug that causes loadedmetadata to be triggered
 					 * before the duration is available
 					 */
 					var t = window.setInterval(function() {
-								if (acorn.$self[0].readyState > 0) {									
+								if ((acorn.$video1.get()[0]).readyState > 0 && (acorn.$video2.get()[0]).readyState > 0) {									
 									updateSeek();
 									
 									clearInterval(t);
@@ -907,9 +928,10 @@
 				});				
 								
 				// remove the native controls
-				acorn.$self.removeAttr('controls');
+				acorn.$video1.removeAttr('controls');
+				acorn.$video2.removeAttr('controls');
 				
-				if(acorn.$self.is('audio')) {
+				if(acorn.$video1.is('audio')) {
 					/*
 					 * If the media is <audio>, we're adding the 'audio-player' class to the element.
 					 * This is because Opera 10.62 does not allow the <audio> element to be targeted by CSS
