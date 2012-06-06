@@ -10,6 +10,7 @@ class App < ActiveRecord::Base
 
   attr_accessible :name
 
+  after_create :assign_admin_as_viewer
   after_create :generate_token
   after_create :schedule_initial_recording
   validate :token, :presence => true, :uniqueness => true
@@ -112,7 +113,29 @@ class App < ActiveRecord::Base
     end
   end
 
+  def last_viewed_at_by_user(user)
+    permission = permissions.where(:viewer_id => user.id).first
+    if permission.nil?
+      nil
+    else
+      permission.last_viewed_at
+    end
+  end
+
+  def log_view(user)
+    permission = permissions.where(:viewer_id => user.id).first
+    if permission.nil?
+      raise "Invalid permission"
+    end
+    permission.last_viewed_at = Time.now
+    permission.save
+  end
+
   private
+  def assign_admin_as_viewer
+    viewers << administrator
+  end
+
   def generate_token
     update_attribute :token, "#{SecureRandom.hex 12}#{id}"
   end

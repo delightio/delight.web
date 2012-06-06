@@ -21,11 +21,16 @@ class AppsController < ApplicationController
     @show_credit = params[:credit] || session[:credit]
     session[:credit] = nil
 
-    @viewer_apps = App.viewable_by(current_user).all
     if current_user.administrator?
       @admin_apps = App.administered_by(current_user).all
     else
       @admin_apps = nil
+    end
+
+    if @admin_apps.nil?
+      @viewer_apps = App.viewable_by(current_user)
+    else
+      @viewer_apps = App.viewable_by(current_user).where("apps.id not in (?)", @admin_apps.map(&:id))
     end
 
     respond_to do |format|
@@ -118,6 +123,8 @@ class AppsController < ApplicationController
     @favorite_app_sessions = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
     @favorite_app_session_ids = @favorite_app_sessions.collect { |as| as.id }
 
+    @last_viewed_at = @app.last_viewed_at_by_user(current_user)
+    @app.log_view(current_user)
 
     respond_to do |format|
       format.html do

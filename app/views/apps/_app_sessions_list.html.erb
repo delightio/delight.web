@@ -5,7 +5,7 @@
         </div>
       <% else %>
       <% @recorded_sessions.each do |session| %>
-      <div class="row">
+      <div class="row <%= 'unread' if session.created_at > @last_viewed_at %>">
         <div class="span4">
           <% if favorite_ids.include?(session.id) %>
             <%= link_to raw('<i class="icon-star"></i>'), app_session_unfavorite_path(:app_session_id => session.id), :method => :put, :remote => true, :class => "float-l star app-session-unfavorite-btn", :'data-session-id' => session.id %>
@@ -76,8 +76,12 @@
               <% end %>
             </tbody>
           </table>
-
         </div>
+        <% if session.created_at > @last_viewed_at %>
+        <div class="span0">
+          <div class="label label-info">NEW</div>
+        </div>
+        <% end %>
       </div><!--/row-->
 
       <hr style="margin:0 0 20px 0" />
