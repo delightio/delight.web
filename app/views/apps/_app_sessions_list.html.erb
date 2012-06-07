@@ -90,7 +90,7 @@
       <% end %>
       <div class="row">
         <div class="span7" style="text-align:center">
-          <%= paginate @recorded_sessions %>
+          <%= paginate @recorded_sessions, :remote => true %>
         </div>
       </div>
     </div>
