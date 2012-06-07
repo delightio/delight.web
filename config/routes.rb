@@ -28,6 +28,7 @@ DelightWeb::Application.routes.draw do
     put '/unfavorite', :to => 'app_sessions#unfavorite', :as => 'unfavorite'
   end
   resources :opengl_app_sessions, :only => [:create, :update]
+  resources :usability_app_sessions, :only => [:create, :update]
 
   resources :tracks, :only => [:create, :show]
   resources :screen_tracks, :only => [:create]

@@ -54,4 +54,18 @@ describe Account do
     end
   end
 
+  describe '#add_free_credits' do
+    it 'add free credits upon creation' do
+      Account.any_instance.should_receive(:add_free_credits).once
+
+      FactoryGirl.create :account
+    end
+
+    it 'add default FreeCredits' do
+      subject.should_receive(:add_credits).with(Account::FreeCredits).once
+
+      subject.add_free_credits
+    end
+  end
+
 end
