@@ -22,6 +22,10 @@ describe App do
     it 'will record on mobile data' do
       subject.should_not be_uploading_on_wifi_only
     end
+
+    it "should add admin as viewer" do
+      subject.viewers.should include(subject.account.administrator)
+    end
   end
 
   describe '#recording?' do
@@ -258,6 +262,38 @@ describe App do
         Resque.should_not_receive :enqueue
 
         subject.notify_users
+      end
+    end
+  end
+
+  describe "last viewed time" do
+    let(:viewer) { FactoryGirl.create(:viewer) }
+
+    it "should be nil when never viewed" do
+      subject.last_viewed_at_by_user(viewer).should be_nil
+    end
+
+    it "should throw exception if no view permission" do
+      lambda { subject.log_view(viewer) }.should raise_error("Invalid permission")
+    end
+
+    describe "has permission" do
+      before(:each) do
+        subject.viewers << viewer
+      end
+
+      it "should return last viewed when viewed at least once" do
+        start_time = Time.now
+        subject.log_view(viewer)
+        subject.last_viewed_at_by_user(viewer).should >= start_time
+      end
+
+      it "should return the lastest viewed time" do
+        permission = Permission.find_or_create_by_app_id_and_viewer_id(subject.id, viewer.id)
+        permission.last_viewed_at = 10.days.ago
+        permission.save!
+        subject.log_view(viewer)
+        subject.last_viewed_at_by_user(viewer).should >= 10.days.ago
       end
     end
   end

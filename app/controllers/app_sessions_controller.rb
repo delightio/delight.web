@@ -28,7 +28,7 @@ class AppSessionsController < ApplicationController
     @is_admin = @app_session.app.account.administrator == current_user
 
     respond_to do |format|
-      if not @front_track.blank?
+      if @app_session.instance_of?(UsabilityAppSession)
         format.html { render :template => 'app_sessions/show_two', :layout => 'iframe_black' } # show.html.erb
       else
         format.html { render :template => 'app_sessions/show', :layout => 'iframe_black' } # show.html.erb
