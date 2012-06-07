@@ -110,6 +110,19 @@ describe AppsController do
         sign_in(viewer)
       end
 
+      it "should update last viewed" do
+        app.last_viewed_at_by_user(viewer).should be_nil
+        get :show, {:id => app.to_param}
+        app.last_viewed_at_by_user(viewer).should > 1.minute.ago
+      end
+
+      it "should return last viewed at" do
+        get :show, {:id => app.to_param}
+        assigns(:last_viewed_at).should be_nil
+        get :show, {:id => app.to_param}
+        assigns(:last_viewed_at).should > 10.seconds.ago
+      end
+
       it "should return app as @app" do
         get :show, {:id => app.to_param}
         assigns(:app).should == app
