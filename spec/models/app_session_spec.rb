@@ -288,6 +288,14 @@ describe AppSession do
     end
   end
 
+  describe '#upload_tracks' do
+    it 'contains a screen, touch and orientation track' do
+      subject.upload_tracks.should include :screen_track
+      subject.upload_tracks.should include :touch_track
+      subject.upload_tracks.should include :orientation_track
+    end
+  end
+
   describe '#working_directory' do
     before do
       @expected_dir = File.join ENV['WORKING_DIRECTORY'],
@@ -350,19 +358,15 @@ describe AppSession do
       subject.upload_uris.should == Hash.new
     end
 
-    it 'expects a screen, a touch, a orientation and a presentaiton track' do
+    it 'generates upload_uris from #upload_tracks' do
       subject.stub :recording? => true
-      client_tracks = [ScreenTrack, TouchTrack, OrientationTrack]
-      client_tracks.each do |track_class|
-        track_class.should_receive(:new).and_return(mock.as_null_object)
-      end
+      subject.stub :upload_tracks => [:screen_track]
+      ScreenTrack.should_receive(:new).with(app_session_id: subject.id).
+        and_return(mock.as_null_object)
 
       subject.send :generate_upload_uris
-      subject.expected_track_count.should == 1 + client_tracks.count # 1 more for presentation track
-      client_tracks.each do |track_class|
-        key = track_class.to_s.tableize[0..-2].to_sym # no s
-        subject.upload_uris.should have_key key
-      end
+      subject.upload_uris.should have_key :screen_track
+      subject.upload_uris.should have(1).track
     end
   end
 
