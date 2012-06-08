@@ -53,6 +53,11 @@ DelightWeb::Application.routes.draw do
   match 'faq' => 'home#faq'
   match 'docs' => 'home#docs'
   match 'blog' => 'home#blog'
+  match 'guides' => 'home#guides'
+  match 'guides/phonegap' => 'home#phonegap'
+  match 'guides/opengles' => 'home#opengles'
+  match 'guides/cocos2d' => 'home#cocos2d'
+  match 'guides/unity' => 'home#unity'
   root :to => 'home#index'
 
   resque_constraint = lambda do |request|

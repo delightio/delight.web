@@ -1,0 +1,32 @@
+<h1>Integrating with cocos2d</h1>
+<br>
+<ol>
+  <li>Follow steps 1-5 in the <a href="/guides/opengles">OpenGL ES QuickStart Guide</a>.</li><br>
+  <li>In your application delegate,<br><br>
+    <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
+    put the following in the <code>applicationDidFinishLaunching:</code> method:
+    <br><br>
+    <code>
+      [Delight startOpenGLWithAppToken:@"<strong>Your App Token</strong>"];
+    </code>
+  </li><br>
+  <li>Edit EAGLView.m (in libs/cocos2d/Platforms/iOS).
+  	<ul>
+  		<br><li>Add <code>#import &lt;Delight/Delight.h&gt;</code> to the top of the file.</li><br>
+  		<li>In the swapBuffers method, just before the following line:<br><br>
+			<code>
+				if(![context_ presentRenderbuffer:GL_RENDERBUFFER_OES])
+			</code>
+			<br><br>insert the following:<br><br>
+			<code>
+				[Delight takeOpenGLScreenshot:self];
+			</code>
+		</li>
+	</ul>
+  </li><br>
+  <li>
+  	Your EAGLView.m file should look similar to the screenshot below:<br><br>
+  	<img src="/images/screenshot_cocos2d.png" alt="EAGLView.m after Delight code insertion">
+  </li>
+</ol>
+<a href="/guides"><i class="icon-arrow-left"></i> Back to Guides</a>
