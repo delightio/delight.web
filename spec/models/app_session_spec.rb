@@ -124,6 +124,10 @@ describe AppSession do
     end
   end
 
+  describe '#maximum_duration' do
+    its(:maximum_duration) { should == 10.minutes }
+  end
+
   describe 'favorite_of' do
     let(:app_session1) { FactoryGirl.create(:app_session) }
     let(:app_session2) { FactoryGirl.create(:app_session) }

@@ -118,6 +118,10 @@ class AppSession < ActiveRecord::Base
     10.minutes * maximum_frame_rate
   end
 
+  def maximum_duration
+    10.minutes
+  end
+
   def complete_upload media
     enqueue_processing if ready_for_processing?
     app.complete_recording if recorded?
