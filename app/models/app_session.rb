@@ -143,6 +143,12 @@ class AppSession < ActiveRecord::Base
     PresentationTrack.find_by_app_session_id id
   end
 
+  def destroy_presentation_track
+    return if presentation_track.nil?
+
+    presentation_track.destroy
+  end
+
   def upload_tracks
     [:screen_track, :touch_track, :orientation_track]
   end
