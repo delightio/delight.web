@@ -37,12 +37,6 @@ class HomeController < ApplicationController
     end
   end
 
-  def guides
-    respond_to do |format|
-      format.html
-    end
-  end
-
   def phonegap
     respond_to do |format|
       format.html
