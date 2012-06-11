@@ -98,6 +98,6 @@ class User < ActiveRecord::Base
   end
 
   def subscribe_to_email_list
-    EmailNotification.subscribe email
+    # EmailNotification.subscribe email
   end
 end
