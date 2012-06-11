@@ -101,7 +101,6 @@ class AppSessionsController < ApplicationController
       return
     end
 
-    @model_param = params[model_param_key]
     as_params = params[model_param_key]
     @app = App.find_by_token(token)
     if @app.nil?
@@ -120,7 +119,7 @@ class AppSessionsController < ApplicationController
 
     respond_to do |format|
       if @app_session.save
-        format.xml { render 'app_sessions/create', :formats => [:xml] }
+        format.xml
       else
         format.xml { render xml: @app_session.errors, status: :bad_request }
       end

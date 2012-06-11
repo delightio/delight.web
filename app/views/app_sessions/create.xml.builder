@@ -1,5 +1,5 @@
 xml.instruct!
-xml.tag!(@model_param) do
+xml.app_session do
   xml.id @app_session.id
   xml.recording @app_session.recording?
   if @app_session.recording?
