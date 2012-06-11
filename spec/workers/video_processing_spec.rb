@@ -6,6 +6,7 @@ describe VideoProcessing do
   describe '.perform' do
     let(:app_session) { FactoryGirl.create :uploaded_app_session }
     it 'downloads to local, process, and creates new presentation track'
+    it 'deletes existing presentation track before creating new one'
   end
 
   describe '.enqueue' do

@@ -118,6 +118,10 @@ class AppSession < ActiveRecord::Base
     10.minutes * maximum_frame_rate
   end
 
+  def maximum_duration
+    10.minutes
+  end
+
   def complete_upload media
     enqueue_processing if ready_for_processing?
     app.complete_recording if recorded?
@@ -141,6 +145,12 @@ class AppSession < ActiveRecord::Base
 
   def presentation_track
     PresentationTrack.find_by_app_session_id id
+  end
+
+  def destroy_presentation_track
+    return if presentation_track.nil?
+
+    presentation_track.destroy
   end
 
   def upload_tracks

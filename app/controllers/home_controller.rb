@@ -36,4 +36,28 @@ class HomeController < ApplicationController
       format.html
     end
   end
+
+  def phonegap
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def cocos2d
+    respond_to do |format|
+      format.html
+    end
+  end  
+
+  def opengles
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def unity
+    respond_to do |format|
+      format.html
+    end
+  end  
 end

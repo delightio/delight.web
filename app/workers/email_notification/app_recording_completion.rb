@@ -4,7 +4,7 @@ class AppRecordingCompletion < EmailNotification
 
   def self.perform app_id
     app = App.find app_id
-    send_text to:     app.emails.join(','),
+    send_email to:     app.emails.join(','),
               subject: "[Delight] New sessions recorded for '#{app.name}'",
               text:    "Please visit #{app_url app_id} to watch your newly "\
                        "recorded sessions.\n\n"\

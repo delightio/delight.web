@@ -9,5 +9,6 @@ xml.opengl_app_session do
     xml.maximum_frame_rate @app_session.maximum_frame_rate
     xml.average_bit_rate @app_session.average_bit_rate
     xml.maximum_key_frame_interval @app_session.maximum_key_frame_interval
+    xml.maximum_duration @app_session.maximum_duration
   end
 end

@@ -10,6 +10,10 @@ FactoryGirl.define do
     sequence :nickname do |n|
       "user_nickname#{n}"
     end
+
+    after_build do |u|
+      u.stub :subscribe_to_email_list => true
+    end
   end
 
   factory :administrator do
@@ -21,6 +25,10 @@ FactoryGirl.define do
     sequence :nickname do |n|
       "admin_nickname#{n}"
     end
+
+    after_build do |u|
+      u.stub :subscribe_to_email_list => true
+    end
   end
 
   factory :viewer do
@@ -31,6 +39,10 @@ FactoryGirl.define do
     end
     sequence :nickname do |n|
       "viewer_nickname#{n}"
+    end
+
+    after_build do |u|
+      u.stub :subscribe_to_email_list => true
     end
   end
 end

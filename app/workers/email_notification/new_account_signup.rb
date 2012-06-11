@@ -3,7 +3,7 @@ class NewAccountSignup < EmailNotification
   @queue = :email
 
   def self.perform new_user_email
-    send_text to:      new_user_email,
+    send_email to:      new_user_email,
               from:    'thomas@delight.io',
               bcc:     'signup@delight.io',
               subject: "Welcome and Let's Delight Your Users!",

@@ -124,6 +124,10 @@ describe AppSession do
     end
   end
 
+  describe '#maximum_duration' do
+    its(:maximum_duration) { should == 10.minutes }
+  end
+
   describe 'favorite_of' do
     let(:app_session1) { FactoryGirl.create(:app_session) }
     let(:app_session2) { FactoryGirl.create(:app_session) }
@@ -284,6 +288,27 @@ describe AppSession do
         track = FactoryGirl.create named_track, app_session: subject
 
         subject.send(named_track).should == track
+      end
+    end
+  end
+
+  describe '#destroy_presentation_track' do
+    context 'when there is no presentation track' do
+      it 'does nothing' do
+        subject.stub :presentation_track => nil
+        Object.any_instance.should_not_receive(:destroy)
+
+        subject.destroy_presentation_track
+      end
+    end
+
+    context 'when there is already one presentation track' do
+      let(:track) { mock.as_null_object }
+      it 'destroy existing one' do
+        subject.stub :presentation_track => track
+        subject.presentation_track.should_receive(:destroy)
+
+        subject.destroy_presentation_track
       end
     end
   end

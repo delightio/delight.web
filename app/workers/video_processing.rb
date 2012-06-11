@@ -14,6 +14,8 @@ class VideoProcessing
     processed = VideoProcessing.draw_touch screen, touch
     thumbnail = VideoProcessing.thumbnail processed
 
+    # We will delete existing presentation track if there is one.
+    app_session.destroy_presentation_track
     presentation_track = PresentationTrack.new app_session: app_session
     presentation_track.upload processed
     presentation_track.thumbnail.upload thumbnail

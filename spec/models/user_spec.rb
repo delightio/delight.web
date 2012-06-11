@@ -3,6 +3,7 @@ require 'spec_helper'
 describe User do
   before(:each) do
     @user = FactoryGirl.create(:user)
+    EmailNotification.stub :subscribe => true
   end
 
   specify 'it has an valid email' do
@@ -156,4 +157,9 @@ describe User do
     end
   end
 
+  describe '#subscribe_to_email_list' do
+    it 'subscribes email address to main email list' do
+      pending 'We stub out EmailNotification.subscribe'
+    end
+  end
 end
