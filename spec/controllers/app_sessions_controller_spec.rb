@@ -20,7 +20,7 @@ describe AppSessionsController do
                  device_os_version: device_os_version,
                  delight_version: delight_version }
       request.env['HTTP_X_NB_AUTHTOKEN'] = app.token
-      post :create, app_session: params, format: :xml
+      post :create, { app_session: params, format: :xml }
       response.should be_success
       #response.response_code.should == 201
     end
