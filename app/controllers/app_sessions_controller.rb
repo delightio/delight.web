@@ -101,7 +101,7 @@ class AppSessionsController < ApplicationController
       return
     end
 
-    @model_param = params[model_param_key]
+    @model_param = model_param_key
     as_params = params[model_param_key]
     @app = App.find_by_token(token)
     if @app.nil?
