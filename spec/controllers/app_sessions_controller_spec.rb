@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe AppSessionsController do
   describe 'post' do
+    render_views
     let(:app) { FactoryGirl.create :non_recording_app }
     let(:delight_version) { '2' }
     let(:app_version) { '1.4' }
@@ -23,6 +24,11 @@ describe AppSessionsController do
       post :create, app_session: params, format: :xml
       response.should be_success
       #response.response_code.should == 201
+
+      xml = response.body
+      xml.should have_xpath('//app_session')
+      xml.should have_xpath('//app_session/id')
+      xml.should have_xpath('//app_session/recording')
     end
 
     it "should fail when app token is missing" do
