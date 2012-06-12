@@ -144,14 +144,14 @@ class AccountsController < ApplicationController
     end
 
     # validate total price and credits
-    is_purchase_valid = validate_plan_price_and_credits(
-      params,
-      params[:total_price],
-      params[:total_credits],
-      'add-credit-quantity-'
-    )
-
-    if not is_purchase_valid
+    expected_price = 0
+    expected_credits = 0
+    PAYMENT_CONFIG['plans'].each do |plan|
+      quantity = params["add-credit-quantity-#{plan['name']}"].to_i;
+      expected_price += quantity * plan['price']
+      expected_credits += quantity * plan['credit']
+    end
+    if expected_price != params[:total_price].to_i or expected_credits != params[:total_credits].to_i
       result = { 'result' => 'fail',
                  'reason' => 'Invalid request' }  # error msg does not specify details regarding check logic
       respond_to do |format|
@@ -209,24 +209,6 @@ class AccountsController < ApplicationController
       @admin = nil
     end
     @admin
-  end
-
-  # validate if number of plan matches with total price and credits
-  # plans: hash of format { 'plan name' => quantity, ... }
-  # price: total price
-  # credits: total credits
-  # prefix: plan name prefix in the input plans
-  #
-  # return true if the plan, price and credits matches, false otherwise
-  def validate_plan_price_and_credits(plans, price, credits, prefix)
-    expected_price = 0
-    expected_credits = 0
-    PAYMENT_CONFIG['plans'].each do |plan|
-      quantity = params["#{prefix}#{plan['name']}"].to_i;
-      expected_price += quantity * plan['price']
-      expected_credits += quantity * plan['credit']
-    end
-    return (expected_price == price.to_i and expected_credits == credits.to_i)
   end
 
 end

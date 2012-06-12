@@ -120,7 +120,7 @@ class AppSessionsController < ApplicationController
 
     respond_to do |format|
       if @app_session.save
-        format.xml { render 'app_sessions/create', :formats => [:xml] }
+        format.xml
       else
         format.xml { render xml: @app_session.errors, status: :bad_request }
       end
