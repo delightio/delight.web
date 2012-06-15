@@ -97,7 +97,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def maximum_frame_rate
-    10
+    30
   end
 
   def scale_factor
