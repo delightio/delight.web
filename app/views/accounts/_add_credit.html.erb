@@ -7,10 +7,10 @@
 <div class="row-fluid">
   <div class="span12">
     <%= form_tag(account_add_credit_path(:account_id => account.id), :remote => true, :method => :put, :id => "payment-form", :class => "form-horizontal") do |add_credit_form| %>
-      <h2>Purchase credits</h2>
+      <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Purchase credits</h3>
       <div class="row">
         <div class="span12">
-          <table class="table table-striped">
+          <table class="table table-striped" width="95%">
             <thead>
             </thead>
             <tbody>
@@ -18,7 +18,8 @@
               <tr class="add-credit-row">
                 <td><input type="text" name="add-credit-quantity-<%= payment['name'] %>" id="add-credit-quantity-<%= payment['name'] %>" class="input-small" value="0" style="width:50px"/><span> x $<%= payment['price'] %> for <%= "#{pluralize(payment['credit'], 'credit')}" %></span></td>
                 <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price pull-right" style="margin-right:150px">0</span></td>
-                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit">0</span></td><td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
+                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit">0</span></td>
+                <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
               </tr>
               <script>
               $(document).ready(function() {
@@ -58,7 +59,7 @@
         </div>
       </div>
 
-      <h2>Credit card information</h2>
+      <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Credit card information</h3>
       <!--
       <div class="row">
         <div class="span5">
@@ -66,7 +67,7 @@
           <!--
           <fieldset class="span5" style="margin-left:110px">
           -->
-          <fieldset class="span6" style="align:center;text-align:center;margin-left:100px;margin-top:15px">
+          <fieldset class="span7" style="align:center;text-align:center;margin-left:100px;margin-top:15px">
             <div class="control-group">
               <label class="control-label" for="card-number">Card Number</label>
               <div class="controls">
@@ -87,10 +88,10 @@
                 <input type="text" size="2" id="card-expiry-month" class="input-small" value=""/>
                 <span> / </span>
                 <input type="text" size="4" id="card-expiry-year" class="input-small" value=""/>
+                <%= submit_tag "Add credits", :class => "btn btn-success", :id => "add-credit-submit-btn" %>
               </div>
               </div>
             </div>
-              <%= submit_tag "Add credits", :class => "btn btn-success btn-large", :id => "add-credit-submit-btn" %>
           </fieldset>
           <!--
         </div>

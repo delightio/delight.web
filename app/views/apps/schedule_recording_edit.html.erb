@@ -1,68 +1,75 @@
 <div class="container" style="text-align:center">
 
   <%= render :partial => "shared/error_message" %>
-  <div class="collapse in" id="description-group">
-    <h1 style="margin-top: 15px">Schedule sessions for<br><%= @app.name %></h1>
+
+  <div class="collapse in" id="title-group">
+    <h1 style="margin-top: 15px; text-align: left;">Schedule sessions for <%= @app.name %></h1>
     <hr/>
-    <p>
-      We will email you at
-      <code><%= current_user.email %></code><br>
-      when all scheduled sessions are received.
-    </p>
-    <div class="row">
-      <div class="span3">
-        Record and upload on Wifi connection only:
-        <%= check_box_tag 'wifi-only', '1', @app.uploading_on_wifi_only? %>
-      </div>
-    </div>
   </div>
-  <br />
 
   <div class="row-fluid">
     <div class="span12">
-      <span><h2>Available credits: </span><span id="remaining-credits"><%= @app.account.remaining_credits %></h2></span>
-      <a href="javascript:void(0)" class="btn btn-success" data-toggle="collapse" data-target="#add-credit" id="add-credit-toggle-btn"><i class="icon-plus-sign icon-white"></i>&nbsp;Add credits</a>
+      <table width="95%">
+        <tr>
+          <td width="60%"><h2>Available credits: </h2></td>
+          <td width="20%" id="remaining-credits"><h2><%= @app.account.remaining_credits %></h2></td>
+          <td width="20%"><a href="javascript:void(0)" class="btn btn-success" data-toggle="collapse" data-target="#add-credit" id="add-credit-toggle-btn">Add credits</a></td>
+        </tr>
+      </table>
     </div>
   </div>
-  <br/>
 
   <div id="add-credit" class="collapse">
     <%= render :partial => 'accounts/add_credit', :locals => { :account => @app.account, :plan => nil }  %>
   </div>
 
-  <% if @app %>
-    <div class="collapse in" id="schedule-recording-group">
+
+ <% if @app %>
+    <div class="collapse in" id="schedule-recording-group" style="margin-top: 20px;">
     <%= form_for(@app, :url => app_schedule_recording_update_path(:app_id => @app.id), :html => { :class => "form-horizontal" }) do |f| %>
     <fieldset>
       <div class="row-fluid">
         <div class="span12">
-          <h2>Schedule sessions: <%= text_field_tag 'schedule_recording', @schedule_recording, :class => "input-small", :value => [@app.scheduled_recordings, 20].max %></h2>
-        </div>
-      </div>
-      <br/>
-
-      <div class="row">
-        <div class="span12">
-        <%= f.submit "Schedule", :class => "btn btn-primary btn-large", :style => "text-align:center" %>
+          <table width="95%">
+            <tr>
+              <td width="60%"><h2>Schedule sessions:</h2></td>
+              <td width="20%"><%= text_field_tag 'schedule_recording', @schedule_recording, :class => "input-small", :value => [@app.scheduled_recordings, 20].max %></td>
+              <td width="20%"><%= f.submit "Schedule", :class => "btn btn-success", :style => "text-align:center" %></td>
+            </tr>
+          </table>
         </div>
       </div>
     </fieldset>
     <% end %>
     </div>
   <% end %>
+
+  <div class="collapse in" id="description-group" style="margin-top: 20px;">
+    <p style="text-align:left;">
+      We will email you at <code><%= current_user.email %></code> when all scheduled sessions are received.
+    </p>
+    <div class="row">
+      <div class="span3" style="text-align:left;">
+        <%= check_box_tag 'wifi-only', '1', @app.uploading_on_wifi_only? %>
+        Record and upload on Wifi connection only
+      </div>
+    </div>
+  </div>
+  <br />
+
 </div>
 <script>
   function setColorBoxSize(width, height) {
     parent.$.colorbox.resize({'width':width, 'height':height});
   }
   $("#add-credit").on('hide', function() {
-    $("#add-credit-toggle-btn").html('<i class="icon-plus-sign icon-white"></i>&nbsp;Add credits');
+    $("#add-credit-toggle-btn").html('Add credits');
     $("#description-group").collapse('show');
     $("#schedule-recording-group").collapse('show');
-    setColorBoxSize(500, 450);
+    setColorBoxSize(650, 350);
   });
   $("#add-credit").on('show', function() {
-    $("#add-credit-toggle-btn").html('<i class="icon-remove-sign icon-white"></i>&nbsp;Close');
+    $("#add-credit-toggle-btn").html('Close');
     $("#description-group").collapse('hide');
     $("#schedule-recording-group").collapse('hide');
     setColorBoxSize(700, 620);
