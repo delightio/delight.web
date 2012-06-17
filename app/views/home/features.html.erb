@@ -1,48 +1,82 @@
-<div class='row'>
-  <div class='span8 offset0'>
-    <h1>Get started in 3 easy steps</h1>
-    <br>
+<div class='row-fluid'>
+  <div class='span3'>
+    <h2>Integrate & Forget</h2>
+  </div>
+
+  <div class='span3'>
+    <h3>One line integration</h3>
+    <p>
+      <code>[Delight startWithAppToken:]</code> is all you need.
+      Since we record the screen directly, there is no code change required as you iterate on UI design.
+    </p>
+  </div>
+
+  <div class='span3'>
+    <h3>Web dashboard</h3>
+    <p>
+      You control how many user sessions to be recorded thru our dashboard.
+      You have the option to enable Delight on WiFi connection only.
+    </p>
+  </div>
+
+  <div class='span3'>
+    <h3>Custom properties <span class="label label-info">New!</span></h3>
+    <p>
+      Add application specific properties to the recorded sessions easily with <code>setPropertyValue:forKey:</code>
+      and then search sessions by custom propteries on our dashboard.
+    </p>
   </div>
 </div>
+<br>
+
+<br>
+<div class='row-fluid'>
+  <div class='span3'>
+    <h2>Privacy Control</h2>
+  </div>
+
+  <div class='span3'>
+    <h3>Private views</h3>
+    <p>
+      <code>registerPrivateView:description:</code> to add views with sensitive information to private views and no pixel nor gesture will be transmitted to our server.
+      There is option to hide keyboard with <code>setHidesKeyboardInRecording:</code>
+    </p>
+  </div>
+
+  <div class='span3'>
+    <h3>Secure UITextFiled <span class="label label-info">New!</span></h3>
+    <p>
+      Delight iOS framework automaticallly set secure UITextField as private view and hide keystrokes.
+    </p>
+  </div>
+</div>
+<br>
 
 <div class='row-fluid'>
-  <div class='span4'>
-    <h2>1. Integrate & Forget</h2>
-    <li>1-line integration to get started!</li>
-    <li>Schedule sessions thru our dashboard</li>
-    <li>Tag sessions with your own properties <span class="label label-info">New!</span></li>
-    <li>No code change per UI iteration</li>
+  <div class='span3'>
+    <h2>Easily Share & View</h2>
   </div>
 
-  <div class='span4'>
-    <h2>2. Privacy Control</h2>
-    <li>Black out pixels on private UI views</li>
-    <li>Auto privacy control for secure UITextField <span class="label label-info">New!</span></li>
+  <div class='span3'>
+    <h3>No special viewer</h3>
+    <p>
+      Recorded sessions can be viewed by HTML5 web browsers supporting H.264.
+    </p>
   </div>
 
-  <div class='span4'>
-    <h2>3. Easily Share & View</h2>
-    <li>Email to invite team members <span class="label label-info">New!</span></li>
-    <li>View all recordings thru HTML5 web browsers</li>
+  <div class='span3'>
+    <h3>Invite by email <span class="label label-info">New!</span></h3>
+    <p>
+      Viewers have full access to recorded sessions.
+    </p>
   </div>
-  <br>
 </div>
 <br>
 
-<div class='row'>
-  <div class='span8'>
-    <h2>Take the first step.</h2>
-      <div class="row-fluid">
-        <div class="span12">
-          <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-          <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-        </div>
-      </div>
-  </div>
-</div>
-
-<br>
 <p>
-  <strong>We don't have the feature you are looking for? </strong><br>
+  <strong>More details on our <a href='http://www.delight.io/api/Classes/Delight.html' target='_blank'>iOS API page <i class='icon-share'></i></a>.
+</p>
+<p>
+  We don't have the feature you are looking for? </strong><br>
   We'd love to hear from you. Please <a href="mailto:info@delight.io">email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
 </p>
