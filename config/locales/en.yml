@@ -4,7 +4,7 @@
 en:
   hello: "Hello world"
   topnav:
-    brand: "Delight"
+    brand: "delight.io"
   account:
     create:
       success: "Successfully created account"
