@@ -12,7 +12,7 @@ describe NewAccountSignup do
                  text: instance_of(String)} }
 
     it 'sends email to new user' do
-      subject.should_receive(:send_text).with(data).once
+      subject.should_receive(:send_individual).with(data).once
 
       subject.perform email
     end

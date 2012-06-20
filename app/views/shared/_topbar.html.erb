@@ -1,29 +1,25 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
       <%= link_to raw(I18n.t("topnav.brand")), user_signed_in? ? apps_path : root_path, :class => 'brand' %>
       <div class="nav-collapse">
         <ul class="nav">
-          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'features' %>><a href="/features">Features</a></li>
+          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'features' %>><a href="/features">features</a></li>
           <li class="dropdown">
-            <%= link_to "Documentation", "javascript:void(0)", :class => "dropdown-toggle", :'data-toggle' => "dropdown" %>
+            <%= link_to "documentation", "javascript:void(0)", :class => "dropdown-toggle", :'data-toggle' => "dropdown" %>
             <ul class="dropdown-menu btn-large">
               <li><a href="/docs">QuickStart Guide</a></li>
               <li><a href="/docs/opengles">OpenGL ES Guide</a></li>
+              <li><a href='http://www.delight.io/api/Classes/Delight.html' target='_blank'>iOS API <i class='icon-share'></i></a></li>
               <li class="divider"></li>
-              <li><a href="/docs/cocos2d">Integrating with cocos2d</a></li>
-              <li><a href="/docs/phonegap">Integrating with PhoneGap</a></li>
               <li><a href="/docs/unity">Integrating with Unity</a></li>
+              <li><a href="/docs/phonegap">Integrating with PhoneGap</a></li>
+              <li><a href="/docs/cocos2d">Integrating with cocos2d</a></li>
             </ul>
-          </li>          
-          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'pricing' %>><a href="/pricing">Pricing</a></li>
-          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'faq' %>><a href="/faq">FAQ</a></li>
-          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'blog' %>><a href="/blog">Blog</a></li>
+          </li>
+          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'pricing' %>><a href="/pricing">pricing</a></li>
+          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'faq' %>><a href="/faq">faq</a></li>
+          <li class=<%= 'active' if controller.controller_name == 'home' and controller.action_name == 'blog' %>><a href="/blog">blog</a></li>
         </ul>
         <ul class="nav pull-right">
           <li class="divider-vertical"></li>
@@ -38,7 +34,7 @@
           </li>
           <% else %>
           <li class="dropdown">
-            <%= link_to "Login", "javascript:void(0)", :class => "dropdown-toggle", :'data-toggle' => "dropdown" %>
+            <%= link_to "login", "javascript:void(0)", :class => "dropdown-toggle", :'data-toggle' => "dropdown" %>
             <ul class="dropdown-menu btn-large">
               <li><%= link_to raw('<i class="icon-github-sign icon-large"></i> Log in with Github'), omniauth_authorize_path('user', 'github') %></li>
               <li class="divider"></li>

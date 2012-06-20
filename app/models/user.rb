@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   validates :nickname, :presence => true
   validates :email, :presence => true, :format => /^([^\s]+)((?:[-a-z0-9]\.)[a-z]{2,})$/i, :if => :done_registering?
 
+  after_create :subscribe_to_email_list
+
   has_many :favorites
   has_many :favorite_app_sessions, :through => :favorites, :source => :app_session, :select => 'DISTINCT app_sessions.*'
 
@@ -95,4 +97,7 @@ class User < ActiveRecord::Base
     end
   end
 
+  def subscribe_to_email_list
+    # EmailNotification.subscribe email
+  end
 end
