@@ -14,7 +14,7 @@ class Account < ActiveRecord::Base
 
   include Redis::Objects
   counter :credits
-  FreeCredits = 100
+  FreeCredits = 50
 
   def remaining_credits
     credits.to_i
