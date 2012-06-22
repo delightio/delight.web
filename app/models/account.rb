@@ -15,6 +15,7 @@ class Account < ActiveRecord::Base
   include Redis::Objects
   counter :credits
   FreeCredits = 50
+  SpecialCredits = 10
 
   def remaining_credits
     credits.to_i
@@ -29,7 +30,7 @@ class Account < ActiveRecord::Base
   end
 
   def add_free_credits
-    add_credits FreeCredits
+    add_credits FreeCredits + SpecialCredits
   end
 
   def email_new_signup
