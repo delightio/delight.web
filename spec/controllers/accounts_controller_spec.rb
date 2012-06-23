@@ -21,7 +21,7 @@ describe AccountsController do
     it 'adds free credits to each newly created account' do
       post 'create', { :account => { :name => 'account name' } }
       new_admin = Administrator.find user.id
-      new_admin.account.remaining_credits.should == Account::FreeCredits
+      new_admin.account.remaining_credits.should == Account::FreeCredits + Account::SpecialCredits
     end
 
     it "should fail for missing name" do

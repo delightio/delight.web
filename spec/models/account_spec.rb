@@ -62,7 +62,8 @@ describe Account do
     end
 
     it 'add default FreeCredits' do
-      subject.should_receive(:add_credits).with(Account::FreeCredits).once
+      subject.should_receive(:add_credits).
+        with(Account::FreeCredits + Account::SpecialCredits).once
 
       subject.add_free_credits
     end
