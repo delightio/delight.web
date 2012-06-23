@@ -7,12 +7,6 @@
     </span>
     </h1>
     <br>
-    <div class='alert alert-info'>
-      <span style="font-size:large">
-        In celebration of our official launch, we are <strong>doubling the credits</strong> for all packages.<br>
-        Sign up now to take advantage of this limited time offer.
-      </span>
-    </div>
   </div>
 </div>
 <h2>Select a package to lock in your savings now:</h2><br/>
@@ -24,7 +18,11 @@
     <p>
     <span style="font-size:xx-large">$<%= payment['price'] %></span>
     <br/><br/>
-    per <strike><%= payment['credit']/2 %></strike> <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
+    <% if payment['name'] == 'volume' %>
+    unlimited
+    <%- else %>
+    per <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
+    <%- end %>
     </p>
     <% if payment['name'] == 'volume' %>
       <p>

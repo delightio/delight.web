@@ -4,16 +4,16 @@ defaults: &defaults
     display: 'A La Carte'
     name: 'one'
     price: 5
-    credit: 2
+    credit: 1
    -
     display: 'Launch'
     name: 'few'
     price: 50
-    credit: 40
+    credit: 20
    -
     display: 'Growth'
     name: 'volume'
-    price: 100
+    price: 500
     credit: 100
 
 development:

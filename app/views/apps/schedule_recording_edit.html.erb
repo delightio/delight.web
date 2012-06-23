@@ -20,7 +20,18 @@
   </div>
 
   <div id="add-credit" class="collapse">
-    <%= render :partial => 'accounts/add_credit', :locals => { :account => @app.account, :plan => nil }  %>
+    <ul class="nav nav-tabs">
+      <li id="credit-tab" class="active"><a href="#" onClick="showAddCredits();">Add credits</a></li>
+      <li id="subscription-tab"><a href="#" onClick="showSubscription();">Monthly Subscription</a></li>
+    </ul>
+
+    <div id="add-credits">
+      <%= render :partial => 'accounts/add_credit', :locals => { :account => @app.account, :plan => nil }  %>
+    </div>
+
+    <div id="monthly-subscription" style="display: none">
+      <%= render :partial => 'accounts/subscription', :locals => { :account => @app.account, :plan => nil }  %>
+    </div>
   </div>
 
 
@@ -90,3 +101,27 @@
     });
   });
 </script>
+
+<script type="text/javascript">
+  function showAddCredits() {
+    $("#add-credits").show();
+    $("#monthly-subscription").hide();
+    $("#credit-tab").addClass("active");
+    $("#subscription-tab").removeClass("active");
+  }
+  function showSubscription() {
+    $("#add-credits").hide();
+    $("#monthly-subscription").show();
+    $("#credit-tab").removeClass("active");
+    $("#subscription-tab").addClass("active");
+  }
+
+  $(document).ready(function(){
+
+    if ("<%= @plan %>" == "volume") {
+      showSubscription();
+    } else {
+      showAddCredits();
+    }
+  });
+  </script>

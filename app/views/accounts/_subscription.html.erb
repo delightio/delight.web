@@ -14,49 +14,13 @@
             <thead>
             </thead>
             <tbody>
-              <% PAYMENT_CONFIG['plans'].each do |payment| %>
-              <% unless payment['name'] == "volume" %>
+              <%- payment = PAYMENT_CONFIG['plans'].last %>
               <tr class="add-credit-row">
-                <td><input type="text" name="add-credit-quantity-<%= payment['name'] %>" id="add-credit-quantity-<%= payment['name'] %>" class="input-small" value="0" style="width:50px"/><span> x $<%= payment['price'] %> for <%= "#{pluralize(payment['credit'], 'credit')}" %></span></td>
-                <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price pull-right" style="margin-right:150px">0</span></td>
-                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit">0</span></td>
+                <td>Monthly Subscription</td>
+                <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price pull-right" style="margin-right:150px">500</span></td>
+                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit"> unlimited</span></td>
                 <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
               </tr>
-              <script>
-              $(document).ready(function() {
-                $("#add-credit-quantity-<%= payment['name'] %>").keyup(function(eventObj) {
-                  var $target = $(eventObj.target);
-                  var quantity = $target.attr('value');
-
-                  var price = <%= payment['price'] %>;
-                  var credit = <%= payment['credit'] %>;
-                  var name = "<%= payment['name'] %>";
-                  if (!isNaN(parseInt(quantity))) {
-                    var subtotal_price = quantity * price;
-                    var subtotal_credit = quantity * credit;
-                    $("#add-credit-subtotal-price-" + name).text(subtotal_price);
-                    $("#add-credit-subtotal-credit-" + name).text(subtotal_credit);
-                    pluralizeCredit(subtotal_credit, "add-credit-subtotal-credit-unit-<%= payment['name'] %>");
-                    updateAddCreditTotal();
-                  }
-                });
-              });
-              </script>
-              <% end %>
-              <% end %>
-              <tr>
-                <td>Total:</td>
-                <td>
-                  <span class="pull-left">$</span><span id="add-credit-total-price-text" class="pull-right" style="margin-right:150px">0</span>
-                  <input name="total_price" id="add-credit-total-price" type="hidden" value="0" class="input-small" />
-                </td>
-                <td>
-                  <span id="add-credit-total-credit-text" class="pull-right">0</span>
-                  <input name="total_credits" id="add-credit-total-credit" type="hidden" value="0" class="input-small" />
-                </td>
-                <td><span id="add-credit-total-credit-unit" class="" style="margin-right:130px">credit</span></td>
-              </tr>
-            </tbody>
           </table>
         </div>
       </div>
@@ -90,7 +54,7 @@
                 <input type="text" size="2" id="card-expiry-month" class="input-small" value=""/>
                 <span> / </span>
                 <input type="text" size="4" id="card-expiry-year" class="input-small" value=""/>
-                <%= submit_tag "Add credits", :class => "btn btn-success", :id => "add-credit-submit-btn" %>
+                <%= submit_tag "Subscribe", :class => "btn btn-success", :id => "add-credit-submit-btn" %>
               </div>
               </div>
             </div>
