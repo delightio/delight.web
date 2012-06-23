@@ -11,7 +11,7 @@ defaults: &defaults
     price: 50
     credit: 20
    -
-    display: 'Growth'
+    display: 'Unlimited'
     name: 'volume'
     price: 500
     credit: 100

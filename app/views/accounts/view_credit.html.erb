@@ -4,15 +4,15 @@
   <hr/>
 
   <ul class="nav nav-tabs">
-    <li id="credit-tab" class="active"><a href="#" onClick="showAddCredits();">Add credits</a></li>
-    <li id="subscription-tab"><a href="#" onClick="showSubscription();">Monthly Subscription</a></li>
+    <li id="credit-tab" class="<%= @plan == 'volume' ? '' : 'active' %>"><a href="#" onClick="showAddCredits();">Add credits</a></li>
+    <li id="subscription-tab" class="<%= @plan == 'volume' ? 'active' : '' %>"><a href="#" onClick="showSubscription();">Monthly Subscription</a></li>
   </ul>
 
-  <div id="add-credits">
+  <div id="add-credits" style="<%= @plan == 'volume' ? 'display: none' : '' %>">
     <%= render :partial => 'accounts/add_credit', :locals => { :account => @account, :plan => @plan }  %>
   </div>
 
-  <div id="monthly-subscription" style="display: none">
+  <div id="monthly-subscription" style="<%= @plan == 'volume' ? '' : 'display: none' %>">
     <%= render :partial => 'accounts/subscription', :locals => { :account => @account, :plan => @plan }  %>
   </div>
 </div>
@@ -31,12 +31,12 @@
     $("#subscription-tab").addClass("active");
   }
 
-  $(document).ready(function(){
+  // $(document).ready(function(){
 
-    if ("<%= @plan %>" == "volume") {
-      showSubscription();
-    } else {
-      showAddCredits();
-    }
-  });
+  //   if ("<%= @plan %>" == "volume") {
+  //     showSubscription();
+  //   } else {
+  //     showAddCredits();
+  //   }
+  // });
 </script>

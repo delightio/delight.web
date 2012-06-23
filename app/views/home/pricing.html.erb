@@ -16,23 +16,24 @@
 
 <h2>Select a package below:</h2><br/>
 <div class="row-fluid center">
-  <a href="mailto:unlimited@delight.io?subject=Tell me more about the unlimited plan" class="span3 btn" style="margin-bottom: 15px">
-    <h3>Unlimited</h3>
-    <p>
-    <div class="muted"><span style="font-size:xx-large">Call us for details</span></div>
-    <br>
-    </p>
-  </a>
   <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
-    <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
+  <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
     <h3><%= payment['display'] %></h3>
     <br/>
+    <% if payment['name'] == 'volume' %>
+    <p>
+    <span style="font-size:xx-large">$<%= payment['price'] %></span>
+    <br/><br/>
+    for unlimited credit</strong>
+    </p>
+    <% else %>
     <p>
     <span style="font-size:xx-large">$<%= payment['price'] %></span>
     <br/><br/>
     per <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
     </p>
-    <% if payment['name'] == 'volume' %>
+    <% end %>
+    <% if payment['name'] == 'few' %>
       <p>
         <span style="font-size:large;font-style:italic">Best Deal!</span>
       </p>
