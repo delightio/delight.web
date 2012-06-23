@@ -197,6 +197,10 @@ class AccountsController < ApplicationController
     end
   end
 
+  def subscribe
+
+  end
+
 #  def destroy
 #  end
 
