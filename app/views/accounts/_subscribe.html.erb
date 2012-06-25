@@ -6,7 +6,7 @@
     </div>
 <div class="row-fluid">
   <div class="span12">
-    <%= form_tag(account_subscribe_path(:account_id => account.id), :remote => true, :method => :put, :id => "payment-form", :class => "form-horizontal") do |add_credit_form| %>
+    <%= form_tag(account_subscribe_path(:account_id => account.id), :remote => true, :method => :put, :id => "payment-form-2", :class => "form-horizontal") do |add_credit_form| %>
       <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Subscription Details</h3>
       <div class="row">
         <div class="span12">
@@ -35,25 +35,25 @@
           -->
           <fieldset class="span7" style="align:center;text-align:center;margin-left:100px;margin-top:15px">
             <div class="control-group">
-              <label class="control-label" for="card-number">Card Number</label>
+              <label class="control-label" for="card-number-2">Card Number</label>
               <div class="controls">
-                <input type="text" size="20" autocomplete="off" id="card-number" value="" class="pull-left"/>
-                <span class="help-inline" style="height:28px;overflow:hidden"><img id="card-type-img" src="" style="display:none;position:relative;top:-1px;"/></span>
+                <input type="text" size="20" autocomplete="off" id="card-number-2" value="" class="pull-left"/>
+                <span class="help-inline" style="height:28px;overflow:hidden"><img id="card-type-img-2" src="" style="display:none;position:relative;top:-1px;"/></span>
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="card-cvc">CVC</label>
+              <label class="control-label" for="card-cvc-2">CVC</label>
               <div class="controls">
-                <input type="text" size="4" autocomplete="off" id="card-cvc" value="" class="pull-left"/>
+                <input type="text" size="4" autocomplete="off" id="card-cvc-2" value="" class="pull-left"/>
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="card-expiry-month">Expiration (MM/YYYY)</label>
+              <label class="control-label" for="card-expiry-month-2">Expiration (MM/YYYY)</label>
               <div class="controls">
                 <div class="pull-left">
-                <input type="text" size="2" id="card-expiry-month" class="input-small" value=""/>
+                <input type="text" size="2" id="card-expiry-month-2" class="input-small" value=""/>
                 <span> / </span>
-                <input type="text" size="4" id="card-expiry-year" class="input-small" value=""/>
+                <input type="text" size="4" id="card-expiry-year-2" class="input-small" value=""/>
                 <%= submit_tag "Subscribe", :class => "btn btn-success", :id => "add-credit-submit-btn" %>
               </div>
               </div>
@@ -78,22 +78,22 @@
   // this identifies your website in the createToken call below
   Stripe.setPublishableKey("<%= ENV['STRIPE_KEY'] %>");
   $(document).ready(function() {
-    $("#payment-form").submit(function(event) {
+    $("#payment-form-2").submit(function(event) {
       // disable the submit button to prevent repeated clicks
-      $('#add-credit-submit-btn').attr("disabled", "disabled");
+      $('#add-credit-submit-btn-2').attr("disabled", "disabled");
 
       Stripe.createToken({
-        number: $('#card-number').val(),
-        cvc: $('#card-cvc').val(),
-        exp_month: $('#card-expiry-month').val(),
-        exp_year: $('#card-expiry-year').val()
+        number: $('#card-number-2').val(),
+        cvc: $('#card-cvc-2').val(),
+        exp_month: $('#card-expiry-month-2').val(),
+        exp_year: $('#card-expiry-year-2').val()
       }, stripeResponseHandler);
 
       // prevent the form from submitting with the default action
       return false;
     });
 
-    $("#card-number").change((function() {
+    $("#card-number-2").change((function() {
       var type_to_img_map = {
         'Visa':'/assets/visa.png',
         'MasterCard':'/assets/master.png',
@@ -103,13 +103,13 @@
         //'JCB':'/assets/visa.png',
       };
       return function() {
-        var card_number = $("#card-number").attr('value');
+        var card_number = $("#card-number-2").attr('value');
         var card_type = Stripe.cardType(card_number);
         if (type_to_img_map.hasOwnProperty(card_type)) {
-          $("#card-type-img").attr('src', type_to_img_map[card_type]);
-          $("#card-type-img").show();
+          $("#card-type-img-2").attr('src', type_to_img_map[card_type]);
+          $("#card-type-img-2").show();
         } else {
-          $("#card-type-img").hide();
+          $("#card-type-img-2").hide();
         }
       };
     })());
@@ -124,10 +124,10 @@
   function stripeResponseHandler(status, response) {
     if (response.error) {
       // show the errors on the form
-      $("#payment-alert").html('<div class="alert alert-error">' + response.error.message + '</div>');
-      $('#add-credit-submit-btn').removeAttr("disabled");
+      $("#payment-alert-2").html('<div class="alert alert-error">' + response.error.message + '</div>');
+      $('#add-credit-submit-btn-2').removeAttr("disabled");
     } else {
-      var form$ = $("#payment-form");
+      var form$ = $("#payment-form-2");
       // token contains id, last4, and card type
       var token = response['id'];
       // insert the token into the form so it gets submitted to the server
@@ -156,7 +156,7 @@
           }
         } ,
         error: function() {
-          $('#add-credit-submit-btn').removeAttr("disabled");
+          $('#add-credit-submit-btn-2').removeAttr("disabled");
           add_credit_error('No reponse from server');
         },
         dataType: 'json'
