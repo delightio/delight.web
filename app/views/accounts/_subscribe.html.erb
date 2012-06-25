@@ -17,8 +17,8 @@
               <%- payment = PAYMENT_CONFIG['plans'].last %>
               <tr class="add-credit-row">
                 <td>Monthly Subscription</td>
-                <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price pull-right" style="margin-right:150px">500</span></td>
-                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit"> unlimited</span></td>
+                <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px">500</span></td>
+                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> unlimited</span></td>
                 <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
               </tr>
           </table>
@@ -73,125 +73,4 @@
     <% end %>
   </div>
 </div>
-<script type="text/javascript" src="https://js.stripe.com/v1/"></script>
-<script type="text/javascript">
-  // this identifies your website in the createToken call below
-  Stripe.setPublishableKey("<%= ENV['STRIPE_KEY'] %>");
-  $(document).ready(function() {
-    $("#payment-form-2").submit(function(event) {
-      // disable the submit button to prevent repeated clicks
-      $('#add-credit-submit-btn-2').attr("disabled", "disabled");
 
-      Stripe.createToken({
-        number: $('#card-number-2').val(),
-        cvc: $('#card-cvc-2').val(),
-        exp_month: $('#card-expiry-month-2').val(),
-        exp_year: $('#card-expiry-year-2').val()
-      }, stripeResponseHandler);
-
-      // prevent the form from submitting with the default action
-      return false;
-    });
-
-    $("#card-number-2").change((function() {
-      var type_to_img_map = {
-        'Visa':'/assets/visa.png',
-        'MasterCard':'/assets/master.png',
-        'American Express':'/assets/amex.png',
-        'Discover':'/assets/discover.png',
-        'Diners Club':'/assets/dinersclub.png'
-        //'JCB':'/assets/visa.png',
-      };
-      return function() {
-        var card_number = $("#card-number-2").attr('value');
-        var card_type = Stripe.cardType(card_number);
-        if (type_to_img_map.hasOwnProperty(card_type)) {
-          $("#card-type-img-2").attr('src', type_to_img_map[card_type]);
-          $("#card-type-img-2").show();
-        } else {
-          $("#card-type-img-2").hide();
-        }
-      };
-    })());
-
-  <% if not plan.blank? %>
-    // set default plan
-    var $field = $("#add-credit-quantity-<%= plan %>");
-    $field.attr('value', 1);
-    $field.keyup();
-  <% end %>
-  });
-  function stripeResponseHandler(status, response) {
-    if (response.error) {
-      // show the errors on the form
-      $("#payment-alert-2").html('<div class="alert alert-error">' + response.error.message + '</div>');
-      $('#add-credit-submit-btn-2').removeAttr("disabled");
-    } else {
-      var form$ = $("#payment-form-2");
-      // token contains id, last4, and card type
-      var token = response['id'];
-      // insert the token into the form so it gets submitted to the server
-      form$.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
-      // submit through ajax
-      var values = {};
-      $.each(form$.serializeArray(), function(i, field) {
-        values[field.name] = field.value;
-      });
-      // credit info
-      $.each($(".add-credit-row"), function(row_num, row) {
-        values["total_price"] = $("#add-credit-total-price").attr('value');
-        values["total_credits"] = $("#add-credit-total-credit").attr('value');
-      });
-
-      $.ajax({
-        type: 'PUT',
-        url: form$.attr('action'),
-        data: values,
-        success: function(data) {
-          $('#add-credit-submit-btn').removeAttr("disabled");
-          if (data['result'] && data['result'] == 'success') {
-            add_credit_success(data);
-          } else {
-            add_credit_error(data['reason']);
-          }
-        } ,
-        error: function() {
-          $('#add-credit-submit-btn-2').removeAttr("disabled");
-          add_credit_error('No reponse from server');
-        },
-        dataType: 'json'
-        });
-    }
-  }
-  function add_credit_success(data) {
-    $("#payment-alert").html('<div class="alert alert-success">Successfully added credits</div>');
-    if (data['remaining_credits']) {
-      $("#remaining-credits").text(data['remaining_credits']);
-    }
-  }
-  function add_credit_error(msg) {
-    $("#payment-alert").html('<div class="alert alert-error">' + msg + '</div>');
-  }
-  function updateAddCreditTotal() {
-    var total_price = 0;
-    var total_credit = 0;
-    $.each($(".add-credit-subtotal-price"), function(index, element) {
-      total_price += parseInt($(element).text());
-    });
-    $.each($(".add-credit-subtotal-credit"), function(index, element) {
-      total_credit += parseInt($(element).text());
-    });
-    $("#add-credit-total-price").attr('value', total_price);
-    $("#add-credit-total-credit").attr('value', total_credit);
-    $("#add-credit-total-price-text").text(total_price);
-    $("#add-credit-total-credit-text").text(total_credit);
-    pluralizeCredit(total_credit, 'add-credit-total-credit-unit');
-  }
-  function pluralizeCredit(count, id) {
-    if (count > 1) {
-      $("#"+id).text('credits');
-    } else {
-      $("#"+id).text('credit');
-    }
-  }
-</script>
