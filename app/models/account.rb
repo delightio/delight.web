@@ -14,6 +14,7 @@ class Account < ActiveRecord::Base
 
   include Redis::Objects
   counter :credits
+  value :subscription
   FreeCredits = 50
   SpecialCredits = 10
 

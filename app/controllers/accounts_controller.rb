@@ -198,11 +198,44 @@ class AccountsController < ApplicationController
   end
 
   def subscribe
+    if @admin.blank?
+      redirect_to root_path
+      return
+    end
 
+    @account = @admin.account
+
+    # payment params check
+    if not params[:stripeToken]
+      result = { 'result' => 'fail',
+                 'reason' => 'Invalid payment information' }
+      respond_to do |format|
+        format.json { render :json => result }
+      end
+      return
+    end
+
+    # create customer and subscribe to unlimited plan
+    Stripe.api_key = ENV['STRIPE_SECRET']
+    token = params[:stripeToken]
+
+    customer = Stripe::Customer.create(
+      :description => "credit purchase from account #{@account.id} - #{@account.name} - #{@account.administrator.email}",
+      :email => @account.administrator.email,
+      :card => token,
+      :plan => "unlimited"
+    )
+
+    respond_to do |format|
+      if customer.id.nil?
+        result = { 'result' => 'fail',
+                   'reason' => 'Payment gateway rejected.' }
+      else
+        result = { 'result' => 'success' }
+      end
+      format.json { render :json => result }
+    end
   end
-
-#  def destroy
-#  end
 
   protected
 

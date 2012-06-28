@@ -127,7 +127,7 @@
       $("#payment-alert-2").html('<div class="alert alert-error">' + response.error.message + '</div>');
       $('#add-credit-submit-btn').removeAttr("disabled");
     } else {
-      var form$ = $("#payment-form");
+      var form$ = $("#payment-form-2");
       // token contains id, last4, and card type
       var token = response['id'];
       // insert the token into the form so it gets submitted to the server
@@ -137,11 +137,6 @@
       $.each(form$.serializeArray(), function(i, field) {
         values[field.name] = field.value;
       });
-      // credit info
-      $.each($(".add-credit-row"), function(row_num, row) {
-        values["total_price"] = $("#add-credit-total-price").attr('value');
-        values["total_credits"] = $("#add-credit-total-credit").attr('value');
-      });
 
       $.ajax({
         type: 'PUT',
@@ -149,6 +144,7 @@
         data: values,
         success: function(data) {
           $('#add-credit-submit-btn').removeAttr("disabled");
+          $('#add-credit-submit-btn-2').removeAttr("disabled");
           if (data['result'] && data['result'] == 'success') {
             add_credit_success(data);
           } else {
@@ -157,19 +153,18 @@
         } ,
         error: function() {
           $('#add-credit-submit-btn').removeAttr("disabled");
+          $('#add-credit-submit-btn-2').removeAttr("disabled");
           add_credit_error('No reponse from server');
         },
         dataType: 'json'
-        });
+      });
     }
   }
-  function add_credit_success(data) {
-    $("#payment-alert-2").html('<div class="alert alert-success">Successfully added credits</div>');
-    if (data['remaining_credits']) {
-      $("#remaining-credits").text(data['remaining_credits']);
-    }
+  function subscribe_success(data) {
+    $("#payment-alert-2").html('<div class="alert alert-success">Successfully subscribed Unlimited plan.</div>');
+    $("#remaining-credits").text("Unlimited");
   }
-  function add_credit_error(msg) {
+  function subscribe_error(msg) {
     $("#payment-alert-2").html('<div class="alert alert-error">' + msg + '</div>');
   }
 
