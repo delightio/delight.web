@@ -149,17 +149,16 @@ describe AccountsController do
         put 'add_credit', {
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "2",
+                            :'add-credit-quantity-few' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "200",
-                            :'total_credits' => "200",
+                            :'total_price' => "100",
+                            :'total_credits' => "40",
                             :format => :json
                           }
         response.should be_success
         result = JSON.parse(response.body)
         result["result"].should == "success"
-        result["remaining_credits"].should == (credits + 200)
+        result["remaining_credits"].should == (credits + 40)
       end
 
       it "should fail with no purchase" do
@@ -203,11 +202,10 @@ describe AccountsController do
         put 'add_credit', {
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "2",
+                            :'add-credit-quantity-few' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "200",
-                            :'total_credits' => "101",
+                            :'total_price' => "100",
+                            :'total_credits' => "41",
                             :format => :json
                           }
         response.should be_success
@@ -224,11 +222,10 @@ describe AccountsController do
           put 'add_credit', {
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "2",
+                            :'add-credit-quantity-few' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "200",
-                            :'total_credits' => "200",
+                            :'total_price' => "100",
+                            :'total_credits' => "40",
                             :format => :json
                             }
           response.should be_success
@@ -259,6 +256,11 @@ describe AccountsController do
 #      end
 #    end
   end
+
+
+
+describe "PUT subscribe" do
+end
 
 #  describe "GET 'destroy'" do
 #    it "returns http success" do

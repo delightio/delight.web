@@ -54,7 +54,7 @@
                 <input type="text" size="2" id="card-expiry-month-2" class="input-small" value=""/>
                 <span> / </span>
                 <input type="text" size="4" id="card-expiry-year-2" class="input-small" value=""/>
-                <%= submit_tag "Subscribe", :class => "btn btn-success", :id => "add-credit-submit-btn-2" %>
+                <%= submit_tag "Subscribe", :class => "btn btn-success", :id => "subscribe-submit-btn" %>
               </div>
               </div>
             </div>
@@ -66,7 +66,7 @@
 <!--
       <div class="row">
         <div class="span12">
-          <%= submit_tag "Add credits", :class => "btn btn-success btn-large", :id => "add-credit-submit-btn-2" %>
+          <%= submit_tag "Add credits", :class => "btn btn-success btn-large", :id => "subscribe-submit-btn" %>
         </div>
       </div>
       -->
@@ -80,14 +80,15 @@
   $(document).ready(function() {
     $("#payment-form-2").submit(function(event) {
       // disable the submit button to prevent repeated clicks
-      $('#add-credit-submit-btn-2').attr("disabled", "disabled");
+      $('#add-credit-submit-btn').attr("disabled", "disabled");
+      $('#subscribe-submit-btn').attr("disabled", "disabled");
 
       Stripe.createToken({
         number: $('#card-number-2').val(),
         cvc: $('#card-cvc-2').val(),
         exp_month: $('#card-expiry-month-2').val(),
         exp_year: $('#card-expiry-year-2').val()
-      }, stripeResponseHandler);
+      }, stripeResponseHandler2);
 
       // prevent the form from submitting with the default action
       return false;
@@ -121,11 +122,12 @@
     $field.keyup();
   <% end %>
   });
-  function stripeResponseHandler(status, response) {
+  function stripeResponseHandler2(status, response) {
     if (response.error) {
       // show the errors on the form
       $("#payment-alert-2").html('<div class="alert alert-error">' + response.error.message + '</div>');
       $('#add-credit-submit-btn').removeAttr("disabled");
+      $('#subscribe-submit-btn').removeAttr("disabled");
     } else {
       var form$ = $("#payment-form-2");
       // token contains id, last4, and card type
@@ -144,7 +146,7 @@
         data: values,
         success: function(data) {
           $('#add-credit-submit-btn').removeAttr("disabled");
-          $('#add-credit-submit-btn-2').removeAttr("disabled");
+          $('#subscribe-submit-btn').removeAttr("disabled");
           if (data['result'] && data['result'] == 'success') {
             add_credit_success(data);
           } else {
@@ -153,7 +155,7 @@
         } ,
         error: function() {
           $('#add-credit-submit-btn').removeAttr("disabled");
-          $('#add-credit-submit-btn-2').removeAttr("disabled");
+          $('#subscribe-submit-btn').removeAttr("disabled");
           add_credit_error('No reponse from server');
         },
         dataType: 'json'

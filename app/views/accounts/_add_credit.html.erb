@@ -185,6 +185,7 @@
         data: values,
         success: function(data) {
           $('#add-credit-submit-btn').removeAttr("disabled");
+          $('#add-credit-submit-btn-2').removeAttr("disabled");
           if (data['result'] && data['result'] == 'success') {
             add_credit_success(data);
           } else {
@@ -193,6 +194,7 @@
         } ,
         error: function() {
           $('#add-credit-submit-btn').removeAttr("disabled");
+          $('#add-credit-submit-btn-2').removeAttr("disabled");
           add_credit_error('No reponse from server');
         },
         dataType: 'json'

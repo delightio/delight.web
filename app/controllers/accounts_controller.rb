@@ -116,6 +116,8 @@ class AccountsController < ApplicationController
   end
 
   def add_credit
+
+    logger.info params.to_yaml
     if @admin.blank?
       redirect_to root_path
       return
@@ -231,6 +233,11 @@ class AccountsController < ApplicationController
         result = { 'result' => 'fail',
                    'reason' => 'Payment gateway rejected.' }
       else
+        # save record in redis
+        # handling refund
+
+
+
         result = { 'result' => 'success' }
       end
       format.json { render :json => result }
