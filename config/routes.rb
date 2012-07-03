@@ -22,6 +22,7 @@ DelightWeb::Application.routes.draw do
     get 'credit', :to => 'accounts#view_credit', :as => 'view_credit'
     put 'add_credit', :to => 'accounts#add_credit', :as => 'add_credit'
     put 'subscribe', :to => 'accounts#subscribe', :as => 'subscribe'
+    put 'unsubscribe', :to => 'accounts#unsubscribe', :as => 'unsubscribe'
   end
 
   resources :app_sessions, :only => [:show, :create, :update] do

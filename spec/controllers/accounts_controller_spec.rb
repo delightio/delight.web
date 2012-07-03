@@ -167,7 +167,6 @@ describe AccountsController do
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
                             :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "0",
                             :'stripeToken' => "token",
                             :'total_price' => "0",
                             :'total_credits' => "0",
@@ -184,11 +183,10 @@ describe AccountsController do
         put 'add_credit', {
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "2",
+                            :'add-credit-quantity-few' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "198",
-                            :'total_credits' => "100",
+                            :'total_price' => "98",
+                            :'total_credits' => "40",
                             :format => :json
                           }
         response.should be_success
@@ -260,6 +258,47 @@ describe AccountsController do
 
 
 describe "PUT subscribe" do
+  let(:app) { FactoryGirl.create(:app) }
+  let(:admin) { app.account.administrator }
+  before(:each) do
+    sign_in(admin)
+  end
+
+  # before(:each) do
+  #   fake_charge = Object.new
+  #   fake_charge.class.module_eval { attr_accessor :paid }
+  #   fake_charge.paid = true
+  #   Stripe::Charge.stub(:create).and_return(fake_charge)
+  # end
+
+  it "should success" do
+    put 'subscribe', {
+                        :account_id => admin.account.id,
+                        :'stripeToken' => "token",
+                        :format => :json
+                      }
+    response.should be_success
+    result = JSON.parse(response.body)
+    result["result"].should == "success"
+    result["remaining_credits"].should == 0
+  end
+
+  it "should fail when a subscription exist" do
+  end
+end
+
+describe "PUT unsubscribe" do
+  let(:app) { FactoryGirl.create(:app) }
+  let(:admin) { app.account.administrator }
+  before(:each) do
+    sign_in(admin)
+  end
+
+  it "should success" do
+  end
+
+  it "should fail when a subscription does not exist" do
+  end
 end
 
 #  describe "GET 'destroy'" do

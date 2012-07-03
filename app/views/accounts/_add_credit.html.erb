@@ -1,7 +1,11 @@
 <!-- requires #remaining-credits defined -->
     <div class="row-fluid">
       <div class="span12">
-        <div id="payment-alert"></div>
+        <div id="payment-alert">
+          <% unless account.current_subscription.nil? %>
+            <div class="alert alert-error">Subscribed to unlimited plan. No need to add credits.</div>
+          <% end %>
+        </div>
       </div>
     </div>
 <div class="row-fluid">
@@ -155,6 +159,10 @@
     var $field = $("#add-credit-quantity-<%= plan %>");
     $field.attr('value', 1);
     $field.keyup();
+  <% end %>
+
+  <% unless account.current_subscription.nil? %>
+    $("#payment-form input").attr("disabled", "disabled");
   <% end %>
   });
   function stripeResponseHandler(status, response) {

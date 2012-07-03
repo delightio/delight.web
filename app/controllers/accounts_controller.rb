@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_admin, :only => [:edit, :update, :show, :add_credit, :view_credit]
+  before_filter :get_admin, :only => [:edit, :update, :show, :add_credit, :view_credit, :subscribe]
 
   def create
     # check if user is admin and have account already
@@ -116,8 +116,6 @@ class AccountsController < ApplicationController
   end
 
   def add_credit
-
-    logger.info params.to_yaml
     if @admin.blank?
       redirect_to root_path
       return
@@ -222,7 +220,7 @@ class AccountsController < ApplicationController
     token = params[:stripeToken]
 
     customer = Stripe::Customer.create(
-      :description => "credit purchase from account #{@account.id} - #{@account.name} - #{@account.administrator.email}",
+      :description => "subscription of #{@account.id} - #{@account.name} - #{@account.administrator.email}",
       :email => @account.administrator.email,
       :card => token,
       :plan => "unlimited"
@@ -234,14 +232,16 @@ class AccountsController < ApplicationController
                    'reason' => 'Payment gateway rejected.' }
       else
         # save record in redis
-        # handling refund
-
-
+        @account.subscribe "unlimited"
 
         result = { 'result' => 'success' }
       end
       format.json { render :json => result }
     end
+  end
+
+  def unsubscribe
+
   end
 
   protected

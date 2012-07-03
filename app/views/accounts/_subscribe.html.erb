@@ -6,33 +6,28 @@
     </div>
 <div class="row-fluid">
   <div class="span12">
-    <%= form_tag(account_subscribe_path(:account_id => account.id), :remote => true, :method => :put, :id => "payment-form-2", :class => "form-horizontal") do |add_credit_form| %>
-      <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Subscription Details</h3>
-      <div class="row">
-        <div class="span12">
-          <table class="table table-striped" width="95%">
-            <thead>
-            </thead>
-            <tbody>
-              <%- payment = PAYMENT_CONFIG['plans'].last %>
-              <tr class="add-credit-row">
-                <td>Monthly Subscription</td>
-                <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px">500</span></td>
-                <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> unlimited</span></td>
-                <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
-              </tr>
-          </table>
+    <% if account.current_subscription.nil? %>
+      <%= form_tag(account_subscribe_path(:account_id => account.id), :remote => true, :method => :put, :id => "payment-form-2", :class => "form-horizontal") do |add_credit_form| %>
+        <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Subscription Details</h3>
+        <div class="row">
+          <div class="span12">
+            <table class="table table-striped" width="95%">
+              <thead>
+              </thead>
+              <tbody>
+                <%- payment = PAYMENT_CONFIG['plans'].last %>
+                <tr class="add-credit-row">
+                  <td>Monthly Subscription</td>
+                  <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px">500</span></td>
+                  <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> unlimited</span></td>
+                  <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
+                </tr>
+            </table>
+          </div>
         </div>
-      </div>
 
-      <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Credit card information</h3>
-      <!--
-      <div class="row">
-        <div class="span5">
-          -->
-          <!--
-          <fieldset class="span5" style="margin-left:110px">
-          -->
+        <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Credit card information</h3>
+
           <fieldset class="span7" style="align:center;text-align:center;margin-left:100px;margin-top:15px">
             <div class="control-group">
               <label class="control-label" for="card-number-2">Card Number</label>
@@ -59,17 +54,36 @@
               </div>
             </div>
           </fieldset>
-          <!--
+
+      <% end %>
+    <% else %>
+
+      <%= form_tag(account_unsubscribe_path(:account_id => account.id), :remote => true, :method => :put, :id => "unsubscribe-form", :class => "form-horizontal") do |add_credit_form| %>
+        <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Subscription Details</h3>
+        <div class="row">
+          <div class="span12">
+            <table class="table table-striped" width="95%">
+              <thead>
+              </thead>
+              <tbody>
+                <%- payment = PAYMENT_CONFIG['plans'].last %>
+                <tr class="add-credit-row">
+                  <td>Monthly Subscription</td>
+                  <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px">500</span></td>
+                  <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> unlimited</span></td>
+                  <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
+                </tr>
+            </table>
+          </div>
         </div>
-      </div>
-      -->
-<!--
-      <div class="row">
-        <div class="span12">
-          <%= submit_tag "Add credits", :class => "btn btn-success btn-large", :id => "subscribe-submit-btn" %>
-        </div>
-      </div>
-      -->
+
+        <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Confirmed to unsubscribe?</h3>
+
+          <fieldset class="span7" style="align:center;text-align:left;margin-top:15px">
+            <%= submit_tag "Unsubscribe Now", :class => "btn btn-warning", :id => "unsubscribe-submit-btn" %>
+          </fieldset>
+
+      <% end %>
     <% end %>
   </div>
 </div>
@@ -115,13 +129,36 @@
       };
     })());
 
-  <% if not plan.blank? %>
-    // set default plan
-    var $field = $("#add-credit-quantity-<%= plan %>");
-    $field.attr('value', 1);
-    $field.keyup();
-  <% end %>
+    $("#unsubscribe-form").submit(function(event) {
+      // disable the submit button to prevent repeated clicks
+      $('#unsubscribe-submit-btn').attr("disabled", "disabled");
+
+      var form$ = $("#unsubscribe-form");
+      $.ajax({
+        type: 'PUT',
+        url: form$.attr('action'),
+        data: '',
+        success: function(data) {
+          $('#unsubscribe-submit-btn').removeAttr("disabled");
+          if (data['result'] && data['result'] == 'success') {
+            subscribe_success(data);
+          } else {
+            subscribe_error(data['reason']);
+          }
+        } ,
+        error: function() {
+          $('#unsubscribe-submit-btn').removeAttr("disabled");
+          subscribe_error('No reponse from server');
+        },
+        dataType: 'json'
+      });
+
+      // prevent the form from submitting with the default action
+      return false;
+    });
+
   });
+
   function stripeResponseHandler2(status, response) {
     if (response.error) {
       // show the errors on the form
@@ -145,18 +182,18 @@
         url: form$.attr('action'),
         data: values,
         success: function(data) {
-          $('#add-credit-submit-btn').removeAttr("disabled");
-          $('#subscribe-submit-btn').removeAttr("disabled");
+          $('#payment-form input').attr("disabled", "disabled");
+          $('#payment-form-2 input').attr("disabled", "disabled");
           if (data['result'] && data['result'] == 'success') {
-            add_credit_success(data);
+            subscribe_success(data);
           } else {
-            add_credit_error(data['reason']);
+            subscribe_error(data['reason']);
           }
         } ,
         error: function() {
           $('#add-credit-submit-btn').removeAttr("disabled");
           $('#subscribe-submit-btn').removeAttr("disabled");
-          add_credit_error('No reponse from server');
+          subscribe_error('No reponse from server');
         },
         dataType: 'json'
       });
@@ -164,7 +201,11 @@
   }
   function subscribe_success(data) {
     $("#payment-alert-2").html('<div class="alert alert-success">Successfully subscribed Unlimited plan.</div>');
-    $("#remaining-credits").text("Unlimited");
+    $("#payment-alert").html('<div class="alert alert-error">Subscribed to unlimited plan. No need to add credits.</div>');
+    $("#available-credit").html('Subscription: Unlimited Plan<span id="remaining-credits"></span>');
+  }
+  function subscribe_success(data) {
+    $("#payment-alert-2").html('<div class="alert alert-success">Unsubscribe request submitted. Our staff will contact you soon.</div>');
   }
   function subscribe_error(msg) {
     $("#payment-alert-2").html('<div class="alert alert-error">' + msg + '</div>');
