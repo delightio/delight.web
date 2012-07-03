@@ -15,6 +15,6 @@ class SystemMailer < ActionMailer::Base
 
   def unsubscribe_notification(account)
     @account = account
-    mail(:to => "victor@primitus.com", :subject => "[Delight] Account #{account.name} (id: #{account.id}) Unsubscription")
+    mail(:to => "thomas@delight.io", :subject => "[Delight] Account #{account.name} (id: #{account.id}) Unsubscription")
   end
 end
