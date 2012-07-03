@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_admin, :only => [:edit, :update, :show, :add_credit, :view_credit, :subscribe]
+  before_filter :get_admin, :only => [:edit, :update, :show, :add_credit, :view_credit, :subscribe, :unsubscribe]
 
   def create
     # check if user is admin and have account already
@@ -241,7 +241,17 @@ class AccountsController < ApplicationController
   end
 
   def unsubscribe
+    if @admin.blank?
+      redirect_to root_path
+      return
+    end
 
+    SystemMailer.unsubscribe_notification(@admin.account).deliver
+
+    respond_to do |format|
+      result = { 'result' => 'success' }
+      format.json { render :json => result }
+    end
   end
 
   protected

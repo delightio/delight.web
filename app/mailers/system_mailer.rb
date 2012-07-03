@@ -12,4 +12,9 @@ class SystemMailer < ActionMailer::Base
     mail(:to => invitation.email,
          :subject => "[Delight] #{@user.nickname}'s invitation to #{@invitation.app.name}")
   end
+
+  def unsubscribe_notification(account)
+    @account = account
+    mail(:to => "victor@primitus.com", :subject => "[Delight] Account #{account.name} (id: #{account.id}) Unsubscription")
+  end
 end

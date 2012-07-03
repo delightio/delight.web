@@ -139,9 +139,8 @@
         url: form$.attr('action'),
         data: '',
         success: function(data) {
-          $('#unsubscribe-submit-btn').removeAttr("disabled");
           if (data['result'] && data['result'] == 'success') {
-            subscribe_success(data);
+            unsubscribe_success(data);
           } else {
             subscribe_error(data['reason']);
           }
@@ -204,7 +203,7 @@
     $("#payment-alert").html('<div class="alert alert-error">Subscribed to unlimited plan. No need to add credits.</div>');
     $("#available-credit").html('Subscription: Unlimited Plan<span id="remaining-credits"></span>');
   }
-  function subscribe_success(data) {
+  function unsubscribe_success(data) {
     $("#payment-alert-2").html('<div class="alert alert-success">Unsubscribe request submitted. Our staff will contact you soon.</div>');
   }
   function subscribe_error(msg) {
