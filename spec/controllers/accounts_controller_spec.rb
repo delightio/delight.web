@@ -264,26 +264,37 @@ describe "PUT subscribe" do
     sign_in(admin)
   end
 
-  # before(:each) do
-  #   fake_charge = Object.new
-  #   fake_charge.class.module_eval { attr_accessor :paid }
-  #   fake_charge.paid = true
-  #   Stripe::Charge.stub(:create).and_return(fake_charge)
-  # end
+  describe "subscribe success" do
+    before(:each) do
+      fake_customer = Object.new
+      fake_customer.class.module_eval { attr_accessor :id }
+      fake_customer.id = "cus_12345ABCDE67ab"
+      Stripe::Customer.stub(:create).and_return(fake_customer)
+    end
 
-  it "should success" do
-    put 'subscribe', {
-                        :account_id => admin.account.id,
-                        :'stripeToken' => "token",
-                        :format => :json
-                      }
-    response.should be_success
-    result = JSON.parse(response.body)
-    result["result"].should == "success"
-    result["remaining_credits"].should == 0
-  end
+    it "should success" do
+      put 'subscribe', {
+                          :account_id => admin.account.id,
+                          :'stripeToken' => "token",
+                          :format => :json
+                        }
+      response.should be_success
+      result = JSON.parse(response.body)
+      result["result"].should == "success"
+    end
 
-  it "should fail when a subscription exist" do
+    it "should fail when a subscription exist" do
+      admin.account.subscribe "unlimited"
+      put 'subscribe', {
+                          :account_id => admin.account.id,
+                          :'stripeToken' => "token",
+                          :format => :json
+                        }
+      response.should be_success
+      result = JSON.parse(response.body)
+      result["result"].should == "fail"
+      result["reason"].should == "Subscribed already"
+    end
   end
 end
 
@@ -294,10 +305,28 @@ describe "PUT unsubscribe" do
     sign_in(admin)
   end
 
-  it "should success" do
-  end
+  describe "unsubscribe success" do
+    it "should success" do
+      admin.account.subscribe "unlimited"
+      put 'unsubscribe', {
+                            :account_id => admin.account.id,
+                            :format => :json
+                          }
+      response.should be_success
+      result = JSON.parse(response.body)
+    end
 
-  it "should fail when a subscription does not exist" do
+    it "should fail when a subscription does not exist" do
+      admin.account.unsubscribe
+      put 'unsubscribe', {
+                            :account_id => admin.account.id,
+                            :format => :json
+                          }
+      response.should be_success
+      result = JSON.parse(response.body)
+      result["result"].should == "fail"
+      result["reason"].should == "Not subscribed yet"
+    end
   end
 end
 

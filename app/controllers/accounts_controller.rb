@@ -215,6 +215,16 @@ class AccountsController < ApplicationController
       return
     end
 
+    # check if subscription exist
+    unless @account.current_subscription.nil?
+      result = { 'result' => 'fail',
+                 'reason' => 'Subscribed already' }
+      respond_to do |format|
+        format.json { render :json => result }
+      end
+      return
+    end
+
     # create customer and subscribe to unlimited plan
     Stripe.api_key = ENV['STRIPE_SECRET']
     token = params[:stripeToken]
@@ -249,7 +259,12 @@ class AccountsController < ApplicationController
     SystemMailer.unsubscribe_notification(@admin.account).deliver
 
     respond_to do |format|
-      result = { 'result' => 'success' }
+      if @admin.account.current_subscription.nil?
+        result = { 'result' => 'fail',
+                   'reason' => 'Not subscribed yet' }
+      else
+        result = { 'result' => 'success' }
+      end
       format.json { render :json => result }
     end
   end
