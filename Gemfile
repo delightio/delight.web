@@ -78,6 +78,8 @@ gem 'omniauth-github'
 
 gem 'newrelic_rpm'
 
+gem 'exceptional'
+
 gem "kaminari" # for pagination
 gem "simple_form"
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
