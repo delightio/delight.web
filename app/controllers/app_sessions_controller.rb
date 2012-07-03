@@ -116,6 +116,12 @@ class AppSessionsController < ApplicationController
       as_params[:app_locale] = as_params.delete :locale
     end
 
+    # LH 206
+    if as_params[:device_os_version].to_f < 4.1
+      render xml: "Minimum iOS version need to be 4.1. Please upgrade the framework.", status: :bad_request
+      return
+    end
+
     @app_session = model_class.new as_params
 
     respond_to do |format|
