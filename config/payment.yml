@@ -13,7 +13,7 @@ defaults: &defaults
    -
     display: 'Unlimited'
     name: 'volume'
-    price: 400
+    price: 500
     credit: 100
 
 development:

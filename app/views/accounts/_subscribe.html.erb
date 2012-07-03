@@ -201,7 +201,7 @@
   function subscribe_success(data) {
     $("#payment-alert-2").html('<div class="alert alert-success">Successfully subscribed Unlimited plan.</div>');
     $("#payment-alert").html('<div class="alert alert-error">Subscribed to unlimited plan. No need to add credits.</div>');
-    $("#available-credit").html('Subscription: Unlimited Plan<span id="remaining-credits"></span>');
+    $("#remaining-credits").text('Unlimited');
   }
   function unsubscribe_success(data) {
     $("#payment-alert-2").html('<div class="alert alert-success">Unsubscribe request submitted. Our staff will contact you soon.</div>');
