@@ -28,8 +28,13 @@
     </div>
     <div class="span3" style="margin-top:20px">
       <div class="row-fluid">
-        <div class="span 7">
-          <a class="btn btn-primary" href="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" target="_blank">Download Video</a>
+        <h3 style="color:white">Download Videos</h3>
+      </div>
+      <div class="row-fluid">
+        <div class="span 11">
+          <div class="btn-group">
+            <a href="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" target="_blank" class="btn btn-primary">Track</a>
+          </div>
         </div>
       </div>
       <hr />

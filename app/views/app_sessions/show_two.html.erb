@@ -32,7 +32,20 @@
         </div>
       </div>
     </div>
-    <div class="span3" style="margin-top:20px">
+    <div class="span3" style="margin-top:20px;">
+
+      <div class="row-fluid">
+        <h3 style="color:white">Download Videos</h3>
+      </div>
+      <div class="row-fluid">
+        <div class="span11">
+          <div class="btn-group">
+            <a href="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" target="_blank" class="btn btn-primary">Track</a>
+            <a href="<%= @front_track.presigned_read_uri if @front_track and @front_track.presigned_read_uri %>" id="rotate-180" target="_blank" class="btn btn-primary">Front</a>
+          </div>
+        </div>
+      </div>
+      <hr />
       <div class="row-fluid">
         <h3 style="color:white">Default properties</h3>
       </div>
