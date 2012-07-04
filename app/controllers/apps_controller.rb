@@ -123,8 +123,8 @@ class AppsController < ApplicationController
     @favorite_app_sessions = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
     @favorite_app_session_ids = @favorite_app_sessions.collect { |as| as.id }
 
-    @app.log_view(current_user)
     @last_viewed_at = @app.last_viewed_at_by_user(current_user)
+    @app.log_view(current_user)
 
     respond_to do |format|
       format.html do
