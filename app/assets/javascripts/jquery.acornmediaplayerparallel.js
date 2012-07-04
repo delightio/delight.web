@@ -91,6 +91,14 @@
 				captionsChoose: 'Choose caption',
 				transcript: 'Transcript',
 				transcriptTitle: 'Show transcript'
+				rotateLeft90: '-90';
+				rotateLeft90Title: 'Rotate -90';
+				rotate0: '0';
+				rotate0Title: 'Original';
+				rotate90: '90';
+				rotate90Title: 'Rotate 90';
+				rotate180: '180';
+				rotate180Title: 'Rotate 180';
 			};
 
 			// main wrapper element
@@ -133,9 +141,13 @@
 								// 	'<input type="range" class="acorn-volume-slider" title="' + text.volumeTitle + '" value="1" min="0" max="1" step="0.05" aria-controls="' + acorn.id + '"/>' +
 								// '</div>' +
 								// fullscreenBtnMarkup +
-								'<button class="acorn-caption-button" title="' + text.captionsTitle + '"  aria-controls="' + acorn.id + '">' + text.captions + '</button>' +
-								'<div class="acorn-caption-selector"></div>' +
-								'<button class="acorn-transcript-button" title="' + text.transcriptTitle + '">' + text.transcript + '</button>' +
+								// '<button class="acorn-caption-button" title="' + text.captionsTitle + '"  aria-controls="' + acorn.id + '">' + text.captions + '</button>' +
+								// '<div class="acorn-caption-selector"></div>' +
+								// '<button class="acorn-transcript-button" title="' + text.transcriptTitle + '">' + text.transcript + '</button>' +
+								'<button class="acorn-rotate-button" title="' + text.rotate180Title + '" id="rotate--90">' + text.rotate180 + '</button>' +
+								'<button class="acorn-rotate-button" title="' + text.rotate90Title + '" id="rotate--90">' + text.rotate90 + '</button>' +
+								'<button class="acorn-rotate-button" title="' + text.rotate0Title + '" id="rotate--90">' + text.rotate0 + '</button>' +
+								'<button class="acorn-rotate-button" title="' + text.rotateLeft90Title + '" id="rotate--90">' + text.rotateLeft90 + '</button>' +
 							'</div>';
 
 			var captionMarkup = '<div class="acorn-caption"></div>';
