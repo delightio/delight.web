@@ -14,13 +14,13 @@
  * contact@ghinda.net
  *
  */
- 
+
 /* Start of access theme */
 .acorn-player.access {
 	float: left;
 	position: relative;
 	overflow: hidden;
-	
+
 	font-family: Arial, Helvetica, sans-serif;
 }
 /* <video> element */
@@ -31,30 +31,30 @@
 }
 /* Player Controls */
 .acorn-player.access .acorn-controls {
-	position: relative;	
+	position: relative;
 	float: left;
 	clear: both;
 	width: 100%;
 	padding-top: 15px;
-		
+
 	background-image: url(controls-background-dark.png);
 	background-position: bottom left;
 }
 /* <button>s */
 .acorn-player.access button {
-	position: relative;	
+	position: relative;
 	margin: 0;
 	padding-left: 25px;
 	height: 35px;
 	border: 1px solid #333;
 	background-color: #3F3F3F;
 	background-position: 5px center, top left;
-	background-repeat: no-repeat, repeat-x;	
-	
+	background-repeat: no-repeat, repeat-x;
+
 	font-weight: bold;
 	color: #fff;
 	text-shadow: 0px -1px 1px #000;
-	
+
 	cursor: pointer;
 }
 .acorn-player.access button:hover, .acorn-player.access button:focus {
@@ -62,7 +62,7 @@
 	background-position: 5px center, left -33px;
 }
 .acorn-player.access button:active {
-	top: 1px;	
+	top: 1px;
 	box-shadow: inset 1px 1px 10px #000;
 }
 /* Playback Controls(Play, Pause) */
@@ -82,7 +82,7 @@
 	display: block;
 	width: 100%;
 	height: 15px;
-		
+
 	background: #7289A8;
 	z-index: 2;
 }
@@ -97,22 +97,22 @@
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	
+
 	-moz-box-shadow: 0px 2px 8px #000;
 	-webkit-box-shadow: 0px 2px 8px #000;
 	box-shadow: 0px 2px 8px #000;
-	
+
 	background: #888;
 }
-.acorn-player.access .acorn-seek-slider .ui-slider-range {	
-	background: #0750B2;	
+.acorn-player.access .acorn-seek-slider .ui-slider-range {
+	background: #0750B2;
 }
-.acorn-player.access .acorn-buffer {	
-	background: #8E9DAF !important;	
+.acorn-player.access .acorn-buffer {
+	background: #8E9DAF !important;
 }
 .acorn-player.access .acorn-seek-slider .ui-state-focus, .acorn-player.access .acorn-seek-slider .ui-slider-handle.ui-state-hover {
 	background: #0750B2 !important;
-	
+
 	-moz-box-shadow: 0px 2px 15px #000;
 	-webkit-box-shadow: 0px 2px 15px #000;
 	box-shadow: 0px 2px 15px #000;
@@ -122,7 +122,7 @@
 	position: absolute;
 	top: 25px;
 	left: 260px;
-	
+
 	color: #efefef;
 	font-size: 14px;
 	font-weight: bold;
@@ -133,7 +133,7 @@
 	float: left;
 	overflow: hidden;
 	padding-right: 10px;
-	
+
 	-moz-box-shadow: 2px 0px 5px #111;
 	-webkit-box-shadow: 2px 0px 5px #111;
 	box-shadow: 2px 0px 5px #111;
@@ -144,7 +144,7 @@
 	width: 85px;
 	border-left: none;
 	background-image: url(access-volume-full.png), url(button-background-dark.png);
-	
+
 	-moz-box-shadow: 2px 0px 5px #111;
 	-webkit-box-shadow: 2px 0px 5px #111;
 	box-shadow: 2px 0px 5px #111;
@@ -158,24 +158,24 @@
 	height: 5px;
 	width: 70px;
 	margin-left: 10px;
-	margin-top: 15px;		
-	border: 1px solid #333;	
-	
+	margin-top: 15px;
+	border: 1px solid #333;
+
 	background: #111;
-	
+
 	-moz-box-shadow: 0px 1px 1px #777;
 	-webkit-box-shadow: 0px 1px 1px #777;
 	box-shadow: 0px 1px 1px #777;
 }
 .acorn-player.access .acorn-volume-slider .ui-slider-handle {
 	width: 5px;
-	height: 15px;	
+	height: 15px;
 	margin-top: -5px;
 	margin-left: -5px;
-	
+
 	border: 1px solid #333;
 	background: #BCBCBC;
-		
+
 	-moz-box-shadow: 0px 0px 5px #000;
 	-webkit-box-shadow: 0px 0px 5px #000;
 	box-shadow: 0px 0px 5px #000;
@@ -183,20 +183,20 @@
 .acorn-player.access .acorn-volume-slider .ui-slider-handle.ui-state-hover, .acorn-player.access .acorn-volume-slider .ui-slider-handle.ui-state-focus {
 	background: #fff !important;
 }
-.acorn-player.access .acorn-volume-slider .ui-slider-range {	
+.acorn-player.access .acorn-volume-slider .ui-slider-range {
 	background: #636F7C;
 }
 /* Fullscreen Button */
 .acorn-player.access .acorn-fullscreen-button {
 	float: right;
 	background-image: url(access-fullscreen.png), url(button-background-dark.png);
-	
+
 	-moz-box-shadow: -2px 0px 5px #111;
 	-webkit-box-shadow: -2px 0px 5px #111;
 	box-shadow: -2px 0px 5px #111;
 }
 /* Fullscreen Mode */
-.acorn-player.access .fullscreen-controls {	
+.acorn-player.access .fullscreen-controls {
 	left: 0px;
 	bottom: 0px;
 }
@@ -208,7 +208,7 @@
 	float: right;
 	border-right: none;
 	background-image: url(access-captions.png), url(button-background-dark.png);
-	
+
 	-moz-box-shadow: -2px 0px 5px #111;
 	-webkit-box-shadow: -2px 0px 5px #111;
 	box-shadow: -2px 0px 5px #111;
@@ -217,7 +217,7 @@
 	font-size: 14px;
 	font-weight: bold;
 	color: #fff;
-	
+
 	text-shadow: 0px 1px 5px #000;
 }
 /* Transcript */
@@ -225,7 +225,7 @@
 	float: right;
 	border-right: none;
 	background-image: url(access-transcript.png), url(button-background-dark.png);
-	
+
 	-moz-box-shadow: -2px 0px 5px #111;
 	-webkit-box-shadow: -2px 0px 5px #111;
 	box-shadow: -2px 0px 5px #111;
@@ -233,7 +233,17 @@
 .acorn-player.access .acorn-caption-active, .acorn-player.access .acorn-transcript-active {
 	background-position: 5px center, left bottom;
 }
-/* 
+/* Rotate Button */
+.acorn-player.access .acorn-rotate-button {
+	float: right;
+	border-right: none;
+	background-image: url(button-background-dark.png);
+
+	-moz-box-shadow: -2px 0px 5px #111;
+	-webkit-box-shadow: -2px 0px 5px #111;
+	box-shadow: -2px 0px 5px #111;
+}
+/*
  * acesslight Child Theme
  */
 .acorn-player.access.accesslight .acorn-controls {
@@ -242,7 +252,7 @@
 /* <button>s */
 .acorn-player.access.accesslight button {
 	border: 1px solid #bdbdbd;
-		
+
 	color: #333;
 	text-shadow: 0px 1px 0px #fff;
 }
@@ -256,7 +266,7 @@
 /* Volume Button */
 .acorn-player.access.accesslight .acorn-volume-button {
 	background-image: url(access-volume-full-dark.png), url(button-background-light.png);
-	
+
 	-moz-box-shadow: 2px 0px 5px #8c8c8c;
 	-webkit-box-shadow: 2px 0px 5px #8c8c8c;
 	box-shadow: 2px 0px 5px #8c8c8c;
@@ -267,7 +277,7 @@
 /* Caption Buttton */
 .acorn-player.access.accesslight .acorn-caption-button {
 	background-image: url(access-captions-dark.png), url(button-background-light.png);
-	
+
 	-moz-box-shadow: -2px 0px 5px #8c8c8c;
 	-webkit-box-shadow: -2px 0px 5px #8c8c8c;
 	box-shadow: -2px 0px 5px #8c8c8c;
@@ -275,7 +285,7 @@
 /* Transcript */
 .acorn-player.access.accesslight .acorn-transcript-button {
 	background-image: url(access-transcript-dark.png), url(button-background-light.png);
-	
+
 	-moz-box-shadow: -2px 0px 5px #8c8c8c;
 	-webkit-box-shadow: -2px 0px 5px #8c8c8c;
 	box-shadow: -2px 0px 5px #8c8c8c;
@@ -285,9 +295,9 @@
 	text-shadow: none;
 }
 /* Fullscreen Button */
-.acorn-player.access.accesslight .acorn-fullscreen-button {	
+.acorn-player.access.accesslight .acorn-fullscreen-button {
 	background-image: url(access-fullscreen-dark.png), url(button-background-light.png);
-	
+
 	-moz-box-shadow: -2px 0px 5px #8c8c8c;
 	-webkit-box-shadow: -2px 0px 5px #8c8c8c;
 	box-shadow: -2px 0px 5px #8c8c8c;
@@ -299,15 +309,15 @@
 	box-shadow: 2px 0px 5px #8c8c8c;
 }
 /* Timer */
-.acorn-player.access.accesslight .acorn-timer {	
+.acorn-player.access.accesslight .acorn-timer {
 	color: #333;
 	text-shadow: 0px 1px 2px #fff;
 }
 /* Volume Slider */
 .acorn-player.access.accesslight .acorn-volume-slider {
-	border: 1px solid #333;	
+	border: 1px solid #333;
 	background: #c1c1c1;
-	
+
 	-moz-box-shadow: 0px 1px 1px #fff;
 	-webkit-box-shadow: 0px 1px 1px #fff;
 	box-shadow: 0px 1px 1px #fff;
