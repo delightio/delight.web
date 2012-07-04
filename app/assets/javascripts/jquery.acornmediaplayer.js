@@ -129,10 +129,10 @@
 								// 	'<button class="acorn-volume-button" title="' + text.mute + '" aria-controls="' + acorn.id + '">' + text.mute + '</button>' +
 								// 	'<input type="range" class="acorn-volume-slider" title="' + text.volumeTitle + '" value="1" min="0" max="1" step="0.05" aria-controls="' + acorn.id + '"/>' +
 								// '</div>' +
-								// fullscreenBtnMarkup +
-								'<button class="acorn-caption-button" title="' + text.captionsTitle + '"  aria-controls="' + acorn.id + '">' + text.captions + '</button>' +
-								'<div class="acorn-caption-selector"></div>' +
-								'<button class="acorn-transcript-button" title="' + text.transcriptTitle + '">' + text.transcript + '</button>' +
+		//						fullscreenBtnMarkup +
+								// '<button class="acorn-caption-button" title="' + text.captionsTitle + '"  aria-controls="' + acorn.id + '">' + text.captions + '</button>' +
+								// '<div class="acorn-caption-selector"></div>' +
+								// '<button class="acorn-transcript-button" title="' + text.transcriptTitle + '">' + text.transcript + '</button>' +
 							'</div>';
 
 			var captionMarkup = '<div class="acorn-caption"></div>';
