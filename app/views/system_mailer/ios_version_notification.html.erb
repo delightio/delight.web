@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+
+<p>
+  Dear <%= @administrator.nickname %>,
+</p>
+
+<p>
+  We noticed the iOS SDK version of your app <strong><%= @app.name %></strong> is <%= @ios_version_number %>. Please note that Delight only support iOS SDK version 4.1 or above. You may need to upgrade your app.
+</p>
+
+<p>
+  Thanks!<br/>
+    <a href="http://delight.io" target="_blank">http://delight.io</a><br/>
+    iOS remote usability testing framework<br/>
+</p>
+
+</body>
+</html>

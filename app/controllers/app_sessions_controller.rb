@@ -118,6 +118,10 @@ class AppSessionsController < ApplicationController
 
     # LH 206
     if as_params[:device_os_version].to_f < 4.1
+      if @app.settings['ios_version_notification'].nil?
+        SystemMailer.ios_version_notification(@app, as_params[:device_os_version]).deliver
+        @app.settings['ios_version_notification'] = "sent"
+      end
       render xml: "Minimum iOS version need to be 4.1. Please upgrade the framework.", status: :bad_request
       return
     end
