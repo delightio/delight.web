@@ -144,10 +144,11 @@
 								// '<button class="acorn-caption-button" title="' + text.captionsTitle + '"  aria-controls="' + acorn.id + '">' + text.captions + '</button>' +
 								// '<div class="acorn-caption-selector"></div>' +
 								// '<button class="acorn-transcript-button" title="' + text.transcriptTitle + '">' + text.transcript + '</button>' +
+								'<span class="acorn-rotate-label">Rotate</span>' +
 								'<button class="acorn-rotate-button" title="' + text.rotate180Title + '" id="rotate-180">' + text.rotate180 + '</button>' +
 								'<button class="acorn-rotate-button" title="' + text.rotate90Title + '" id="rotate-90">' + text.rotate90 + '</button>' +
 								'<button class="acorn-rotate-button" title="' + text.rotate0Title + '" id="rotate-0">' + text.rotate0 + '</button>' +
-								'<button class="acorn-rotate-button" title="' + text.rotateLeft90Title + '" id="rotate-90">' + text.rotateLeft90 + '</button>' +
+								'<button class="acorn-rotate-button" title="' + text.rotateLeft90Title + '" id="rotate--90">' + text.rotateLeft90 + '</button>' +
 							'</div>';
 
 			var captionMarkup = '<div class="acorn-caption"></div>';
