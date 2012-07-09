@@ -1,57 +1,66 @@
 <h1>QuickStart Guide</h1>
 <br>
+<div class='row-fluid'>
+<div class='span6'>
+  <ol>
+    <li>Create your Delight account and application.</li>
+    <br>
 
-<ol>
-  <li>Create your Delight account and application.</li>
-  <br>
+    <li>Copy the app token.</li>
+    <br>
 
-  <li>Copy the app token.</li>
-  <br>
+    <li>Get the Delight framework from GitHub<br>
+      <code>git clone git@github.com:delightio/ios.git</code>
+    </li>
+    <br>
 
-  <li>Get the Delight framework from GitHub<br>
-    <code>git clone git@github.com:delightio/ios.git</code>
-  </li>
-  <br>
+    <li>Add <code>Delight.framework</code> to your target along with the following:
+      <ul>
+        <li type='a'>AssetsLibrary</li>
+        <li type='a'>AVFoundation</li>
+        <li type='a'>CoreGraphics</li>
+        <li type='a'>CoreMedia</li>
+        <li type='a'>CoreVideo</li>
+        <li type='a'>OpenGLES</li>
+        <li type='a'>QuartzCore</li>
+        <li type='a'>SystemConfiguration</li>
+      </ul>
+    </li><br>
 
-  <li>Add <code>Delight.framework</code> to your target along with the following:
-    <ul>
-      <li type='a'>AssetsLibrary</li>
-      <li type='a'>AVFoundation</li>
-      <li type='a'>CoreGraphics</li>
-      <li type='a'>CoreMedia</li>
-      <li type='a'>CoreVideo</li>
-      <li type='a'>OpenGLES</li>
-      <li type='a'>QuartzCore</li>
-      <li type='a'>SystemConfiguration</li>
-    </ul>
-  </li><br>
+    <li>In your build settings, add <code>-ObjC</code> to "Other Linker Flags".</li><br>
 
-  <li>In your build settings, add <code>-ObjC</code> to "Other Linker Flags".</li><br>
+    <li>In your application delegate,<br><br>
+      <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
+      put the following in the <code>application:didFinishLaunchingWithOptions:</code>:
+      <br><br>
+      <code>
+        [Delight startWithAppToken:@"<strong>Your App Token</strong>"]
+      </code>
+    </li>
+  </ol>
+</div>
 
-  <li>In your application delegate,<br><br>
-    <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
-    put the following in the <code>application:didFinishLaunchingWithOptions:</code>:
-    <br><br>
-    <code>
-      [Delight startWithAppToken:@"<strong>Your App Token</strong>"]
-    </code>
-  </li>
-</ol>
+<div class='span6'>
+  <iframe class='youtube-player' type='text/html' src="http://www.youtube.com/embed/HoFGOZuKhDc?rel=0" width="400" height="300" frameborder="0" rel="0"></iframe>
+  <br><br>
 
-<br>
+  <div style="font-size:large">
+    Please visit our <a href='http://www.delight.io/api/Classes/Delight.html' target='_blank'> API page <i class='icon-share'></i></a> for more customizations:
+    <span style="font-size:medium">
+      <ul>
+        <li><a href='http://www.delight.io/api/Classes/Delight.html#task_Controlling%20Privacy' target='_blank'>Privacy control</a></li>
+        <li><a href='http://www.delight.io/api/Classes/Delight.html#task_Adding%20Metadata' target='_blank'>Custom properties</a></li>
+      </ul>
+    </span>
+    <br>
 
-<span style="font-size:large">
-  Please visit our <a href='http://www.delight.io/api/Classes/Delight.html' target='_blank'> iOS API page <i class='icon-share'></i></a> for more customizations:
-  <span style="font-size:medium">
-    <ul>
-      <li><a href='http://www.delight.io/api/Classes/Delight.html#task_Controlling%20Privacy' target='_blank'>Private views</a></li>
-      <li><a href='http://www.delight.io/api/Classes/Delight.html#task_Adding%20Metadata' target='_blank'>Custom properties</a></li>
-    </ul>
-  </span>
+    <h3>OpenGL ES Support <sup><span class="badge badge-info">beta</span></sup></h3>
+    <p>To use Delight with OpenGL ES apps, please view our <a href="/docs/opengles">OpenGL ES Guide</a>.</p>
 
-  <h3>OpenGL ES Support</h3>
-  <p>To use Delight with OpenGL ES apps, please view our <a href="/docs/opengles">OpenGL ES Guide</a>.</p>
+    <br>
+    <strong>Questions?</strong><br>
+    <a href="mailto:info@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
+  </div>
 
-<br>
-  <strong>Questions?</strong> <a href="mailto:info@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
-</span>
+</div>
+</div>
