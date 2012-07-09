@@ -239,10 +239,15 @@
 	border-right: none;
 	padding-right: 15px;
 	padding-left: 15px;
-
-	-moz-box-shadow: -2px 0px 5px #111;
-	-webkit-box-shadow: -2px 0px 5px #111;
-	box-shadow: -2px 0px 5px #111;
+	width: 50px;
+}
+.acorn-player.access .acorn-rotate-label {
+	position: absolute;
+	line-height: 35px;
+	right: 200px;
+	color: #efefef;
+	font-size: 14px;
+	text-shadow: 0px -1px 2px #000;
 }
 /*
  * acesslight Child Theme
