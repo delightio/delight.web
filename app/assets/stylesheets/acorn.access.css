@@ -237,7 +237,8 @@
 .acorn-player.access .acorn-rotate-button {
 	float: right;
 	border-right: none;
-	background-image: url(button-background-dark.png);
+	padding-right: 15px;
+	padding-left: 15px;
 
 	-moz-box-shadow: -2px 0px 5px #111;
 	-webkit-box-shadow: -2px 0px 5px #111;

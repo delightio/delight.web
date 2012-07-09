@@ -147,7 +147,7 @@
 								'<button class="acorn-rotate-button" title="' + text.rotate180Title + '" id="rotate-180">' + text.rotate180 + '</button>' +
 								'<button class="acorn-rotate-button" title="' + text.rotate90Title + '" id="rotate-90">' + text.rotate90 + '</button>' +
 								'<button class="acorn-rotate-button" title="' + text.rotate0Title + '" id="rotate-0">' + text.rotate0 + '</button>' +
-								'<button class="acorn-rotate-button" title="' + text.rotateLeft90Title + '" id="rotate-90">' + text.rotateLeft90 + '</button>' +
+								'<button class="acorn-rotate-button" title="' + text.rotateLeft90Title + '" id="rotate--90">' + text.rotateLeft90 + '</button>' +
 							'</div>';
 
 			var captionMarkup = '<div class="acorn-caption"></div>';
