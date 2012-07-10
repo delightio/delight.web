@@ -57,7 +57,7 @@ class VideoProcessing
                 else
                   ""
                 end
-    `ffmpeg -itsoffset 4 -i "#{video_file.path}" -vcodec png "#{transpose}" -vframes 1 -an -f rawvideo -s #{dimension} -y "#{thumbnail_filename}"`
+    `ffmpeg -itsoffset 4 -i "#{video_file.path}" -vcodec png #{transpose} -vframes 1 -an -f rawvideo -s #{dimension} -y "#{thumbnail_filename}"`
     File.new thumbnail_filename
   end
 
