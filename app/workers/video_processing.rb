@@ -36,7 +36,7 @@ class VideoProcessing
   def self.draw_touch screen_file, touch_file, rotation_angle
     processed_filename = "#{screen_file.path}.draw_touch.mov"
     `gesturedrawer -f "#{screen_file.path}" -p "#{touch_file.path}" -d "#{processed_filename}"`
-    rotate processed_filename rotation_angle
+    rotate processed_filename, rotation_angle
     VideoFile.new processed_filename
   end
 
