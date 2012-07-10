@@ -13,7 +13,7 @@ class VideoProcessing
     rotation = app_session.orientation_track.rotation app_session.duration.to_i
 
     processed = VideoProcessing.draw_touch screen, touch, rotation
-    thumbnail = VideoProcessing.thumbnail processed
+    thumbnail = VideoProcessing.thumbnail processed, rotation
 
     # We will delete existing presentation track if there is one.
     app_session.destroy_presentation_track
@@ -36,20 +36,29 @@ class VideoProcessing
   def self.draw_touch screen_file, touch_file, rotation_angle
     processed_filename = "#{screen_file.path}.draw_touch.mov"
     `gesturedrawer -f "#{screen_file.path}" -p "#{touch_file.path}" -d "#{processed_filename}"`
-    rotate processed_filename, rotation_angle
+    rotate_video processed_filename, rotation_angle
     VideoFile.new processed_filename
   end
 
-  def self.rotate mp4_file, angle
-    `qtrotate.py "#{mp4_file}" "#{angle}"`
+  def self.rotate_video mp4_file, rotation_angle
+    `qtrotate.py "#{mp4_file}" "#{rotation_angle}"`
   end
 
-  def self.thumbnail video_file
+  def self.thumbnail video_file, rotation_angle
     dimension = "#{video_file.width}x#{video_file.height}"
     thumbnail_filename = video_file.path+'.thumbnail.png'
-    `ffmpeg -itsoffset 4 -i "#{video_file.path}" -vcodec png -vframes 1 -an -f rawvideo -s #{dimension} -y "#{thumbnail_filename}"`
-    thumbnail = File.open thumbnail_filename # TODO: may want to return a ImageFile object
-    thumbnail
+    transpose = case rotation_angle
+                when 90
+                  "-vf transpose=1"
+                when 270
+                  "-vf transpose=2"
+                when 180
+                  "-vf vflip"
+                else
+                  ""
+                end
+    `ffmpeg -itsoffset 4 -i "#{video_file.path}" -vcodec png "#{transpose}" -vframes 1 -an -f rawvideo -s #{dimension} -y "#{thumbnail_filename}"`
+    File.new thumbnail_filename
   end
 
   def self.cleanup working_directory
