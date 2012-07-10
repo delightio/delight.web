@@ -1,16 +1,6 @@
 <div class="container" style="width:100%">
   <div class="row">
     <div class="span9">
-      <div class="row" style="position:relative">
-        <div class="span3">
-          <div class="btn-group">
-            <a href="javascript:void(0)" id="rotate--90" class="btn btn-primary">-90</a>
-            <a href="javascript:void(0)" id="rotate-0" class="btn btn-primary">0</a>
-            <a href="javascript:void(0)" id="rotate-90" class="btn btn-primary">90</a>
-            <a href="javascript:void(0)" id="rotate-180" class="btn btn-primary">180</a>
-          </div>
-        </div>
-      </div>
       <div class="row" style="margin-left:0px;">
         <div class="span9" style="text-align:center;overflow:hidden">
           <div class="video-container" style="width:100%">
@@ -26,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="span3" style="margin-top:20px">
+    <div class="span3" style="margin-top:20px; padding-left: 10px;">
       <div class="row-fluid">
         <h3 style="color:white">Default properties</h3>
       </div>
@@ -76,7 +66,7 @@
         <div class="span7 pull-right" style="color:white"><%= property.value %></div><br>
       </div>
       <% end %>
-      <br />
+      <hr />
       <div class="row">
         <div class="span3">
           <!--
@@ -85,6 +75,7 @@
           <% if @is_admin %>
             <%= link_to raw('Share'), new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-success", :style => "color:white", :id => "app-session-show-invite-viewer" %>
           <% end %>
+          <a href="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" target="_blank" class="btn btn-primary">Download</a>
         </div>
       </div>
     </div>

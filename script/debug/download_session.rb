@@ -1,11 +1,11 @@
 require File.expand_path('config/environment.rb')
 
-if ARGV.count != 2
-  puts "We need app session id and a destination directory"
+if ARGV.count != 1
+  puts "We need at least a app session id. Destionation directory and buckect name are optional"
 end
 
 app_session_id = ARGV.shift
-destination = ARGV.shift
+destination = ARGV.shift || '/tmp'
 delight_upload = ARGV.shift || 'delight_upload'
 
 track_classes = [ScreenTrack, TouchTrack, OrientationTrack, FrontTrack,

@@ -11,6 +11,20 @@ describe AppSession do
     it 'returns completed sessions which we have received the expected number of tracks'
   end
 
+  describe '#private_framework?' do
+    it 'is true if delight_version number contains Private' do
+      subject.stub :delight_version => '3.4.Private'
+
+      subject.should be_private_framework
+    end
+
+    it 'is false if delight_version does not contain private' do
+      subject.stub :delight_version => '2.4'
+
+      subject.should_not be_private_framework
+    end
+  end
+
   describe '#completed?' do
     it 'is true after we have received the expected number of tracks' do
       subject.stub :expected_track_count => 0
@@ -93,7 +107,17 @@ describe AppSession do
   end
 
   describe '#maximum_frame_rate' do
-    its(:maximum_frame_rate) { should == 10 }
+    context 'app session from private framework' do
+      before { subject.stub :private_framework? => true }
+
+      its(:maximum_frame_rate) { should == 20 }
+    end
+
+    context 'app session from non private framework' do
+      before { subject.stub :private_framework? => false }
+
+      its(:maximum_frame_rate) { should == 10 }
+    end
   end
 
   describe '#scale_factor' do
@@ -114,6 +138,13 @@ describe AppSession do
     it 'generates 1 MB of video per one minute of recording' do
       bits_per_minute = subject.average_bit_rate * 60
       bits_per_minute.should be_within(10*1024).of(8*1024*1024)
+    end
+
+    context 'when recording from private frame' do
+      before { subject.stub :private_framework? => true }
+      it 'generates 500 kpbs video' do
+        subject.average_bit_rate.should == 500000
+      end
     end
   end
 
@@ -283,7 +314,8 @@ describe AppSession do
   end
 
   context 'named_track' do
-    [:screen_track, :touch_track, :front_track, :presentation_track].each do |named_track|
+    [ :screen_track, :touch_track, :front_track, :orientation_track,
+      :presentation_track ].each do |named_track|
       specify "#{named_track} returns associated #{named_track}" do
         track = FactoryGirl.create named_track, app_session: subject
 

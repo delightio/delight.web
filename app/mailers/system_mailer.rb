@@ -12,4 +12,12 @@ class SystemMailer < ActionMailer::Base
     mail(:to => invitation.email,
          :subject => "[Delight] #{@user.nickname}'s invitation to #{@invitation.app.name}")
   end
+
+  def ios_version_notification(app, ios_version_number)
+    @app = app
+    @administrator = app.administrator
+    @ios_version_number = ios_version_number
+    mail(:to => @administrator.email,
+         :subject => "[Delight] #{app.name}'s iOS SDK Upgrade Required")
+  end
 end

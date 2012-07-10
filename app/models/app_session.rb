@@ -70,6 +70,10 @@ class AppSession < ActiveRecord::Base
   end
   extend Scopes
 
+  def private_framework?
+    delight_version.split('.').include? 'Private'
+  end
+
   def completed?
     expected_track_count == tracks.count
   end
@@ -97,6 +101,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def maximum_frame_rate
+    return 20 if private_framework?
     10
   end
 
@@ -110,6 +115,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def average_bit_rate
+    return 500000 if private_framework?
     # 1 MB per minute video
     8*1024*1024/60
   end
@@ -141,6 +147,10 @@ class AppSession < ActiveRecord::Base
 
   def front_track
     FrontTrack.find_by_app_session_id id
+  end
+
+  def orientation_track
+    OrientationTrack.find_by_app_session_id id
   end
 
   def presentation_track

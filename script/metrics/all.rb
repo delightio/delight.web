@@ -51,27 +51,27 @@ end
 puts
 
 puts 'Most active Apps:'
-sessions_count = {}
+last_session_ages = {}
+now = Time.now
 App.after_launch.latest.find_each do |app|
-  sessions_count[app.id.to_s] = app.app_sessions.count
+  unless app.app_sessions.recorded.count==0
+    last_session = app.app_sessions.recorded.latest.first
+    last_session_ages[app.id.to_s] = (now-last_session.created_at).to_i
+  end
 end
-sorted = sessions_count.sort { |x,y| y.last <=> x.last }
-no_sessions, sorted = sorted.partition { |a| a.last==0 }
-sorted.each do |app_id, count|
+sorted = last_session_ages.sort { |x,y| x.last <=> y.last }
+sorted.each do |app_id, age|
   app = App.find app_id
   last_session = app.app_sessions.latest.first
-  puts "  #{app.name}, App[#{app.id}] #{app.app_sessions.recorded.count} / #{count} sessions "+\
+  last_recorded_session = app.app_sessions.recorded.latest.first
+  puts "  #{app.name}, App[#{app.id}] #{app.app_sessions.recorded.count} / #{app.app_sessions.count} sessions "+\
        "( #{app.app_sessions.recorded.where(:created_at=>(24.hours.ago..Time.now)).count} / #{app.app_sessions.where(:created_at=>(24.hours.ago..Time.now)).count} in < 24h), "+\
        "avg #{app.app_sessions.recorded.average(:duration).to_i} / #{app.app_sessions.average(:duration).to_i} s, "+\
-       "last session: #{last_session.created_at.age}"
+       "last session: #{last_recorded_session.created_at.age} / #{last_session.created_at.age}"
 end
-puts
-
-puts "#{no_sessions.count} apps have no sessions: "
-puts no_sessions.map {|s| App.find(s.first).name }.join ', '
 puts
 
 puts "Summary (since launched #{LaunchDate.age}):"
 puts "  Accounts: #{Account.after_launch.count}"
-puts "  Apps: #{App.after_launch.count}"
+puts "  Apps: #{sorted.count}/#{App.after_launch.count}"
 puts "  App Sessions: #{AppSession.after_launch.recorded.count} / #{AppSession.after_launch.count}"
