@@ -3,13 +3,16 @@
 <ol>
   <li>Create your Delight account and application.</li>
   <br>
+
   <li>Copy the app token.</li>
   <br>
+
   <li>Get the Delight framework from GitHub<br>
     <code>git clone git@github.com:delightio/ios.git</code>
   </li>
   <br>
-  <li>Add <code>Delight.framework</code> to your target along with the following:
+
+  <li>Add <code>DelightPrivate.framework</code> to your target along with the following:
     <ul>
       <li type='a'>AssetsLibrary</li>
       <li type='a'>AVFoundation</li>
@@ -21,23 +24,16 @@
       <li type='a'>SystemConfiguration</li>
     </ul>
   </li><br>
+
   <li>In your build settings, add <code>-ObjC</code> to "Other Linker Flags".</li><br>
+
   <li>In your application delegate,<br><br>
-    <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
+    <code>#import &lt;DelightPrivate/Delight.h&gt;</code> and<br><br>
     put the following in the <code>application:didFinishLaunchingWithOptions:</code>:
     <br><br>
     <code>
-      [Delight startOpenGLWithAppToken:@"<strong>Your App Token</strong>"];
+      [Delight startWithAppToken:@"<strong>Your App Token</strong>"]
     </code>
   </li><br>
-  <li>In your render loop, add the following line after drawing but before calling <code>-[EAGLContext presentRenderbuffer:]</code>:<br><br>
-  	<code>
-      [Delight takeOpenGLScreenshot:glView];
-    </code><br><br>
-    where glView is your OpenGL view.<br><br>
-    If you're using multiple renderbuffers, specify which one to use by calling the following method instead:<br><br>
-    <code>
-	[Delight takeOpenGLScreenshot:glView colorRenderbuffer:renderbuffer];
-    </code>
-
 </ol>
+<p><strong>Note</strong>: DelightPrivate.framework is a special version of Delight that uses private iOS API calls to improve performance. It should therefore not be used in App Store builds.</p>

@@ -60,15 +60,9 @@
 	
 	<option value="//api/name/setSavesToPhotoAlbum:">&nbsp;&nbsp;&nbsp;&nbsp;+ setSavesToPhotoAlbum:</option>
 	
-	<option value="//api/name/startOpenGLWithAppToken:">&nbsp;&nbsp;&nbsp;&nbsp;+ startOpenGLWithAppToken:</option>
-	
 	<option value="//api/name/startWithAppToken:">&nbsp;&nbsp;&nbsp;&nbsp;+ startWithAppToken:</option>
 	
 	<option value="//api/name/stop">&nbsp;&nbsp;&nbsp;&nbsp;+ stop</option>
-	
-	<option value="//api/name/takeOpenGLScreenshot:">&nbsp;&nbsp;&nbsp;&nbsp;+ takeOpenGLScreenshot:</option>
-	
-	<option value="//api/name/takeOpenGLScreenshot:colorRenderbuffer:">&nbsp;&nbsp;&nbsp;&nbsp;+ takeOpenGLScreenshot:colorRenderbuffer:</option>
 	
 	<option value="//api/name/unregisterPrivateView:">&nbsp;&nbsp;&nbsp;&nbsp;+ unregisterPrivateView:</option>
 	
@@ -91,8 +85,6 @@
 <li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Starting and Stopping Recording">Starting and Stopping Recording</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_OpenGL ES Recording">OpenGL ES Recording</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Adding Metadata">Adding Metadata</a></span></li>
 	
@@ -128,15 +120,9 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setSavesToPhotoAlbum:">setSavesToPhotoAlbum:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/startOpenGLWithAppToken:">startOpenGLWithAppToken:</a></span></li>
-	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/startWithAppToken:">startWithAppToken:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stop">stop</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/takeOpenGLScreenshot:">takeOpenGLScreenshot:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/takeOpenGLScreenshot:colorRenderbuffer:">takeOpenGLScreenshot:colorRenderbuffer:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/unregisterPrivateView:">unregisterPrivateView:</a></span></li>
 	
@@ -200,43 +186,14 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/startWithAppToken:">+&nbsp;startWithAppToken:</a></code>
-		<span class="tooltip"><p>Starts capturing the screen and recording gestures. The recording will automatically end after 10 minutes, or if the app is sent to the background, or if <a href="#//api/name/stop"><code>stop</code></a> is called. A new recording will be started whenever the app is brought to the foreground. Recordings only take place if you have scheduled recordings in your <a href="http://delight.io/apps">control panel</a>, and recordings are not paused.</p></span>
+		<span class="tooltip"><p>Starts capturing the screen and recording gestures. The recording will automatically end after 10 minutes, or if the app is sent to the background. A new recording will be started whenever the app is brought to the foreground. Recordings only take place if you have scheduled recordings in your <a href="http://delight.io/apps">control panel</a>, and recordings are not paused.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/stop">+&nbsp;stop</a></code>
-		<span class="tooltip"><p>Stops the current recording, if there is one. Calling this method is optional. Recordings will automatically stop after 10 minutes, or if the app is sent to the background.</p></span>
-	</span>
-	
-	
-</li>
-						</ul>
-						
-						
-						<a title="OpenGL ES Recording" name="task_OpenGL ES Recording"></a>
-						<h3 class="subsubtitle task-title">OpenGL ES Recording</h3>
-
-						<ul class="task-list">
-							<li>
-	<span class="tooltip">
-		<code><a href="#//api/name/startOpenGLWithAppToken:">+&nbsp;startOpenGLWithAppToken:</a></code>
-		<span class="tooltip"><p>Starts capturing the screen and recording gestures for OpenGL ES-based apps. You must also call either <a href="#//api/name/takeOpenGLScreenshot:"><code>takeOpenGLScreenshot:</code></a> or <a href="#//api/name/takeOpenGLScreenshot:colorRenderbuffer:"><code>takeOpenGLScreenshot:colorRenderbuffer:</code></a> inside your render loop, just before calling <code>[EAGLContext presentRenderbuffer:]</code>.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/takeOpenGLScreenshot:">+&nbsp;takeOpenGLScreenshot:</a></code>
-		<span class="tooltip"><p>Writes the framebuffer pixel data to the recording. Call this method after drawing and before <code>[EAGLContext presentRenderbuffer:]</code>. If you have multiple renderbuffers, use <a href="#//api/name/takeOpenGLScreenshot:colorRenderbuffer:"><code>takeOpenGLScreenshot:colorRenderbuffer:</code></a> instead.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/takeOpenGLScreenshot:colorRenderbuffer:">+&nbsp;takeOpenGLScreenshot:colorRenderbuffer:</a></code>
-		<span class="tooltip"><p>Writes the framebuffer pixel data to the recording. Call this method after drawing and before <code>[EAGLContext presentRenderbuffer:]</code>. If your application creates only a single color renderbuffer which is already bound, you may use <a href="#//api/name/takeOpenGLScreenshot:"><code>takeOpenGLScreenshot:</code></a> instead.</p></span>
+		<span class="tooltip"><p>Stops the current recording and all future recordings.</p></span>
 	</span>
 	
 	
@@ -785,68 +742,13 @@
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/startOpenGLWithAppToken:" title="startOpenGLWithAppToken:"></a>
-	<h3 class="subsubtitle method-title">startOpenGLWithAppToken:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Starts capturing the screen and recording gestures for OpenGL ES-based apps. You must also call either <a href="#//api/name/takeOpenGLScreenshot:"><code>takeOpenGLScreenshot:</code></a> or <a href="#//api/name/takeOpenGLScreenshot:colorRenderbuffer:"><code>takeOpenGLScreenshot:colorRenderbuffer:</code></a> inside your render loop, just before calling <code>[EAGLContext presentRenderbuffer:]</code>.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>+ (void)startOpenGLWithAppToken:(NSString *)<em>appToken</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>appToken</em></dt>
-			<dd><p>The application token from your <a href="http://delight.io/apps">control panel</a>.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
-			
-			<li><code><p><a href="#//api/name/startWithAppToken:">+ startWithAppToken:</a></p></code></li>
-			
-		</ul>
-	</div>
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">Delight.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
 	<a name="//api/name/startWithAppToken:" title="startWithAppToken:"></a>
 	<h3 class="subsubtitle method-title">startWithAppToken:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Starts capturing the screen and recording gestures. The recording will automatically end after 10 minutes, or if the app is sent to the background, or if <a href="#//api/name/stop"><code>stop</code></a> is called. A new recording will be started whenever the app is brought to the foreground. Recordings only take place if you have scheduled recordings in your <a href="http://delight.io/apps">control panel</a>, and recordings are not paused.</p>
+		<p>Starts capturing the screen and recording gestures. The recording will automatically end after 10 minutes, or if the app is sent to the background. A new recording will be started whenever the app is brought to the foreground. Recordings only take place if you have scheduled recordings in your <a href="http://delight.io/apps">control panel</a>, and recordings are not paused.</p>
 	</div>		
 	
     
@@ -873,7 +775,7 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> This method should only be called once, typically in your application delegate&rsquo;s <code>applicationDidFinishLaunching:withOptions:</code> method.</p></div><div class="warning"><p><strong>Warning:</strong> If your app uses OpenGL ES, do not use this method. Use <a href="#//api/name/startOpenGLWithAppToken:"><code>startOpenGLWithAppToken:</code></a> instead.</p></div>
+		<div class="warning"><p><strong>Warning:</strong> This method should only be called once, typically in your application delegate&rsquo;s <code>applicationDidFinishLaunching:withOptions:</code> method.</p></div>
 	</div>
 	
 	
@@ -906,7 +808,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Stops the current recording, if there is one. Calling this method is optional. Recordings will automatically stop after 10 minutes, or if the app is sent to the background.</p>
+		<p>Stops the current recording and all future recordings.</p>
 	</div>		
 	
     
@@ -921,133 +823,9 @@
 	
 	
 	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> It is not possible to manually resume recording by calling <a href="#//api/name/startWithAppToken:"><code>startWithAppToken:</code></a> again. A new recording will begin once the app has been sent to the background and then brought back to the foreground.</p></div>
-	</div>
 	
 	
 	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">Delight.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/takeOpenGLScreenshot:" title="takeOpenGLScreenshot:"></a>
-	<h3 class="subsubtitle method-title">takeOpenGLScreenshot:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Writes the framebuffer pixel data to the recording. Call this method after drawing and before <code>[EAGLContext presentRenderbuffer:]</code>. If you have multiple renderbuffers, use <a href="#//api/name/takeOpenGLScreenshot:colorRenderbuffer:"><code>takeOpenGLScreenshot:colorRenderbuffer:</code></a> instead.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>+ (void)takeOpenGLScreenshot:(UIView *)<em>glView</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>glView</em></dt>
-			<dd><p>The OpenGL ES view.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
-			
-			<li><code><p><a href="#//api/name/startOpenGLWithAppToken:">+ startOpenGLWithAppToken:</a></p></code></li>
-			
-			<li><code><p><a href="#//api/name/takeOpenGLScreenshot:colorRenderbuffer:">+ takeOpenGLScreenshot:colorRenderbuffer:</a></p></code></li>
-			
-		</ul>
-	</div>
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">Delight.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/takeOpenGLScreenshot:colorRenderbuffer:" title="takeOpenGLScreenshot:colorRenderbuffer:"></a>
-	<h3 class="subsubtitle method-title">takeOpenGLScreenshot:colorRenderbuffer:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Writes the framebuffer pixel data to the recording. Call this method after drawing and before <code>[EAGLContext presentRenderbuffer:]</code>. If your application creates only a single color renderbuffer which is already bound, you may use <a href="#//api/name/takeOpenGLScreenshot:"><code>takeOpenGLScreenshot:</code></a> instead.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>+ (void)takeOpenGLScreenshot:(UIView *)<em>glView</em> colorRenderbuffer:(GLuint)<em>colorRenderbuffer</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>glView</em></dt>
-			<dd><p>The OpenGL ES view.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>colorRenderbuffer</em></dt>
-			<dd><p>The color renderbuffer object used to render the OpenGL ES view.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
-			
-			<li><code><p><a href="#//api/name/startOpenGLWithAppToken:">+ startOpenGLWithAppToken:</a></p></code></li>
-			
-			<li><code><p><a href="#//api/name/takeOpenGLScreenshot:">+ takeOpenGLScreenshot:</a></p></code></li>
-			
-		</ul>
-	</div>
 	
 	
 	
@@ -1131,7 +909,7 @@
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Pipely Inc. All rights reserved. (Last updated: 2012-06-07)</span><br />
+						<p><span class="copyright">&copy; 2012 Pipely Inc. All rights reserved. (Last updated: 2012-07-10)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 789)</a>.</span></p>
 						

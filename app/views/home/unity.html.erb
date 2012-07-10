@@ -2,27 +2,13 @@
 <br>
 <ol>
   <li>Export your project to Xcode.</li><br>
-  <li>Follow steps 1-5 in the <a href="/docs/opengles">OpenGL ES Guide</a>.</li>
-  <br>
+  <li>Follow steps 1-5 in the <a href="/docs/opengles">OpenGL ES Guide</a>.</li><br>
   <li>In AppController.mm,<br><br>
-    <code>#import &lt;Delight/Delight.h&gt;</code> and<br><br>
+    <code>#import &lt;DelightPrivate/Delight.h&gt;</code> and<br><br>
     put the following at the end of the application:didFinishLaunchingWithOptions: method:
     <br><br>
     <code>
-      [Delight startOpenGLWithAppToken:@"<strong>Your App Token</strong>"];
+      [Delight startWithAppToken:@"<strong>Your App Token</strong>"];
     </code>
   </li><br>
-  <li>Find the PresentSurface method in AppController.mm. Just before the following line:<br><br>
-<code>
-  if(![_context presentRenderbuffer:GL_RENDERBUFFER_OES])
-</code>
-	<br><br>insert the following:<br><br>
-<code>
-	[Delight takeOpenGLScreenshot:sGLView];
-</code>
-  </li><br>
-  <li>
-  	Your AppController.mm file should look similar to the screenshot below:<br><br>
-  	<img src="/images/screenshot_unity.png" alt="AppController.mm after Delight code insertion">
-  </li>
 </ol>
