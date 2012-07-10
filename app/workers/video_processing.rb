@@ -41,7 +41,7 @@ class VideoProcessing
   end
 
   def self.rotate mp4_file, angle
-    `qtrotate.py "#{mp4_file} #{angle}"`
+    `qtrotate.py "#{mp4_file}" "#{angle}"`
   end
 
   def self.thumbnail video_file
