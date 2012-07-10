@@ -12,6 +12,9 @@ FactoryGirl.define do
   factory :front_track do |t|
   end
 
+  factory :orientation_track do |t|
+  end
+
   factory :presentation_track do |t|
   end
 end
