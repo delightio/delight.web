@@ -10,8 +10,9 @@ class VideoProcessing
 
     touch = app_session.touch_track.download
     screen = app_session.screen_track.download
+    rotation = app_session.orientation_track.rotation app_session.duration.to_i
 
-    processed = VideoProcessing.draw_touch screen, touch
+    processed = VideoProcessing.draw_touch screen, touch, rotation
     thumbnail = VideoProcessing.thumbnail processed
 
     # We will delete existing presentation track if there is one.
@@ -32,10 +33,15 @@ class VideoProcessing
   end
 
   # TODO
-  def self.draw_touch screen_file, touch_file
+  def self.draw_touch screen_file, touch_file, rotation_angle
     processed_filename = "#{screen_file.path}.draw_touch.mov"
     `gesturedrawer -f "#{screen_file.path}" -p "#{touch_file.path}" -d "#{processed_filename}"`
+    rotate processed_filename, rotation_angle
     VideoFile.new processed_filename
+  end
+
+  def self.rotate mp4_file, angle
+    `qtrotate.py "#{mp4_file}" "#{angle}"`
   end
 
   def self.thumbnail video_file

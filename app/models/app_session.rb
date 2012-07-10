@@ -149,6 +149,10 @@ class AppSession < ActiveRecord::Base
     FrontTrack.find_by_app_session_id id
   end
 
+  def orientation_track
+    OrientationTrack.find_by_app_session_id id
+  end
+
   def presentation_track
     PresentationTrack.find_by_app_session_id id
   end
