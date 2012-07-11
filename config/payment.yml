@@ -1,26 +1,26 @@
 defaults: &defaults
   plans:
    -
+    display: 'A La Carte'
+    name: 'one'
+    price: 5
+    credit: 1
+   -
     display: 'Launch'
     name: 'few'
     price: 50
     credit: 20
    -
-    display: 'Growth'
+    display: 'Unlimited'
     name: 'volume'
-    price: 100
-    credit: 50
+    price: 500
+    credit: 100
 
 development:
   <<: *defaults
 
 test:
-  plans:
-   -
-    display: 'Growth'
-    name: 'volume'
-    price: 100
-    credit: 100
+  <<: *defaults
 
 production:
   <<: *defaults

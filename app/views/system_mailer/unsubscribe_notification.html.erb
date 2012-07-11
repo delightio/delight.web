@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+
+<p>
+  The following user submitted a unsubscribe request.
+</p>
+
+<p>
+  Account name: <%= @account.name %><br>
+  Account ID: <%= @account.id %><br>
+  Administrator nickname: <%= @account.administrator.nickname %><br>
+  Administrator email: <%= @account.administrator.email %><br>
+  Submit Date: <%= Time.now %>
+</p>
+
+</body>
+</html>

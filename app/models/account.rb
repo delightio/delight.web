@@ -14,6 +14,7 @@ class Account < ActiveRecord::Base
 
   include Redis::Objects
   counter :credits
+  value :plan
   FreeCredits = 50
   SpecialCredits = 10
 
@@ -27,6 +28,22 @@ class Account < ActiveRecord::Base
 
   def use_credits n=1
     credits.decrement n
+  end
+
+  def current_subscription
+    if plan.to_s.empty?
+      return nil
+    else
+      return plan.to_s
+    end
+  end
+
+  def subscribe new_plan
+    plan.value = new_plan.to_s
+  end
+
+  def unsubscribe
+    plan.delete
   end
 
   def add_free_credits
