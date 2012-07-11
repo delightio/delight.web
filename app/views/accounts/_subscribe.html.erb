@@ -1,0 +1,214 @@
+<!-- requires #remaining-credits defined -->
+    <div class="row-fluid">
+      <div class="span12">
+        <div id="payment-alert-2"></div>
+      </div>
+    </div>
+<div class="row-fluid">
+  <div class="span12">
+    <% if account.current_subscription.nil? %>
+      <%= form_tag(account_subscribe_path(:account_id => account.id), :remote => true, :method => :put, :id => "payment-form-2", :class => "form-horizontal") do |add_credit_form| %>
+        <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Subscription Details</h3>
+        <div class="row">
+          <div class="span12">
+            <table class="table table-striped" width="95%">
+              <thead>
+              </thead>
+              <tbody>
+                <%- payment = PAYMENT_CONFIG['plans'].last %>
+                <tr class="add-credit-row">
+                  <td>Monthly Subscription</td>
+                  <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px"><%= payment['price']%></span></td>
+                  <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> <%= payment['credit']%></span></td>
+                  <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credits</span></td>
+                </tr>
+            </table>
+          </div>
+        </div>
+
+        <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Credit card information</h3>
+
+          <fieldset class="span7" style="align:center;text-align:center;margin-left:100px;margin-top:15px">
+            <div class="control-group">
+              <label class="control-label" for="card-number-2">Card Number</label>
+              <div class="controls">
+                <input type="text" size="20" autocomplete="off" id="card-number-2" value="" class="pull-left"/>
+                <span class="help-inline" style="height:28px;overflow:hidden"><img id="card-type-img-2" src="" style="display:none;position:relative;top:-1px;"/></span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="card-cvc-2">CVC</label>
+              <div class="controls">
+                <input type="text" size="4" autocomplete="off" id="card-cvc-2" value="" class="pull-left"/>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="card-expiry-month-2">Expiration (MM/YYYY)</label>
+              <div class="controls">
+                <div class="pull-left">
+                <input type="text" size="2" id="card-expiry-month-2" class="input-small" value=""/>
+                <span> / </span>
+                <input type="text" size="4" id="card-expiry-year-2" class="input-small" value=""/>
+                <%= submit_tag "Subscribe", :class => "btn btn-success", :id => "subscribe-submit-btn" %>
+              </div>
+              </div>
+            </div>
+          </fieldset>
+
+      <% end %>
+    <% else %>
+
+      <%= form_tag(account_unsubscribe_path(:account_id => account.id), :remote => true, :method => :put, :id => "unsubscribe-form", :class => "form-horizontal") do |add_credit_form| %>
+        <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Subscription Details</h3>
+        <div class="row">
+          <div class="span12">
+            <table class="table table-striped" width="95%">
+              <thead>
+              </thead>
+              <tbody>
+                <%- payment = PAYMENT_CONFIG['plans'].last %>
+                <tr class="add-credit-row">
+                  <td>Monthly Subscription</td>
+                  <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px"><%= payment['price']%></span></td>
+                  <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> <%= payment['credit']%></span></td>
+                  <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credits</span></td>
+                </tr>
+            </table>
+          </div>
+        </div>
+
+        <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Confirmed to unsubscribe?</h3>
+
+          <fieldset class="span7" style="align:center;text-align:left;margin-top:15px">
+            <%= submit_tag "Unsubscribe Now", :class => "btn btn-warning", :id => "unsubscribe-submit-btn" %>
+          </fieldset>
+
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+<script type="text/javascript">
+  // this identifies your website in the createToken call below
+  Stripe.setPublishableKey("<%= ENV['STRIPE_KEY'] %>");
+  $(document).ready(function() {
+    $("#payment-form-2").submit(function(event) {
+      // disable the submit button to prevent repeated clicks
+      $('#add-credit-submit-btn').attr("disabled", "disabled");
+      $('#subscribe-submit-btn').attr("disabled", "disabled");
+
+      Stripe.createToken({
+        number: $('#card-number-2').val(),
+        cvc: $('#card-cvc-2').val(),
+        exp_month: $('#card-expiry-month-2').val(),
+        exp_year: $('#card-expiry-year-2').val()
+      }, stripeResponseHandler2);
+
+      // prevent the form from submitting with the default action
+      return false;
+    });
+
+    $("#card-number-2").change((function() {
+      var type_to_img_map = {
+        'Visa':'/assets/visa.png',
+        'MasterCard':'/assets/master.png',
+        'American Express':'/assets/amex.png',
+        'Discover':'/assets/discover.png',
+        'Diners Club':'/assets/dinersclub.png'
+        //'JCB':'/assets/visa.png',
+      };
+      return function() {
+        var card_number = $("#card-number-2").attr('value');
+        var card_type = Stripe.cardType(card_number);
+        if (type_to_img_map.hasOwnProperty(card_type)) {
+          $("#card-type-img-2").attr('src', type_to_img_map[card_type]);
+          $("#card-type-img-2").show();
+        } else {
+          $("#card-type-img-2").hide();
+        }
+      };
+    })());
+
+    $("#unsubscribe-form").submit(function(event) {
+      // disable the submit button to prevent repeated clicks
+      $('#unsubscribe-submit-btn').attr("disabled", "disabled");
+
+      var form$ = $("#unsubscribe-form");
+      $.ajax({
+        type: 'PUT',
+        url: form$.attr('action'),
+        data: '',
+        success: function(data) {
+          if (data['result'] && data['result'] == 'success') {
+            unsubscribe_success(data);
+          } else {
+            subscribe_error(data['reason']);
+          }
+        } ,
+        error: function() {
+          $('#unsubscribe-submit-btn').removeAttr("disabled");
+          subscribe_error('No reponse from server');
+        },
+        dataType: 'json'
+      });
+
+      // prevent the form from submitting with the default action
+      return false;
+    });
+
+  });
+
+  function stripeResponseHandler2(status, response) {
+    if (response.error) {
+      // show the errors on the form
+      $("#payment-alert-2").html('<div class="alert alert-error">' + response.error.message + '</div>');
+      $('#add-credit-submit-btn').removeAttr("disabled");
+      $('#subscribe-submit-btn').removeAttr("disabled");
+    } else {
+      var form$ = $("#payment-form-2");
+      // token contains id, last4, and card type
+      var token = response['id'];
+      // insert the token into the form so it gets submitted to the server
+      form$.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+      // submit through ajax
+      var values = {};
+      $.each(form$.serializeArray(), function(i, field) {
+        values[field.name] = field.value;
+      });
+
+      $.ajax({
+        type: 'PUT',
+        url: form$.attr('action'),
+        data: values,
+        success: function(data) {
+          $('#payment-form input').attr("disabled", "disabled");
+          $('#payment-form-2 input').attr("disabled", "disabled");
+          if (data['result'] && data['result'] == 'success') {
+            subscribe_success(data);
+          } else {
+            subscribe_error(data['reason']);
+          }
+        } ,
+        error: function() {
+          $('#add-credit-submit-btn').removeAttr("disabled");
+          $('#subscribe-submit-btn').removeAttr("disabled");
+          subscribe_error('No reponse from server');
+        },
+        dataType: 'json'
+      });
+    }
+  }
+  function subscribe_success(data) {
+    $("#payment-alert-2").html('<div class="alert alert-success">Successfully subscribed Unlimited plan.</div>');
+    $("#payment-alert").html('<div class="alert alert-error">Subscribed to unlimited plan. No need to add credits.</div>');
+    $("#remaining-credits").text('Unlimited');
+  }
+  function unsubscribe_success(data) {
+    $("#payment-alert-2").html('<div class="alert alert-success">Unsubscribe request submitted. Our staff will contact you soon.</div>');
+  }
+  function subscribe_error(msg) {
+    $("#payment-alert-2").html('<div class="alert alert-error">' + msg + '</div>');
+  }
+
+</script>
+

@@ -1,7 +1,43 @@
 <div class="container" style="text-align:center">
   <br>
-  <h1>Available credits: <span id="remaining-credits"><%= @account.remaining_credits %></span></h1>
+  <% remaining_credits = @account.current_subscription.nil? ? @account.remaining_credits : "Unlimited" %>
+  <h1 id="available-credits">Available credits: <span id="remaining-credits"><%= remaining_credits %></span></h1>
   <hr/>
 
-  <%= render :partial => 'accounts/add_credit', :locals => { :account => @account, :plan => @plan }  %>
+  <ul class="nav nav-tabs">
+    <li id="credit-tab" class="<%= @plan == 'volume' ? '' : 'active' %>"><a href="#" onClick="showAddCredits();">Add credits</a></li>
+    <li id="subscription-tab" class="<%= @plan == 'volume' ? 'active' : '' %>"><a href="#" onClick="showSubscription();">Monthly Subscription</a></li>
+  </ul>
+
+  <div id="add-credits" style="<%= @plan == 'volume' ? 'display: none' : '' %>">
+    <%= render :partial => 'accounts/add_credit', :locals => { :account => @account, :plan => @plan }  %>
+  </div>
+
+  <div id="monthly-subscription" style="<%= @plan == 'volume' ? '' : 'display: none' %>">
+    <%= render :partial => 'accounts/subscribe', :locals => { :account => @account, :plan => @plan }  %>
+  </div>
 </div>
+<script type="text/javascript">
+
+  function showAddCredits() {
+    $("#add-credits").show();
+    $("#monthly-subscription").hide();
+    $("#credit-tab").addClass("active");
+    $("#subscription-tab").removeClass("active");
+  }
+  function showSubscription() {
+    $("#add-credits").hide();
+    $("#monthly-subscription").show();
+    $("#credit-tab").removeClass("active");
+    $("#subscription-tab").addClass("active");
+  }
+
+  // $(document).ready(function(){
+
+  //   if ("<%= @plan %>" == "volume") {
+  //     showSubscription();
+  //   } else {
+  //     showAddCredits();
+  //   }
+  // });
+</script>

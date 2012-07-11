@@ -16,21 +16,16 @@
 
 <h2>Select a package below:</h2><br/>
 <div class="row-fluid center">
-  <a href="mailto:unlimited@delight.io?subject=Tell me more about the unlimited plan" class="span3 btn" style="margin-bottom: 15px">
-    <h3>Unlimited</h3>
-    <p>
-    <div class="muted"><span style="font-size:xx-large">Call us for details</span></div>
-    <br>
-    </p>
-  </a>
   <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
-    <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
+  <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
     <h3><%= payment['display'] %></h3>
     <br/>
     <p>
-    <span style="font-size:xx-large">$<%= payment['price'] %></span>
-    <br/><br/>
-    per <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
+      <span style="font-size:400%">$<%= payment['price'] %></span>
+      <br/><br/>
+      <span style="font-size:large">
+        per <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
+      </span>
     </p>
     <% if payment['name'] == 'volume' %>
       <p>
@@ -43,7 +38,7 @@
 <div class="row-fluid">
   <div class="span10">
     <span style="font-size:large">
-      <strong>Questions?</strong> <a href="mailto:info@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
+      <strong>Questions?</strong> <a href="mailto:pricing@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
     </span>
     <br><br>
     <div class="well">
@@ -53,6 +48,7 @@
         <li>Purchased credits never expire.</li>
         <li>Credits can be used on multiple apps under the same account.</li>
         <li>All transaction are in USD and we accept all common credit cards.</li>
+        <li>For refund, please email us at <a href="mailto:pricing@delight.io">pricing@delight.io</a>.</li>
       </ul>
     </div>
   </div>

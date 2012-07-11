@@ -20,4 +20,9 @@ class SystemMailer < ActionMailer::Base
     mail(:to => @administrator.email,
          :subject => "[Delight] #{app.name}'s iOS SDK Upgrade Required")
   end
+
+  def unsubscribe_notification(account)
+    @account = account
+    mail(:to => "thomas@delight.io", :subject => "[Delight] Account #{account.name} (id: #{account.id}) Unsubscription")
+  end
 end
