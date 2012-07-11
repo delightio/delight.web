@@ -229,23 +229,26 @@ class AccountsController < ApplicationController
     Stripe.api_key = ENV['STRIPE_SECRET']
     token = params[:stripeToken]
 
-    customer = Stripe::Customer.create(
-      :description => "subscription of #{@account.id} - #{@account.name} - #{@account.administrator.email}",
-      :email => @account.administrator.email,
-      :card => token,
-      :plan => "unlimited"
-    )
+
+
+    begin
+      customer = Stripe::Customer.create(
+        :description => "subscription of #{@account.id} - #{@account.name} - #{@account.administrator.email}",
+        :email => @account.administrator.email,
+        :card => token,
+        :plan => "unlimited"
+      )
+    rescue
+      result = { 'result' => 'fail',
+                 'reason' => 'Payment gateway rejected. Please check your credit card information and try again.' }
+    else
+      # save record in redis
+      @account.subscribe "unlimited"
+
+      result = { 'result' => 'success' }
+    end
 
     respond_to do |format|
-      if customer.id.nil?
-        result = { 'result' => 'fail',
-                   'reason' => 'Payment gateway rejected.' }
-      else
-        # save record in redis
-        @account.subscribe "unlimited"
-
-        result = { 'result' => 'success' }
-      end
       format.json { render :json => result }
     end
   end
