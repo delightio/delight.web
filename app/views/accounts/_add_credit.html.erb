@@ -19,7 +19,6 @@
             </thead>
             <tbody>
               <% PAYMENT_CONFIG['plans'].each do |payment| %>
-              <% unless payment['name'] == "volume" %>
               <tr class="add-credit-row">
                 <td><input type="text" name="add-credit-quantity-<%= payment['name'] %>" id="add-credit-quantity-<%= payment['name'] %>" class="input-small" value="0" style="width:50px"/><span> x $<%= payment['price'] %> for <%= "#{pluralize(payment['credit'], 'credit')}" %></span></td>
                 <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price pull-right" style="margin-right:150px">0</span></td>
@@ -46,7 +45,6 @@
                 });
               });
               </script>
-              <% end %>
               <% end %>
               <tr>
                 <td>Total:</td>

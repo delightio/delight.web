@@ -16,7 +16,7 @@
 
 <h2>Select a package below:</h2><br/>
 <div class="row-fluid center">
-  <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
+  <% (PAYMENT_CONFIG['subscription_plans'] + PAYMENT_CONFIG['plans'].reverse).each do |payment| %>
   <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
     <h3><%= payment['display'] %></h3>
     <br/>

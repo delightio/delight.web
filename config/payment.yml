@@ -10,6 +10,8 @@ defaults: &defaults
     name: 'gold'
     price: 100
     credit: 50
+
+  subscription_plans:
    -
     display: 'Unlimited'
     name: 'volume'
@@ -36,6 +38,13 @@ test:
     name: 'volume'
     price: 500
     credit: 100
+
+  subscription_plans:
+   -
+    display: 'Unlimited'
+    name: 'volume'
+    price: 200
+    credit: unlimited
 
 production:
   <<: *defaults

@@ -15,7 +15,7 @@
               <thead>
               </thead>
               <tbody>
-                <%- payment = PAYMENT_CONFIG['plans'].last %>
+                <%- payment = PAYMENT_CONFIG['subscription_plans'].first %>
                 <tr class="add-credit-row">
                   <td>Monthly Subscription</td>
                   <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px"><%= payment['price']%></span></td>
@@ -66,7 +66,7 @@
               <thead>
               </thead>
               <tbody>
-                <%- payment = PAYMENT_CONFIG['plans'].last %>
+                <%- payment = PAYMENT_CONFIG['subscription_plans'].first %>
                 <tr class="add-credit-row">
                   <td>Monthly Subscription</td>
                   <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px"><%= payment['price']%></span></td>
