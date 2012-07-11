@@ -18,9 +18,9 @@
                 <%- payment = PAYMENT_CONFIG['plans'].last %>
                 <tr class="add-credit-row">
                   <td>Monthly Subscription</td>
-                  <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px">500</span></td>
-                  <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> unlimited</span></td>
-                  <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
+                  <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px"><%= payment['price']%></span></td>
+                  <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> <%= payment['credit']%></span></td>
+                  <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credits</span></td>
                 </tr>
             </table>
           </div>
@@ -69,9 +69,9 @@
                 <%- payment = PAYMENT_CONFIG['plans'].last %>
                 <tr class="add-credit-row">
                   <td>Monthly Subscription</td>
-                  <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px">500</span></td>
-                  <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> unlimited</span></td>
-                  <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credit</span></td>
+                  <td><span class="pull-left">$</span><span id="add-credit-subtotal-price-<%= payment['name'] %>" class="add-credit-subtotal-price-2 pull-right" style="margin-right:150px"><%= payment['price']%></span></td>
+                  <td><span id="add-credit-subtotal-credit-<%= payment['name'] %>" class="pull-right add-credit-subtotal-credit-2"> <%= payment['credit']%></span></td>
+                  <td><span id="add-credit-subtotal-credit-unit-<%= payment['name'] %>" class="" style="margin-right:130px">credits</span></td>
                 </tr>
             </table>
           </div>
