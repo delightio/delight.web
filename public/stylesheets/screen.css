@@ -6034,3 +6034,31 @@ footer ul > li:last-child a {
 el {
   display: none;
 }
+
+.menu-search-box {
+  width: 63%;
+}
+@media (min-width: 1200px) {
+  .menu-search-box {
+    width: 73%;
+  }
+}
+
+.input-prepend.input-append .add-on:first-child, .input-prepend.input-append .btn:first-child {
+margin-right: -1px;
+-webkit-border-radius: 3px 0 0 3px;
+-moz-border-radius: 3px 0 0 3px;
+border-radius: 3px 0 0 3px;
+-webkit-border-radius: 3px 0 0 3px;
+-moz-border-radius: 3px 0 0 3px;
+border-radius: 3px 0 0 3px;
+}
+
+.input-prepend.input-append input, .input-prepend.input-append select, .input-prepend.input-append .uneditable-input {
+-webkit-border-radius: 0;
+-moz-border-radius: 0;
+border-radius: 0;
+-webkit-border-radius: 0;
+-moz-border-radius: 0;
+border-radius: 0;
+}
