@@ -1,6 +1,27 @@
 defaults: &defaults
   plans:
    -
+    display: 'Launch'
+    name: 'silver'
+    price: 50
+    credit: 20
+   -
+    display: 'Growth'
+    name: 'gold'
+    price: 100
+    credit: 50
+   -
+    display: 'Unlimited'
+    name: 'volume'
+    price: 200
+    credit: 100
+
+development:
+  <<: *defaults
+
+test:
+  plans:
+   -
     display: 'A La Carte'
     name: 'one'
     price: 5
@@ -15,12 +36,6 @@ defaults: &defaults
     name: 'volume'
     price: 500
     credit: 100
-
-development:
-  <<: *defaults
-
-test:
-  <<: *defaults
 
 production:
   <<: *defaults
