@@ -181,11 +181,14 @@
         url: form$.attr('action'),
         data: values,
         success: function(data) {
-          $('#payment-form input').attr("disabled", "disabled");
-          $('#payment-form-2 input').attr("disabled", "disabled");
           if (data['result'] && data['result'] == 'success') {
+
+            $('#payment-form input').attr("disabled", "disabled");
+            $('#payment-form-2 input').attr("disabled", "disabled");
             subscribe_success(data);
           } else {
+            $('#add-credit-submit-btn').removeAttr("disabled");
+            $('#subscribe-submit-btn').removeAttr("disabled");
             subscribe_error(data['reason']);
           }
         } ,
