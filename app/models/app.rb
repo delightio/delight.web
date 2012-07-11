@@ -95,7 +95,7 @@ class App < ActiveRecord::Base
   end
 
   def emails
-    [administrator, *viewers].map &:email
+    (viewers.map &:email).uniq
   end
 
   def previously_notified?
