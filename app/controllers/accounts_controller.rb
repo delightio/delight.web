@@ -147,7 +147,8 @@ class AccountsController < ApplicationController
     expected_price = 0
     expected_credits = 0
     PAYMENT_CONFIG['plans'].each do |plan|
-      quantity = params["add-credit-quantity-#{plan['name']}"].to_i;
+      next if plan['credit']=='unlimited'
+      quantity = params["add-credit-quantity-#{plan['name']}"].to_i
       expected_price += quantity * plan['price']
       expected_credits += quantity * plan['credit']
     end
