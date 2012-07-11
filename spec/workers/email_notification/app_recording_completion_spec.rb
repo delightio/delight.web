@@ -6,6 +6,7 @@ describe AppRecordingCompletion do
   describe '.perform' do
     let(:app) { FactoryGirl.create :app }
     let(:data){ {to: app.emails.join(','),
+                 bcc: instance_of(String),
                  subject: instance_of(String),
                  text: instance_of(String)} }
     it 'sends email to everyone' do
