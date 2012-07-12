@@ -35,16 +35,10 @@ describe AppSession do
   end
 
   describe '#expected_presentation_track_count' do
-    it 'is 1 if we are to record' do
-      subject.stub :recording? => true
-
-      subject.expected_presentation_track_count.should == 1
-    end
-
-    it 'is 0 if we are not to record' do
+    it 'is 1 even if we are not to record' do
       subject.stub :recording? => false
 
-      subject.expected_presentation_track_count.should == 0
+      subject.expected_presentation_track_count.should == 1
     end
   end
 

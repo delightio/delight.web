@@ -84,7 +84,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def expected_presentation_track_count
-    recording? ? 1 : 0
+    1
   end
 
   def ready_for_processing?
