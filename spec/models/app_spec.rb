@@ -182,13 +182,20 @@ describe App do
   end
 
   describe '#emails' do
-    let(:administrator) { mock :email => 'abc' }
     let(:viewers) { [(mock :email => 'def'), (mock :email => 'ghi')] }
-    it 'combines email from adminstrator and viewers' do
-      subject.stub :administrator => administrator
+    before do
       subject.stub :viewers => viewers
+    end
 
-      subject.emails.should == ['abc', 'def', 'ghi']
+    it 'combines email from viewers' do
+      subject.emails.should == ['def', 'ghi']
+    end
+
+    it 'returns unique emails' do
+      subject.stub :viewers => (viewers << (mock :email => 'def'))
+      subject.viewers.should have(3).viewers
+
+      subject.emails.should == ['def', 'ghi']
     end
   end
 

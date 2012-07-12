@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_admin, :only => [:edit, :update, :show, :add_credit, :view_credit]
+  before_filter :get_admin, :only => [:edit, :update, :show, :add_credit, :view_credit, :subscribe, :unsubscribe]
 
   def create
     # check if user is admin and have account already
@@ -197,8 +197,80 @@ class AccountsController < ApplicationController
     end
   end
 
-#  def destroy
-#  end
+  def subscribe
+    if @admin.blank?
+      redirect_to root_path
+      return
+    end
+
+    @account = @admin.account
+
+    # payment params check
+    if not params[:stripeToken]
+      result = { 'result' => 'fail',
+                 'reason' => 'Invalid payment information' }
+      respond_to do |format|
+        format.json { render :json => result }
+      end
+      return
+    end
+
+    # check if subscription exist
+    unless @account.current_subscription.nil?
+      result = { 'result' => 'fail',
+                 'reason' => 'Subscribed already' }
+      respond_to do |format|
+        format.json { render :json => result }
+      end
+      return
+    end
+
+    # create customer and subscribe to unlimited plan
+    Stripe.api_key = ENV['STRIPE_SECRET']
+    token = params[:stripeToken]
+
+
+
+    begin
+      customer = Stripe::Customer.create(
+        :description => "subscription of #{@account.id} - #{@account.name} - #{@account.administrator.email}",
+        :email => @account.administrator.email,
+        :card => token,
+        :plan => "unlimited"
+      )
+    rescue
+      result = { 'result' => 'fail',
+                 'reason' => 'Payment gateway rejected. Please check your credit card information and try again.' }
+    else
+      # save record in redis
+      @account.subscribe "unlimited"
+
+      result = { 'result' => 'success' }
+    end
+
+    respond_to do |format|
+      format.json { render :json => result }
+    end
+  end
+
+  def unsubscribe
+    if @admin.blank?
+      redirect_to root_path
+      return
+    end
+
+    SystemMailer.unsubscribe_notification(@admin.account).deliver
+
+    respond_to do |format|
+      if @admin.account.current_subscription.nil?
+        result = { 'result' => 'fail',
+                   'reason' => 'Not subscribed yet' }
+      else
+        result = { 'result' => 'success' }
+      end
+      format.json { render :json => result }
+    end
+  end
 
   protected
 

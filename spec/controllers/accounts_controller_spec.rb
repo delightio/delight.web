@@ -149,17 +149,16 @@ describe AccountsController do
         put 'add_credit', {
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "2",
+                            :'add-credit-quantity-few' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "200",
-                            :'total_credits' => "200",
+                            :'total_price' => "100",
+                            :'total_credits' => "40",
                             :format => :json
                           }
         response.should be_success
         result = JSON.parse(response.body)
         result["result"].should == "success"
-        result["remaining_credits"].should == (credits + 200)
+        result["remaining_credits"].should == (credits + 40)
       end
 
       it "should fail with no purchase" do
@@ -168,7 +167,6 @@ describe AccountsController do
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
                             :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "0",
                             :'stripeToken' => "token",
                             :'total_price' => "0",
                             :'total_credits' => "0",
@@ -185,11 +183,10 @@ describe AccountsController do
         put 'add_credit', {
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "2",
+                            :'add-credit-quantity-few' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "198",
-                            :'total_credits' => "100",
+                            :'total_price' => "98",
+                            :'total_credits' => "40",
                             :format => :json
                           }
         response.should be_success
@@ -203,11 +200,10 @@ describe AccountsController do
         put 'add_credit', {
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "2",
+                            :'add-credit-quantity-few' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "200",
-                            :'total_credits' => "101",
+                            :'total_price' => "100",
+                            :'total_credits' => "41",
                             :format => :json
                           }
         response.should be_success
@@ -224,11 +220,10 @@ describe AccountsController do
           put 'add_credit', {
                             :account_id => admin.account.id,
                             :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
-                            :'add-credit-quantity-volume' => "2",
+                            :'add-credit-quantity-few' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "200",
-                            :'total_credits' => "200",
+                            :'total_price' => "100",
+                            :'total_credits' => "40",
                             :format => :json
                             }
           response.should be_success
@@ -259,6 +254,81 @@ describe AccountsController do
 #      end
 #    end
   end
+
+
+
+describe "PUT subscribe" do
+  let(:app) { FactoryGirl.create(:app) }
+  let(:admin) { app.account.administrator }
+  before(:each) do
+    sign_in(admin)
+  end
+
+  describe "subscribe success" do
+    before(:each) do
+      fake_customer = Object.new
+      fake_customer.class.module_eval { attr_accessor :id }
+      fake_customer.id = "cus_12345ABCDE67ab"
+      Stripe::Customer.stub(:create).and_return(fake_customer)
+    end
+
+    it "should success" do
+      put 'subscribe', {
+                          :account_id => admin.account.id,
+                          :'stripeToken' => "token",
+                          :format => :json
+                        }
+      response.should be_success
+      result = JSON.parse(response.body)
+      result["result"].should == "success"
+    end
+
+    it "should fail when a subscription exist" do
+      admin.account.subscribe "unlimited"
+      put 'subscribe', {
+                          :account_id => admin.account.id,
+                          :'stripeToken' => "token",
+                          :format => :json
+                        }
+      response.should be_success
+      result = JSON.parse(response.body)
+      result["result"].should == "fail"
+      result["reason"].should == "Subscribed already"
+    end
+  end
+end
+
+describe "PUT unsubscribe" do
+  let(:app) { FactoryGirl.create(:app) }
+  let(:admin) { app.account.administrator }
+  before(:each) do
+    sign_in(admin)
+  end
+
+  describe "unsubscribe success" do
+    it "should success" do
+      admin.account.subscribe "unlimited"
+      put 'unsubscribe', {
+                            :account_id => admin.account.id,
+                            :format => :json
+                          }
+      response.should be_success
+      result = JSON.parse(response.body)
+    end
+
+    it "should fail when a subscription does not exist" do
+      admin.account.unsubscribe
+      put 'unsubscribe', {
+                            :account_id => admin.account.id,
+                            :format => :json
+                          }
+      response.should be_success
+      result = JSON.parse(response.body)
+      result["result"].should == "fail"
+      result["reason"].should == "Not subscribed yet"
+    end
+  end
+end
 
 #  describe "GET 'destroy'" do
 #    it "returns http success" do

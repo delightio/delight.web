@@ -2,14 +2,21 @@ defaults: &defaults
   plans:
    -
     display: 'Launch'
-    name: 'few'
+    name: 'silver'
     price: 50
     credit: 20
    -
     display: 'Growth'
-    name: 'volume'
+    name: 'gold'
     price: 100
     credit: 50
+
+  subscription_plans:
+   -
+    display: 'Unlimited'
+    name: 'volume'
+    price: 200
+    credit: unlimited
 
 development:
   <<: *defaults
@@ -17,10 +24,27 @@ development:
 test:
   plans:
    -
-    display: 'Growth'
+    display: 'A La Carte'
+    name: 'one'
+    price: 5
+    credit: 1
+   -
+    display: 'Launch'
+    name: 'few'
+    price: 50
+    credit: 20
+   -
+    display: 'Unlimited'
     name: 'volume'
-    price: 100
+    price: 500
     credit: 100
+
+  subscription_plans:
+   -
+    display: 'Unlimited'
+    name: 'volume'
+    price: 200
+    credit: unlimited
 
 production:
   <<: *defaults
