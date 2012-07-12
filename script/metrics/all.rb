@@ -42,7 +42,7 @@ puts 'Signups:'
   Account.where(:created_at => range).each_with_index do |account, index|
     print "#{index.to_s.rjust(3)}.  #{account.name}, #{account.administrator.email}: "
     out = account.apps.map do |app|
-      "#{app.name} (#{app.app_sessions.count})"
+      "#{app.name} (#{app.app_sessions.recorded.count} / #{app.app_sessions.count})"
     end
     puts out.join(", ")
   end
