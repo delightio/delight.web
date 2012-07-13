@@ -16,15 +16,16 @@
 
 <h2>Select a package below:</h2><br/>
 <div class="row-fluid center">
-  <% (PAYMENT_CONFIG['subscription_plans'] + PAYMENT_CONFIG['plans'].reverse).each do |payment| %>
+  <% (PAYMENT_CONFIG['subscription_plans']).each do |payment| %>
   <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
     <h3><%= payment['display'] %></h3>
-    <br/>
+    <br><br>
     <p>
       <span style="font-size:400%">$<%= payment['price'] %></span>
-      <br/><br/>
       <span style="font-size:large">
-        per <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
+        <br>
+        monthly<br><br>
+        for <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
       </span>
     </p>
     <% if payment['name'] == 'volume' %>
@@ -32,6 +33,20 @@
         <span style="font-size:large;font-style:italic">Best Deal!</span>
       </p>
     <% end %>
+  </a>
+  <% end %>
+
+  <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
+  <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
+    <h3><%= payment['display'] %></h3>
+    <br><br>
+    <p>
+      <span style="font-size:400%">$<%= payment['price'] %></span>
+      <br/><br/>
+      <span style="font-size:large">
+        for <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
+      </span>
+    </p>
   </a>
   <% end %>
 </div>
