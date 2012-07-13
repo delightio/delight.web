@@ -150,7 +150,7 @@ describe AppSession do
   end
 
   describe '#maximum_duration' do
-    its(:maximum_duration) { should == 10.minutes }
+    its(:maximum_duration) { should == 1.hours }
   end
 
   describe 'favorite_of' do

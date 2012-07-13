@@ -125,7 +125,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def maximum_duration
-    10.minutes
+    1.hours
   end
 
   def complete_upload media
