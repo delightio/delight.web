@@ -18,6 +18,9 @@ FactoryGirl.define do
   factory :event_track do |t|
   end
 
+  factory :view_track do |t|
+  end
+
   factory :presentation_track do |t|
   end
 end

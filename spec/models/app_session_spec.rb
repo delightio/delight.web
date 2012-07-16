@@ -308,7 +308,8 @@ describe AppSession do
   end
 
   context 'named_track' do
-    [ :screen_track, :touch_track, :front_track, :orientation_track, :event_track,
+    [ :screen_track, :touch_track, :front_track, :orientation_track,
+      :event_track, :view_track,
       :presentation_track ].each do |named_track|
       specify "#{named_track} returns associated #{named_track}" do
         track = FactoryGirl.create named_track, app_session: subject
@@ -347,6 +348,7 @@ describe AppSession do
         subject.upload_tracks.should include :touch_track
         subject.upload_tracks.should include :orientation_track
         subject.upload_tracks.should include :event_track
+        subject.upload_tracks.should include :view_track
       end
     end
 
@@ -356,6 +358,11 @@ describe AppSession do
         subject.upload_tracks.should include :screen_track
         subject.upload_tracks.should include :touch_track
         subject.upload_tracks.should include :orientation_track
+      end
+
+      it 'does not support event and view tracks' do
+        subject.upload_tracks.should_not include :event_track
+        subject.upload_tracks.should_not include :view_track
       end
     end
   end

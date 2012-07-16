@@ -157,6 +157,10 @@ class AppSession < ActiveRecord::Base
     EventTrack.find_by_app_session_id id
   end
 
+  def view_track
+    ViewTrack.find_by_app_session_id id
+  end
+
   def presentation_track
     PresentationTrack.find_by_app_session_id id
   end
@@ -169,7 +173,7 @@ class AppSession < ActiveRecord::Base
 
   def upload_tracks
     if delight_version.to_f >= 2.3
-      return [:screen_track, :touch_track, :orientation_track, :event_track]
+      return [:screen_track, :touch_track, :orientation_track, :event_track, :view_track]
     else
       return [:screen_track, :touch_track, :orientation_track]
     end
