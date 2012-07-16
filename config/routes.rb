@@ -37,6 +37,7 @@ DelightWeb::Application.routes.draw do
   resources :touch_tracks, :only => [:create]
   resources :front_tracks, :only => [:create]
   resources :orientation_tracks, :only => [:create]
+  resources :event_tracks, :only => [:create]
 
   # To be removed. This internally maps ScreenTrack
   resources :videos, :only => [:create, :show]

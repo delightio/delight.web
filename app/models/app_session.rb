@@ -153,6 +153,10 @@ class AppSession < ActiveRecord::Base
     OrientationTrack.find_by_app_session_id id
   end
 
+  def event_track
+    EventTrack.find_by_app_session_id id
+  end
+
   def presentation_track
     PresentationTrack.find_by_app_session_id id
   end
@@ -164,7 +168,11 @@ class AppSession < ActiveRecord::Base
   end
 
   def upload_tracks
-    [:screen_track, :touch_track, :orientation_track]
+    if delight_version.to_f >= 2.3
+      return [:screen_track, :touch_track, :orientation_track, :event_track]
+    else
+      return [:screen_track, :touch_track, :orientation_track]
+    end
   end
 
   def working_directory
