@@ -22,12 +22,23 @@ class Account < ActiveRecord::Base
     credits.to_i
   end
 
+  def enough_credits? n=1
+    remaining_credits >= n ||
+    subscribed_to_unlimited_plan?
+  end
+
   def add_credits n
     credits.increment n
   end
 
   def use_credits n=1
-    credits.decrement n
+    unless subscribed_to_unlimited_plan?
+      credits.decrement n
+    end
+  end
+
+  def subscribed_to_unlimited_plan?
+    current_subscription == 'unlimited'
   end
 
   def current_subscription

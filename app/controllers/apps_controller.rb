@@ -235,15 +235,20 @@ class AppsController < ApplicationController
 
   def schedule_recording_update
     @app = App.administered_by(current_user).find(params[:app_id])
-    @schedule_recording = params[:schedule_recording]
+    @account = @app.account
+    @schedule_recording = params[:schedule_recording].to_i
     respond_to do |format|
-      if @schedule_recording and @schedule_recording.to_i > 0 # TODO more checking, etc credits
+      if @schedule_recording.to_i > 0 &&
+         @account.enough_credits?(@schedule_recording)
         @app.schedule_recordings @schedule_recording
         flash[:notice] = 'Successfully scheduled recordings'
         format.html { redirect_to :action => :schedule_recording_edit }
       else
         flash.now[:type] = 'error'
-        flash.now[:notice] = 'Failed scheduling recordings'
+        flash.now[:notice] = "Failed scheduling #{@schedule_recording} recordings"
+        unless @account.enough_credits?(@schedule_recording)
+           flash.now[:notice] = "Sorry. Not enough credits to schedule #{@schedule_recording} sessions"
+         end
         format.html { render action: "schedule_recording_edit", :layout => 'iframe' }
       end
     end
