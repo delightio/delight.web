@@ -10,6 +10,12 @@
     from this app but they will not be able to invite others or
     schedule more sessions.
   </p>
+  <% if @app.emails.count > 1 %>
+  <br>
+  <p>
+    Currently shared with: <%= @app.emails.join(', ') %>
+  </p>
+  <% end %>
 </div>
 <hr />
 <%= render 'form' %>
