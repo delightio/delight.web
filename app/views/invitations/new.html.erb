@@ -11,9 +11,8 @@
     schedule more sessions.
   </p>
   <% if @app.emails.count > 1 %>
-  <br>
   <p>
-    Currently shared with: <%= @app.emails.join(', ') %>
+    Currently shared with: <strong><%= @app.emails.join(', ') %></strong>
   </p>
   <% end %>
 </div>
