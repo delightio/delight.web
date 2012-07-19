@@ -1,6 +1,10 @@
 <div class="row">
   <div class="span12">
     <h1><span style="font-size:180%">
+      Monthly subscription.</span>
+    </h1>
+    <br>
+    <h1><span style="font-size:180%">
       Pay as you go.</span>
     </h1>
     <br>
@@ -13,28 +17,50 @@
     <br>
   </div>
 </div>
-
-<h2>Select a package below:</h2><br/>
-<div class="row-fluid center">
-  <% (PAYMENT_CONFIG['subscription_plans'] + PAYMENT_CONFIG['plans'].reverse).each do |payment| %>
-  <a href="/apps?credit=<%= payment['name'] %>" class="span3 btn" style="margin-bottom: 15px">
-    <h3><%= payment['display'] %></h3>
-    <br/>
-    <p>
-      <span style="font-size:400%">$<%= payment['price'] %></span>
-      <br/><br/>
-      <span style="font-size:large">
-        per <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
-      </span>
-    </p>
-    <% if payment['name'] == 'volume' %>
+<br>
+<div class="row-fluid">
+  <div class="span4" align="center">
+    <div style="margin-bottom:8px"><h3>Monthly Plan</h3></div>
+    <div class="row-fluid" align="center">
+    <% payment = PAYMENT_CONFIG['subscription_plans'].first %>
+    <a href="/apps?credit=<%= payment['name'] %>" class="btn" style="width: 80%; margin-bottom: 15px">
+      <!-- <h3><%= payment['display'] %></h3> -->
+      <br><br>
+      <p>
+        <span style="font-size:400%">$<%= payment['price'] %></span>
+        <span style="font-size:large">
+          <br>
+          monthly<br><br>
+          for <strong>10 hours<br>of recordings</strong>
+          <i class="icon-info-sign"></i>
+        </span>
+      </p>
       <p>
         <span style="font-size:large;font-style:italic">Best Deal!</span>
       </p>
+    </a>
+    </div>
+  </div>
+  <div class="span6" align="center">
+    <div style="margin-bottom:8px"><h3>Pay as you go</h3></div>
+    <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
+    <a href="/apps?credit=<%= payment['name'] %>" class="btn" style="width: 40%; margin-bottom: 15px">
+      <!-- <h3><%= payment['display'] %></h3> -->
+      <br><br>
+      <p>
+        <span style="font-size:400%">$<%= payment['price'] %></span>
+        <br/><br/>
+        <span style="font-size:large">
+          for <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
+        </span>
+      </p>
+    </a>
+    &nbsp;
     <% end %>
-  </a>
-  <% end %>
+  </div>
 </div>
+<br>
+
 <div class="row-fluid">
   <div class="span10">
     <span style="font-size:large">
@@ -49,6 +75,8 @@
         <li>Credits can be used on multiple apps under the same account.</li>
         <li>All transaction are in USD and we accept all common credit cards.</li>
         <li>For refund, please email us at <a href="mailto:pricing@delight.io">pricing@delight.io</a>.</li>
+        &nbsp;
+        <li>Unlimited number of recording sessions <i class="icon-info-sign"></i></li>
       </ul>
     </div>
   </div>

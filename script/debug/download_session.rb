@@ -17,7 +17,7 @@ track_classes.each do |track_class|
     s3 = S3Storage.new track.filename, delight_upload
     puts "Downloading #{track.filename} to #{destination}..."
     s3.download destination
-  rescue
-    puts '  not found. skipping...'
+  rescue => e
+    puts "  Skipping #{track.filename}: #{e.inspect}"
   end
 end

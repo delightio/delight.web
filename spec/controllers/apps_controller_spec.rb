@@ -656,7 +656,7 @@ describe AppsController do
         response.should be_success
         app.reload
         app.scheduled_recordings.should == orig # no change
-        flash.now[:notice].should == "Failed scheduling recordings"
+        flash.now[:notice].should == "Failed scheduling -1 recordings"
       end
     end
   end

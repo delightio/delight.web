@@ -11,8 +11,4 @@ describe UsabilityAppSession do
       subject.upload_tracks.should include :orientation_track
     end
   end
-
-  describe '#maximum_duration' do
-    its(:maximum_duration) { should == 2.hours }
-  end
 end

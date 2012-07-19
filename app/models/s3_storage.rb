@@ -4,8 +4,7 @@ class S3Storage
   def initialize filename, bucket_name=ENV['S3_UPLOAD_BUCKET']
     @filename = filename
     @bucket_name = bucket_name
-    @credentials = CachedHash.new "#{self.class}_Credentials",
-                                  1.hours - 1.minutes # give it some buffer
+    @credentials = CachedHash.new "#{self.class}_Credentials", 15.minutes
   end
 
   def self.session

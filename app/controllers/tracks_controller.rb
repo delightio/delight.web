@@ -26,7 +26,6 @@ class TracksController < ApplicationController
 
     respond_to do |format|
       if @track.save
-        #format.xml # TODO: should use custom show.xml. We also don't return the right status code
         format.xml # TODO: should use custom show.xml. We also don't return the right status code
         #format.xml { render :xml => @track, :status => 201 }
       else
@@ -65,7 +64,7 @@ class TracksController < ApplicationController
   end
 
   def model_param_key
-    :track
+    @model_param_key || model_class.to_s.tableize.singularize.to_sym
   end
 
   protected

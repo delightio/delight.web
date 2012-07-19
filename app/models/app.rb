@@ -32,8 +32,8 @@ class App < ActiveRecord::Base
 
   def recording?
     !recording_paused? &&
-    scheduled_recordings > 0
-    # && account.remaining_credits > 0
+    scheduled_recordings > 0 &&
+    account.enough_credits?
   end
 
   def scheduled_recordings
