@@ -57,18 +57,22 @@ class S3Storage
 end
 
 class CachedHash
-  def initialize key, ttl
+  def initialize key, max_ttl
     @key = key
-    @ttl = ttl
+    @max_ttl = max_ttl
+  end
+
+  def ttl
+    REDIS.ttl @key
   end
 
   def expired?
-    REDIS.ttl(@key) == -1
+    ttl == -1
   end
 
   def set new_hash
     REDIS.hmset @key, *new_hash.to_a.flatten
-    REDIS.expire @key, @ttl
+    REDIS.expire @key, @max_ttl
     get
   end
 
