@@ -128,9 +128,12 @@ class AppSession < ActiveRecord::Base
     1.hours
   end
 
-  def complete_upload media
+  def complete
+    app.complete_recording
+  end
+
+  def track_uploaded track
     enqueue_processing if ready_for_processing?
-    app.complete_recording if recorded?
   end
 
   def enqueue_processing

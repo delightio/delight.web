@@ -54,6 +54,10 @@ class S3Storage
     presigned_object.write local_file.read
     puts "#{local_file} was uploaded to S3:#{@bucket_name}/#{@filename} in #{Time.now-start} s."
   end
+
+  def exists?
+    presigned_object.exists? && presigned_object.content_length > 0
+  end
 end
 
 class CachedHash

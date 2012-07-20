@@ -6,7 +6,7 @@ describe Track do
     subject { FactoryGirl.create(:track, app_session: app_session) }
 
     it 'updates associated app about new uploads' do
-      app_session.should_receive :complete_upload
+      app_session.should_receive :track_uploaded
 
       subject
     end

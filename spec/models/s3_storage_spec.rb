@@ -78,6 +78,28 @@ describe S3Storage do
       subject.upload local_file
     end
   end
+
+  describe '#exists?' do
+    it 'is true if it exists with a non zero size' do
+      subject.stub :presigned_object => (stub :exists? => true)
+      subject.presigned_object.stub :content_length => 10
+
+      subject.should be_exists
+    end
+
+    it 'is false if it does not exist with zero size' do
+      subject.stub :presigned_object => (stub :exists? => true)
+      subject.presigned_object.stub :content_length => 0
+
+      subject.should_not be_exists
+    end
+
+    it 'is false if it does not exist' do
+      subject.stub :presigned_object => (stub :exists? => false)
+
+      subject.should_not be_exists
+    end
+  end
 end
 
 describe CachedHash do

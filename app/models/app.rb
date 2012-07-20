@@ -53,11 +53,8 @@ class App < ActiveRecord::Base
     end
 
     settings.incr :recordings, -1
+    account.use_credits 1
 
-    # will not deduce credits if users subscribed
-    if account.current_subscription.nil?
-      account.use_credits 1
-    end
     notify_users
   end
 

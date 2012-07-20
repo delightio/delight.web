@@ -259,33 +259,14 @@ describe AppSession do
     end
   end
 
-  describe '#complete_upload' do
-    context 'when sesison is recorded' do
-      before { subject.stub :recorded? => true }
 
-      it 'tells associated app to update recording accounting' do
-        subject.app.should_receive :complete_recording
-
-        subject.complete_upload mock
-      end
-    end
-
-    context 'when session is not completed' do
-      before { subject.stub :recorded? => false }
-
-      it 'does not update recording accounting' do
-        subject.app.should_not_receive :complete_recording
-
-        subject.complete_upload mock
-      end
-    end
-
+  describe '#track_uploaded' do
     context 'when ready for processing' do
       it 'enqueues processing' do
         subject.stub :ready_for_processing? => true
         subject.should_receive :enqueue_processing
 
-        subject.complete_upload mock
+        subject.track_uploaded mock
       end
     end
 
@@ -294,8 +275,16 @@ describe AppSession do
         subject.stub :ready_for_processing? => false
         subject.should_not_receive :enqueue_processing
 
-        subject.complete_upload mock
+        subject.track_uploaded mock
       end
+    end
+  end
+
+  describe '#complete' do
+    it 'tells associated app to update recording accounting' do
+      subject.app.should_receive :complete_recording
+
+      subject.complete
     end
   end
 
