@@ -172,7 +172,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def upload_tracks
-    if delight_version.to_f >= 2.3
+    if delight_version.to_f >= 2.4
       return [:screen_track, :touch_track, :orientation_track, :event_track, :view_track]
     else
       return [:screen_track, :touch_track, :orientation_track]
