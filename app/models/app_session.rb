@@ -133,6 +133,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def complete
+    puts "#{self.inspect} complete: #{credits}"
     app.complete_recording credits
   end
 
