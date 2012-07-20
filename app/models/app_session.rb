@@ -128,8 +128,12 @@ class AppSession < ActiveRecord::Base
     1.hours
   end
 
+  def credits
+    1
+  end
+
   def complete
-    app.complete_recording
+    app.complete_recording credits
   end
 
   def track_uploaded track

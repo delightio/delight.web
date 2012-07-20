@@ -45,7 +45,7 @@ class App < ActiveRecord::Base
     settings[:scheduled_at] = Time.now.to_i
   end
 
-  def complete_recording
+  def complete_recording cost=1
     # We got more recordings than we expected
     if scheduled_recordings <= 0
       handle_extra_recordings
@@ -53,7 +53,7 @@ class App < ActiveRecord::Base
     end
 
     settings.incr :recordings, -1
-    account.use_credits 1
+    account.use_credits cost
 
     notify_users
   end

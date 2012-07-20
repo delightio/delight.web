@@ -123,10 +123,11 @@ describe App do
           to change { subject.scheduled_recordings }.by(-1)
       end
 
+      let(:cost) { 10 }
       it 'uses credit from associated account' do
-        subject.account.should_receive(:use_credits).with(1)
+        subject.account.should_receive(:use_credits).with(cost)
 
-        subject.complete_recording
+        subject.complete_recording cost
       end
 
       it 'notifies users' do

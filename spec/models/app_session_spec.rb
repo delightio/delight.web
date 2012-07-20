@@ -280,9 +280,13 @@ describe AppSession do
     end
   end
 
+  describe '#credits' do
+    its(:credits) { should == 1 }
+  end
+
   describe '#complete' do
     it 'tells associated app to update recording accounting' do
-      subject.app.should_receive :complete_recording
+      subject.app.should_receive(:complete_recording).with(subject.credits)
 
       subject.complete
     end
