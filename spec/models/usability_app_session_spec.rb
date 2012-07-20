@@ -11,4 +11,6 @@ describe UsabilityAppSession do
       subject.upload_tracks.should include :orientation_track
     end
   end
+
+  its(:credits) { should == 2 }
 end

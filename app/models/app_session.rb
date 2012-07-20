@@ -128,9 +128,16 @@ class AppSession < ActiveRecord::Base
     1.hours
   end
 
-  def complete_upload media
+  def credits
+    1
+  end
+
+  def complete
+    app.complete_recording credits
+  end
+
+  def track_uploaded track
     enqueue_processing if ready_for_processing?
-    app.complete_recording if recorded?
   end
 
   def enqueue_processing
@@ -172,7 +179,7 @@ class AppSession < ActiveRecord::Base
   end
 
   def upload_tracks
-    if delight_version.to_f >= 2.3
+    if delight_version.to_f >= 2.4
       return [:screen_track, :touch_track, :orientation_track, :event_track, :view_track]
     else
       return [:screen_track, :touch_track, :orientation_track]
