@@ -109,8 +109,8 @@ class App < ActiveRecord::Base
 
   def notify_users
     if ready_to_notify?
-      Resque.enqueue ::AppRecordingCompletion, id
       REDIS.hdel settings.key, :scheduled_at
+      Resque.enqueue ::AppRecordingCompletion, id
     end
   end
 
