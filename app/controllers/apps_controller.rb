@@ -49,13 +49,8 @@ class AppsController < ApplicationController
       session[:app_first] = nil
     end
     @app_session_id = params[:app_session_id]
-
-    if current_user.administrator?
-      @app ||= App.includes(:app_sessions).administered_by(current_user).find_by_id(params[:id])
-    end
-
-    # viewers
-    @app ||= App.includes(:app_sessions).viewable_by(current_user).find_by_id(params[:id])
+    @app = App.find params[:id]
+    @app = nil unless @app.viewable_by? current_user
     if @app.nil?
       respond_to do |format|
         format.html do
