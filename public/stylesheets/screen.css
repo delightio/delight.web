@@ -6036,11 +6036,11 @@ el {
 }
 
 .menu-search-box {
-  width: 63%;
+  width: 60%;
 }
 @media (min-width: 1200px) {
   .menu-search-box {
-    width: 73%;
+    width: 70%;
   }
 }
 
