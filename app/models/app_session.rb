@@ -132,8 +132,14 @@ class AppSession < ActiveRecord::Base
     1
   end
 
+  # Cost is the actual cost for current app session.
+  def cost
+    return 0 if duration < 10.seconds
+    credits
+  end
+
   def complete
-    app.complete_recording credits
+    app.complete_recording cost
   end
 
   def track_uploaded track
