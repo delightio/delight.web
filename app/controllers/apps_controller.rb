@@ -196,7 +196,9 @@ class AppsController < ApplicationController
   end
 
   def update_recording
-    @app = App.administered_by(current_user).find(params[:app_id])
+    # @app = App.administered_by(current_user).find(params[:app_id])
+    @app = App.find params[:app_id]
+    raise ActiveRecord::RecordNotFound unless @app.administered_by?(current_user)
 
     case params[:state]
     when 'pause'
