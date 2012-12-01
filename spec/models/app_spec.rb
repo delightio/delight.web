@@ -182,6 +182,20 @@ describe App do
     end
   end
 
+  describe '#administered_by?' do
+    let(:viewer) { mock }
+    let(:admin) { mock }
+    before do
+      subject.stub :viewers => [viewer]
+      subject.stub :administrator => admin
+    end
+
+    it 'includes administrator and viewers' do
+      subject.should be_administered_by(admin)
+      subject.should be_administered_by(viewer)
+    end
+  end
+
   describe '#emails' do
     let(:viewers) { [(mock :email => 'def'), (mock :email => 'ghi')] }
     before do

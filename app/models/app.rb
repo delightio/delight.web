@@ -88,7 +88,7 @@ class App < ActiveRecord::Base
   end
 
   def administered_by?(user)
-    administrator == user
+    administrator == user || viewable_by?(user)
   end
 
   def viewable_by?(user)

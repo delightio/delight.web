@@ -617,6 +617,11 @@ describe AppsController do
       end
     end
 
+    describe "anyone who can administer signed in" do
+      it "should increment the scheduled recording"
+    end
+
+
     describe "other account signed in" do
       before(:each) do
         sign_in(user)

@@ -222,14 +222,18 @@ class AppsController < ApplicationController
   end
 
   def schedule_recording_edit
-    @app = App.administered_by(current_user).find(params[:app_id])
+    # @app = App.administered_by(current_user).find(params[:app_id])
+    @app = App.find params[:app_id]
+    raise ActiveRecord::RecordNotFound unless @app.administered_by?(current_user)
     respond_to do |format|
       format.html { render :layout => 'iframe' }
     end
   end
 
   def schedule_recording_update
-    @app = App.administered_by(current_user).find(params[:app_id])
+    # @app = App.administered_by(current_user).find(params[:app_id])
+    @app = App.find params[:app_id]
+    raise ActiveRecord::RecordNotFound unless @app.administered_by?(current_user)
     @account = @app.account
     @schedule_recording = params[:schedule_recording].to_i
     respond_to do |format|
@@ -264,8 +268,9 @@ class AppsController < ApplicationController
     end
 
     # validate app id
-    @app = App.administered_by(current_user).find_by_id(params[:app_id])
-    if @app.nil?
+    # @app = App.administered_by(current_user).find(params[:app_id])
+    @app = App.find params[:app_id]
+    if !@app.administered_by? current_user
       respond_to do |format|
         format.json { render :json => { 'result' => 'fail', 'reason' => 'access denied' } }
       end
