@@ -12,7 +12,7 @@ FactoryGirl.define do
 
     a.association :app
 
-    after_build do |a|
+    after(:build) do |a|
       a.app.stub :recording? => false
     end
   end
