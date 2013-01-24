@@ -11,7 +11,7 @@ FactoryGirl.define do
       "user_nickname#{n}"
     end
 
-    after_build do |u|
+    after(:build) do |u|
       u.stub :subscribe_to_email_list => true
     end
   end
@@ -26,7 +26,7 @@ FactoryGirl.define do
       "admin_nickname#{n}"
     end
 
-    after_build do |u|
+    after(:build) do |u|
       u.stub :subscribe_to_email_list => true
     end
   end
@@ -41,7 +41,7 @@ FactoryGirl.define do
       "viewer_nickname#{n}"
     end
 
-    after_build do |u|
+    after(:build) do |u|
       u.stub :subscribe_to_email_list => true
     end
   end
