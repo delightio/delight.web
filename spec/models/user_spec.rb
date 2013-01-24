@@ -157,9 +157,37 @@ describe User do
     end
   end
 
+  describe "#has_valid_email?" do
+    it "is false if email is nil" do
+      subject.stub :email => nil
+
+      subject.has_valid_email?.should be_false
+    end
+
+    it "is falsee if email is empty" do
+      subject.stub :email => ""
+
+      subject.has_valid_email?.should be_false
+    end
+  end
+
   describe '#subscribe_to_email_list' do
-    it 'subscribes email address to main email list' do
-      pending 'We stub out EmailNotification.subscribe'
+    context "when email is valid" do
+      it 'subscribes email address to main email list' do
+        subject.stub :email => "info@delight.io"
+        EmailNotification.should_receive :subscribe
+
+        subject.subscribe_to_email_list
+      end
+    end
+
+    context "whne email is not valid" do
+      it "does not subscribe invalid email to email list" do
+        subject.stub :has_valid_email? => false
+        EmailNotification.should_not_receive :subscribe
+
+        subject.subscribe_to_email_list
+      end
     end
   end
 end
