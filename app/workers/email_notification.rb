@@ -33,6 +33,7 @@ class EmailNotification
     RestClient.post("https://#{credential[:username]}:#{credential[:password]}" \
                     "@api.mailgun.net/v2/lists/#{list[:address]}/members",
                     subscribed: true,
+                    upsert: true,
                     address: email)
   end
 
