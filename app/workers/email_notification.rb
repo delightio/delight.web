@@ -37,6 +37,15 @@ class EmailNotification
                     address: email)
   end
 
+  def self.unsubscribe(email, list=EmailList.users)
+    RestClient.post("https://#{credential[:username]}:#{credential[:password]}" \
+                    "@api.mailgun.net/v2/lists/#{list[:address]}/members",
+                    subscribed: false,
+                    upsert: true,
+                    address: email)
+  end
+
+
   def self.create_list(address, description)
     RestClient.post("https://#{credential[:username]}:#{credential[:password]}" \
                     "@api.mailgun.net/v2/lists",

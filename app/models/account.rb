@@ -42,11 +42,7 @@ class Account < ActiveRecord::Base
   end
 
   def current_subscription
-    if plan.to_s.empty?
-      return nil
-    else
-      return plan.to_s
-    end
+    plan.value
   end
 
   def subscribe new_plan
