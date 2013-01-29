@@ -50,7 +50,9 @@ puts 'Signups:'
 end
 puts
 
-puts 'Most active Apps:'
+n = 30
+
+puts "#{n} most active apps:"
 last_session_ages = {}
 now = Time.now
 App.after_launch.latest.find_each do |app|
@@ -60,7 +62,7 @@ App.after_launch.latest.find_each do |app|
   end
 end
 sorted = last_session_ages.sort { |x,y| x.last <=> y.last }
-sorted.each do |app_id, age|
+sorted.first(n).each do |app_id, age|
   app = App.find app_id
   last_session = app.app_sessions.latest.first
   last_recorded_session = app.app_sessions.recorded.latest.first
@@ -68,6 +70,18 @@ sorted.each do |app_id, age|
        "( #{app.app_sessions.recorded.where(:created_at=>(24.hours.ago..Time.now)).count} / #{app.app_sessions.where(:created_at=>(24.hours.ago..Time.now)).count} in < 24h), "+\
        "avg #{app.app_sessions.recorded.average(:duration).to_i} / #{app.app_sessions.average(:duration).to_i} s, "+\
        "last session: #{last_recorded_session.created_at.age} / #{last_session.created_at.age}"
+end
+puts
+
+unactivated = [].tap do |array|
+  App.latest.each do |app|
+    array << app unless app.activated?
+  end
+end
+
+puts "#{n} newly created but unactivated apps:"
+unactivated.first(n).each do |app|
+  puts "  #{app.name} created by #{app.administrator.email}, #{app.created_at.age}, #{app.app_sessions.count}"
 end
 puts
 
