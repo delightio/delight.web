@@ -30,6 +30,12 @@ class App < ActiveRecord::Base
   end
   extend Scopes
 
+  def activated?
+    # #any? triggers pulling in ALL app sessions.
+    # app_sessions.any? &:recorded?
+    app_sessions.recorded.limit(1).count > 0
+  end
+
   def recording?
     !recording_paused? &&
     scheduled_recordings > 0 &&
