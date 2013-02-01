@@ -173,6 +173,7 @@ GEM
       omniauth-oauth (~> 1.0)
     orm_adapter (0.0.7)
     pg (0.13.2)
+    plist (3.1.0)
     polyglot (0.3.3)
     pry (0.9.9.6)
       coderay (~> 1.0.5)
@@ -309,12 +310,14 @@ DEPENDENCIES
   guard-spork
   hirefireapp
   jquery-rails
+  json
   kaminari
   mailgun-rails
   newrelic_rpm
   omniauth-github
   omniauth-twitter
   pg
+  plist
   pry-rails
   rails (= 3.2.1)
   redis

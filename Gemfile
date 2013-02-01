@@ -83,3 +83,6 @@ gem 'exceptional'
 gem "kaminari" # for pagination
 gem "simple_form"
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+
+gem 'plist'
+gem 'json'
