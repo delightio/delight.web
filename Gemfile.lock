@@ -312,7 +312,7 @@ DEPENDENCIES
   database_cleaner
   devise
   exceptional
-  factory_girl_rails
+  factory_girl_rails (~> 4.0)
   guard-cucumber
   guard-rspec
   guard-spork

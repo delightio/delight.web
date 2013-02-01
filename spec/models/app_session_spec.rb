@@ -417,7 +417,7 @@ describe AppSession do
     it 'updates metrics' do
       2.times { subject.update_metrics metrics }
 
-      subject.metrics(:private_view_count).should == '20'
+      subject.metrics(:private_view_count).should == 20
     end
 
     it 'always returns true' do
