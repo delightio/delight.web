@@ -15,12 +15,17 @@ class VideoProcessing
     processed = VideoProcessing.draw_touch screen, touch, rotation
     thumbnail = VideoProcessing.thumbnail processed, rotation
 
-    # We will delete existing presentation track if there is one.
     app_session.destroy_presentation_track
+    app_session.destroy_gesture_track
+
     presentation_track = PresentationTrack.new app_session: app_session
     presentation_track.upload processed
     presentation_track.thumbnail.upload thumbnail
-    if presentation_track.save
+
+    gesture_track = GestureTrack.new app_session: app_session
+    gesture_track.convert_and_upload touch.path
+
+    if gesture_track.save && presentation_track.save
       puts "AppSession[#{app_session_id}]: done processing in #{Time.now-start} s."
     end
 
