@@ -45,7 +45,7 @@ describe ApplicationController do
         get 'index'
         response.should be_success # no additional redirect
       end
-      it "should redirect user to force account create page if no account", focus: true do
+      it "should redirect user to force account create page if no account" do
         admin.signup_step = 2
         admin.save!
         get 'index'
