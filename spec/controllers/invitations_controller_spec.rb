@@ -215,7 +215,7 @@ describe InvitationsController do
   describe "PUT accept" do
     describe "user not signed in" do
       it "should require signin and add session vars" do
-        put 'accept', { :id => invitation.id, :token => invitation.token }
+        put 'accept', { :invitation_id => invitation.id, :token => invitation.token }
         response.should redirect_to(new_user_session_path)
         session['omniauth.viewer'].should be_true
         session['omniauth.redirect'].should == invitation_path(:id => invitation.id, :token => invitation.token)

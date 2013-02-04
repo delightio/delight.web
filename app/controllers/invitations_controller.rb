@@ -158,7 +158,8 @@ class InvitationsController < ApplicationController
     if not user_signed_in?
       session['omniauth.viewer'] = true
       session['omniauth.email'] = params[:email] if params[:email]
-      session['omniauth.redirect'] = invitation_path(:id => params[:id], :token => params[:token])
+      id = params[:id] || params[:invitation_id]
+      session['omniauth.redirect'] = invitation_path(:id => id, :token => params[:token])
       authenticate_user!
     else
       #current_user.type = 'Viewer' if current_user.type == 'User'
