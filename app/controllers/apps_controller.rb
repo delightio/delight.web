@@ -280,7 +280,7 @@ class AppsController < ApplicationController
     end
 
     state = params[:state]
-    if state == '1'  # convert to 'true' or 'false'
+    if state.to_i != 0 # convert to 'true' or 'false'
       state = 'true'
     else
       state = 'false'
