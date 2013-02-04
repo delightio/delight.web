@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    redirect_path = current_user.administrator? ? user_signup_info_edit_path(current_user) : edit_user_path(current_user)
+    redirect_path = current_user.administrator? ? user_signup_info_edit_path(current_user.id) : edit_user_path(current_user.id)
 
     if not current_user.done_registering?
       redirect_to redirect_path
