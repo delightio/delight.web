@@ -1,17 +1,25 @@
 require 'spec_helper'
 
 describe ApplicationController do
-  controller do
+  include ActionDispatch::Routing
+  include Rails.application.routes.url_helpers
+
+  class ::ApplicationController < ActionController::Base
     def index
       render :nothing => true
     end
-    def after_sign_in_path_for(resource)
-      super resource
-    end
-    def check_user_registration
-      super
+  end
+
+  before(:all) do
+    DelightWeb::Application.routes.draw do
+      match 'index', :controller => 'application', :action => 'index'
     end
   end
+
+  after(:all) do
+    Rails.application.reload_routes!
+  end
+
 
   let(:user) { FactoryGirl.create(:user, :signup_step => 1) }
   let(:viewer) { FactoryGirl.create(:viewer, :signup_step => 1) }
@@ -37,7 +45,7 @@ describe ApplicationController do
         get 'index'
         response.should be_success # no additional redirect
       end
-      it "should redirect user to force account create page if no account" do
+      it "should redirect user to force account create page if no account", focus: true do
         admin.signup_step = 2
         admin.save!
         get 'index'
