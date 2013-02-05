@@ -15,6 +15,8 @@ class Track < ActiveRecord::Base
   belongs_to :app_session, :counter_cache => true
   validates :app_session_id, :presence => true, :unique_track => true, :on => :create
 
+  has_many :tags, class_name: 'TrackTag'
+
   after_create { |t| app_session.track_uploaded self }
 
   def file_extension

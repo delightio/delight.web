@@ -171,6 +171,38 @@ describe AppSession do
     end
   end
 
+  describe "#by_tags", focus: true do
+    it "shouldn't try to filter if argument is nil or blank" do
+      AppSession.by_tags([]).should include(subject)
+    end
+
+    it "should filter app sessions by one tag" do
+      session1 = subject
+      session2 = FactoryGirl.create :app_session
+      session3 = FactoryGirl.create :app_session
+
+      EventTrack.create!(app_session: session1)
+      EventTrack.create!(app_session: session2)
+      EventTrack.create!(app_session: session3)
+
+      session1.event_track.tags.create!(name: "item-selected")
+      session2.event_track.tags.create!(name: "item-selected")
+      session3.event_track.tags.create!(name: "item-selected")
+
+      session2.event_track.tags.create!(name: "item_purchased")
+      session3.event_track.tags.create!(name: "item-not-selected")
+
+      sessions = AppSession.by_tags(["item-selected"])
+      sessions.should include(session1, session2, session3)
+
+      # sessions = AppSession.by_tags(["item-selected", "item_purchased"])
+      # sessions.should == [session2]
+
+      # sessions = AppSession.by_tags(["item-selected", "item-not-selected"])
+      # sessions.should include(session3)
+    end
+  end
+
   describe 'date_between' do
     let(:start_date) { 10.days.ago }
     let(:end_date) { 1.day.ago }

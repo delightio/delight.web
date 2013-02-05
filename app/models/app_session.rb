@@ -31,6 +31,10 @@ class AppSession < ActiveRecord::Base
       joins(:app => :permissions).where(:permissions => { :viewer_id => user.id })
     end
 
+    def by_tags(tags)
+      includes(:tracks => :tags).merge(TrackTag.by_name(tags))
+    end
+
     def date_between(min, max)  #inclusive
       if min and max
         where('app_sessions.created_at >= ? and app_sessions.created_at <= ?', min, max)
@@ -56,7 +60,7 @@ class AppSession < ActiveRecord::Base
     end
 
     def latest
-      order('updated_at DESC')
+      order('app_sessions.updated_at DESC')
     end
 
     def has_property(key, value)

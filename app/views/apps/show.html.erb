@@ -86,6 +86,20 @@
           <li>
             <div id="date-range"></div>
           </li>
+          <hr />
+
+          <li class="nav-header">Event Tracks</li>
+          <% TrackTag.by_app(@app).each do |tag| %>
+            <li>
+              <label class="checkbox">
+                <input type="checkbox" class="app-show-eventtracks-checkbox" name="event_tracks[]", value="<%= tag.name %>"> <%= tag.name %> </input>
+              </label>
+            </li>
+          <% end %>
+          <label class="checkbox">
+            <input type="checkbox" class="app-show-eventtracks-checkbox" name="event_tracks[]", value="item_purchased"> <%= "item_purchased" %> </input>
+          </label>
+
           <input type="hidden" name="date-min" id="date-min" />
           <input type="hidden" name="date-max" id="date-max" />
           <input type="hidden" name="duration-min" id="duration-min" />
@@ -190,6 +204,9 @@
         querySessions();
       });
       $(".app-show-builds-checkbox").click(function(eventObj) {
+        querySessions();
+      });
+      $(".app-show-eventtracks-checkbox").click(function(eventObj) {
         querySessions();
       });
 
