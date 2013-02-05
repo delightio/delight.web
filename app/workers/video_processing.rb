@@ -12,6 +12,9 @@ class VideoProcessing
     screen = app_session.screen_track.download
     rotation = app_session.orientation_track.rotation app_session.duration.to_i
 
+    gesture_converter = GestureConverter.new touch
+    gesture = gesture_converter.dump app_session.working_directory
+
     processed = VideoProcessing.draw_touch screen, touch, rotation
     thumbnail = VideoProcessing.thumbnail processed, rotation
 
@@ -23,7 +26,7 @@ class VideoProcessing
     presentation_track.thumbnail.upload thumbnail
 
     gesture_track = GestureTrack.new app_session: app_session
-    gesture_track.convert_and_upload touch.path
+    gesture_track.upload gesture
 
     if gesture_track.save && presentation_track.save
       puts "AppSession[#{app_session_id}]: done processing in #{Time.now-start} s."
