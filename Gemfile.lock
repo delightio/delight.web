@@ -238,7 +238,7 @@ GEM
       rspec
       ruby-prof
       sc-core-ext (>= 1.2.1)
-    rspec-rails (2.12.1)
+    rspec-rails (2.12.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
@@ -332,7 +332,7 @@ DEPENDENCIES
   resque
   rest-client
   rspec-prof
-  rspec-rails
+  rspec-rails (= 2.12.0)
   sass-rails (~> 3.2.3)
   simple_form
   spork (~> 1.0rc)

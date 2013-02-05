@@ -1,25 +1,19 @@
 require 'spec_helper'
 
 describe ApplicationController do
-  include ActionDispatch::Routing
-  include Rails.application.routes.url_helpers
-
-  class ::ApplicationController < ActionController::Base
+  controller do
     def index
       render :nothing => true
     end
-  end
 
-  before(:all) do
-    DelightWeb::Application.routes.draw do
-      match 'index', :controller => 'application', :action => 'index'
+    def after_sign_in_path_for(resource)
+      super resource
+    end
+
+    def check_user_registration
+      super
     end
   end
-
-  after(:all) do
-    Rails.application.reload_routes!
-  end
-
 
   let(:user) { FactoryGirl.create(:user, :signup_step => 1) }
   let(:viewer) { FactoryGirl.create(:viewer, :signup_step => 1) }
