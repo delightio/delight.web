@@ -147,7 +147,9 @@ class AppSession < ActiveRecord::Base
   end
 
   def upload_tracks
-    [:screen_track, :touch_track, :orientation_track]
+    common_tracks = [:screen_track, :touch_track, :orientation_track]
+    return common_tracks if delight_version.to_f < 3.0
+    common_tracks + [:event_track, :view_track]
   end
 
   def processed_tracks
