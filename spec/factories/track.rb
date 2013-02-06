@@ -23,4 +23,7 @@ FactoryGirl.define do
 
   factory :presentation_track do |t|
   end
+
+  factory :gesture_track do |t|
+  end
 end
