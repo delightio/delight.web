@@ -83,12 +83,8 @@ class AppSession < ActiveRecord::Base
     expected_track_count > 0
   end
 
-  def expected_presentation_track_count
-    1
-  end
-
   def ready_for_processing?
-    expected_track_count == tracks.count + expected_presentation_track_count
+    expected_track_count == tracks.count + processed_tracks.count
   end
 
   def recording?
@@ -150,45 +146,29 @@ class AppSession < ActiveRecord::Base
     VideoProcessing.enqueue id
   end
 
-  def screen_track
-    ScreenTrack.find_by_app_session_id id
-  end
-
-  def touch_track
-    TouchTrack.find_by_app_session_id id
-  end
-
-  def front_track
-    FrontTrack.find_by_app_session_id id
-  end
-
-  def orientation_track
-    OrientationTrack.find_by_app_session_id id
-  end
-
-  def event_track
-    EventTrack.find_by_app_session_id id
-  end
-
-  def view_track
-    ViewTrack.find_by_app_session_id id
-  end
-
-  def presentation_track
-    PresentationTrack.find_by_app_session_id id
-  end
-
-  def destroy_presentation_track
-    return if presentation_track.nil?
-
-    presentation_track.destroy
-  end
-
   def upload_tracks
-    if delight_version.to_f >= 2.4
-      return [:screen_track, :touch_track, :orientation_track, :event_track, :view_track]
-    else
-      return [:screen_track, :touch_track, :orientation_track]
+    [:screen_track, :touch_track, :orientation_track]
+  end
+
+  def processed_tracks
+    [:presentation_track, :gesture_track]
+  end
+
+  # named track
+  [ :screen_track, :touch_track, :front_track, :orientation_track,
+    :presentation_track, :gesture_track ].each do |named_track|
+    define_method(named_track) do
+      klass = named_track.to_s.camelize.constantize
+      klass.find_by_app_session_id id
+    end
+  end
+
+  [ :presentation_track, :gesture_track ].each do |named_track|
+    define_method("destroy_#{named_track}".to_sym) do
+      t = send named_track
+      return if t.nil?
+
+      t.destroy
     end
   end
 
@@ -222,7 +202,7 @@ class AppSession < ActiveRecord::Base
         @upload_uris.merge!(
           track => track_class.new(app_session_id:id).presigned_write_uri)
       end
-      count = 1 + @upload_uris.count # +1 for presentation track
+      count = processed_tracks.count + @upload_uris.count
     end
     update_attribute :expected_track_count, count
   end

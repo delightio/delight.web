@@ -9,7 +9,7 @@ destination = ARGV.shift || '/tmp'
 delight_upload = ARGV.shift || 'delight_upload'
 
 track_classes = [ScreenTrack, TouchTrack, OrientationTrack, FrontTrack,
-                 PresentationTrack]
+                 PresentationTrack, GestureTrack]
 
 track_classes.each do |track_class|
   begin

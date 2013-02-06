@@ -1,0 +1,987 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>formatVersion</key>
+	<string>0.2</string>
+	<key>touchBounds</key>
+	<string>{{0, 0}, {768, 1024}}</string>
+	<key>touches</key>
+	<array>
+		<dict>
+			<key>curLoc</key>
+			<string>{388, 139}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{388, 139}</string>
+			<key>seq</key>
+			<integer>351</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>2.9149591666646302</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{387, 148}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{388, 139}</string>
+			<key>seq</key>
+			<integer>352</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>3.0021503746975213</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{380, 144}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{380, 144}</string>
+			<key>seq</key>
+			<integer>353</integer>
+			<key>tapCount</key>
+			<integer>2</integer>
+			<key>time</key>
+			<real>3.2261654996545985</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{364, 165}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{380, 144}</string>
+			<key>seq</key>
+			<integer>354</integer>
+			<key>tapCount</key>
+			<integer>2</integer>
+			<key>time</key>
+			<real>3.3064956666203216</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{158, 271}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{158, 271}</string>
+			<key>seq</key>
+			<integer>355</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>3.6581711246399209</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{163, 275}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{158, 271}</string>
+			<key>seq</key>
+			<integer>356</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>3.6909703746205196</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{167, 275}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{163, 275}</string>
+			<key>seq</key>
+			<integer>357</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>3.7065179576165974</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{168, 275}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{167, 275}</string>
+			<key>seq</key>
+			<integer>358</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>3.7219298327108845</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{168, 275}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{167, 275}</string>
+			<key>seq</key>
+			<integer>359</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>3.7382826666580513</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{160, 271}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{160, 271}</string>
+			<key>seq</key>
+			<integer>360</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>4.1384454997023568</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{156, 268}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{160, 271}</string>
+			<key>seq</key>
+			<integer>361</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>4.2336211666697636</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{290, 166}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{290, 166}</string>
+			<key>seq</key>
+			<integer>362</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>4.7299994166241959</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{290, 172}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{290, 166}</string>
+			<key>seq</key>
+			<integer>363</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>4.825511124683544</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{34, 661}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{34, 661}</string>
+			<key>seq</key>
+			<integer>364</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>5.9938709166599438</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{32, 667}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{34, 661}</string>
+			<key>seq</key>
+			<integer>365</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>6.0421980416867882</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{32, 668}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{32, 667}</string>
+			<key>seq</key>
+			<integer>366</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>6.0573490416863933</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{33, 668}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{32, 668}</string>
+			<key>seq</key>
+			<integer>367</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>6.0733453746652231</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{34, 668}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{33, 668}</string>
+			<key>seq</key>
+			<integer>368</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>6.0897378326626495</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{36, 668}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{34, 668}</string>
+			<key>seq</key>
+			<integer>369</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>6.1050266246311367</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{175, 717}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{175, 717}</string>
+			<key>seq</key>
+			<integer>370</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>8.2885862917173654</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{169, 714}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{175, 717}</string>
+			<key>seq</key>
+			<integer>371</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>8.4076099576195702</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{386, 1008}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{386, 1008}</string>
+			<key>seq</key>
+			<integer>372</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.725172207690775</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{386, 1013}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{386, 1008}</string>
+			<key>seq</key>
+			<integer>373</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.781314624706283</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{386, 1014}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{386, 1013}</string>
+			<key>seq</key>
+			<integer>374</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.798853707616217</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{386, 1015}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{386, 1014}</string>
+			<key>seq</key>
+			<integer>375</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.81257545761764</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{386, 1016}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{386, 1015}</string>
+			<key>seq</key>
+			<integer>376</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.828973707626574</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{386, 1017}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{386, 1016}</string>
+			<key>seq</key>
+			<integer>377</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.844473999692127</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{387, 1018}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{386, 1017}</string>
+			<key>seq</key>
+			<integer>378</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.860438249655999</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{388, 1018}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{387, 1018}</string>
+			<key>seq</key>
+			<integer>379</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.87715012463741</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{390, 1019}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{388, 1018}</string>
+			<key>seq</key>
+			<integer>380</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.892502082628198</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{391, 1020}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{390, 1019}</string>
+			<key>seq</key>
+			<integer>381</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.908460041624494</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{392, 1021}</string>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>prevLoc</key>
+			<string>{391, 1020}</string>
+			<key>seq</key>
+			<integer>382</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.925231624627486</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{394, 1023}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{392, 1021}</string>
+			<key>seq</key>
+			<integer>383</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>12.940055666607805</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{270, 353}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{270, 353}</string>
+			<key>seq</key>
+			<integer>384</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>13.772471249685623</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{263, 350}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{270, 353}</string>
+			<key>seq</key>
+			<integer>385</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>13.884721916634589</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>386</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.700216666678898</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>387</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.75568758265581</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>388</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.771335124620236</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>389</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.787289832602255</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>390</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.803720207652077</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>391</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.819671832607128</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>392</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.835188457625918</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>393</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.851811499684118</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>394</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.867403374635614</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>395</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.883264541625977</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>396</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.89979295770172</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>397</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.915640291641466</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>398</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.931223374675028</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>399</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.947896416648291</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>400</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.963729124632664</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>2</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>401</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>16.963729124632664</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>402</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>17.043905124650337</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>403</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>17.075080207665451</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>404</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>17.091584124602377</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>2</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>405</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>17.091584124602377</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>406</integer>
+			<key>tapCount</key>
+			<integer>0</integer>
+			<key>time</key>
+			<real>17.122936416650191</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>407</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>17.923294374602847</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>408</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.019277624669485</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>409</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.035576166701503</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>410</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.051267624716274</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>411</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.06722720770631</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>412</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.084648207644932</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>413</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.099251291714609</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>414</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.114976499695331</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>415</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.130833249655552</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>416</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.915381416678429</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>417</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.946601457661018</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>418</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.963135749683715</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>419</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.978606374701485</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>420</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>18.995108916657045</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>421</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>19.0109790826682</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>1</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>422</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>19.02655462466646</real>
+		</dict>
+		<dict>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>privateFrame</key>
+			<string>{{128, 242}, {576, 540}}</string>
+			<key>seq</key>
+			<integer>423</integer>
+			<key>tapCount</key>
+			<integer>0</integer>
+			<key>time</key>
+			<real>19.042616499704309</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{97, 655}</string>
+			<key>phase</key>
+			<integer>0</integer>
+			<key>prevLoc</key>
+			<string>{97, 655}</string>
+			<key>seq</key>
+			<integer>424</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>19.971147291711532</real>
+		</dict>
+		<dict>
+			<key>curLoc</key>
+			<string>{101, 655}</string>
+			<key>phase</key>
+			<integer>3</integer>
+			<key>prevLoc</key>
+			<string>{97, 655}</string>
+			<key>seq</key>
+			<integer>425</integer>
+			<key>tapCount</key>
+			<integer>1</integer>
+			<key>time</key>
+			<real>20.066618499695323</real>
+		</dict>
+	</array>
+</dict>
+</plist>
