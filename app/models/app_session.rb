@@ -5,6 +5,9 @@ class AppSession < ActiveRecord::Base
   has_many :tracks
   belongs_to :app
 
+  has_many :app_sessions_events
+  has_many :events, :through => :app_sessions_events
+
   has_many :favorites
   has_many :favorite_users, :through => :favorites, :source => :user, :select => 'DISTINCT users.*'
 
@@ -32,7 +35,7 @@ class AppSession < ActiveRecord::Base
     end
 
     def by_events(events)
-      includes(:tracks => :events).merge(Event.by_name(events))
+      includes(:events).merge(Event.by_name(events))
     end
 
     def date_between(min, max)  #inclusive

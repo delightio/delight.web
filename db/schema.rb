@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130206001742) do
+ActiveRecord::Schema.define(:version => 20130206003646) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -24,24 +24,35 @@ ActiveRecord::Schema.define(:version => 20130206001742) do
 
   create_table "app_sessions", :force => true do |t|
     t.decimal  "duration"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.integer  "app_id"
     t.string   "app_locale"
     t.string   "app_version"
     t.string   "delight_version"
     t.string   "app_build"
     t.integer  "expected_track_count"
-    t.integer  "tracks_count",         :default => 0
+    t.integer  "tracks_count",              :default => 0
     t.string   "app_connectivity"
     t.string   "device_hw_version"
     t.string   "device_os_version"
     t.string   "type"
+    t.integer  "app_sessions_events_count", :default => 0
   end
 
   add_index "app_sessions", ["app_id"], :name => "as_app_id"
   add_index "app_sessions", ["created_at"], :name => "as_created_at"
   add_index "app_sessions", ["duration"], :name => "as_duration"
+
+  create_table "app_sessions_events", :force => true do |t|
+    t.integer  "app_session_id"
+    t.integer  "event_id"
+    t.integer  "track_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "app_sessions_events", ["app_session_id", "event_id", "track_id"], :name => "ase_as_event_track_id"
 
   create_table "apps", :force => true do |t|
     t.string   "name"
@@ -66,8 +77,9 @@ ActiveRecord::Schema.define(:version => 20130206001742) do
   create_table "events", :force => true do |t|
     t.integer  "track_id"
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.integer  "app_sessions_events_count", :default => 0
   end
 
   add_index "events", ["track_id"], :name => "index_track_tags_on_track_id"
@@ -124,11 +136,12 @@ ActiveRecord::Schema.define(:version => 20130206001742) do
   end
 
   create_table "tracks", :force => true do |t|
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.integer  "app_session_id"
     t.string   "type"
-    t.integer  "events_count",   :default => 0
+    t.integer  "events_count",              :default => 0
+    t.integer  "app_sessions_events_count", :default => 0
   end
 
   add_index "tracks", ["events_count"], :name => "index_tracks_on_track_tags_count"

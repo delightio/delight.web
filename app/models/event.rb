@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
-  belongs_to :track, counter_cache: true
+  has_many :app_sessions_events
+  has_many :app_sessions, :through => :app_sessions_events
 
   module Scopes
     def by_name(names)
@@ -11,7 +12,7 @@ class Event < ActiveRecord::Base
     end
 
     def by_app(app)
-      joins(:track => {:app_session => :app}).where('apps.id = ?', app.id)
+      joins(:app_sessions => :app).where('apps.id = ?', app.id)
     end
   end
   extend Scopes

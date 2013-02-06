@@ -181,16 +181,12 @@ describe AppSession do
       session2 = FactoryGirl.create :app_session
       session3 = FactoryGirl.create :app_session
 
-      EventTrack.create!(app_session: session1)
-      EventTrack.create!(app_session: session2)
-      EventTrack.create!(app_session: session3)
+      session1.events.create!(name: "item-selected")
+      session2.events.create!(name: "item-selected")
+      session3.events.create!(name: "item-selected")
 
-      session1.event_track.events.create!(name: "item-selected")
-      session2.event_track.events.create!(name: "item-selected")
-      session3.event_track.events.create!(name: "item-selected")
-
-      session2.event_track.events.create!(name: "item_purchased")
-      session3.event_track.events.create!(name: "item-not-selected")
+      session2.events.create!(name: "item_purchased")
+      session3.events.create!(name: "item-not-selected")
 
       sessions = AppSession.by_events(["item-selected"])
       sessions.should include(session1, session2, session3)
