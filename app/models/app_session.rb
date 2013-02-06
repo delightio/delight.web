@@ -158,6 +158,7 @@ class AppSession < ActiveRecord::Base
 
   # named track
   [ :screen_track, :touch_track, :front_track, :orientation_track,
+    :event_track, :view_track,
     :presentation_track, :gesture_track ].each do |named_track|
     define_method(named_track) do
       klass = named_track.to_s.camelize.constantize
