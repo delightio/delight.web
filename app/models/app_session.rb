@@ -31,8 +31,8 @@ class AppSession < ActiveRecord::Base
       joins(:app => :permissions).where(:permissions => { :viewer_id => user.id })
     end
 
-    def by_tags(tags)
-      includes(:tracks => :tags).merge(TrackTag.by_name(tags))
+    def by_events(events)
+      includes(:tracks => :events).merge(Event.by_name(events))
     end
 
     def date_between(min, max)  #inclusive

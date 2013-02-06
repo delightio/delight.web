@@ -171,9 +171,9 @@ describe AppSession do
     end
   end
 
-  describe "#by_tags", focus: true do
+  describe "#by_events", focus: true do
     it "shouldn't try to filter if argument is nil or blank" do
-      AppSession.by_tags([]).should include(subject)
+      AppSession.by_events([]).should include(subject)
     end
 
     it "should filter app sessions by one tag" do
@@ -185,20 +185,20 @@ describe AppSession do
       EventTrack.create!(app_session: session2)
       EventTrack.create!(app_session: session3)
 
-      session1.event_track.tags.create!(name: "item-selected")
-      session2.event_track.tags.create!(name: "item-selected")
-      session3.event_track.tags.create!(name: "item-selected")
+      session1.event_track.events.create!(name: "item-selected")
+      session2.event_track.events.create!(name: "item-selected")
+      session3.event_track.events.create!(name: "item-selected")
 
-      session2.event_track.tags.create!(name: "item_purchased")
-      session3.event_track.tags.create!(name: "item-not-selected")
+      session2.event_track.events.create!(name: "item_purchased")
+      session3.event_track.events.create!(name: "item-not-selected")
 
-      sessions = AppSession.by_tags(["item-selected"])
+      sessions = AppSession.by_events(["item-selected"])
       sessions.should include(session1, session2, session3)
 
-      # sessions = AppSession.by_tags(["item-selected", "item_purchased"])
+      # sessions = AppSession.by_events(["item-selected", "item_purchased"])
       # sessions.should == [session2]
 
-      # sessions = AppSession.by_tags(["item-selected", "item-not-selected"])
+      # sessions = AppSession.by_events(["item-selected", "item-not-selected"])
       # sessions.should include(session3)
     end
   end

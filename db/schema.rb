@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204015557) do
+ActiveRecord::Schema.define(:version => 20130206001742) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -62,6 +62,15 @@ ActiveRecord::Schema.define(:version => 20130204015557) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "events", :force => true do |t|
+    t.integer  "track_id"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "events", ["track_id"], :name => "index_track_tags_on_track_id"
 
   create_table "favorites", :force => true do |t|
     t.integer  "user_id"
@@ -114,24 +123,15 @@ ActiveRecord::Schema.define(:version => 20130204015557) do
     t.datetime "updated_at",     :null => false
   end
 
-  create_table "track_tags", :force => true do |t|
-    t.integer  "track_id"
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "track_tags", ["track_id"], :name => "index_track_tags_on_track_id"
-
   create_table "tracks", :force => true do |t|
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "app_session_id"
     t.string   "type"
-    t.integer  "track_tags_count", :default => 0
+    t.integer  "events_count",   :default => 0
   end
 
-  add_index "tracks", ["track_tags_count"], :name => "index_tracks_on_track_tags_count"
+  add_index "tracks", ["events_count"], :name => "index_tracks_on_track_tags_count"
   add_index "tracks", ["type", "app_session_id"], :name => "tracks_type_as_id"
 
   create_table "users", :force => true do |t|

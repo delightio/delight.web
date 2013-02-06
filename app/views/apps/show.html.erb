@@ -89,7 +89,7 @@
           <hr />
 
           <li class="nav-header">Event Tracks</li>
-          <% TrackTag.by_app(@app).each do |tag| %>
+          <% Event.by_app(@app).each do |tag| %>
             <li>
               <label class="checkbox">
                 <input type="checkbox" class="app-show-eventtracks-checkbox" name="event_tracks[]", value="<%= tag.name %>"> <%= tag.name %> </input>

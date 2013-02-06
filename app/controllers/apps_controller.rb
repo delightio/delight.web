@@ -121,7 +121,7 @@ class AppsController < ApplicationController
     @last_viewed_at = @app.last_viewed_at_by_user(current_user)
     @app.log_view(current_user)
 
-    @recorded_sessions = @recorded_sessions.by_tags(params[:event_tracks])
+    @recorded_sessions = @recorded_sessions.by_events(params[:event_tracks])
 
     respond_to do |format|
       format.html do
