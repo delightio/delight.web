@@ -313,6 +313,7 @@ describe AppSession do
 
   context 'named_track' do
     [ :screen_track, :touch_track, :front_track, :orientation_track,
+      :event_track, :view_track,
       :presentation_track, :gesture_track ].each do |named_track|
       specify "#{named_track} returns associated #{named_track}" do
         track = FactoryGirl.create named_track, app_session: subject
@@ -340,9 +341,9 @@ describe AppSession do
   end
 
   describe '#upload_tracks' do
-    context 'when delight version is newer than 2.3' do
-      before { subject.stub :delight_version => '2.4.0' }
-      xit 'contains a screen, touch, orientation and event track' do
+    context 'when delight version is equal or newer than 3.0' do
+      before { subject.stub :delight_version => '3.0' }
+      it 'contains a screen, touch, orientation and event track' do
         subject.upload_tracks.should include :screen_track
         subject.upload_tracks.should include :touch_track
         subject.upload_tracks.should include :orientation_track
