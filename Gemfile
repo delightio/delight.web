@@ -22,7 +22,7 @@ gem 'rest-client'
 gem 'mailgun-rails'
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', "2.12.0"
   gem 'factory_girl_rails', "~> 4.0"
 end
 

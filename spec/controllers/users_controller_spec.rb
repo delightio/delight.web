@@ -12,14 +12,14 @@ describe UsersController do
       end
 
       it "returns http success" do
-        get 'edit'
+        get 'edit', :id => user.id
         response.should be_success
       end
     end
 
     describe "not signed in" do
       it "returns http success" do
-        get 'edit'
+        get 'edit', :id => user.id
         response.should redirect_to(new_user_session_path)
       end
     end
@@ -35,7 +35,7 @@ describe UsersController do
       end
 
       it "returns http success" do
-        get 'update', { :user => { :nickname => 'newnick', :email => '123@example.com', :signup_step => 2 } }
+        get 'update', { :id => user.id, :user => { :nickname => 'newnick', :email => '123@example.com', :signup_step => 2 } }
         response.should redirect_to(apps_path)
         assigns(:user).should be_valid
         assigns(:user).nickname.should == 'newnick'
@@ -51,7 +51,7 @@ describe UsersController do
       end
 
       it "returns http success" do
-        get 'update', { :user => { :nickname => 'newnick', :email => '123@example.com', :signup_step => 2 } }
+        get 'update', { :id => user.id, :user => { :nickname => 'newnick', :email => '123@example.com', :signup_step => 2 } }
         response.should redirect_to(new_user_session_path)
         user.reload
         user.signup_step.should == 1
@@ -66,7 +66,7 @@ describe UsersController do
         sign_in(user)
       end
       it "should redirect to users/edit page" do
-        get 'signup_info_edit'
+        get 'signup_info_edit', :user_id => user.id
         response.should redirect_to edit_user_path(user)
       end
     end
@@ -77,14 +77,14 @@ describe UsersController do
       end
 
       it "returns http success" do
-        get 'signup_info_edit'
+        get 'signup_info_edit', :user_id => user.id
         response.should be_success
       end
     end
 
     describe "not signed in" do
       it "returns http success" do
-        get 'signup_info_edit'
+        get 'signup_info_edit', :user_id => user.id
         response.should redirect_to(new_user_session_path)
       end
     end
@@ -96,7 +96,7 @@ describe UsersController do
         sign_in(user)
       end
       it "should redirect to users/edit page" do
-        get 'signup_info_update'
+        get 'signup_info_update', :user_id => user.id
         response.should redirect_to edit_user_path(user)
       end
     end
@@ -112,6 +112,7 @@ describe UsersController do
       it "returns http success" do
         put 'signup_info_update',
             {
+              "user_id"=>user.id,
               "user"=>{
                 "nickname"=>"newnick",
                 "email"=>"test@example.com",
@@ -144,6 +145,7 @@ describe UsersController do
       it "should not save user info when account create fail" do
         put 'signup_info_update',
             {
+              "user_id"=>user.id,
               "user"=>{
                 "nickname"=>"newnick",
                 "email"=>"test@example.com",
@@ -166,6 +168,7 @@ describe UsersController do
       it "should not save user info when app create fail" do
         put 'signup_info_update',
             {
+              "user_id"=>user.id,
               "user"=>{
                 "nickname"=>"newnick",
                 "email"=>"test@example.com",
@@ -194,7 +197,7 @@ describe UsersController do
       end
 
       it "returns http success" do
-        get 'signup_info_update', { :user => { :nickname => 'newnick', :email => '123@example.com', :signup_step => 2 } }
+        get 'signup_info_update', { :user_id => user.id, :user => { :nickname => 'newnick', :email => '123@example.com', :signup_step => 2 } }
         response.should redirect_to(new_user_session_path)
         user.reload
         user.signup_step.should == 1
