@@ -30,26 +30,26 @@ describe App do
 
   describe '#recording?' do
     specify 'credits have no effect' do
-      subject.stub :remaining_credits => 0
+      subject.stub :enough_credits? => false
       subject.stub :scheduled_recordings => 10
       subject.resume_recording
 
       subject.should be_recording
     end
 
-    # context 'when we have no credits' do
-    #   it 'is always false' do
-    #     subject.account.stub :remaining_credits => 0
-    #     subject.stub :scheduled_recordings => 10
-    #     subject.resume_recording
+    context 'when we have no credits' do
+      it 'is always false' do
+        subject.account.stub :enough_credits? => false
+        subject.stub :scheduled_recordings => 10
+        subject.resume_recording
 
-    #     subject.should_not be_recording
-    #   end
-    # end
+        subject.should_not be_recording
+      end
+    end
 
     context 'when developer has paused recordings' do
       it 'is always false regardless credits or remaining recordings needed' do
-        subject.account.stub :remaining_credits => 20
+        subject.account.stub :enough_credits? => true
         subject.stub :scheduled_recordings => 10
         subject.pause_recording
 
@@ -59,7 +59,7 @@ describe App do
 
     context 'when we have credits and recording is not paused' do
       before do
-        subject.account.stub :remaining_credits => 200
+        subject.account.stub :enough_credits? => true
         subject.resume_recording
       end
 
@@ -123,10 +123,11 @@ describe App do
           to change { subject.scheduled_recordings }.by(-1)
       end
 
+      let(:cost) { 10 }
       it 'uses credit from associated account' do
-        subject.account.should_receive(:use_credits).with(1)
+        subject.account.should_receive(:use_credits).with(cost)
 
-        subject.complete_recording
+        subject.complete_recording cost
       end
 
       it 'notifies users' do
@@ -178,6 +179,20 @@ describe App do
   describe '#administrator' do
     it 'is also the administrator of the parent account' do
       subject.administrator.should == subject.account.administrator
+    end
+  end
+
+  describe '#administered_by?' do
+    let(:viewer) { mock }
+    let(:admin) { mock }
+    before do
+      subject.stub :viewers => [viewer]
+      subject.stub :administrator => admin
+    end
+
+    it 'includes administrator and viewers' do
+      subject.should be_administered_by(admin)
+      subject.should be_administered_by(viewer)
     end
   end
 

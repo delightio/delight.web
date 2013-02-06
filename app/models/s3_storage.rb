@@ -4,8 +4,7 @@ class S3Storage
   def initialize filename, bucket_name=ENV['S3_UPLOAD_BUCKET']
     @filename = filename
     @bucket_name = bucket_name
-    @credentials = CachedHash.new "#{self.class}_Credentials",
-                                  1.hours - 1.minutes # give it some buffer
+    @credentials = CachedHash.new "#{self.class}_Credentials", 15.minutes
   end
 
   def self.session
@@ -55,21 +54,29 @@ class S3Storage
     presigned_object.write local_file.read
     puts "#{local_file} was uploaded to S3:#{@bucket_name}/#{@filename} in #{Time.now-start} s."
   end
+
+  def exists?
+    presigned_object.exists? && presigned_object.content_length > 0
+  end
 end
 
 class CachedHash
-  def initialize key, ttl
+  def initialize key, max_ttl
     @key = key
-    @ttl = ttl
+    @max_ttl = max_ttl
+  end
+
+  def ttl
+    REDIS.ttl @key
   end
 
   def expired?
-    REDIS.ttl(@key) == -1
+    ttl == -1
   end
 
   def set new_hash
     REDIS.hmset @key, *new_hash.to_a.flatten
-    REDIS.expire @key, @ttl
+    REDIS.expire @key, @max_ttl
     get
   end
 

@@ -251,33 +251,14 @@ describe AppSession do
     end
   end
 
-  describe '#complete_upload' do
-    context 'when sesison is recorded' do
-      before { subject.stub :recorded? => true }
 
-      it 'tells associated app to update recording accounting' do
-        subject.app.should_receive :complete_recording
-
-        subject.complete_upload mock
-      end
-    end
-
-    context 'when session is not completed' do
-      before { subject.stub :recorded? => false }
-
-      it 'does not update recording accounting' do
-        subject.app.should_not_receive :complete_recording
-
-        subject.complete_upload mock
-      end
-    end
-
+  describe '#track_uploaded' do
     context 'when ready for processing' do
       it 'enqueues processing' do
         subject.stub :ready_for_processing? => true
         subject.should_receive :enqueue_processing
 
-        subject.complete_upload mock
+        subject.track_uploaded mock
       end
     end
 
@@ -286,8 +267,39 @@ describe AppSession do
         subject.stub :ready_for_processing? => false
         subject.should_not_receive :enqueue_processing
 
-        subject.complete_upload mock
+        subject.track_uploaded mock
       end
+    end
+  end
+
+  describe 'credits' do
+    its(:credits) { should == 1 }
+  end
+
+  describe '#cost' do
+    context 'when the duration is short' do
+      let(:short_session) { FactoryGirl.create :app_session, :duration => 5 }
+
+      it 'is 0' do
+        short_session.cost.should == 0
+      end
+    end
+
+    context 'when the duration is longer than minimum' do
+      let(:normal_session) { FactoryGirl.create :app_session, :duration => 10 }
+
+      it 'is equal to credits' do
+        normal_session.cost.should == normal_session.credits
+      end
+    end
+  end
+
+
+  describe '#complete' do
+    it 'tells associated app to update recording accounting' do
+      subject.app.should_receive(:complete_recording).with(subject.cost)
+
+      subject.complete
     end
   end
 
@@ -328,10 +340,29 @@ describe AppSession do
   end
 
   describe '#upload_tracks' do
-    it 'contains a screen, touch and orientation track' do
-      subject.upload_tracks.should include :screen_track
-      subject.upload_tracks.should include :touch_track
-      subject.upload_tracks.should include :orientation_track
+    context 'when delight version is newer than 2.3' do
+      before { subject.stub :delight_version => '2.4.0' }
+      xit 'contains a screen, touch, orientation and event track' do
+        subject.upload_tracks.should include :screen_track
+        subject.upload_tracks.should include :touch_track
+        subject.upload_tracks.should include :orientation_track
+        subject.upload_tracks.should include :event_track
+        subject.upload_tracks.should include :view_track
+      end
+    end
+
+    context 'when delight version is older than 2.2' do
+      before { subject.stub :delight_version => '2.2.2' }
+      it 'contains a screen, touch and orientation track' do
+        subject.upload_tracks.should include :screen_track
+        subject.upload_tracks.should include :touch_track
+        subject.upload_tracks.should include :orientation_track
+      end
+
+      it 'does not support event and view tracks' do
+        subject.upload_tracks.should_not include :event_track
+        subject.upload_tracks.should_not include :view_track
+      end
     end
   end
 
@@ -386,7 +417,7 @@ describe AppSession do
     it 'updates metrics' do
       2.times { subject.update_metrics metrics }
 
-      subject.metrics(:private_view_count).should == '20'
+      subject.metrics(:private_view_count).should == 20
     end
 
     it 'always returns true' do

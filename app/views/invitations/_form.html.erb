@@ -1,11 +1,10 @@
 <div class="row">
-  <div class="span2">&nbsp;</div>
   <div class="span4" style="margin-left:-30px">
 
 <%= simple_form_for(@group_invitation, :url => invitations_path, :html => { :id => 'invitation-form', :class => "form-horizontal"}, :remote => true) do |f| %>
   <fieldset>
   <%= f.input :emails, :as => :string, :placeholder => 'Comma seperated list of emails', :input_html => { :class => :span4 } %>
-  <%= f.input :message, :as => :text, :input_html => { :rows => 8, :class => :span4 } %>
+  <%= f.input :message, :as => :text, :input_html => { :rows => 6, :class => :span4 } %>
   <%= f.input :app_id, :as => :hidden %>
   <%= f.input :app_session_id, :as => :hidden %>
   <%= f.button :submit, :class => 'btn btn-large btn-primary', :id => 'invitation-send-btn', :value => 'Send' %>

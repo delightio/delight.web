@@ -49,13 +49,8 @@ class AppsController < ApplicationController
       session[:app_first] = nil
     end
     @app_session_id = params[:app_session_id]
-
-    if current_user.administrator?
-      @app ||= App.includes(:app_sessions).administered_by(current_user).find_by_id(params[:id])
-    end
-
-    # viewers
-    @app ||= App.includes(:app_sessions).viewable_by(current_user).find_by_id(params[:id])
+    @app = App.find params[:id]
+    @app = nil unless @app.viewable_by? current_user
     if @app.nil?
       respond_to do |format|
         format.html do
@@ -201,7 +196,9 @@ class AppsController < ApplicationController
   end
 
   def update_recording
-    @app = App.administered_by(current_user).find(params[:app_id])
+    # @app = App.administered_by(current_user).find(params[:app_id])
+    @app = App.find params[:app_id]
+    raise ActiveRecord::RecordNotFound unless @app.administered_by?(current_user)
 
     case params[:state]
     when 'pause'
@@ -227,23 +224,32 @@ class AppsController < ApplicationController
   end
 
   def schedule_recording_edit
-    @app = App.administered_by(current_user).find(params[:app_id])
+    # @app = App.administered_by(current_user).find(params[:app_id])
+    @app = App.find params[:app_id]
+    raise ActiveRecord::RecordNotFound unless @app.administered_by?(current_user)
     respond_to do |format|
       format.html { render :layout => 'iframe' }
     end
   end
 
   def schedule_recording_update
-    @app = App.administered_by(current_user).find(params[:app_id])
-    @schedule_recording = params[:schedule_recording]
+    # @app = App.administered_by(current_user).find(params[:app_id])
+    @app = App.find params[:app_id]
+    raise ActiveRecord::RecordNotFound unless @app.administered_by?(current_user)
+    @account = @app.account
+    @schedule_recording = params[:schedule_recording].to_i
     respond_to do |format|
-      if @schedule_recording and @schedule_recording.to_i > 0 # TODO more checking, etc credits
+      if @schedule_recording.to_i > 0 &&
+         @account.enough_credits?(@schedule_recording)
         @app.schedule_recordings @schedule_recording
         flash[:notice] = 'Successfully scheduled recordings'
         format.html { redirect_to :action => :schedule_recording_edit }
       else
         flash.now[:type] = 'error'
-        flash.now[:notice] = 'Failed scheduling recordings'
+        flash.now[:notice] = "Failed scheduling #{@schedule_recording} recordings"
+        unless @account.enough_credits?(@schedule_recording)
+           flash.now[:notice] = "Sorry. Not enough credits to schedule #{@schedule_recording} sessions"
+         end
         format.html { render action: "schedule_recording_edit", :layout => 'iframe' }
       end
     end
@@ -264,8 +270,9 @@ class AppsController < ApplicationController
     end
 
     # validate app id
-    @app = App.administered_by(current_user).find_by_id(params[:app_id])
-    if @app.nil?
+    # @app = App.administered_by(current_user).find(params[:app_id])
+    @app = App.find params[:app_id]
+    if !@app.administered_by? current_user
       respond_to do |format|
         format.json { render :json => { 'result' => 'fail', 'reason' => 'access denied' } }
       end
@@ -273,7 +280,7 @@ class AppsController < ApplicationController
     end
 
     state = params[:state]
-    if state == '1'  # convert to 'true' or 'false'
+    if state.to_i != 0 # convert to 'true' or 'false'
       state = 'true'
     else
       state = 'false'

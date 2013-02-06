@@ -12,6 +12,13 @@ class VideoProcessing
     screen = app_session.screen_track.download
     rotation = app_session.orientation_track.rotation app_session.duration.to_i
 
+    if app_session.front_track
+      front_track = app_session.front_track
+      front = front_track.download
+      rotate_video front, rotation
+      front_track.upload front
+    end
+
     gesture_converter = GestureConverter.new touch
     gesture = gesture_converter.dump app_session.working_directory
 

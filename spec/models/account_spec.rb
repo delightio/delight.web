@@ -38,6 +38,30 @@ describe Account do
     end
   end
 
+  describe '#enough_credits?' do
+    it 'is always true if we subscribed to an unlimited plan' do
+      subject.stub :subscribed_to_unlimited_plan? => true
+
+      subject.should be_enough_credits(1000)
+    end
+
+    context 'when we do not subscribe to unlimited plan' do
+      before { subject.stub :subscribed_to_unlimited_plan? => false }
+
+      it 'is true when we have more remaining credit than requested' do
+        subject.stub :remaining_credits => 10
+
+        subject.should be_enough_credits(5)
+      end
+
+      it 'is false if we do not have enough credits' do
+        subject.stub :remaining_credits => 10
+
+        subject.should_not be_enough_credits(20)
+      end
+    end
+  end
+
   let(:credit_change) { 20 }
 
   describe '#add_credits' do
@@ -51,6 +75,30 @@ describe Account do
     it 'decrements credits by given amount' do
       expect { subject.use_credits credit_change }.
         to change { subject.remaining_credits }.by (-1*credit_change)
+    end
+
+    context 'when subscribed to unlimited plan' do
+      before { subject.stub :subscribed_to_unlimited_plan? => true }
+      it 'does not decrement credits' do
+        subject.credits.should_not_receive :decrement
+
+        subject.use_credits credit_change
+      end
+    end
+  end
+
+  describe '#subscribed_to_unlimited_plan?' do
+    let(:unlimited_plan) { 'unlimited' }
+    it 'is true after we subscribe' do
+      subject.subscribe unlimited_plan
+
+      subject.should be_subscribed_to_unlimited_plan
+    end
+
+    it 'is false if we did not subscribe' do
+      subject.unsubscribe
+
+      subject.should_not be_subscribed_to_unlimited_plan
     end
   end
 

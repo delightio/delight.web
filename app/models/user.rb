@@ -97,7 +97,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def has_valid_email?
+    !email.nil? && !email.empty?
+  end
+
   def subscribe_to_email_list
-    # EmailNotification.subscribe email
+    EmailNotification.subscribe email if has_valid_email?
   end
 end

@@ -30,10 +30,16 @@ class App < ActiveRecord::Base
   end
   extend Scopes
 
+  def activated?
+    # #any? triggers pulling in ALL app sessions.
+    # app_sessions.any? &:recorded?
+    app_sessions.recorded.limit(1).count > 0
+  end
+
   def recording?
     !recording_paused? &&
-    scheduled_recordings > 0
-    # && account.remaining_credits > 0
+    scheduled_recordings > 0 &&
+    account.enough_credits?
   end
 
   def scheduled_recordings
@@ -45,7 +51,7 @@ class App < ActiveRecord::Base
     settings[:scheduled_at] = Time.now.to_i
   end
 
-  def complete_recording
+  def complete_recording cost=1
     # We got more recordings than we expected
     if scheduled_recordings <= 0
       handle_extra_recordings
@@ -53,11 +59,8 @@ class App < ActiveRecord::Base
     end
 
     settings.incr :recordings, -1
+    account.use_credits cost
 
-    # will not deduce credits if users subscribed
-    if account.current_subscription.nil?
-      account.use_credits 1
-    end
     notify_users
   end
 
@@ -91,7 +94,7 @@ class App < ActiveRecord::Base
   end
 
   def administered_by?(user)
-    administrator == user
+    administrator == user || viewable_by?(user)
   end
 
   def viewable_by?(user)
@@ -112,8 +115,8 @@ class App < ActiveRecord::Base
 
   def notify_users
     if ready_to_notify?
-      Resque.enqueue ::AppRecordingCompletion, id
       REDIS.hdel settings.key, :scheduled_at
+      Resque.enqueue ::AppRecordingCompletion, id
     end
   end
 

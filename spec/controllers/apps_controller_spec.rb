@@ -617,6 +617,11 @@ describe AppsController do
       end
     end
 
+    describe "anyone who can administer signed in" do
+      it "should increment the scheduled recording"
+    end
+
+
     describe "other account signed in" do
       before(:each) do
         sign_in(user)
@@ -656,7 +661,7 @@ describe AppsController do
         response.should be_success
         app.reload
         app.scheduled_recordings.should == orig # no change
-        flash.now[:notice].should == "Failed scheduling recordings"
+        flash.now[:notice].should == "Failed scheduling -1 recordings"
       end
     end
   end

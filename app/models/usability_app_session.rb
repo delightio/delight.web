@@ -3,7 +3,7 @@ class UsabilityAppSession < AppSession
     [:screen_track, :touch_track, :orientation_track, :front_track]
   end
 
-  def maximum_duration
-    2.hours
+  def credits
+    2
   end
 end

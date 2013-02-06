@@ -124,9 +124,22 @@ class AppSession < ActiveRecord::Base
     1.hours
   end
 
-  def complete_upload media
+  def credits
+    1
+  end
+
+  # Cost is the actual cost for current app session.
+  def cost
+    return 0 if duration < 10.seconds
+    credits
+  end
+
+  def complete
+    app.complete_recording cost
+  end
+
+  def track_uploaded track
     enqueue_processing if ready_for_processing?
-    app.complete_recording if recorded?
   end
 
   def enqueue_processing

@@ -12,7 +12,5 @@ describe UsabilityAppSession do
     end
   end
 
-  describe '#maximum_duration' do
-    its(:maximum_duration) { should == 2.hours }
-  end
+  its(:credits) { should == 2 }
 end

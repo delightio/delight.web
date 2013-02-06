@@ -78,20 +78,57 @@ describe S3Storage do
       subject.upload local_file
     end
   end
+
+  describe '#exists?' do
+    it 'is true if it exists with a non zero size' do
+      subject.stub :presigned_object => (stub :exists? => true)
+      subject.presigned_object.stub :content_length => 10
+
+      subject.should be_exists
+    end
+
+    it 'is false if it does not exist with zero size' do
+      subject.stub :presigned_object => (stub :exists? => true)
+      subject.presigned_object.stub :content_length => 0
+
+      subject.should_not be_exists
+    end
+
+    it 'is false if it does not exist' do
+      subject.stub :presigned_object => (stub :exists? => false)
+
+      subject.should_not be_exists
+    end
+  end
 end
 
 describe CachedHash do
   subject { CachedHash.new key, ttl}
   let(:key) { "a key" }
   let(:ttl) { 10 }
+  let(:content) { {a: 1, b: 2} }
+
+  context 'when given key has not expired' do
+    before do
+      existing = CachedHash.new key, ttl
+      existing.set content
+    end
+
+    it 'respects remaining ttl' do
+      subject = CachedHash.new key, 10*ttl
+
+      subject.should_not be_expired
+      subject.ttl.should <= ttl
+    end
+  end
 
   describe '#expired?' do
     it 'is true when key does not exist' do
       subject.should be_expired
     end
 
-    it 'is false if we have a TTL' do
-      subject.set blah: 123
+    it 'is false if TTL is larger than given input' do
+      subject.stub :ttl => 10
 
       subject.should_not be_expired
     end

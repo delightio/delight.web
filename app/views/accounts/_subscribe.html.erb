@@ -33,7 +33,13 @@
               <label class="control-label" for="card-number-2">Card Number</label>
               <div class="controls">
                 <input type="text" size="20" autocomplete="off" id="card-number-2" value="" class="pull-left"/>
-                <span class="help-inline" style="height:28px;overflow:hidden"><img id="card-type-img-2" src="" style="display:none;position:relative;top:-1px;"/></span>
+                <span class="help-inline" style="height:28px;overflow:hidden;float:left;">
+                  <img id="card-type-img-visa-2" src="/assets/visa.png" style="position:relative;top:-1px;opacity:0.5;" />
+                  <img id="card-type-img-master-2" src="/assets/master.png" style="position:relative;top:-1px;opacity:0.5;" />
+                  <img id="card-type-img-amex-2" src="/assets/amex.png" style="position:relative;top:-1px;opacity:0.5;" />
+                  <img id="card-type-img-discover-2" src="/assets/discover.png" style="position:relative;top:-1px;opacity:0.5;" />
+                  <img id="card-type-img-dinersclub-2" src="/assets/dinersclub.png" style="position:relative;top:-1px;opacity:0.5;" />
+                </span>
               </div>
             </div>
             <div class="control-group">
@@ -109,22 +115,33 @@
     });
 
     $("#card-number-2").change((function() {
-      var type_to_img_map = {
-        'Visa':'/assets/visa.png',
-        'MasterCard':'/assets/master.png',
-        'American Express':'/assets/amex.png',
-        'Discover':'/assets/discover.png',
-        'Diners Club':'/assets/dinersclub.png'
-        //'JCB':'/assets/visa.png',
-      };
       return function() {
         var card_number = $("#card-number-2").attr('value');
         var card_type = Stripe.cardType(card_number);
-        if (type_to_img_map.hasOwnProperty(card_type)) {
-          $("#card-type-img-2").attr('src', type_to_img_map[card_type]);
-          $("#card-type-img-2").show();
-        } else {
-          $("#card-type-img-2").hide();
+
+        $("#card-type-img-visa-2").css("opacity", "0.5");
+        $("#card-type-img-master-2").css("opacity", "0.5");
+        $("#card-type-img-amex-2").css("opacity", "0.5");
+        $("#card-type-img-discover-2").css("opacity", "0.5");
+        $("#card-type-img-dinersclub-2").css("opacity", "0.5");
+
+        switch(card_type)
+        {
+        case "Visa":
+          $("#card-type-img-visa-2").css("opacity", "1.0");
+          break;
+        case "MasterCard":
+          $("#card-type-img-master-2").css("opacity", "1.0");
+          break;
+        case "American Express":
+          $("#card-type-img-amex-2").css("opacity", "1.0");
+          break;
+        case "Discover":
+          $("#card-type-img-discover-2").css("opacity", "1.0");
+          break;
+        case "Diners Club":
+          $("#card-type-img-dinersclub-2").css("opacity", "1.0");
+          break;
         }
       };
     })());

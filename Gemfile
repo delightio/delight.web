@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails'
 gem 'thin'
 
 # Bundle edge Rails instead:
@@ -22,12 +22,12 @@ gem 'rest-client'
 gem 'mailgun-rails'
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'rspec-rails', "2.12.0"
+  gem 'factory_girl_rails', "~> 4.0"
 end
 
 group :test do
-  gem "factory_girl_rails"
+  gem "factory_girl_rails", "~> 4.0"
   gem "capybara"
   gem "guard-rspec"
   gem "rspec-prof" #https://github.com/sinisterchipmunk/rspec-prof
@@ -48,8 +48,10 @@ group :assets do
   # gem 'therubyracer'
 
   gem 'uglifier', '>= 1.0.3'
-  gem "twitter-bootstrap-rails"
 end
+gem "therubyracer"
+gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+gem "twitter-bootstrap-rails"
 
 gem 'jquery-rails'
 

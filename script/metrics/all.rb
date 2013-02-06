@@ -50,7 +50,9 @@ puts 'Signups:'
 end
 puts
 
-puts 'Most active Apps:'
+n = 30
+
+puts "#{n} most active apps:"
 last_session_ages = {}
 now = Time.now
 App.after_launch.latest.find_each do |app|
@@ -60,7 +62,7 @@ App.after_launch.latest.find_each do |app|
   end
 end
 sorted = last_session_ages.sort { |x,y| x.last <=> y.last }
-sorted.each do |app_id, age|
+sorted.first(n).each do |app_id, age|
   app = App.find app_id
   last_session = app.app_sessions.latest.first
   last_recorded_session = app.app_sessions.recorded.latest.first
@@ -71,7 +73,39 @@ sorted.each do |app_id, age|
 end
 puts
 
+unactivated = [].tap do |array|
+  App.latest.each do |app|
+    array << app unless app.activated?
+  end
+end
+
+puts "#{n} newly created but unactivated apps:"
+unactivated.first(n).each do |app|
+  puts "  #{app.name} created by #{app.administrator.email}, #{app.created_at.age}, #{app.app_sessions.count}"
+end
+puts
+
+# internal
+internal_users = [ 'thomas@nowbox.com', 'thomas@delight.io',
+                      'chris@nowbox.com', 'bill@nowbox.com' ].map {|e| User.find_by_email e }
+internal_users.compact!
+internal_accounts = internal_users.map &:account
+internal_apps = internal_accounts.map { |acc| acc.apps }
+internal_apps.flatten!
+internal_apps.delete App.find 151
+internal_sessions = internal_apps.map &:app_sessions
+internal_sessions.flatten!
+internal_recorded_sessions = internal_apps.map {|app| app.app_sessions.recorded }
+internal_recorded_sessions.flatten!
+
+puts "Internal:"
+puts "  Accounts: #{internal_accounts.count}"
+puts "  Apps: #{internal_apps.count}/#{internal_apps.count}"
+puts "  App Sessions: #{internal_recorded_sessions.count} / #{internal_sessions.count}"
+puts
+
 puts "Summary (since launched #{LaunchDate.age}):"
-puts "  Accounts: #{Account.after_launch.count}"
-puts "  Apps: #{sorted.count}/#{App.after_launch.count}"
-puts "  App Sessions: #{AppSession.after_launch.recorded.count} / #{AppSession.after_launch.count}"
+puts "  Accounts: #{Account.after_launch.count - internal_accounts.count}"
+puts "  Apps: #{sorted.count-internal_apps.count}/#{App.after_launch.count-internal_apps.count}"
+puts "  App Sessions: #{AppSession.after_launch.recorded.count-internal_recorded_sessions.count} / #{AppSession.after_launch.count-internal_sessions.count}"
+

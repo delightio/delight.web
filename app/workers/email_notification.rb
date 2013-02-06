@@ -6,6 +6,8 @@ class EmailNotification
 
   def self.send_individual(data)
     data.merge! from: default_from if data[:from].nil?
+    verify_required_params data
+
     RestClient.post "https://#{credential[:username]}:#{credential[:password]}"\
                     "@api.mailgun.net/v2/delightio.mailgun.org/messages", data
   end
@@ -20,12 +22,29 @@ class EmailNotification
     send_individual data
   end
 
+  def self.verify_required_params(params)
+    [:to, :from, :bcc, :subject].each do |key|
+      raise "Missing #{key} in #{params.inspect}" unless params.has_key? key
+    end
+    raise "Needs :text or :html in #{params.inspect}" unless (params.has_key? :text) || (params.has_key? :html)
+  end
+
   def self.subscribe(email, list=EmailList.users)
     RestClient.post("https://#{credential[:username]}:#{credential[:password]}" \
                     "@api.mailgun.net/v2/lists/#{list[:address]}/members",
                     subscribed: true,
+                    upsert: true,
                     address: email)
   end
+
+  def self.unsubscribe(email, list=EmailList.users)
+    RestClient.post("https://#{credential[:username]}:#{credential[:password]}" \
+                    "@api.mailgun.net/v2/lists/#{list[:address]}/members",
+                    subscribed: false,
+                    upsert: true,
+                    address: email)
+  end
+
 
   def self.create_list(address, description)
     RestClient.post("https://#{credential[:username]}:#{credential[:password]}" \
