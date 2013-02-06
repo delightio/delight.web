@@ -171,7 +171,7 @@ describe AppSession do
     end
   end
 
-  describe "#by_events", focus: true do
+  describe "#by_events" do
     it "shouldn't try to filter if argument is nil or blank" do
       AppSession.by_events([]).should include(subject)
     end
@@ -478,6 +478,18 @@ describe AppSession do
       subject.send :generate_upload_uris
       subject.upload_uris.should have_key :screen_track
       subject.upload_uris.should have(1).track
+    end
+  end
+
+  describe "#parse_and_insert_events!" do
+    it "should parse .plist and insert data to events" do
+      filename = File.join(Rails.root, 'spec', 'fixtures', 'event_track.plist')
+
+      subject.parse_and_insert_events!(filename)
+
+      expect = ["store-shown", "item-selected", "item_purchased", "item_not_purchased"]
+      actual = subject.events.map {|event| event.name}
+      actual.should == expect
     end
   end
 

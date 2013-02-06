@@ -77,6 +77,16 @@ class AppSession < ActiveRecord::Base
   end
   extend Scopes
 
+  def parse_and_insert_events!(filename)
+    event_data = Plist::parse_xml(filename)
+
+    transaction do
+      event_data["eventOccured"].each do |data|
+        events.create!(name: data["name"])
+      end
+    end
+  end
+
   def private_framework?
     delight_version.split('.').include? 'Private'
   end

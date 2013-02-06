@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>eventOccured</key>
+  <array>
+    <dict>
+      <key>name</key>
+      <string>store-shown</string>
+      <key>time</key>
+      <real>1.0</real>
+    </dict>
+
+    <dict>
+      <key>name</key>
+      <string>item-selected</string>
+      <key>time</key>
+      <real>2.0</real>
+    </dict>
+
+    <dict>
+      <key>name</key>
+      <string>item_purchased</string>
+      <key>time</key>
+      <real>3.0</real>
+    </dict>
+
+    <dict>
+      <key>name</key>
+      <string>item_not_purchased</string>
+      <key>time</key>
+      <real>4.0</real>
+    </dict>
+  </array>
+</dict>
+</plist>
