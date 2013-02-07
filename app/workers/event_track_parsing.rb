@@ -12,7 +12,7 @@ class EventTrackParsing
     event_data = Plist::parse_xml(event)
 
     app_session.class.transaction do
-      event_data["eventOccured"].each do |data|
+      event_data["events"].each do |data|
         app_session.events.create!(name: data["name"])
       end
     end
