@@ -12,16 +12,19 @@ describe AppSessionsController do
     let(:device_hw_version) { 'iPhone 4.1' }
     let(:device_os_version) { '4.1' }
 
-    it 'creates' do
-      params = { app_version: app_version,
+    before(:each) do
+      @params = {app_version: app_version,
                  app_build: app_build,
                  app_locale: app_locale,
                  app_connectivity: app_connectivity,
                  device_hw_version: device_hw_version,
                  device_os_version: device_os_version,
                  delight_version: delight_version }
+    end
+
+    it 'creates' do
       request.env['HTTP_X_NB_AUTHTOKEN'] = app.token
-      post :create, app_session: params, format: :xml
+      post :create, app_session: @params, format: :xml
       response.should be_success
       #response.response_code.should == 201
 
@@ -31,28 +34,25 @@ describe AppSessionsController do
       xml.should have_xpath('//app_session/recording')
     end
 
+    # https://github.com/delightio/delight.ios/issues/5
+    it 'handles extra properties sent in with POST /app_sessions' do
+      extra_params = @params.clone
+      extra_params[:properties] = { blah: mock }
+      extra_params[:metrics] = { blah: mock }
+
+      request.env['HTTP_X_NB_AUTHTOKEN'] = app.token
+      post :create, app_session: extra_params, format: :xml
+      response.should be_success
+    end
+
     it "should fail when app token is missing" do
-      params = { app_version: app_version,
-                 app_build: app_build,
-                 app_locale: app_locale,
-                 app_connectivity: app_connectivity,
-                 device_hw_version: device_hw_version,
-                 device_os_version: device_os_version,
-                 delight_version: delight_version }
-      post :create, app_session: params, format: :xml
+      post :create, app_session: @params, format: :xml
       response.should be_bad_request
     end
 
     it "should fail if token is wrong" do
-      params = { app_version: app_version,
-                 app_build: app_build,
-                 app_locale: app_locale,
-                 app_connectivity: app_connectivity,
-                 device_hw_version: device_hw_version,
-                 device_os_version: device_os_version,
-                 delight_version: delight_version }
       request.env['HTTP_X_NB_AUTHTOKEN'] = 'wrongtoken'
-      post :create, app_session: params, format: :xml
+      post :create, app_session: @params, format: :xml
       response.should be_bad_request
 #    # LH 110
 #    it 'creates with version 1 params' do
