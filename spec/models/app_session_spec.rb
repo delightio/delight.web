@@ -34,18 +34,10 @@ describe AppSession do
     end
   end
 
-  describe '#expected_presentation_track_count' do
-    it 'is 1 even if we are not to record' do
-      subject.stub :recording? => false
-
-      subject.expected_presentation_track_count.should == 1
-    end
-  end
-
   describe '#ready_for_processing?' do
     before do
-      subject.stub :expected_presentation_track_count => 1
-      subject.stub :expected_track_count => 3
+      subject.stub :processed_tracks => [mock, mock]
+      subject.stub :expected_track_count => 4
     end
 
     it 'is true when we have received the expected number of tracks (- presentation track)' do
@@ -350,39 +342,35 @@ describe AppSession do
   context 'named_track' do
     [ :screen_track, :touch_track, :front_track, :orientation_track,
       :event_track, :view_track,
-      :presentation_track ].each do |named_track|
+      :presentation_track, :gesture_track ].each do |named_track|
       specify "#{named_track} returns associated #{named_track}" do
         track = FactoryGirl.create named_track, app_session: subject
 
         subject.send(named_track).should == track
       end
     end
-  end
 
-  describe '#destroy_presentation_track' do
-    context 'when there is no presentation track' do
-      it 'does nothing' do
-        subject.stub :presentation_track => nil
+    [ :presentation_track, :gesture_track ].each do |named_track|
+      specify "#destroy_#{named_track} does nothing when track is not present" do
+        subject.stub named_track.to_sym => nil
         Object.any_instance.should_not_receive(:destroy)
 
-        subject.destroy_presentation_track
+        subject.send "destroy_#{named_track}".to_sym
       end
-    end
 
-    context 'when there is already one presentation track' do
       let(:track) { mock.as_null_object }
-      it 'destroy existing one' do
-        subject.stub :presentation_track => track
-        subject.presentation_track.should_receive(:destroy)
+      specify "#destroy_#{named_track} destroy given track" do
+        subject.stub named_track.to_sym => track
+        track.should_receive(:destroy)
 
-        subject.destroy_presentation_track
+        subject.send "destroy_#{named_track}".to_sym
       end
     end
   end
 
   describe '#upload_tracks' do
-    context 'when delight version is newer than 2.3' do
-      before { subject.stub :delight_version => '2.4.0' }
+    context 'when delight version is equal or newer than 3.0' do
+      before { subject.stub :delight_version => '3.0' }
       it 'contains a screen, touch, orientation and event track' do
         subject.upload_tracks.should include :screen_track
         subject.upload_tracks.should include :touch_track
@@ -404,6 +392,19 @@ describe AppSession do
         subject.upload_tracks.should_not include :event_track
         subject.upload_tracks.should_not include :view_track
       end
+    end
+  end
+
+  describe '#processed_tracks' do
+    it 'has more than 0 track even if we are not recording' do
+      subject.stub :recording? => false
+
+      subject.processed_tracks.should have_at_least(1).track
+    end
+
+    it 'contains a presentation and gesture track' do
+      subject.processed_tracks.should include :presentation_track
+      subject.processed_tracks.should include :gesture_track
     end
   end
 

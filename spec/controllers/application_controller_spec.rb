@@ -5,9 +5,11 @@ describe ApplicationController do
     def index
       render :nothing => true
     end
+
     def after_sign_in_path_for(resource)
       super resource
     end
+
     def check_user_registration
       super
     end

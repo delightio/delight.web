@@ -24,7 +24,7 @@ gem 'mailgun-rails'
 gem 'plist'
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', "2.12.0"
   gem 'factory_girl_rails', "~> 4.0"
 end
 
@@ -87,3 +87,6 @@ gem 'exceptional'
 gem "kaminari" # for pagination
 gem "simple_form"
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+
+gem 'plist'
+gem 'json'

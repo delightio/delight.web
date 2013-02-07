@@ -119,7 +119,7 @@ describe AppSessionsController do
       params = { metrics: { call_count: '10' } }
       put :update, id: app_session.id, app_session: params, format: :xml
       response.should be_success
-      app_session.reload.metrics(:call_count).should == '10'
+      app_session.reload.metrics(:call_count).should == 10
     end
   end
 

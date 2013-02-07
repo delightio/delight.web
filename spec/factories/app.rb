@@ -10,7 +10,7 @@ FactoryGirl.define do
   end
 
   factory :non_recording_app, :parent => :app do |non_recording_app|
-    after_create do |a|
+    after(:create) do |a|
       a.schedule_recordings 0
     end
   end
