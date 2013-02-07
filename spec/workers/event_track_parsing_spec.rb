@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EventTrackParsing, focus: true do
+describe EventTrackParsing do
   subject { EventTrackParsing }
   let(:app_session) { FactoryGirl.create :uploaded_app_session }
 
