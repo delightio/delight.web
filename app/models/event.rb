@@ -15,7 +15,7 @@ class Event < ActiveRecord::Base
     end
 
     def by_app(app)
-      joins(:app_sessions => :app).where('apps.id = ?', app.id)
+      joins(:app_sessions => :app).merge(App.where(id: app.id))
     end
   end
   extend Scopes
