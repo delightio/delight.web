@@ -285,6 +285,7 @@ describe AppSession do
       it 'enqueues processing' do
         subject.stub :ready_for_processing? => true
         subject.should_receive :enqueue_processing
+        subject.should_receive :enqueue_event_track_parsing
 
         subject.track_uploaded mock
       end
@@ -294,6 +295,7 @@ describe AppSession do
       it 'does not enqueue processing' do
         subject.stub :ready_for_processing? => false
         subject.should_not_receive :enqueue_processing
+        subject.should_not_receive :enqueue_event_track_parsing
 
         subject.track_uploaded mock
       end
@@ -479,18 +481,6 @@ describe AppSession do
       subject.send :generate_upload_uris
       subject.upload_uris.should have_key :screen_track
       subject.upload_uris.should have(1).track
-    end
-  end
-
-  describe "#parse_and_insert_events!" do
-    it "should parse .plist and insert data to events" do
-      filename = File.join(Rails.root, 'spec', 'fixtures', 'event_track.plist')
-
-      subject.parse_and_insert_events!(filename)
-
-      expect = ["store-shown", "item-selected", "item_purchased", "item_not_purchased"]
-      actual = subject.events.map {|event| event.name}
-      actual.should == expect
     end
   end
 

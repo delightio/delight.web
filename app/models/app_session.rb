@@ -77,16 +77,6 @@ class AppSession < ActiveRecord::Base
   end
   extend Scopes
 
-  def parse_and_insert_events!(filename)
-    event_data = Plist::parse_xml(filename)
-
-    transaction do
-      event_data["eventOccured"].each do |data|
-        events.create!(name: data["name"])
-      end
-    end
-  end
-
   def private_framework?
     delight_version.split('.').include? 'Private'
   end
@@ -156,11 +146,18 @@ class AppSession < ActiveRecord::Base
   end
 
   def track_uploaded track
-    enqueue_processing if ready_for_processing?
+    if ready_for_processing?
+      enqueue_processing
+      enqueue_event_track_parsing
+    end
   end
 
   def enqueue_processing
     VideoProcessing.enqueue id
+  end
+
+  def enqueue_event_track_parsing
+    EventTrackParsing.enqueue id
   end
 
   def upload_tracks
