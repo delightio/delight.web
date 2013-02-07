@@ -126,6 +126,10 @@ class AppSessionsController < ApplicationController
       return
     end
 
+    # GH #18 handle extra properties and metrics before our iOS clients are updated.
+    as_params.delete :properties
+    as_params.delete :metrics
+
     @app_session = model_class.new as_params
 
     respond_to do |format|
