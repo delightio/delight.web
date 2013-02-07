@@ -4,11 +4,12 @@ class Event < ActiveRecord::Base
 
   module Scopes
     def by_name(names)
-      if names.blank?
-        scoped
-      else
-        where(name: names)
-      end
+      name_table = arel_table[:name]
+      query = names.inject(nil) do |query, name|
+                fomular = name_table.eq(name)
+                !query ? fomular : query.or(fomular)
+              end
+      where(query)
     end
 
     def by_app(app)

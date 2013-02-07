@@ -34,8 +34,13 @@ class AppSession < ActiveRecord::Base
       joins(:app => :permissions).where(:permissions => { :viewer_id => user.id })
     end
 
-    def by_events(events)
-      includes(:events).merge(Event.by_name(events))
+    def by_events(event_names)
+      if event_names.blank?
+        scoped
+      else
+        joins(:events).merge(Event.by_name(event_names))
+        .group('app_sessions.id').having('COUNT(*) >= ?', event_names.length)
+      end
     end
 
     def date_between(min, max)  #inclusive

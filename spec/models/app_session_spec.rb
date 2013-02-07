@@ -181,13 +181,16 @@ describe AppSession do
       session3.events.create!(name: "item-not-selected")
 
       sessions = AppSession.by_events(["item-selected"])
-      sessions.should include(session1, session2, session3)
+      sessions.sort.should == [session1, session2, session3]
 
-      # sessions = AppSession.by_events(["item-selected", "item_purchased"])
-      # sessions.should == [session2]
+      sessions = AppSession.by_events(["item-selected", "item_purchased"])
+      sessions.should == [session2]
 
-      # sessions = AppSession.by_events(["item-selected", "item-not-selected"])
-      # sessions.should include(session3)
+      sessions = AppSession.by_events(["item-selected", "item-not-selected"])
+      sessions.should == [session3]
+
+      sessions = AppSession.by_events(["item_purchased", "item-not-selected"])
+      sessions.should == []
     end
   end
 
