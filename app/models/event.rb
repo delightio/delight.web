@@ -2,6 +2,8 @@ class Event < ActiveRecord::Base
   has_many :app_sessions_events
   has_many :app_sessions, :through => :app_sessions_events
 
+  validates :name, presence: true
+
   module Scopes
     def by_name(names)
       name_table = arel_table[:name]
