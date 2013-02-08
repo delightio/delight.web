@@ -40,6 +40,13 @@ FactoryGirl.define do
     end
   end
 
+  factory :app_session_with_event_track, :parent => :app_session do |s|
+    after(:create) do |a|
+      a.update_attribute :expected_track_count, 1
+      FactoryGirl.create :event_track, app_session: a
+    end
+  end
+
   # It's based on non_recording_app_session but we fake the recording state
   # by setting expected_track_count and creating fake tracks
   factory :uploaded_app_session, :parent => :non_recording_app_session do |s|

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe EventTrackParsing do
   subject { EventTrackParsing }
-  let(:app_session) { FactoryGirl.create :uploaded_app_session }
+  let(:app_session) { FactoryGirl.create :app_session_with_event_track }
 
   describe '.perform' do
     before do

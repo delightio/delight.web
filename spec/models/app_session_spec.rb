@@ -169,16 +169,16 @@ describe AppSession do
     end
 
     it "should filter app sessions by one tag" do
-      session1 = subject
-      session2 = FactoryGirl.create :app_session
-      session3 = FactoryGirl.create :app_session
+      session1 = FactoryGirl.create :app_session_with_event_track
+      session2 = FactoryGirl.create :app_session_with_event_track
+      session3 = FactoryGirl.create :app_session_with_event_track
 
-      session1.events.create!(name: "item-selected")
-      session2.events.create!(name: "item-selected")
-      session3.events.create!(name: "item-selected")
+      session1.events.create!(name: "item-selected", time: 1.0)
+      session2.events.create!(name: "item-selected", time: 1.0)
+      session3.events.create!(name: "item-selected", time: 1.0)
 
-      session2.events.create!(name: "item_purchased")
-      session3.events.create!(name: "item-not-selected")
+      session2.events.create!(name: "item_purchased", time: 2.0)
+      session3.events.create!(name: "item-not-selected", time: 2.0)
 
       sessions = AppSession.by_events(["item-selected"])
       sessions.sort.should == [session1, session2, session3]

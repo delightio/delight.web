@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
   has_many :app_sessions, :through => :app_sessions_events
 
   validates :name, presence: true
+  validates :time, presence: true
 
   module Scopes
     def by_name(names)
