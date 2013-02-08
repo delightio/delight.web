@@ -31,9 +31,7 @@ group :test do
   gem "capybara"
   gem "guard-rspec"
   gem "rspec-prof" #https://github.com/sinisterchipmunk/rspec-prof
-  gem 'cucumber-rails'
   gem 'database_cleaner'
-  gem 'guard-cucumber'
   gem 'spork', '~> 1.0rc'
   gem 'guard-spork'
 end
