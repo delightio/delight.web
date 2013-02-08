@@ -16,8 +16,12 @@ describe EventTrackParsing do
     it "should download .plist file, parse and insert data to events" do
       subject.perform app_session.id
 
-      expect = ["account_viewed", "account_added", "account_viewed"]
-      actual = app_session.events.map {|event| event.name}
+      expect = [
+        ["account_viewed", 4.5723352440109011],
+        ["account_added", 17.915507944009732],
+        ["account_viewed", 19.145736510006827]
+      ]
+      actual = app_session.events.map {|event| [event.name, event.time]}
       actual.should == expect
     end
   end

@@ -13,7 +13,10 @@ class EventTrackParsing
 
     app_session.class.transaction do
       event_data["events"].each do |data|
-        app_session.events.create!(name: data["name"])
+        app_session.events.create!({
+          name: data["name"],
+          time: data["time"]
+        })
       end
     end
 

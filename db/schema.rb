@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130206003646) do
+ActiveRecord::Schema.define(:version => 20130208001922) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20130206003646) do
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
     t.integer  "app_sessions_events_count", :default => 0
+    t.decimal  "time"
   end
 
   add_index "events", ["track_id"], :name => "index_track_tags_on_track_id"
