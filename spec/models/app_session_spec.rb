@@ -288,7 +288,6 @@ describe AppSession do
       it 'enqueues processing' do
         subject.stub :ready_for_processing? => true
         subject.should_receive :enqueue_processing
-        subject.should_receive :enqueue_event_track_parsing
 
         subject.track_uploaded mock
       end
@@ -298,7 +297,6 @@ describe AppSession do
       it 'does not enqueue processing' do
         subject.stub :ready_for_processing? => false
         subject.should_not_receive :enqueue_processing
-        subject.should_not_receive :enqueue_event_track_parsing
 
         subject.track_uploaded mock
       end

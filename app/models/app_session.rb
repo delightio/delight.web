@@ -153,16 +153,11 @@ class AppSession < ActiveRecord::Base
   def track_uploaded track
     if ready_for_processing?
       enqueue_processing
-      enqueue_event_track_parsing
     end
   end
 
   def enqueue_processing
     VideoProcessing.enqueue id
-  end
-
-  def enqueue_event_track_parsing
-    EventTrackParsing.enqueue id
   end
 
   def upload_tracks
