@@ -5,8 +5,21 @@ describe VideoProcessing do
 
   describe '.perform' do
     let(:app_session) { FactoryGirl.create :uploaded_app_session }
+    before do
+      AppSession.stub(:find).with(app_session.id) { app_session }
+
+      filename = File.join(Rails.root, 'spec', 'fixtures', 'event_track.plist')
+      file = File.open(filename)
+      app_session.stub_chain(:event_track, :download) { file }
+    end
+
     it 'downloads to local, process, and creates new presentation track'
     it 'deletes existing presentation track before creating new one'
+    it "should download .plist file and import data to events" do
+      EventImporter.should_receive(:new) { OpenStruct.new(events: [Event.new]) }
+      app_session.stub(:import_events)
+      subject.perform app_session.id
+    end
   end
 
   describe '.enqueue' do

@@ -10,6 +10,7 @@ class VideoProcessing
 
     touch = app_session.touch_track.download
     screen = app_session.screen_track.download
+    event = app_session.event_track.download
     rotation = app_session.orientation_track.rotation app_session.duration.to_i
 
     if app_session.front_track
@@ -18,6 +19,8 @@ class VideoProcessing
       rotate_video front, rotation
       front_track.upload front
     end
+
+    app_session.import_events EventImporter.new(event).events
 
     gesture_converter = GestureConverter.new touch
     gesture = gesture_converter.dump app_session.working_directory

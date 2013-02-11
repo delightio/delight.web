@@ -214,6 +214,10 @@ class AppSession < ActiveRecord::Base
     true
   end
 
+  def import_events(events)
+    self.events << events
+  end
+
   private
   def generate_upload_uris
     @upload_uris = {}
