@@ -343,7 +343,7 @@ describe AppSession do
   describe '#upload_tracks' do
     context 'when delight version is equal or newer than 3.0' do
       before { subject.stub :delight_version => '3.0' }
-      it 'contains a screen, touch, orientation and event track' do
+      it 'contains a screen, touch, orientation, view and event track' do
         subject.upload_tracks.should include :screen_track
         subject.upload_tracks.should include :touch_track
         subject.upload_tracks.should include :orientation_track
