@@ -15,7 +15,8 @@ class EventTrackParsing
       event_data["events"].each do |data|
         app_session.events.create!({
           name: data["name"],
-          time: data["time"]
+          time: data["time"],
+          properties: data["properties"]
         })
       end
     end

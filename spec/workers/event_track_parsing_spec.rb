@@ -17,11 +17,15 @@ describe EventTrackParsing do
       subject.perform app_session.id
 
       expect = [
-        ["account_viewed", 4.5723352440109011],
-        ["account_added", 17.915507944009732],
-        ["account_viewed", 19.145736510006827]
+        ["account_viewed", 4.5723352440109011, [["name", "Olga Orange"]]],
+        ["account_added", 17.915507944009732, [["name", "thomas"], ["email", "t@pun.io"]]],
+        ["account_viewed", 19.145736510006827, [["name", "Wade White"]]],
       ]
-      actual = app_session.events.map {|event| [event.name, event.time]}
+
+      actual = app_session.events.map do |event|
+        properties = event.properties.map {|property| [property[0], property[1]]}
+        [event.name, event.time, properties]
+      end
       actual.should == expect
     end
   end
