@@ -121,7 +121,11 @@ class AppsController < ApplicationController
     @last_viewed_at = @app.last_viewed_at_by_user(current_user)
     @app.log_view(current_user)
 
-    @recorded_sessions = @recorded_sessions.by_events(params[:event_tracks])
+    if params[:funnel]
+      funnel = Funnel.find(params[:funnel])
+      event_names = funnel.events.all.map{|e| e.name}
+      @recorded_sessions = @recorded_sessions.by_events(event_names)
+    end
 
     respond_to do |format|
       format.html do

@@ -88,14 +88,15 @@
           </li>
           <hr />
 
-          <li class="nav-header">Event Tracks</li>
-          <% Event.by_app(@app).each do |tag| %>
+          <li class="nav-header">Filter</li>
+          <% @app.funnels.each do |funnel| %>
             <li>
-              <label class="checkbox">
-                <input type="checkbox" class="app-show-eventtracks-checkbox" name="event_tracks[]", value="<%= tag.name %>"> <%= tag.name %> </input>
-              </label>
+              <%= link_to funnel.name, app_path(@app, funnel: funnel) %>
             </li>
           <% end %>
+          <li>
+            <%= link_to "+ Create", [:new, @app, :funnel] %>
+          </li>
 
           <input type="hidden" name="date-min" id="date-min" />
           <input type="hidden" name="date-max" id="date-max" />

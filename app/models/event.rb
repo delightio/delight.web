@@ -21,8 +21,7 @@ class Event < ActiveRecord::Base
     end
 
     def by_app(app)
-      events = joins(:app_sessions => :app).merge(App.where(id: app.id))
-      events.all.uniq {|event| event.name}
+      joins(:app_sessions => :app).merge(App.where(id: app.id))
     end
 
     def by_properties(properties)
