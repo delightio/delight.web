@@ -2,6 +2,9 @@ class Event < ActiveRecord::Base
   has_many :app_sessions_events
   has_many :app_sessions, :through => :app_sessions_events
 
+  has_many :events_funnels
+  has_many :funnels, :through => :events_funnels
+
   validates :name, presence: true
   validates :time, presence: true
 
@@ -18,7 +21,8 @@ class Event < ActiveRecord::Base
     end
 
     def by_app(app)
-      joins(:app_sessions => :app).merge(App.where(id: app.id))
+      events = joins(:app_sessions => :app).merge(App.where(id: app.id))
+      events.all.uniq {|event| event.name}
     end
 
     def by_properties(properties)

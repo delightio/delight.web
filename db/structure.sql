@@ -228,9 +228,41 @@ CREATE TABLE events (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     app_sessions_events_count integer DEFAULT 0,
-    "time" numeric,
-    properties hstore
+    properties hstore,
+    "time" numeric
 );
+
+
+--
+-- Name: events_funnels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE events_funnels (
+    id integer NOT NULL,
+    event_id integer,
+    funnel_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: events_funnels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE events_funnels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: events_funnels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE events_funnels_id_seq OWNED BY events_funnels.id;
 
 
 --
@@ -282,6 +314,38 @@ CREATE SEQUENCE favorites_id_seq
 --
 
 ALTER SEQUENCE favorites_id_seq OWNED BY favorites.id;
+
+
+--
+-- Name: funnels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE funnels (
+    id integer NOT NULL,
+    name character varying(255),
+    app_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: funnels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE funnels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: funnels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE funnels_id_seq OWNED BY funnels.id;
 
 
 --
@@ -559,7 +623,21 @@ ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY events_funnels ALTER COLUMN id SET DEFAULT nextval('events_funnels_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY favorites ALTER COLUMN id SET DEFAULT nextval('favorites_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY funnels ALTER COLUMN id SET DEFAULT nextval('funnels_id_seq'::regclass);
 
 
 --
@@ -645,11 +723,27 @@ ALTER TABLE ONLY beta_signups
 
 
 --
+-- Name: events_funnels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY events_funnels
+    ADD CONSTRAINT events_funnels_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: favorites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY favorites
     ADD CONSTRAINT favorites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: funnels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY funnels
+    ADD CONSTRAINT funnels_pkey PRIMARY KEY (id);
 
 
 --
@@ -769,6 +863,20 @@ CREATE INDEX fav_as_id ON favorites USING btree (app_session_id);
 --
 
 CREATE INDEX fav_user_id ON favorites USING btree (user_id);
+
+
+--
+-- Name: index_events_funnels_on_event_id_and_funnel_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_events_funnels_on_event_id_and_funnel_id ON events_funnels USING btree (event_id, funnel_id);
+
+
+--
+-- Name: index_funnels_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_funnels_on_app_id ON funnels USING btree (app_id);
 
 
 --
@@ -919,3 +1027,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130208014754');
 INSERT INTO schema_migrations (version) VALUES ('20130211005918');
 
 INSERT INTO schema_migrations (version) VALUES ('20130211010000');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212010015');

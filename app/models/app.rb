@@ -8,6 +8,8 @@ class App < ActiveRecord::Base
   has_many :group_invitations
   has_many :invitations
 
+  has_many :funnels
+
   attr_accessible :name
 
   after_create :assign_admin_as_viewer
