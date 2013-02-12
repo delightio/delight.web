@@ -12,6 +12,7 @@ describe PartnerAppSessionsController do
     let(:device_hw_version) { 'iPhone 4.1' }
     let(:device_os_version) { '4.1' }
     let(:callback_url) { 'http://callback.partner.com' }
+    let(:callback_payload) { Hash[user_id: 123, properties: [1,2,3]] }
 
     it 'creates' do
       params = { app_version: app_version,
@@ -21,7 +22,8 @@ describe PartnerAppSessionsController do
                  device_hw_version: device_hw_version,
                  device_os_version: device_os_version,
                  delight_version: delight_version,
-                 callback_url: callback_url }
+                 callback_url: callback_url,
+                 callback_payload: callback_payload }
       request.env['HTTP_X_NB_AUTHTOKEN'] = app.token
       post :create, { partner_app_session: params, format: :xml }
       response.should be_success

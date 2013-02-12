@@ -12,8 +12,14 @@ describe PartnerAppSession do
   end
 
   describe '#notify_partner' do
+    before :each do
+      subject.callback_payload = { user_id: 123, properties: [1,2,3] }
+      subject.save
+    end
+
     it 'issues a callback with POST' do
-      RestClient.should_receive(:post).with(subject.callback_url)
+      RestClient.should_receive(:post).
+        with(subject.callback_url, callback_payload: subject.callback_payload)
 
       subject.notify_partner
     end

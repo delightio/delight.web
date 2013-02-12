@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130212071144) do
+ActiveRecord::Schema.define(:version => 20130212085204) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20130212071144) do
     t.string   "device_os_version"
     t.string   "type"
     t.string   "callback_url"
+    t.string   "callback_payload"
   end
 
   add_index "app_sessions", ["app_id"], :name => "as_app_id"

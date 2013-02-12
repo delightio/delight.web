@@ -1,5 +1,6 @@
 class PartnerAppSession < AppSession
   validates_presence_of :callback_url
+  serialize :callback_payload, Hash
 
   def complete
     super
@@ -7,6 +8,6 @@ class PartnerAppSession < AppSession
   end
 
   def notify_partner
-    RestClient.post callback_url
+    RestClient.post callback_url, :callback_payload => callback_payload
   end
 end
