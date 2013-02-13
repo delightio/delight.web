@@ -20,7 +20,7 @@ class VideoProcessing
       front_track.upload front
     end
 
-    app_session.import_events EventImporter.new(event).events
+    app_session.import_events EventImporter.new(event)
 
     gesture_converter = GestureConverter.new touch
     gesture = gesture_converter.dump app_session.working_directory

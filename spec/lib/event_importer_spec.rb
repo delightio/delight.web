@@ -4,19 +4,23 @@ describe EventImporter do
   it "should import event of plist" do
     filename = File.join(Rails.root, 'spec', 'fixtures', 'event_track.plist')
     file = File.open(filename)
-    events = EventImporter.new(file).events
 
-    expect = [
-      ["account_viewed", 4.5723352440109011, [["name", "Olga Orange"]]],
-      ["account_added", 17.915507944009732, [["email", "t@pun.io"], ["name", "thomas"]]],
-      ["account_viewed", 19.145736510006827, [["name", "Wade White"]]],
-    ]
+    importer = EventImporter.new(file)
 
-    actual = events.map do |event|
-      properties = event.properties.map {|property| [property[0], property[1]]}
-      [event.name, event.time, properties]
+    events = importer.events.map {|event| event.name}
+    event_infos = importer.events.map do |event|
+      event.event_infos.map {|info| [info.time.to_f.round(5), info.properties]}
     end
 
-    actual.should == expect
+    events.should == ["account_viewed", "account_added"]
+    event_infos.should == [
+      [
+        [4.57234, {"name" => "Olga Orange"}],
+        [19.14574, {"name" => "Wade White"}]
+      ],
+      [
+        [17.91551, {"email" => "t@pun.io", "name" => "thomas"}]
+      ],
+    ]
   end
 end

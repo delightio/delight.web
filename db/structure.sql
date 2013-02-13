@@ -94,41 +94,8 @@ CREATE TABLE app_sessions (
     device_hw_version character varying(255),
     device_os_version character varying(255),
     type character varying(255),
-    app_sessions_events_count integer DEFAULT 0
+    event_infos_count integer DEFAULT 0
 );
-
-
---
--- Name: app_sessions_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE app_sessions_events (
-    id integer NOT NULL,
-    app_session_id integer,
-    event_id integer,
-    track_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: app_sessions_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE app_sessions_events_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: app_sessions_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE app_sessions_events_id_seq OWNED BY app_sessions_events.id;
 
 
 --
@@ -219,6 +186,41 @@ ALTER SEQUENCE beta_signups_id_seq OWNED BY beta_signups.id;
 
 
 --
+-- Name: event_infos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE event_infos (
+    id integer NOT NULL,
+    app_session_id integer,
+    event_id integer,
+    track_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    "time" numeric,
+    properties hstore
+);
+
+
+--
+-- Name: event_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE event_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: event_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE event_infos_id_seq OWNED BY event_infos.id;
+
+
+--
 -- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -227,9 +229,7 @@ CREATE TABLE events (
     name character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    app_sessions_events_count integer DEFAULT 0,
-    properties hstore,
-    "time" numeric
+    event_infos_count integer DEFAULT 0
 );
 
 
@@ -505,7 +505,7 @@ CREATE TABLE tracks (
     app_session_id integer,
     type character varying(255),
     events_count integer DEFAULT 0,
-    app_sessions_events_count integer DEFAULT 0
+    event_infos_count integer DEFAULT 0
 );
 
 
@@ -595,13 +595,6 @@ ALTER TABLE ONLY app_sessions ALTER COLUMN id SET DEFAULT nextval('app_sessions_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY app_sessions_events ALTER COLUMN id SET DEFAULT nextval('app_sessions_events_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY apps ALTER COLUMN id SET DEFAULT nextval('apps_id_seq'::regclass);
 
 
@@ -610,6 +603,13 @@ ALTER TABLE ONLY apps ALTER COLUMN id SET DEFAULT nextval('apps_id_seq'::regclas
 --
 
 ALTER TABLE ONLY beta_signups ALTER COLUMN id SET DEFAULT nextval('beta_signups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY event_infos ALTER COLUMN id SET DEFAULT nextval('event_infos_id_seq'::regclass);
 
 
 --
@@ -694,7 +694,7 @@ ALTER TABLE ONLY accounts
 -- Name: app_sessions_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY app_sessions_events
+ALTER TABLE ONLY event_infos
     ADD CONSTRAINT app_sessions_events_pkey PRIMARY KEY (id);
 
 
@@ -841,14 +841,7 @@ CREATE INDEX as_duration ON app_sessions USING btree (duration);
 -- Name: ase_as_event_track_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX ase_as_event_track_id ON app_sessions_events USING btree (app_session_id, event_id, track_id);
-
-
---
--- Name: events_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX events_properties ON events USING gin (properties);
+CREATE INDEX ase_as_event_track_id ON event_infos USING btree (app_session_id, event_id, track_id);
 
 
 --
@@ -1029,3 +1022,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130211005918');
 INSERT INTO schema_migrations (version) VALUES ('20130211010000');
 
 INSERT INTO schema_migrations (version) VALUES ('20130212010015');
+
+INSERT INTO schema_migrations (version) VALUES ('20130213000631');

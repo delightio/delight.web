@@ -1,14 +1,11 @@
 class Event < ActiveRecord::Base
-  has_many :app_sessions_events
-  has_many :app_sessions, :through => :app_sessions_events
+  has_many :event_infos, :dependent => :destroy
+  has_many :app_sessions, :through => :event_infos, uniq: true
 
   has_many :events_funnels
   has_many :funnels, :through => :events_funnels
 
   validates :name, presence: true
-  validates :time, presence: true
-
-  serialize :properties, ActiveRecord::Coders::Hstore
 
   module Scopes
     def by_name(names)
@@ -21,13 +18,8 @@ class Event < ActiveRecord::Base
     end
 
     def by_app(app)
-      joins(:app_sessions => :app).merge(App.where(id: app.id))
-    end
-
-    def by_properties(properties)
-      properties.inject(scoped) do |query, attributes|
-        query.where("properties -> ? = ?", attributes[0], attributes[1])
-      end
+      events = joins(:app_sessions => :app).merge(App.where(id: app.id))
+      events.uniq
     end
   end
   extend Scopes

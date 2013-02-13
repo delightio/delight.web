@@ -173,12 +173,12 @@ describe AppSession do
       session2 = FactoryGirl.create :app_session_with_event_track
       session3 = FactoryGirl.create :app_session_with_event_track
 
-      session1.events.create!(name: "item-selected", time: 1.0)
-      session2.events.create!(name: "item-selected", time: 1.0)
-      session3.events.create!(name: "item-selected", time: 1.0)
+      session1.events.create!(name: "item-selected")
+      session2.events.create!(name: "item-selected")
+      session3.events.create!(name: "item-selected")
 
-      session2.events.create!(name: "item_purchased", time: 2.0)
-      session3.events.create!(name: "item-not-selected", time: 2.0)
+      session2.events.create!(name: "item_purchased")
+      session3.events.create!(name: "item-not-selected")
 
       sessions = AppSession.by_events(["item-selected"])
       sessions.sort.should == [session1, session2, session3]
@@ -440,6 +440,31 @@ describe AppSession do
     it 'returns true after sucessful update' do
       subject.properties.should_receive(:find_or_create_by_key_and_value).with('level', '10')
       subject.update_properties(properties).should be_true
+    end
+  end
+
+  describe '#import_events' do
+    before do
+      EventImporter.any_instance.stub(:import) {}
+
+      event_track = FactoryGirl.create :event_track, app_session: subject
+    end
+
+    it 'should save imported event data' do
+      event1 = Event.new(name: "user_signed")
+      event2 = Event.new(name: "user_purchased")
+
+      info1 = event1.event_infos.build(time: 10.0, properties: {"name" => "John Doe"})
+      info2 = event1.event_infos.build(time: 11.0, properties: {"name" => "Jane Doe"})
+      info3 = event2.event_infos.build(time: 20.0, properties: {"amount" => 10})
+
+      importer = EventImporter.new("mock")
+      importer.events = [event1, event2]
+      importer.event_infos = [info1]
+
+      subject.import_events(importer)
+
+      subject.event_infos.reload.should == [info1, info2, info3]
     end
   end
 

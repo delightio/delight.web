@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Funnel, focus: true do
+describe Funnel do
   before do
     @valid_attributes ={
       name: "good_event"
@@ -22,8 +22,8 @@ describe Funnel, focus: true do
       session1 = FactoryGirl.create :app_session_with_event_track
       session2 = FactoryGirl.create :app_session_with_event_track
 
-      event1 = session1.events.create!(name: "item-selected", time: 1.0)
-      event2 = session2.events.create!(name: "item_purchased", time: 2.0)
+      event1 = session1.events.create!(name: "item-selected")
+      event2 = session2.events.create!(name: "item_purchased")
 
       funnel1 = Funnel.create!(name: "test")
       funnel2 = Funnel.create!(name: "test2")

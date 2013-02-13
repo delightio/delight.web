@@ -16,7 +16,7 @@ describe VideoProcessing do
     it 'downloads to local, process, and creates new presentation track'
     it 'deletes existing presentation track before creating new one'
     it "should download .plist file and import data to events" do
-      EventImporter.should_receive(:new) { OpenStruct.new(events: [Event.new]) }
+      EventImporter.should_receive(:new)
       app_session.stub(:import_events)
       subject.perform app_session.id
     end
