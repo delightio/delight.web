@@ -21,6 +21,12 @@ class FunnelsController < ApplicationController
     redirect_to @app, notice: 'Funnel was successfully updated.'
   end
 
+  def destroy
+    @funnel = @app.funnels.find(params[:id])
+    @funnel.destroy
+    redirect_to @app, notice: 'Funnel was successfully destroyed.'
+  end
+
 private
   def find_app
     @app = App.find(params[:app_id])
