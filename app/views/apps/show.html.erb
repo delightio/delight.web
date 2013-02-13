@@ -92,10 +92,11 @@
           <% @app.funnels.each do |funnel| %>
             <li>
               <%= link_to funnel.name, app_path(@app, funnel: funnel) %>
+              <%= link_to "Edit", [:edit, @app, funnel], class: 'btn' %>
             </li>
           <% end %>
           <li>
-            <%= link_to "+ Create", [:new, @app, :funnel] %>
+            <%= link_to "+ Create", [:new, @app, :funnel], class: 'btn btn' %>
           </li>
 
           <input type="hidden" name="date-min" id="date-min" />
