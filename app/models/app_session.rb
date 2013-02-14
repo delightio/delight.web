@@ -34,13 +34,18 @@ class AppSession < ActiveRecord::Base
       joins(:app => :permissions).where(:permissions => { :viewer_id => user.id })
     end
 
-    def by_events(event_names)
-      if event_names.blank?
+    def by_events(events)
+      if events.empty?
         scoped
       else
-        joins(:events).merge(Event.by_name(event_names))
-        .group('app_sessions.id').having('COUNT(*) >= ?', event_names.length)
+        event_ids = events.all.map(&:id)
+        joins(:events).merge(Event.by_id(event_ids))
+        .group('app_sessions.id').having('COUNT(*) >= ?', events.length)
       end
+    end
+
+    def by_funnel(funnel)
+      by_events(funnel.events)
     end
 
     def date_between(min, max)  #inclusive

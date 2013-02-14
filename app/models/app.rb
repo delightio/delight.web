@@ -8,6 +8,7 @@ class App < ActiveRecord::Base
   has_many :group_invitations
   has_many :invitations
 
+  has_many :events
   has_many :funnels
 
   attr_accessible :name
@@ -139,6 +140,7 @@ class App < ActiveRecord::Base
     permission.last_viewed_at = Time.now
     permission.save
   end
+
 
   private
   def assign_admin_as_viewer

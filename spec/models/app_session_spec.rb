@@ -163,34 +163,38 @@ describe AppSession do
     end
   end
 
-  describe "#by_events" do
-    it "shouldn't try to filter if argument is nil or blank" do
+  describe "#by_funnel", focus: true do
+    it "shouldn't by_funnel to filter if argument is nil or blank" do
       AppSession.by_events([]).should include(subject)
     end
 
-    it "should filter app sessions by one tag" do
+    it "should filter app sessions by funnel" do
+      app = FactoryGirl.create :app
+
+      event1 = app.events.find_or_create_by_name!("item-selected")
+      event2 = app.events.find_or_create_by_name!("item-purchased")
+      event3 = app.events.find_or_create_by_name!("item-not-selected")
+
       session1 = FactoryGirl.create :app_session_with_event_track
       session2 = FactoryGirl.create :app_session_with_event_track
       session3 = FactoryGirl.create :app_session_with_event_track
 
-      session1.events.create!(name: "item-selected")
-      session2.events.create!(name: "item-selected")
-      session3.events.create!(name: "item-selected")
+      session1.events << [event1]
+      session2.events << [event1, event2]
+      session3.events << [event1, event3]
 
-      session2.events.create!(name: "item_purchased")
-      session3.events.create!(name: "item-not-selected")
+      funnel1 = app.funnels.create!(name: "selected-funnel", events: [event1])
+      funnel2 = app.funnels.create!(name: "purchased-funnel", events: [event1, event2])
+      funnel3 = app.funnels.create!(name: "unpurchased-funnel", events: [event1, event3])
 
-      sessions = AppSession.by_events(["item-selected"])
+      sessions = AppSession.by_funnel(funnel1)
       sessions.sort.should == [session1, session2, session3]
 
-      sessions = AppSession.by_events(["item-selected", "item_purchased"])
-      sessions.should == [session2]
+      sessions = AppSession.by_funnel(funnel2)
+      sessions.sort.should == [session2]
 
-      sessions = AppSession.by_events(["item-selected", "item-not-selected"])
-      sessions.should == [session3]
-
-      sessions = AppSession.by_events(["item_purchased", "item-not-selected"])
-      sessions.should == []
+      sessions = AppSession.by_funnel(funnel3)
+      sessions.sort.should == [session3]
     end
   end
 

@@ -229,7 +229,8 @@ CREATE TABLE events (
     name character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    event_infos_count integer DEFAULT 0
+    event_infos_count integer DEFAULT 0,
+    app_id integer
 );
 
 
@@ -866,6 +867,13 @@ CREATE INDEX index_events_funnels_on_event_id_and_funnel_id ON events_funnels US
 
 
 --
+-- Name: index_events_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_events_on_app_id ON events USING btree (app_id);
+
+
+--
 -- Name: index_funnels_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1024,3 +1032,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130211010000');
 INSERT INTO schema_migrations (version) VALUES ('20130212010015');
 
 INSERT INTO schema_migrations (version) VALUES ('20130213000631');
+
+INSERT INTO schema_migrations (version) VALUES ('20130214002036');

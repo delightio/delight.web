@@ -123,8 +123,7 @@ class AppsController < ApplicationController
 
     if params[:funnel]
       funnel = Funnel.find(params[:funnel])
-      event_names = funnel.events.all.map{|e| e.name}
-      @recorded_sessions = @recorded_sessions.by_events(event_names)
+      @recorded_sessions = @recorded_sessions.by_funnel(funnel)
     end
 
     respond_to do |format|
