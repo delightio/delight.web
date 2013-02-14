@@ -4,11 +4,12 @@ class EventInfo < ActiveRecord::Base
   belongs_to :track, counter_cache: true
 
   validates :app_session_id, presence: true
+  validates :event_id, presence: true
+  validates :track_id, presence: true
 
   serialize :properties, ActiveRecord::Coders::Hstore
 
   before_validation :associate_track
-
 
   module Scopes
     def by_properties(properties)

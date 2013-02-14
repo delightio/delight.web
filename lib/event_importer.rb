@@ -11,7 +11,7 @@ class EventImporter
 
     app_session.class.transaction do
       data["events"].each do |data|
-        event = app.events.find_or_create_by_name(data["name"])
+        event = app.events.find_or_create_by_name!(data["name"])
         event.event_infos.create!({
           app_session: app_session,
           time: data["time"],

@@ -24,8 +24,11 @@ describe EventInfo do
     event_info = EventInfo.new(@valid_attributes.merge(app_session_id: nil))
     event_info.should be_invalid
 
-    # event_info = EventInfo.new(@valid_attributes.merge(event_id: nil))
-    # event_info.should be_invalid
+    event_info = EventInfo.new(@valid_attributes.merge(event_id: nil))
+    event_info.should be_invalid
+
+    event_info = EventInfo.new(@valid_attributes.merge(track_id: nil))
+    event_info.should be_invalid
   end
 
   describe "#by_properties" do

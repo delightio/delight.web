@@ -15,5 +15,9 @@ describe Event do
   it "shouldn't create a new install with valid attributes" do
     event = Event.new(@valid_attributes.merge(name: nil))
     event.should be_invalid
+
+    Event.create!(@valid_attributes)
+    event = Event.new(@valid_attributes)
+    event.should be_invalid
   end
 end

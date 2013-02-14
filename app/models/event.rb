@@ -6,8 +6,7 @@ class Event < ActiveRecord::Base
   has_many :events_funnels
   has_many :funnels, :through => :events_funnels
 
-
-  validates :name, presence: true
+  validates :name, presence: true, :uniqueness => {:scope => :app_id}
 
   module Scopes
     def by_id(ids)
