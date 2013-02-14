@@ -8,6 +8,9 @@ class PartnerAppSession < AppSession
   end
 
   def notify_partner
+    puts "PartnerAppSession[#{id}].notify_partner at #{callback_url} with #{callback_payload}"
     RestClient.post callback_url, :callback_payload => callback_payload
+  rescue => e
+    puts "PresentationTrack[#{id}].notify_parter recived error: #{e}"
   end
 end

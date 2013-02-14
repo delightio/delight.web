@@ -23,5 +23,12 @@ describe PartnerAppSession do
 
       subject.notify_partner
     end
+
+    it 'does not throw error if we cannot reach the callback_url' do
+      RestClient.should_receive(:post).and_raise
+
+      expect { subject.notify_partner }.
+        to_not raise_error
+    end
   end
 end
