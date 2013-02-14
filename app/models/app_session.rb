@@ -214,17 +214,6 @@ class AppSession < ActiveRecord::Base
     true
   end
 
-  def import_events(event_importer)
-    transaction do
-      event_importer.events.each do |event|
-        event.event_infos.each do |info|
-          info.app_session = self
-        end
-        event.save!
-      end
-    end
-  end
-
   private
   def generate_upload_uris
     @upload_uris = {}

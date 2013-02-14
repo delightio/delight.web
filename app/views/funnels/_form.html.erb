@@ -1,7 +1,7 @@
 <%= simple_form_for [@app, @funnel] do |f| %>
   <fieldset>
     <%= f.input :name, :as => :string %>
-    <%= f.collection_check_boxes :event_ids, Event.by_app(@app), :id, :name %>
+    <%= f.collection_check_boxes :event_ids, @app.events, :id, :name %>
   </fieldset>
   <div class="form-actions">
     <%= f.button :submit, :class => 'btn btn-primary', :value => 'Save' %>

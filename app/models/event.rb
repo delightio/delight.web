@@ -18,11 +18,6 @@ class Event < ActiveRecord::Base
               end
       where(query)
     end
-
-    def by_app(app)
-      events = joins(:app_sessions => :app).merge(App.where(id: app.id))
-      events.uniq
-    end
   end
   extend Scopes
 end

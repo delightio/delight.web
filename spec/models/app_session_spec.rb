@@ -163,7 +163,7 @@ describe AppSession do
     end
   end
 
-  describe "#by_funnel", focus: true do
+  describe "#by_funnel" do
     it "shouldn't by_funnel to filter if argument is nil or blank" do
       AppSession.by_events([]).should include(subject)
     end
@@ -444,31 +444,6 @@ describe AppSession do
     it 'returns true after sucessful update' do
       subject.properties.should_receive(:find_or_create_by_key_and_value).with('level', '10')
       subject.update_properties(properties).should be_true
-    end
-  end
-
-  describe '#import_events' do
-    before do
-      EventImporter.any_instance.stub(:import) {}
-
-      event_track = FactoryGirl.create :event_track, app_session: subject
-    end
-
-    it 'should save imported event data' do
-      event1 = Event.new(name: "user_signed")
-      event2 = Event.new(name: "user_purchased")
-
-      info1 = event1.event_infos.build(time: 10.0, properties: {"name" => "John Doe"})
-      info2 = event1.event_infos.build(time: 11.0, properties: {"name" => "Jane Doe"})
-      info3 = event2.event_infos.build(time: 20.0, properties: {"amount" => 10})
-
-      importer = EventImporter.new("mock")
-      importer.events = [event1, event2]
-      importer.event_infos = [info1]
-
-      subject.import_events(importer)
-
-      subject.event_infos.reload.should == [info1, info2, info3]
     end
   end
 
