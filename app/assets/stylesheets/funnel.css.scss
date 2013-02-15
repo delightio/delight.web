@@ -3,16 +3,20 @@
 }
 
 #funnel-list {
+  position: relative;
+
   li {
-    margin-bottom: 5px;
-  } 
+    margin-bottom: 10px;
+  }
 
   .funnel-link {
     float: left;
+    width: 175px;
   }
 
   nav {
-    float: right;
+    position: absolute;
+    right: 10px;
   }
 }
 
