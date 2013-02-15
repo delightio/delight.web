@@ -88,7 +88,10 @@
           </li>
           <hr />
 
-          <li class="nav-header">Filter</li>
+          <li class="nav-header">
+            Filter
+            <a href="#" id="funnel-edit-link">edit</span>
+          </li>
           <ul class="nav nav-list" id="funnel-list">
             <% @app.funnels.each do |funnel| %>
               <% if funnel.id == params[:funnel].to_i %>
@@ -96,11 +99,12 @@
               <% else %>
                 <li>
               <% end %>
-                <%= link_to funnel.name, app_path(@app, funnel: funnel), remote: true %>
-                <!--
-                  <%#= link_to "Edit", [:edit, @app, funnel], class: 'btn' %>
-                  <%#= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger', data: {confirm: "Are you sure?"} %>
-                -->
+                <%= link_to funnel.name, app_path(@app, funnel: funnel), remote: true, class: "funnel-link" %>
+                <nav>
+                  <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small' %>
+                  <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
+                </nav>
+                <div class="clear"></div>
               </li>
             <% end %>
             <li>
@@ -129,6 +133,12 @@
         $(this).closest('ul').find('li').removeClass('active');
         $(this).parent().addClass('active');
       });
+      var funnelNav = $('#funnel-list nav');
+      funnelNav.hide();
+      $('#funnel-edit-link').on('click', function(e){
+        funnelNav.toggle("slow");
+        e.preventDefault();
+      })
     });
     $(function() {
       $( "#duration-range" ).slider({
