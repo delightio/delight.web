@@ -101,7 +101,7 @@
               <% end %>
                 <%= link_to funnel.name, app_path(@app, funnel: funnel), remote: true, class: "funnel-link" %>
                 <nav>
-                  <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small' %>
+                  <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
                   <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
                 </nav>
                 <div class="clear"></div>
