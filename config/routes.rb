@@ -50,6 +50,8 @@ DelightWeb::Application.routes.draw do
     put '/schedule_recording_update', :to => 'apps#schedule_recording_update', :as => :schedule_recording_update
     put '/upload_on_wifi_only', :to => 'apps#upload_on_wifi_only', :as => :upload_on_wifi_only
 
+    get 'events' => 'events#index'
+
     resources :funnels
   end
   resources :beta_signups, :only => [:create]

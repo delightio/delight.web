@@ -1,7 +1,11 @@
 <%= simple_form_for [@app, @funnel] do |f| %>
   <fieldset>
     <%= f.input :name, :as => :string %>
-    <%= f.collection_check_boxes :event_ids, @app.events, :id, :name %>
+    <%= label_tag 'search' %>
+    <%= text_field_tag :search %>
+    <div id="event-list">
+      <%= f.collection_check_boxes :event_ids, @app.events, :id, :name %>
+    </div>
   </fieldset>
   <div class="form-actions">
     <%= f.button :submit, :class => 'btn btn-primary', :value => 'Save' %>

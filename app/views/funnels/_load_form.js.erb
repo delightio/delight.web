@@ -1,0 +1,17 @@
+var form = "<%= escape_javascript render('form') %>";
+ $('#app-view-app-sessions').html(form);
+
+$('input#search').on('keyup', function(){
+  var query = $(this).val();
+  $.get('/apps/<%= @app.id %>/events.json?query=' + query, function(data) {
+
+    var views = $.map(data, function(event){
+      return '<span>' +
+               '<input id="funnel_event_ids_' + event.id + '"' +
+               'name="funnel[event_ids][]" type="checkbox" value="' + event.id + '">' +
+               '<label class="collection_check_boxes" for="funnel_event_ids_' + event.id + '">' + event.name + '</label>' +
+             '</span>'
+    });
+    $('#event-list').html(views);
+  });
+});

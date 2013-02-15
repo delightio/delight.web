@@ -128,18 +128,21 @@
     function querySessions() {
       $('#app-show-query-form').submit();
     }
+
     $(function(){
       $('#funnel-list a').on('click', function(){
         $(this).closest('ul').find('li').removeClass('active');
         $(this).parent().addClass('active');
       });
+
       var funnelNav = $('#funnel-list nav');
       funnelNav.hide();
       $('#funnel-edit-link').on('click', function(e){
         funnelNav.toggle("slow");
         e.preventDefault();
-      })
+      });
     });
+
     $(function() {
       $( "#duration-range" ).slider({
         range: true,

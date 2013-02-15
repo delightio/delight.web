@@ -17,6 +17,11 @@ class Event < ActiveRecord::Base
               end
       where(query)
     end
+
+    def search(text)
+      text = "%#{text}%"
+      where('name like ?', text)
+    end
   end
   extend Scopes
 end
