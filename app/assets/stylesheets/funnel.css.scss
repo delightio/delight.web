@@ -24,3 +24,17 @@
   clear: both;
 }
 
+.funnel-form {
+  #event-list {
+    span {
+      float: left;
+      margin-right: 20px;
+      margin-bottom: 10px;
+
+      label {
+        display: inline;
+        margin-left: 10px;
+      }
+    }
+  }
+}

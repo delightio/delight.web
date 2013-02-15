@@ -1,4 +1,5 @@
-<%= simple_form_for [@app, @funnel] do |f| %>
+<%= simple_form_for [@app, @funnel], html: {class: 'funnel-form'} do |f| %>
+
   <fieldset>
     <%= f.input :name, :as => :string %>
     <%= label_tag 'search' %>
@@ -8,7 +9,6 @@
     </div>
   </fieldset>
   <div class="form-actions">
-    <%= f.button :submit, :class => 'btn btn-primary', :value => 'Save' %>
-    <%= link_to "back", @app, class: 'btn' %>
+    <%= f.button :submit, :class => 'btn btn-primary', :value => 'Create' %>
   </div>
 <% end %>
