@@ -89,14 +89,14 @@
           <hr />
 
           <li class="nav-header">Filter</li>
-          <ul class="nav nav-list">
+          <ul class="nav nav-list" id="funnel-list">
             <% @app.funnels.each do |funnel| %>
               <% if funnel.id == params[:funnel].to_i %>
                 <li class="active">
               <% else %>
                 <li>
               <% end %>
-                <%= link_to funnel.name, app_path(@app, funnel: funnel) %>
+                <%= link_to funnel.name, app_path(@app, funnel: funnel), remote: true %>
                 <!--
                   <%#= link_to "Edit", [:edit, @app, funnel], class: 'btn' %>
                   <%#= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger', data: {confirm: "Are you sure?"} %>
@@ -124,7 +124,12 @@
     function querySessions() {
       $('#app-show-query-form').submit();
     }
-
+    $(function(){
+      $('#funnel-list a').on('click', function(){
+        $(this).closest('ul').find('li').removeClass('active');
+        $(this).parent().addClass('active');
+      });
+    });
     $(function() {
       $( "#duration-range" ).slider({
         range: true,
