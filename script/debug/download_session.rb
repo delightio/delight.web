@@ -10,7 +10,7 @@ delight_upload = ARGV.shift || 'delight_upload'
 
 track_classes = [ScreenTrack, TouchTrack, OrientationTrack, FrontTrack,
                  EventTrack, ViewTrack,
-                 PresentationTrack, GestureTrack]
+                 GestureTrack, PresentationTrack]
 
 track_classes.each do |track_class|
   begin
@@ -22,3 +22,7 @@ track_classes.each do |track_class|
     puts "  Skipping #{track.filename}: #{e.inspect}"
   end
 end
+
+pt = PresentationTrack.new app_session_id: app_session_id
+file = File.join(destination, pt.filename)
+`open #{file}`
