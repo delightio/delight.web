@@ -31,6 +31,7 @@ DelightWeb::Application.routes.draw do
   end
   resources :opengl_app_sessions, :only => [:create, :update]
   resources :usability_app_sessions, :only => [:create, :update]
+  resources :partner_app_sessions, :only => [:create, :update]
 
   resources :tracks, :only => [:create, :show]
   resources :screen_tracks, :only => [:create]

@@ -37,6 +37,8 @@ class VideoProcessing
 
     if gesture_track.save && presentation_track.save
       puts "AppSession[#{app_session_id}]: done processing in #{Time.now-start} s."
+    else
+      puts "AppSession[#{app_session_id}]: ERROR saving GestureTrack (#{gesture_track.valid?}) or PresentationTrack (#{presentation_track.valid?})"
     end
 
     # cleanup app_session.working_directory

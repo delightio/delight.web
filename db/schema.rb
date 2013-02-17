@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120718091548) do
+ActiveRecord::Schema.define(:version => 20130212085204) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "administrator_id"
+    t.string   "type"
   end
 
   add_index "accounts", ["administrator_id"], :name => "acct_admin_id"
@@ -37,6 +38,8 @@ ActiveRecord::Schema.define(:version => 20120718091548) do
     t.string   "device_hw_version"
     t.string   "device_os_version"
     t.string   "type"
+    t.string   "callback_url"
+    t.string   "callback_payload"
   end
 
   add_index "app_sessions", ["app_id"], :name => "as_app_id"
@@ -49,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20120718091548) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "account_id"
+    t.string   "type"
   end
 
   add_index "apps", ["account_id"], :name => "apps_acct_id"
