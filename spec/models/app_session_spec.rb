@@ -93,11 +93,20 @@ describe AppSession do
         subject.should be_recording
       end
 
-      it 'is false if iOS is above 6' do
+      it 'is true if iOS is above 6 and delight version is 2.3.2' do
         subject.stub :device_os_version => "6.0.1"
+        subject.stub :delight_version => "2.3.2.Private"
+
+        subject.should be_recording
+      end
+
+      it 'is false if iOS is above 6 and delight version is not 2.3.2' do
+        subject.stub :device_os_version => "6.0.1"
+        subject.stub :delight_version => "2.3.1"
 
         subject.should_not be_recording
       end
+
     end
   end
 
