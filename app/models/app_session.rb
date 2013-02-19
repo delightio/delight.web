@@ -106,6 +106,10 @@ class AppSession < ActiveRecord::Base
 
   def recording?
     return false if delight_version.to_i < 2 # LH 110
+    unless (delight_version.include? '2.3.2')
+      return false if app.id == 653 && device_os_version.to_f >= 6.0
+    end
+
     app.recording?
   end
 

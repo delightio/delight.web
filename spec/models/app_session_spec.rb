@@ -63,6 +63,11 @@ describe AppSession do
   end
 
   describe '#recording?' do
+    let(:recording_app) { FactoryGirl.create :recording_app }
+    before do
+      subject.stub :app => recording_app
+    end
+
     it 'reads from its associated app' do
       subject.app.should_receive :recording?
 
@@ -74,6 +79,34 @@ describe AppSession do
       subject.app.should_not_receive :recording?
 
       subject.should_not be_recording
+    end
+
+    # https://github.com/delightio/delight.ios/issues/12
+    context 'when the app is SimplePrint' do
+      before do
+        subject.app.stub :id => 653
+      end
+
+      it 'is true if iOS is not 6.x' do
+        subject.stub :device_os_version => "5.0"
+
+        subject.should be_recording
+      end
+
+      it 'is true if iOS is above 6 and delight version is 2.3.2' do
+        subject.stub :device_os_version => "6.0.1"
+        subject.stub :delight_version => "2.3.2.Private"
+
+        subject.should be_recording
+      end
+
+      it 'is false if iOS is above 6 and delight version is not 2.3.2' do
+        subject.stub :device_os_version => "6.0.1"
+        subject.stub :delight_version => "2.3.1"
+
+        subject.should_not be_recording
+      end
+
     end
   end
 
@@ -378,7 +411,7 @@ describe AppSession do
   describe '#upload_tracks' do
     context 'when delight version is equal or newer than 3.0' do
       before { subject.stub :delight_version => '3.0' }
-      it 'contains a screen, touch, orientation and event track' do
+      it 'contains a screen, touch, orientation, view and event track' do
         subject.upload_tracks.should include :screen_track
         subject.upload_tracks.should include :touch_track
         subject.upload_tracks.should include :orientation_track
