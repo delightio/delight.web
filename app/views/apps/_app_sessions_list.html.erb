@@ -123,7 +123,7 @@
           // rebind handler
           $target.unbind('ajax:success');
           $target.bind('ajax:success', favorite_handler);
-          $target.data('tooltip').options.title = 'Add this session to your favorites';
+          $target.data('tooltip').options.title = 'Star this session.';
           $target.tooltip('hide');
           decrement_favorite_count();
         }
@@ -140,6 +140,6 @@
       $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)
       $(".app-session-unfavorite-btn").bind('ajax:success', unfavorite_handler);
 
-      $(".app-session-favorite-btn").tooltip({ 'title' : 'Add this session to your favorites' });
-      $(".app-session-unfavorite-btn").tooltip({ 'title' : 'Remove this session from your favorites' });
+      $(".app-session-favorite-btn").tooltip({ 'title' : 'Star this session.' });
+      $(".app-session-unfavorite-btn").tooltip({ 'title' : 'Remove this session from Starred.' });
     </script>
