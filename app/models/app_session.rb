@@ -34,6 +34,10 @@ class AppSession < ActiveRecord::Base
       joins(:app => :permissions).where(:permissions => { :viewer_id => user.id })
     end
 
+    def processed_after(last_viewed)
+      where("app_sessions.updated_at > ? ", last_viewed)
+    end
+
     def by_events(events)
       if events.empty?
         scoped

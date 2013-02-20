@@ -65,61 +65,18 @@ class AppsController < ApplicationController
       return
     end
 
+    @last_viewed_at = @app.last_viewed_at_by_user(current_user)
+    @app.log_view(current_user)
+    # @recorded_sessions = @app.app_sessions.recorded.latest.page(params[:page]).per(12)
+
     @recorded_sessions = @app.app_sessions.recorded
-    @versions = @recorded_sessions.select('app_sessions.app_version, count(1)').group(:'app_sessions.app_version')
-    versions = params[:versions] || @versions.collect { |v| v.app_version }
 
-    @builds = @recorded_sessions.select('app_sessions.app_build, count(1)').group(:'app_sessions.app_build')
-    builds = params[:builds] || @builds.collect { |b| b.app_build }
-
-    # decide date and duration range
-    if @recorded_sessions.blank?
-      @default_date_min = 120
-      @default_duration_min = 0
-      @default_duration_max = 60
-    else
-      @default_date_min = ((Time.now - @recorded_sessions.minimum(:created_at)) / 86400).ceil
-      @default_duration_min = @recorded_sessions.minimum(:duration).floor
-      @default_duration_max = @recorded_sessions.maximum(:duration).ceil
-    end
-    @default_date_max = 0
-
-    date_min = params[:'date-min'] ? params[:'date-min'].to_i.days.ago : @default_date_min.days.ago
-    date_max = params[:'date-max'] ? params[:'date-max'].to_i.days.ago : @default_date_max.days.ago
-    duration_min = params[:'duration-min'] || @default_duration_min
-    duration_max = params[:'duration-max'] || @default_duration_max
-
-    @recorded_sessions = @recorded_sessions.duration_between(duration_min, duration_max)
-    @recorded_sessions = @recorded_sessions.date_between(date_min, date_max)
-    if not params[:properties].blank?
-      parts = params[:properties].split(':')
-      num_parts = parts.count
-      case num_parts
-      when 1
-        # search both key and value with the same input
-        keyword = parts[0].strip
-        @recorded_sessions = @recorded_sessions.has_property_key_or_value(keyword)
-      when 2
-        @recorded_sessions = @recorded_sessions.has_property(parts[0].strip, parts[1].strip)
-      else
-        keyword = params[:properties].strip
-        @recorded_sessions = @recorded_sessions.has_property_key_or_value(keyword)
-      end
-    end
-
-    @recorded_sessions = @recorded_sessions.where(:app_version => versions, :app_build => builds)
-    if params[:favorite] == "1"
-      @recorded_sessions = @recorded_sessions.favorite_of(current_user)
-    end
-    @favorite_count = @recorded_sessions.favorite_of(current_user).count
+    @favorite_count = @recorded_sessions.favorite_of(current_user).processed_after(@last_viewed_at).count
     @recorded_sessions = @recorded_sessions.latest.page(params[:page]).per(10)
 
     app_sessions_id = @recorded_sessions.collect { |as| as.id }
     @favorite_app_sessions = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
     @favorite_app_session_ids = @favorite_app_sessions.collect { |as| as.id }
-
-    @last_viewed_at = @app.last_viewed_at_by_user(current_user)
-    @app.log_view(current_user)
 
     if params[:funnel]
       funnel = Funnel.find(params[:funnel])

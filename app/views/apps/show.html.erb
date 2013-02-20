@@ -21,107 +21,62 @@
   <div class="row">
     <div class="span3" style="min-height:1px">
       <div id="sticky-anchor"></div>
-      <div class="well sidebar-nav" id="sticky">
+      <div class="sidebar-nav" id="sticky">
         <ul class="nav nav-list">
           <li class="active" id="apps-all-btn">
             <a href="javascript:void(0)">Sessions
               <span class="badge badge-white pull-right">
-                <%= @app.app_sessions.recorded.count %>
+                <%= @app.app_sessions.recorded.processed_after(@last_viewed_at).count %>
               </span>
             </a>
           </li>
           <li id="apps-favorite-btn">
-            <a href="javascript:void(0)">Favorites
+            <a href="javascript:void(0)">Starred
               <span class="badge badge-inverse pull-right" id="favorite-count">
                 <%= @favorite_count %>
               </span>
             </a>
           </li>
-          <!--li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li-->
+        </div>
+
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
-            <li class="nav-header">Properties</li>
-            <li>
-              <div class="input-prepend input-append">
-                <span class="add-on"><i class="icon-search"></i></span>
-                <input type="text" id="app-show-filter-input" class="menu-search-box search-query" name="properties" style="height:28px; box-sizing: border-box;" placeholder="key:value">
-                <span class="add-on" id="app-show-filter-clear"><i class="icon-remove-sign"></i></span>
-              </div>
-            </li>
-            <hr />
-            <li class="nav-header">Versions</li>
-            <!--
-            <li>
-              <label class="checkbox">
-                <input type="checkbox" id="app-show-versions-all" class="app-show-versions-checkbox" CHECKED> All <span class="badge pull-right"> <%= @app.app_sessions.recorded.count %></span>
-              </label>
-            </li>
-            -->
-            <% @versions.each do |version| %>
-            <li>
-              <label class="checkbox">
-                <input type="checkbox" class="app-show-versions-checkbox" name="versions[]" value="<%= version.app_version %>" CHECKED> <%= version.app_version %> <span class="badge pull-right"><%= version.count %></span>
-              </label>
-            </li>
-            <% end %>
-            <input type="hidden" name="versions[]" value=""/>
+            <ul class="nav nav-list" id="funnel-list">
+              <% @app.funnels.each do |funnel| %>
+                <% if funnel.id == params[:funnel].to_i %>
+                  <li class="active">
+                <% else %>
+                  <li>
+                <% end %>
+                  <!-- <%= link_to funnel.name, app_path(@app, funnel: funnel), remote: true, class: "funnel-link" %> -->
+                  <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
+                    <%= funnel.name %>
+                    <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
+                    <% if count > 0 %>
+                    <span class="badge badge-black pull-right">
+                      <%= count %>
+                    </span>
+                    <% end %>
+                  <% end %>
 
-            <li class="nav-header">Build</li>
-            <% @builds.each do |build| %>
-            <li>
-              <label class="checkbox">
-                <input type="checkbox" class="app-show-builds-checkbox" name="builds[]" value="<%= build.app_build %>" CHECKED> <%= build.app_build %> <span class="badge pull-right"><%= build.count %></span>
-              </label>
-            </li>
-            <% end %>
-            <input type="hidden" name="builds[]" value=""/>
-
-          <hr />
-          <li class="nav-header">Duration <input type="text" name="duration" id="duration-amount" class="pull-right" /></li>
-          <li>
-            <div id="duration-range"></div>
-          </li>
-          <hr />
-          <li class="nav-header">Date <input type="text" name="amount" id="date-amount" class="pull-right" /></li>
-          <li>
-            <div id="date-range"></div>
-          </li>
-          <hr />
-
-          <li class="nav-header">
-            Filter
-            <a href="#" id="funnel-edit-link">edit</span>
-          </li>
-          <ul class="nav nav-list" id="funnel-list">
-            <% @app.funnels.each do |funnel| %>
-              <% if funnel.id == params[:funnel].to_i %>
-                <li class="active">
-              <% else %>
-                <li>
+                  <nav>
+                    <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
+                    <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
+                  </nav>
+                  <div class="clear"></div>
+                </li>
               <% end %>
-                <%= link_to funnel.name, app_path(@app, funnel: funnel), remote: true, class: "funnel-link" %>
-                <nav>
-                  <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
-                  <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
-                </nav>
-                <div class="clear"></div>
+              <br/>
+              <li>
+                <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
               </li>
-            <% end %>
-            <li>
-              <%= link_to "+ Create", [:new, @app, :funnel], class: 'btn', remote: true %>
-            </li>
-          </ul>
-
-          <input type="hidden" name="date-min" id="date-min" />
-          <input type="hidden" name="date-max" id="date-max" />
-          <input type="hidden" name="duration-min" id="duration-min" />
-          <input type="hidden" name="duration-max" id="duration-max" />
-          <input type="hidden" name="favorite" id="app-view-favorite" />
-        <% end %>
+            </ul>
+            <input type="hidden" name="favorite" id="app-view-favorite" />
+          <% end %>
         </ul>
-      </div><!--/.well -->
     </div><!--/span-->
     <%= render :partial => "app_sessions_list", :locals => { :app_sessions => @app_sessions, :favorite_ids => @favorite_app_session_ids } %>
+
   </div>
   <% content_for(:javascript) do %>
     <script>
@@ -141,42 +96,6 @@
         funnelNav.toggle("slow");
         e.preventDefault();
       });
-    });
-
-    $(function() {
-      $( "#duration-range" ).slider({
-        range: true,
-        min: <%= @default_duration_min %>,
-        max: <%= @default_duration_max %>,
-        values: [ <%= @default_duration_min %>, <%= @default_duration_max %> ],
-        slide: function( event, ui ) {
-          $( "#duration-amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " s" );
-          $( "#duration-min" ).val( ui.values[0] );
-          $( "#duration-max" ).val( ui.values[1] );
-          querySessions();
-        }
-      });
-      $( "#duration-amount" ).val( $( "#duration-range" ).slider( "values", 0 ) + " - " + $( "#duration-range" ).slider( "values", 1 ) + " s" );
-      $( "#duration-min" ).val( $( "#duration-range" ).slider( "values", 0 ) );
-      $( "#duration-max" ).val( $( "#duration-range" ).slider( "values", 1 ) );
-    });
-
-    $(function() {
-      $( "#date-range" ).slider({
-        range: true,
-        min: <%= @default_date_max %>,
-        max: <%= @default_date_min %>,
-        values: [ <%= @default_date_max %>, <%= @default_date_min %> ],
-        slide: function( event, ui ) {
-          $( "#date-amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " days" );
-          $( "#date-min" ).val( ui.values[1] );
-          $( "#date-max" ).val( ui.values[0] );
-          querySessions();
-        }
-      });
-      $( "#date-amount" ).val( $( "#date-range" ).slider( "values", 0 ) + " - " + $( "#date-range" ).slider( "values", 1 ) + " days" );
-      $( "#date-min" ).val( $( "#date-range" ).slider( "values", 1 ) );
-      $( "#date-max" ).val( $( "#date-range" ).slider( "values", 0 ) );
     });
 
     $(document).ready(function(){
