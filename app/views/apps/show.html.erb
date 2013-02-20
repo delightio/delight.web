@@ -21,9 +21,8 @@
   <div class="row">
     <div class="span3" style="min-height:1px">
       <div id="sticky-anchor"></div>
-
       <div class="sidebar-nav" id="sticky">
-        <ul class="nav nav-list">
+        <ul class="nav nav-list" id="funnel-list">
           <li class="active">
               <%= link_to(app_path(@app), remote: true) do %>
               Latest
@@ -47,57 +46,66 @@
               <% end %>
             <% end %>
           </li>
-        </div>
 
           <hr />
-          <ul class="nav nav-list" id="funnel-list">
-            <% @app.funnels.each do |funnel| %>
-              <% if funnel.id == params[:funnel].to_i %>
-                <li class="active">
-              <% else %>
-                <li>
-              <% end %>
-                <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
-                  <%= funnel.name %>
-                  <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
-                  <% if count > 0 %>
-                  <span class="badge badge-black pull-right">
-                    <%= count %>
-                  </span>
-                  <% end %>
-                <% end %>
-
-                <nav>
-                  <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
-                  <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
-                </nav>
-                <div class="clear"></div>
-              </li>
+          <% @app.funnels.each do |funnel| %>
+            <% if funnel.id == params[:funnel].to_i %>
+              <li class="active">
+            <% else %>
+              <li>
             <% end %>
-            <br/>
-            <li>
-              <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
+            <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
+              <%= funnel.name %>
+              <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
+              <% if count > 0 %>
+                <span class="badge badge-black pull-right">
+                <%= count %>
+                </span>
+              <% end %>
+            <% end %>
+            </a>
+
+
+            <div id='funnel-edit'>
+              <nav>
+                <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
+                <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
+                <div style="height: 20px;">&nbsp;</div>
+              </nav>
+            </div>
+
+            <div class="clear"></div>
             </li>
-          </ul>
+          <% end %>
+
+          <br/>
+          <li>
+            <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
+          </li>
+          <li>
+            <a href="#" id="funnel-edit-link">Edit a filter</span>
+          </li>
+
           <input type="hidden" name="favorite" id="app-view-favorite" />
         </ul>
+      </div><!--sidebar-nav-->
     </div><!--/span-->
     <%= render :partial => "app_sessions_list" %>
+  </div><!--/row-->
 
-  </div>
   <% content_for(:javascript) do %>
     <script>
-    function querySessions() {
-      $('#app-show-query-form').submit();
-    }
+    // function querySessions() {
+    //   $('#app-show-query-form').submit();
+    // }
 
     $(function(){
-      $('#funnel-list a').on('click', function(){
+      $('#funnel-list a').on('click', function(e){
         $(this).closest('ul').find('li').removeClass('active');
         $(this).parent().addClass('active');
       });
 
-      var funnelNav = $('#funnel-list nav');
+      var funnelNav = $('#funnel-edit nav');
       funnelNav.hide();
       $('#funnel-edit-link').on('click', function(e){
         funnelNav.toggle("slow");
@@ -140,27 +148,6 @@
         $("#app-show-filter-input").attr("value", "");
         querySessions();
       });
-      /*
-      $("#app-show-versions-all").click(function(eventObj) { var $checkbox = $(eventObj.target); var checked = $checkbox.attr('checked');
-        if (checked) {
-          // check all
-          $(".app-show-versions-checkbox").attr('checked', true);
-        } else {
-          // uncheck all
-          $(".app-show-versions-checkbox").attr('checked', false);
-        }
-        //querySessions();
-      });
-      */
-      $(".app-show-versions-checkbox").click(function(eventObj) {
-        querySessions();
-      });
-      $(".app-show-builds-checkbox").click(function(eventObj) {
-        querySessions();
-      });
-      $(".app-show-eventtracks-checkbox").click(function(eventObj) {
-        querySessions();
-      });
 
       $("#app-show-pause-recording-btn")
       .bind('ajax:success', function(event, data, status, xhr) {
@@ -177,22 +164,6 @@
           $("#app-show-pause-recording-btn").show();
         }
       });
-
-      $("#apps-all-btn").click(function(eventObj) {
-        var $form = $("#app-show-query-form");
-        $("#app-view-favorite").attr('value', 0);
-        $("#apps-favorite-btn").removeClass('active');
-        $("#apps-all-btn").addClass('active');
-        querySessions();
-      });
-      $("#apps-favorite-btn").click(function(eventObj) {
-        var $form = $("#app-show-query-form");
-        $("#app-view-favorite").attr('value', 1);
-        $("#apps-all-btn").removeClass('active');
-        $("#apps-favorite-btn").addClass('active');
-        querySessions();
-      });
-
     });
 
     function sticky_relocate() {
