@@ -21,61 +21,68 @@
   <div class="row">
     <div class="span3" style="min-height:1px">
       <div id="sticky-anchor"></div>
+
       <div class="sidebar-nav" id="sticky">
         <ul class="nav nav-list">
-          <li class="active" id="apps-all-btn">
-            <a href="javascript:void(0)">Sessions
+          <li class="active">
+              <%= link_to(app_path(@app), remote: true) do %>
+              Latest
+              <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
+              <% if count > 0 %>
               <span class="badge badge-white pull-right">
-                <%= @app.app_sessions.recorded.processed_after(@last_viewed_at).count %>
+                <%= count %>
               </span>
-            </a>
+              <% end %>
+            <% end %>
           </li>
-          <li id="apps-favorite-btn">
-            <a href="javascript:void(0)">Starred
-              <span class="badge badge-inverse pull-right" id="favorite-count">
-                <%= @favorite_count %>
+
+          <li>
+            <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
+              Starred
+              <% count = @app.app_sessions.recorded.favorited.processed_after(@last_viewed_at).length %>
+              <% if count > 0 %>
+              <span class="badge badge-black pull-right">
+                <%= count %>
               </span>
-            </a>
+              <% end %>
+            <% end %>
           </li>
         </div>
 
           <hr />
-          <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
-            <ul class="nav nav-list" id="funnel-list">
-              <% @app.funnels.each do |funnel| %>
-                <% if funnel.id == params[:funnel].to_i %>
-                  <li class="active">
-                <% else %>
-                  <li>
-                <% end %>
-                  <!-- <%= link_to funnel.name, app_path(@app, funnel: funnel), remote: true, class: "funnel-link" %> -->
-                  <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
-                    <%= funnel.name %>
-                    <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
-                    <% if count > 0 %>
-                    <span class="badge badge-black pull-right">
-                      <%= count %>
-                    </span>
-                    <% end %>
-                  <% end %>
-
-                  <nav>
-                    <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
-                    <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
-                  </nav>
-                  <div class="clear"></div>
-                </li>
+          <ul class="nav nav-list" id="funnel-list">
+            <% @app.funnels.each do |funnel| %>
+              <% if funnel.id == params[:funnel].to_i %>
+                <li class="active">
+              <% else %>
+                <li>
               <% end %>
-              <br/>
-              <li>
-                <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
+                <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
+                  <%= funnel.name %>
+                  <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
+                  <% if count > 0 %>
+                  <span class="badge badge-black pull-right">
+                    <%= count %>
+                  </span>
+                  <% end %>
+                <% end %>
+
+                <nav>
+                  <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
+                  <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
+                </nav>
+                <div class="clear"></div>
               </li>
-            </ul>
-            <input type="hidden" name="favorite" id="app-view-favorite" />
-          <% end %>
+            <% end %>
+            <br/>
+            <li>
+              <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
+            </li>
+          </ul>
+          <input type="hidden" name="favorite" id="app-view-favorite" />
         </ul>
     </div><!--/span-->
-    <%= render :partial => "app_sessions_list", :locals => { :app_sessions => @app_sessions, :favorite_ids => @favorite_app_session_ids } %>
+    <%= render :partial => "app_sessions_list" %>
 
   </div>
   <% content_for(:javascript) do %>

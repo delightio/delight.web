@@ -38,6 +38,10 @@ class AppSession < ActiveRecord::Base
       where("app_sessions.updated_at > ? ", last_viewed)
     end
 
+    def favorited
+      joins(:favorites)
+    end
+
     def by_events(events)
       if events.empty?
         scoped

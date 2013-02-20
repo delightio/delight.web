@@ -67,21 +67,16 @@ class AppsController < ApplicationController
 
     @last_viewed_at = @app.last_viewed_at_by_user(current_user)
     @app.log_view(current_user)
-    # @recorded_sessions = @app.app_sessions.recorded.latest.page(params[:page]).per(12)
 
+    # Filter
     @recorded_sessions = @app.app_sessions.recorded
-
-    @favorite_count = @recorded_sessions.favorite_of(current_user).processed_after(@last_viewed_at).count
-    @recorded_sessions = @recorded_sessions.latest.page(params[:page]).per(10)
-
-    app_sessions_id = @recorded_sessions.collect { |as| as.id }
-    @favorite_app_sessions = AppSession.joins(:favorites).select('DISTINCT app_sessions.id').where(:'favorites.user_id' => current_user, :'app_sessions.id' => app_sessions_id)
-    @favorite_app_session_ids = @favorite_app_sessions.collect { |as| as.id }
-
-    if params[:funnel]
+    if params[:favorited]
+      @recorded_sessions = @recorded_sessions.favorited
+    elsif params[:funnel]
       funnel = Funnel.find(params[:funnel])
       @recorded_sessions = @recorded_sessions.by_funnel(funnel)
     end
+    @recorded_sessions = @recorded_sessions.latest.page(params[:page]).per(12)
 
     respond_to do |format|
       format.html do
