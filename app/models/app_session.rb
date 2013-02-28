@@ -95,6 +95,10 @@ class AppSession < ActiveRecord::Base
   end
   extend Scopes
 
+  def events_with_time
+    event_infos.map { |ei| { :name => ei.event.name, :time => ei.time.to_f } }
+  end
+
   def private_framework?
     delight_version.split('.').include? 'Private'
   end

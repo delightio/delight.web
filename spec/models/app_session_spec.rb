@@ -11,6 +11,18 @@ describe AppSession do
     it 'returns completed sessions which we have received the expected number of tracks'
   end
 
+  describe '#events_with_time' do
+    let(:event) { stub :name => "event_name" }
+    let(:event_info) { stub :event => event, :time => 10 }
+    before do
+      subject.stub :event_infos => [event_info]
+    end
+
+    it 'retuns array of hash with name and time' do
+      subject.events_with_time.should == [{name: "event_name", time: 10.0}]
+    end
+  end
+
   describe '#private_framework?' do
     it 'is true if delight_version number contains Private' do
       subject.stub :delight_version => '3.4.Private'
