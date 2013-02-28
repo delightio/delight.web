@@ -12,14 +12,9 @@ describe PartnerAppSession do
   end
 
   describe '#notify_partner' do
-    before :each do
-      subject.callback_payload = { user_id: 123, properties: [1,2,3] }
-      subject.save
-    end
-
     it 'issues a callback with POST' do
       RestClient.should_receive(:post).
-        with(subject.callback_url, callback_payload: subject.callback_payload)
+        with(subject.callback_url, subject.to_hash)
 
       subject.notify_partner
     end
@@ -30,5 +25,18 @@ describe PartnerAppSession do
       expect { subject.notify_partner }.
         to_not raise_error
     end
+  end
+
+  describe '#to_hash' do
+    before :each do
+      subject.callback_payload = Hash[:user => 'thomas']
+    end
+
+    it 'includes callback payload' do
+      subject.to_hash[:callback_payload].should == subject.callback_payload
+    end
+
+    it 'includes url to presentation track'
+    it 'includes url to gesture track'
   end
 end

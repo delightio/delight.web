@@ -41,5 +41,11 @@ class Track < ActiveRecord::Base
   def download
     storage.download app_session.working_directory
   end
+
+  def to_json
+    {
+      url: presigned_read_uri
+    }
+  end
 end
 
