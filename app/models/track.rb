@@ -21,8 +21,12 @@ class Track < ActiveRecord::Base
     raise 'Track without type has undefined file file_extension'
   end
 
+  def short_type
+    return "" if type.nil?
+    type.split('::').last.downcase
+  end
+
   def filename
-    short_type = type.split('::').last.downcase
     "session_#{app_session_id}_#{short_type}.#{file_extension}"
   end
 
