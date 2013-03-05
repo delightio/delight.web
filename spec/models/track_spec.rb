@@ -92,4 +92,10 @@ describe Track do
       subject.filename.should == "session_#{app_session.id}_presentationtrack.mp4"
     end
   end
+
+  describe '#json_url' do
+    it 'returns endpoint for accessing the json' do
+      subject.json_url.should == "http://#{Rails.configuration.host}/tracks/#{subject.id}.json"
+    end
+  end
 end

@@ -51,5 +51,10 @@ class Track < ActiveRecord::Base
       url: presigned_read_uri.to_s
     }
   end
+
+  def json_url
+    url_helpers = Rails.application.routes.url_helpers
+    "#{url_helpers.track_url(self, :host => Rails.configuration.host)}.json"
+  end
 end
 

@@ -1,7 +1,11 @@
 require 'spec_helper'
 
 describe PartnerAppSession do
-  subject { FactoryGirl.create :partner_app_session }
+  subject { (FactoryGirl.create :partner_app_session).
+              tap do |s|
+                s.stub :presentation_track => mock.as_null_object
+                s.stub :gesture_track => mock.as_null_object
+              end }
 
   describe '#complete' do
     it 'notifies partner' do
@@ -36,7 +40,16 @@ describe PartnerAppSession do
       subject.to_hash[:callback_payload].should == subject.callback_payload
     end
 
-    it 'includes url to presentation track'
-    it 'includes url to gesture track'
+    it 'includes json url to gesture track' do
+      subject.to_hash.should have_key(:gesture_track)
+    end
+
+    it 'includes json url to presentation track' do
+      subject.to_hash.should have_key(:presentation_track)
+    end
+
+    it 'includes url to thumbnail' do
+      subject.to_hash.should have_key(:thumbnail_url)
+    end
   end
 end
