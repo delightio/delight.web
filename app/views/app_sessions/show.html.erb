@@ -1,13 +1,19 @@
+<%# App Session View %>
 <div class="container" style="width:100%">
   <div class="row">
     <div class="span9">
       <div class="row" style="margin-left:0px;">
         <div class="span9" style="text-align:center;overflow:hidden">
-          <div class="video-container" style="width:100%">
+          <div class="video-container">
             <video class="track-video" id="presentation-track-video" style="width:100%;max-height:80%;max-width:100%;float:left" controls="controls" autoplay>
             <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
             Your browser does not support video tag.
             </video>
+
+            
+        <!-- App Session, 1 -->
+        <!-- <%= @app_session.gesture_track %> -->
+        <!--  -->
           </div>
             <p id="browser-compatibility" style="color:white;display:none">
             We currently provide only H264 videos. Please use <a href="http://www.apple.com/safari/download/" target="_blank">Safari 3.1+</a> or <a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
@@ -68,9 +74,10 @@
   </div>
 </div>
 <script>
+
   $(document).ready(function() {
     var player = $(".track-video").acornMediaPlayer();
-    console.log($(player));
+    console.log("Player", player);
     $("#rotate-0").click(function(eventObj) {
       $("#presentation-track-video").css('-moz-transform', 'rotate(0deg)');
       $("#presentation-track-video").css('-webkit-transform', 'rotate(0deg)');
@@ -105,6 +112,15 @@
       width:"550px",
       height:"500px"
     });
+
+    window.EventTrack = {
+      url: "<%= @app_session.gesture_track.presigned_read_uri %>"
+    };
+    
+    var _url = $("<a>", { html: EventTrack.url }).text();
+    $.get(_url)
+      .done(function(d){ console.log("server return", d) })
+      .fail(function(e){ console.log("ka-boom") })
   });
   $(document).bind('cbox_open', function() {
     $("#app-session-show-invite-viewer").text('Processing...');
