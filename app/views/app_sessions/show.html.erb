@@ -1,11 +1,11 @@
 <%# App Session View %>
-<div class="container" style="width:100%">
+<div class="container" >
   <div class="row">
     <div class="span9">
-      <div class="row" style="margin-left:0px;">
-        <div class="span9" style="text-align:center;overflow:hidden">
+      <div class="row">
+        <div class="span9">
           <div class="video-container">
-            <video class="track-video" id="presentation-track-video" style="width:100%;max-height:80%;max-width:100%;float:left" controls="controls" autoplay>
+            <video class="track-video" id="presentation-track-video" controls="controls" autoplay>
             <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
             Your browser does not support video tag.
             </video>
