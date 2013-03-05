@@ -51,7 +51,8 @@ CREATE TABLE accounts (
     name character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    administrator_id integer
+    administrator_id integer,
+    type character varying(255)
 );
 
 
@@ -94,7 +95,9 @@ CREATE TABLE app_sessions (
     device_hw_version character varying(255),
     device_os_version character varying(255),
     type character varying(255),
-    event_infos_count integer DEFAULT 0
+    event_infos_count integer DEFAULT 0,
+    callback_url character varying(255),
+    callback_payload character varying(255)
 );
 
 
@@ -127,7 +130,8 @@ CREATE TABLE apps (
     token character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    account_id integer
+    account_id integer,
+    type character varying(255)
 );
 
 
@@ -1030,6 +1034,14 @@ INSERT INTO schema_migrations (version) VALUES ('20130211005918');
 INSERT INTO schema_migrations (version) VALUES ('20130211010000');
 
 INSERT INTO schema_migrations (version) VALUES ('20130212010015');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212024039');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212032229');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212071144');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212085204');
 
 INSERT INTO schema_migrations (version) VALUES ('20130213000631');
 
