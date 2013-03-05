@@ -15,3 +15,4 @@
 //= require jquery-ui
 //= require bootstrap-2.3.1
 //= require_tree .
+//= require_tree ../../../vendor/assets/javascripts/.
