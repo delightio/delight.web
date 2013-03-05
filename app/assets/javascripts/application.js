@@ -10,8 +10,8 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require jquery-1.9.1
 //= require jquery_ujs
 //= require jquery-ui
-//= require twitter/bootstrap
-//= require jquery
+//= require bootstrap-2.3.1
 //= require_tree .

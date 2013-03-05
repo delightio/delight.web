@@ -1,9 +1,5 @@
-<div class="row-fluid">
-  <div class="span12" id="error-messages-container">
-    <!--
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-  -->
+
+  <div id="error-messages-container">  
     <% if flash[:notice] %>
     <div class="alert <%= (flash[:type].blank? ? "alert-success" : "alert-" + flash[:type]) %> fade in" data-alert="alert">
   	  <a class="close" data-dismiss="alert">×</a>
@@ -14,4 +10,6 @@
     </div>
     <% end %>
   </div>
-</div>
+
+  <!-- <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p> -->

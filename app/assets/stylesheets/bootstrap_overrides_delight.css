@@ -1,8 +1,0 @@
-/*
-div.row.unread div[class*='span'] { 
-  background-color:yellow;
-} 
-*/
-div.row.unread {
-  background-color:#FFFFCC;
-}
