@@ -41,9 +41,6 @@ DelightWeb::Application.routes.draw do
   resources :event_tracks, :only => [:create]
   resources :view_tracks, :only => [:create]
 
-  # To be removed. This internally maps ScreenTrack
-  resources :videos, :only => [:create, :show]
-
   resources :apps do
     put '/recording/update/:state', :to => 'apps#update_recording', :as => :update_recording
     get '/setup', :to => 'apps#setup', :as => :setup
