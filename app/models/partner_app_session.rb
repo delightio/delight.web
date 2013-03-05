@@ -28,9 +28,8 @@ class PartnerAppSession < AppSession
     h[:delight_version] = delight_version
 
     url_helpers = Rails.application.routes.url_helpers
-    h[:gesture_track] = url_helpers.tracks_path(gesture_track)
-    h[:presentation_track] = url_helpers.tracks_path(presentation_track)
-
+    h[:gesture_track] = url_helpers.track_url(gesture_track, :host => Rails.configuration.host )
+    h[:presentation_track] = url_helpers.track_url(presentation_track, :host => Rails.configuration.host)
     h[:callback_payload] = callback_payload
 
     h
