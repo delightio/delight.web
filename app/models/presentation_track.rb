@@ -22,7 +22,7 @@ class PresentationTrack < Track
   end
 
   def to_json
-    super.merge! thumbnail_url: thumbnail.presigned_read_uri
+    super.merge! thumbnail_url: thumbnail.presigned_read_uri.to_s
   end
 end
 

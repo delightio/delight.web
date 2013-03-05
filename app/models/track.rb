@@ -48,7 +48,7 @@ class Track < ActiveRecord::Base
 
   def to_json
     {
-      url: presigned_read_uri
+      url: presigned_read_uri.to_s
     }
   end
 end
