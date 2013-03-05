@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130212085204) do
+ActiveRecord::Schema.define(:version => 20130305093006) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -39,7 +39,8 @@ ActiveRecord::Schema.define(:version => 20130212085204) do
     t.string   "device_os_version"
     t.string   "type"
     t.string   "callback_url"
-    t.string   "callback_payload"
+    t.text     "callback_payload"
+    t.integer  "event_infos_count",    :default => 0
   end
 
   add_index "app_sessions", ["app_id"], :name => "as_app_id"
@@ -67,6 +68,28 @@ ActiveRecord::Schema.define(:version => 20130212085204) do
     t.datetime "updated_at", :null => false
   end
 
+# Could not dump table "event_infos" because of following StandardError
+#   Unknown type 'hstore' for column 'properties'
+
+  create_table "events", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "event_infos_count", :default => 0
+    t.integer  "app_id"
+  end
+
+  add_index "events", ["app_id"], :name => "index_events_on_app_id"
+
+  create_table "events_funnels", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "funnel_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "events_funnels", ["event_id", "funnel_id"], :name => "index_events_funnels_on_event_id_and_funnel_id"
+
   create_table "favorites", :force => true do |t|
     t.integer  "user_id"
     t.integer  "app_session_id"
@@ -76,6 +99,15 @@ ActiveRecord::Schema.define(:version => 20130212085204) do
 
   add_index "favorites", ["app_session_id"], :name => "fav_as_id"
   add_index "favorites", ["user_id"], :name => "fav_user_id"
+
+  create_table "funnels", :force => true do |t|
+    t.string   "name"
+    t.integer  "app_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "funnels", ["app_id"], :name => "index_funnels_on_app_id"
 
   create_table "group_invitations", :force => true do |t|
     t.integer  "app_id"
@@ -119,12 +151,15 @@ ActiveRecord::Schema.define(:version => 20130212085204) do
   end
 
   create_table "tracks", :force => true do |t|
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.integer  "app_session_id"
     t.string   "type"
+    t.integer  "events_count",      :default => 0
+    t.integer  "event_infos_count", :default => 0
   end
 
+  add_index "tracks", ["events_count"], :name => "index_tracks_on_track_tags_count"
   add_index "tracks", ["type", "app_session_id"], :name => "tracks_type_as_id"
 
   create_table "users", :force => true do |t|
