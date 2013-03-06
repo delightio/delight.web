@@ -93,7 +93,7 @@
         $count = $('#favorite-count');
         $count.html(parseInt($count.html()) - 1);
       }
-
+      
       $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)
       $(".app-session-unfavorite-btn").bind('ajax:success', unfavorite_handler);
 

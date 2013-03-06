@@ -5,19 +5,20 @@
       <div class="row">
         <div class="span9">
           <div class="video-container">
-            <video class="track-video" id="presentation-track-video" controls="controls" autoplay>
-            <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' />
+            <!--  class="track-video" id="presentation-track-video" controls="controls" autoplay -->
+            <video id="app-session-video" class="video-js vjs-default-skin" controls preload="auto" data-gesture-track="<%= @app_session.gesture_track.presigned_read_uri %>" width="480" height="480">
+            <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' >
             Your browser does not support video tag.
             </video>
-
+            <p id="browser-compatibility" style="color:white;display:none">
+            We currently provide only H264 videos. Please use <a href="www.google.com/chrome" target="_blank">Google Chrome</a>,<a href="http://www.apple.com/safari/download/" target="_blank">Apple Safari 3.1+</a>,<a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
+            </p>
             
         <!-- App Session, 1 -->
         <!-- <%= @app_session.gesture_track %> -->
         <!--  -->
           </div>
-            <p id="browser-compatibility" style="color:white;display:none">
-            We currently provide only H264 videos. Please use <a href="http://www.apple.com/safari/download/" target="_blank">Safari 3.1+</a> or <a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
-            </p>
+            
           <!--/div-->
         </div>
       </div>
@@ -113,14 +114,9 @@
       height:"500px"
     });
 
-    window.EventTrack = {
-      url: "<%= @app_session.gesture_track.presigned_read_uri %>"
-    };
-    
-    var _url = $("<a>", { html: EventTrack.url }).text();
-    $.get(_url)
-      .done(function(d){ console.log("server return", d) })
-      .fail(function(e){ console.log("ka-boom") })
+    var $vid = $("#app-session-video");
+    var vid = vjs($vid[0]);
+    console.log("track", vid.data("gesture-track"), vid)
   });
   $(document).bind('cbox_open', function() {
     $("#app-session-show-invite-viewer").text('Processing...');
