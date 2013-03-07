@@ -86,6 +86,7 @@ describe AppSession do
     context 'when the app is SimplePrint' do
       before do
         subject.app.stub :id => 653
+        subject.stub :app_id => 653
         # Since we now by pass loading the :app again.
         subject.stub :app_recording? => true
       end

@@ -97,14 +97,18 @@ class AppSession < ActiveRecord::Base
   end
 
   def recording?
+    return @recording if @recording
+
     return false if delight_version.to_i < 2 # LH 110
     unless (delight_version.include? '2.3.2')
-      return false if app.id == 653 && device_os_version.to_f >= 6.0
+      return false if app_id == 653 && device_os_version.to_f >= 6.0
     end
 
     # GH #30 Use optimized version instead.
     # app.recording?
-    app_recording?
+    @recording = app_recording?
+
+    @recording
   end
 
   def uploading_on_wifi_only?
