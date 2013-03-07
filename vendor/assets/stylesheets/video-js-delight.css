@@ -160,9 +160,13 @@ Most likely the same of the default skin, 'vjs-default-skin' */
   background: linear-gradient(top, #111, #262626);
 }
 .vjs-delight-skin .vjs-progress-holder .vjs-play-progress,
-.vjs-delight-skin .vjs-progress-holder .vjs-load-progress { /* Progress Bars */
+.vjs-delight-skin .vjs-progress-holder .vjs-load-progress,
+.vjs-delight-skin .vjs-cuepoints-holder { /* Progress Bars */
   position: absolute; display: block; height: 1.0em; margin: 0; padding: 0;
   left: 0; top: 0; /*Needed for IE6*/
+}
+.vjs-delight-skin .vjs-progress-holder .vjs-play-progress,
+.vjs-delight-skin .vjs-progress-holder .vjs-load-progress {
   -moz-border-radius: 0.6em; -webkit-border-radius: 0.6em; border-radius: 0.6em;
 
   /*width: 0;*/
@@ -199,7 +203,18 @@ Most likely the same of the default skin, 'vjs-default-skin' */
   background: -ms-linear-gradient(top, #666, #333);
   background: linear-gradient(top, #666, #333);
 }
-
+.vjs-delight-skin .vjs-cuepoints-holder { width: 100%; }
+.vjs-delight-skin .vjs-cuepoints-holder .cuepoints {
+  width:100%;
+  height:1em;
+  position: relative;
+}
+.vjs-delight-skin .vjs-cuepoints-holder .cuepoint {
+  width: 2px;
+  height: 1em;
+  position: absolute;
+  background-color: rgb(20, 125, 197);
+}  
 .vjs-delight-skin div.vjs-seek-handle {
   position: absolute;
   width: 16px; height: 16px; /* Match img pixles */
