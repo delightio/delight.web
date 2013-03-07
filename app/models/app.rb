@@ -36,10 +36,18 @@ class App < ActiveRecord::Base
     app_sessions.recorded.limit(1).count > 0
   end
 
+  # Optimized version of account.enough_credits?
+  def account_enough_credits?
+    weak_account = Account.where(:id=>account_id).limit(1).select(:id).first
+    weak_account.enough_credits?
+  end
+
   def recording?
     !recording_paused? &&
     scheduled_recordings > 0 &&
-    account.enough_credits?
+    account_enough_credits?
+    # account.enough_credits?
+    # GH #30 Use optimized version instead.
   end
 
   def scheduled_recordings

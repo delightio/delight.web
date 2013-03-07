@@ -14,6 +14,7 @@ FactoryGirl.define do
 
     after(:build) do |a|
       a.app.stub :recording? => false
+      a.stub :app_recording? => false
     end
   end
 

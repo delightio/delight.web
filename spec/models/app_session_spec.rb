@@ -68,8 +68,9 @@ describe AppSession do
       subject.stub :app => recording_app
     end
 
-    it 'reads from its associated app' do
-      subject.app.should_receive :recording?
+    it 'reads from its associated app but uses the optimizedversion' do
+      # subject.app.should_receive :recording?
+      subject.should_receive :app_recording?
 
       subject.recording?
     end
@@ -85,6 +86,8 @@ describe AppSession do
     context 'when the app is SimplePrint' do
       before do
         subject.app.stub :id => 653
+        # Since we now by pass loading the :app again.
+        subject.stub :app_recording? => true
       end
 
       it 'is true if iOS is not 6.x' do

@@ -39,7 +39,8 @@ describe App do
 
     context 'when we have no credits' do
       it 'is always false' do
-        subject.account.stub :enough_credits? => false
+        # subject.account.stub :enough_credits? => false
+        subject.stub :account_enough_credits? => false
         subject.stub :scheduled_recordings => 10
         subject.resume_recording
 
@@ -49,7 +50,8 @@ describe App do
 
     context 'when developer has paused recordings' do
       it 'is always false regardless credits or remaining recordings needed' do
-        subject.account.stub :enough_credits? => true
+        # subject.account.stub :enough_credits? => true
+        subject.stub :account_enough_credits? => true
         subject.stub :scheduled_recordings => 10
         subject.pause_recording
 
@@ -59,7 +61,8 @@ describe App do
 
     context 'when we have credits and recording is not paused' do
       before do
-        subject.account.stub :enough_credits? => true
+        # subject.account.stub :enough_credits? => true
+        subject.stub :account_enough_credits? => true
         subject.resume_recording
       end
 
