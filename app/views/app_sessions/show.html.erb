@@ -6,12 +6,12 @@
         <div class="span9">
           <div class="video-container">
             <!--  class="track-video" id="presentation-track-video" controls="controls" autoplay -->
-            <video id="app-session-video" class="video-js vjs-default-skin" controls preload="auto" data-gesture-track="<%= @app_session.gesture_track.presigned_read_uri %>" width="480" height="480">
+            <video id="app-session-video" class="video-js vjs-delight-skin" controls preload="auto" data-gesture-track="<%= @app_session.gesture_track.presigned_read_uri %>" width="480" height="480">
             <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' >
             Your browser does not support video tag.
             </video>
             <p id="browser-compatibility" style="color:white;display:none">
-            We currently provide only H264 videos. Please use <a href="www.google.com/chrome" target="_blank">Google Chrome</a>,<a href="http://www.apple.com/safari/download/" target="_blank">Apple Safari 3.1+</a>,<a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
+            You are now viewing the flash version, for full experience, please use any H264 compatible browser <a href="www.google.com/chrome" target="_blank">Google Chrome</a>,<a href="http://www.apple.com/safari/download/" target="_blank">Apple Safari 3.1+</a>,<a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
             </p>
             
         <!-- App Session, 1 -->
@@ -76,37 +76,7 @@
 </div>
 <script>
 
-  $(document).ready(function() {
-    var player = $(".track-video").acornMediaPlayer();
-    console.log("Player", player);
-    $("#rotate-0").click(function(eventObj) {
-      $("#presentation-track-video").css('-moz-transform', 'rotate(0deg)');
-      $("#presentation-track-video").css('-webkit-transform', 'rotate(0deg)');
-      $("#presentation-track-video").css('-o-transform', 'rotate(0deg)');
-      $("#presentation-track-video").css('-ms-transform', 'rotate(0deg)');
-      $("#presentation-track-video").css('transform', 'rotate(0deg)');
-    });
-    $("#rotate-90").click(function(eventObj) {
-      $("#presentation-track-video").css('-moz-transform', 'rotate(90deg)');
-      $("#presentation-track-video").css('-webkit-transform', 'rotate(90deg)');
-      $("#presentation-track-video").css('-o-transform', 'rotate(90deg)');
-      $("#presentation-track-video").css('-ms-transform', 'rotate(90deg)');
-      $("#presentation-track-video").css('transform', 'rotate(90deg)');
-    });
-    $("#rotate-180").click(function(eventObj) {
-      $("#presentation-track-video").css('-moz-transform', 'rotate(180deg)');
-      $("#presentation-track-video").css('-webkit-transform', 'rotate(180deg)');
-      $("#presentation-track-video").css('-o-transform', 'rotate(180deg)');
-      $("#presentation-track-video").css('-ms-transform', 'rotate(180deg)');
-      $("#presentation-track-video").css('transform', 'rotate(180deg)');
-    });
-    $("#rotate--90").click(function(eventObj) {
-      $("#presentation-track-video").css('-moz-transform', 'rotate(-90deg)');
-      $("#presentation-track-video").css('-webkit-transform', 'rotate(-90deg)');
-      $("#presentation-track-video").css('-o-transform', 'rotate(-90deg)');
-      $("#presentation-track-video").css('-ms-transform', 'rotate(-90deg)');
-      $("#presentation-track-video").css('transform', 'rotate(-90deg)');
-    });
+  $(function() {
     $("#app-session-show-invite-viewer").colorbox({
       iframe: true,
       transition:"none",
@@ -114,17 +84,23 @@
       height:"500px"
     });
 
+
+    $(document)
+      .bind('cbox_open', function() {
+      $("#app-session-show-invite-viewer").text('Processing...');
+    })
+      .bind('cbox_complete', function() {
+      $("#app-session-show-invite-viewer").text('Share');
+    });
+      
+    if (!Modernizr.video || (Modernizr.video && !Modernizr.video.h264)) { // we have proper way to do that
+      $("#browser-compatibility").show();
+    }
     var $vid = $("#app-session-video");
     var vid = vjs($vid[0]);
-    console.log("track", vid.data("gesture-track"), vid)
+
+    console.log("track", $vid.data("gesture-track"), vid)
+
+
   });
-  $(document).bind('cbox_open', function() {
-    $("#app-session-show-invite-viewer").text('Processing...');
-  });
-  $(document).bind('cbox_complete', function() {
-    $("#app-session-show-invite-viewer").text('Share');
-  });
-  if ($.browser['mozilla']) { // to do check IE and version
-    $("#browser-compatibility").show();
-  }
 </script>
