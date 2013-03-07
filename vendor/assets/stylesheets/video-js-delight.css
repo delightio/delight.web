@@ -36,8 +36,19 @@ Most likely the same of the default skin, 'vjs-default-skin' */
   /* Can't use display block to hide initially because widths of slider handles aren't calculated and avaialbe for positioning correctly. */
   visibility: visible;
   opacity: 1;
+  margin-top: 0.5em;
 }
+.vjs-delight-skin .vjs-control-bar.vjs-fade-out, .vjs-delight-skin .vjs-control-bar.vjs-fade-in {
+  visibility: visible !important;
+  opacity: 1 !important;
 
+  -webkit-transition:none; 
+  -moz-transition:   none;
+  -ms-transition:    none;
+  -o-transition:     none;
+  transition:        none;
+
+}
 /* General styles for individual controls. */
 .vjs-delight-skin .vjs-control {
   position: relative; float: left;
