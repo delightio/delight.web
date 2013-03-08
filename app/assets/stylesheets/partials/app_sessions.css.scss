@@ -1,12 +1,75 @@
 // Place all the styles related to the AppSessions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "compass/css3";
+
 $session-view-margin: 20px;
 .app-session {
 	margin: { bottom:10px; right:10px; }
+	.thumbnail {
+		width: 200px;
+		height:200px;
+		position: relative;
+		display:block;
+		padding:0;
+		margin:0;
+		@include border-radius(0);
+	}
+	.thumbnail-wrapper {
+		text-align:center;
+		width:100%;
+		height:100%;
+		@include box-sizing(border-box);
+	}
 	li { list-style:none; }
-	ul { margin: 0 5px 5px; }
-	img.sc-thumbnail { margin: 5px auto; max-width:200px; max-height:200px; }
+	.app-session-info, .thumbnail-wrapper, .app-session-ops {
+		position:absolute;
+		top:0;
+		left:0;
+
+	}
+	.app-session-ops {
+		.session-fav { display:inline-block; margin: 0.4em; }
+		.session-fav i { font-size: 180%; color: #FFD700; text-shadow: 0 0 1px rgba(0,0,0,0.4); }
+	}
+	.app-session-info {
+		right:0;
+		left:auto;
+		display:inline-block;
+	}
+	.session-time {
+		background: rgba( 255,255, 255, 0.75);
+		border-radius: 5px;
+		display: inline-block;
+		padding:0.2em;
+		color: #333;
+		box-shadow: 0 0 1px 1px rgba(0,0,0,0.3);
+		text-shadow: 1px 1px 1px #ccc;
+		margin:0.4em;
+	}
+	ul.app-session-meta { 
+		margin: 0 auto; 
+		position:absolute;
+		bottom:0;
+		background: rgba(0,0,0,0.8);
+		color: #fff;
+		width:100%;
+		display:block;
+		padding:4px;
+		@include box-sizing(border-box);
+		// visibility: hidden;
+		opacity: 0;
+	}
+
+	img.sc-thumbnail { margin: 0 auto; max-width:200px; max-height:200px; }
+
+	&:hover {
+		ul.app-session-meta {
+			// visibility: visible;
+			opacity:1;
+			@include transition(all 0.5s ease)
+		}
+	}
 }
 .app-session-view {
 	.video-container {

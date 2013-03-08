@@ -45,49 +45,50 @@
               </span>
               <% end %>
             <% end %>
+
+            <hr />
           </li>
 
-          <hr />
+
+          
           <% @app.funnels.each do |funnel| %>
-            <% if funnel.id == params[:funnel].to_i %>
-              <li class="active">
-            <% else %>
-              <li>
-            <% end %>
-            <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
-              <%= funnel.name %>
-              <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
-              <% if count > 0 %>
-                <span class="badge badge-black pull-right">
-                <%= count %>
-                </span>
+            <li class='<% funnel.id == params[:funnel].to_i ? "active" :"" %>'>
+              <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
+                <%= funnel.name %>
+                <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
+                <% if count > 0 %>
+                  <span class="badge badge-black pull-right">
+                  <%= count %>
+                  </span>
+                <% end %>
               <% end %>
-            <% end %>
-            </a>
+              
 
 
-            <div id='funnel-edit'>
-              <nav>
-                <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
-                <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
-                <div style="height: 20px;">&nbsp;</div>
-              </nav>
-            </div>
+              <div id='funnel-edit'>
+                <nav>
+                  <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
+                  <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
+                  <div style="height: 20px;">&nbsp;</div>
+                </nav>
+              </div>
 
-            <div class="clear"></div>
+              <div class="clear"></div>
             </li>
           <% end %>
 
-          <br/>
+          
           <li>
             <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
           </li>
+
           <li>
-            <a href="#" id="funnel-edit-link">Edit a filter</span>
+            <a href="#" id="funnel-edit-link">Edit a filter</a>
           </li>
 
-          <input type="hidden" name="favorite" id="app-view-favorite" />
+          
         </ul>
+        <input type="hidden" name="favorite" id="app-view-favorite" />
       </div><!--sidebar-nav-->
     </div><!--/span-->
     <%= render :partial => "app_sessions_list" %>

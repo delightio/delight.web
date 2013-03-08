@@ -8,21 +8,28 @@
           <% @recorded_sessions.each do |session| %>
             <div class="span2 app-session">
               <div class="thumbnails">
-                <a href=<%= app_session_path(session) %> class="thumbnail group-video <%= (@app_session_id == session.id.to_s) ?  'default-open-video' : '' %>">
-                  <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail">
+                <a href="<%= app_session_path(session) %>" class="thumbnail group-video <%= (@app_session_id == session.id.to_s) ?  'default-open-video' : '' %> " >
+                  <div class="thumbnail-wrapper">
+                    <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail">
+                  </div>
+                  <span class="app-session-info">
+                    <span class="session-time"><!-- <i class="icon-time"></i> -->
+                        <%= session.duration %>s
+                    </span>
+                  </span>
                   <ul class="app-session-meta">
-                    <li><i class="icon-time"></i>
-                        <%= distance_of_time_in_words session.duration %>
+
+                    <li class="session-date"><i class="icon-calendar"></i>
+                        <%= session.created_at %>
                     </li>
 
-                    <li><i class="icon-calendar"></i>
-                        <%= session_time_in_words session.created_at %>
-                    </li>
-
-                    <li><i class="icon-exclamation-sign"></i>
+                    <li class="session-event"><i class="icon-exclamation-sign"></i>
                         <%= session.events.count %> events
                     </li>
                   </ul>
+                  <div class="app-session-ops">
+                    <span class="session-fav"><i class="icon-star-empty"></i></span>
+                  </div>
                 </a>
               </div>
             </div>

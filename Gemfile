@@ -49,7 +49,7 @@ group :assets do
   # gem 'therubyracer'
 
   gem 'uglifier', '>= 1.0.3'
-  gem 'compass', '~> 0.12.0'
+  gem 'compass-rails'
 end
 
 gem "therubyracer"
