@@ -1,9 +1,7 @@
 <%# App Session View %>
 <div class="container app-session-view" >
   <div class="row">
-    <div class="span9">
-      <div class="row">
-        <div class="span9">
+    <div class="span8 session-video">
           <div class="video-container">
             <!--  class="track-video" id="presentation-track-video" controls="controls" autoplay -->
             <video id="app-session-video" class="video-js vjs-delight-skin" controls preload="auto" data-gesture-track="<%= @app_session.gesture_track.presigned_read_uri %>" data-duration="<%= @app_session.duration.to_f %>" width="480" height="480">
@@ -14,55 +12,49 @@
             You are now viewing the flash version, for full experience, please use any H264 compatible browser <a href="www.google.com/chrome" target="_blank">Google Chrome</a>,<a href="http://www.apple.com/safari/download/" target="_blank">Apple Safari 3.1+</a>,<a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
             </p>
             
-        <!-- App Session, 1 -->
-        <!-- <%= @app_session.gesture_track %> -->
-        <!--  -->
-          </div>
-            
-          <!--/div-->
-        </div>
-      </div>
+           </div>      
+        
     </div>
-    <div class="span3">
-      <div class="row-fluid">
-        <h3 style="color:white; margin-top:10px;">Properties</h3>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Session:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.id %></div>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Version:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.app_version %></div>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Build:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.app_build %></div>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Locale:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.app_locale %></div>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Duration:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.duration %></div>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Date:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= session_time_in_words @app_session.created_at %></div>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Device:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.device_hw_version %></div>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Device OS:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.device_os_version %></div>
-      </div>
-      <div class="row-fluid">
-        <div class="span7"><h6>Connectivity:</h6></div>
-        <div class="span5 pull-right" style="color:white"><%= @app_session.app_connectivity %></div>
-      </div>
+    <div class="span4 session-meta">
+      <h3>Properties</h3>
+      <table class="table">
+        <tr>
+          <td class="meta-entity">Session:</td>
+          <td class="meta-data"><%= @app_session.id %></td>
+        </tr>
+        <tr>
+          <td class="meta-entity">Version:</td>
+          <td class="meta-data"><%= @app_session.app_version %></td>
+        </tr>
+        <tr>
+          <td class="meta-entity">Build:</td>
+          <td class="meta-data"><%= @app_session.app_build %></td>
+        </tr>
+        <tr>
+          <td class="meta-entity">Locale:</td>
+          <td class="meta-data"><%= @app_session.app_locale %></td>
+        </tr>
+        <tr>
+          <td class="meta-entity">Duration:</td>
+          <td class="meta-data"><%= @app_session.duration %></td>
+        </tr>
+        <tr>
+          <td class="meta-entity">Date:</td>
+          <td class="meta-data"><%= session_time_in_words @app_session.created_at %></td>
+        </tr>
+        <tr>
+          <td class="meta-entity">Device:</td>
+          <td class="meta-data"><%= @app_session.device_hw_version %></td>
+        </tr>
+        <tr>
+          <td class="meta-entity">Device OS:</td>
+          <td class="meta-data"><%= @app_session.device_os_version %></td>
+        </tr>
+        <tr>
+          <td class="meta-entity">Connectivity:</td>
+          <td class="meta-data"><%= @app_session.app_connectivity %></td>
+        </tr>
+      </table>
 
       <hr />
 
@@ -98,13 +90,6 @@
     }
     var $vid = $("#app-session-video");
     var vid = vjs($vid[0]);
-
-    console.log("track", $vid.data("gesture-track"), vid)
-    // var holder = $(".vjs-seek-handle").before(
-    //   $("<div>", {"class":"vjs-cuepoints-holder", "html": '<div class="cuepoints"></div>'})
-    // );
-    // $(".vjs-cuepoints-holder .cuepoints").append($("<div class='cuepoint'></div><div class='cuepoint'></div><div class='cuepoint'></div>"))
-
     vid.cuepoints({url: $vid.data("gesture-track"), duration: $vid.data("duration") });
   });
 </script>

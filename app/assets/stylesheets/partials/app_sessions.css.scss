@@ -1,6 +1,7 @@
 // Place all the styles related to the AppSessions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$session-view-margin: 20px;
 .app-session {
 	margin: { bottom:10px; right:10px; }
 	li { list-style:none; }
@@ -9,6 +10,21 @@
 }
 .app-session-view {
 	.video-container {
-		margin: 5px;
+		margin-top: $session-view-margin;
 	}
+	#app-session-video {
+		background: #000000;
+		background: -moz-linear-gradient(top,  #000000 0%, #45484d 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#000000), color-stop(100%,#45484d));
+		background: -webkit-linear-gradient(top,  #000000 0%,#45484d 100%);
+		background: -o-linear-gradient(top,  #000000 0%,#45484d 100%);
+		background: -ms-linear-gradient(top,  #000000 0%,#45484d 100%);
+		background: linear-gradient(to bottom,  #000000 0%,#45484d 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#45484d',GradientType=0 );
+	}
+	.session-meta {
+		margin-top: $session-view-margin;
+		.meta-entity { font-weight: bold; }
+	}
+
 }

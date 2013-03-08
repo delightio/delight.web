@@ -15,6 +15,10 @@
  *= require_tree ../../../vendor/assets/stylesheets/.
 */
 
-.inverse-base{
+.dark-theme {
 	background-color:black;
+	color: white;
+}
+.dark-theme h1, .dark-theme h2, .dark-theme h3 {
+	color: white;
 }
