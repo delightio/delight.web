@@ -542,14 +542,14 @@ describe AppsController do
           response.should be_success
           result = JSON.parse(response.body)
           result['result'].should == 'success'
-          app.recording_paused?.should be_true
+          app.reload.recording_paused?.should be_true
         end
         it "should resume recording" do
           put 'update_recording', { :app_id => app.id, :state => 'resume', :format => :json }
           response.should be_success
           result = JSON.parse(response.body)
           result['result'].should == 'success'
-          app.recording_paused?.should be_false
+          app.reload.recording_paused?.should be_false
         end
         it "should fail given invalid state" do
           put 'update_recording', { :app_id => app.id, :state => 'invalid', :format => :json }
@@ -557,7 +557,7 @@ describe AppsController do
           result = JSON.parse(response.body)
           result['result'].should == 'fail'
           result['reason'].should == 'invalid state'
-          app.recording_paused?.should be_false
+          app.reload.recording_paused?.should be_false
         end
       end
 
