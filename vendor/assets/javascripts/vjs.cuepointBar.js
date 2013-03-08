@@ -5,7 +5,7 @@ vjs.cuePointBar = function(options){
 	var el = $("<div>", {"class":"vjs-cuepoints-holder", "html": '<div class="cuepoints"></div>'});
 	var hookEl = $(player.controlBar.progressControl.seekBar.handle.el_); //$(".vjs-seek-handle");
 	var url = options.url || "";
-	console.log(player.el_, url);
+	//console.log(player.el_, url);
 	function init(){
 		hookEl.before(el);
 		ajax(url);
@@ -15,7 +15,7 @@ vjs.cuePointBar = function(options){
 
 	function ajax(url){
 		var duration = parseFloat(options.duration);
-		console.log(duration)
+		//console.log(duration)
 		$.getJSON(url)
 			.done(function(d){ 
 				var holder = $(".cuepoints", el); 
@@ -25,7 +25,7 @@ vjs.cuePointBar = function(options){
 					o = d[i];
 					html += "<div class='cuepoint' style='left:"+(parseFloat(o.time)/duration)*100+"%' data-type='"+o.type+"' title='"+o.type+"'></div>"
 					
-					console.log(i,o, html)
+					//console.log(i,o, html)
 				}
 				holder.html(html);
 			})
