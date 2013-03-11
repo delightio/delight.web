@@ -23,6 +23,7 @@ gem 'rest-client'
 gem 'mailgun-rails'
 
 gem 'plist'
+gem "ruby-duration"
 
 group :development, :test do
   gem 'rspec-rails', "2.12.0"
