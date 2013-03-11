@@ -6,7 +6,7 @@
       <% else %>
         <div class="row">
           <% @recorded_sessions.each do |session| %>
-            <div class="span2 app-session">
+            <div class="span2 app-session" data-session-id="<%=session.id%>">
               <div class="thumbnails">
                 <a href="<%= app_session_path(session) %>" class="thumbnail group-video <%= (@app_session_id == session.id.to_s) ?  'default-open-video' : '' %> " >
                   <div class="thumbnail-wrapper">
@@ -28,7 +28,12 @@
                     </li>
                   </ul>
                   <div class="app-session-ops">
-                    <span class="session-fav"><i class="icon-star-empty"></i></span>
+                    <span class="session-fav" 
+                      data-favourite-url="/app_sessions/<%= session.id %>/favourite" 
+                      data-unfavourite-url="/app_sessions/<%= session.id %>/unfavourite">
+                      <!-- <i class="<%# (session.favorited?) ? 'favorited icon-star':'not-favourited icon-star-empty' %>"></i> -->
+                      <i class="not-favourited icon-star-empty"></i>
+                    </span>
                   </div>
                 </a>
               </div>
@@ -45,6 +50,15 @@
     </div>
 
     <script>
+      $(function(){
+        $(".session-fav").click(function(e){
+          e.preventDefault();
+          e.stopPropagation();
+
+        })
+
+      })
+/*
       function favorite_handler(event, data, status, xhr) {
         if (data['result'] == 'success') {
           // update ui
@@ -91,4 +105,5 @@
 
       $(".app-session-favorite-btn").tooltip({ 'title' : 'Star this session.' });
       $(".app-session-unfavorite-btn").tooltip({ 'title' : 'Remove this session from Starred.' });
+*/
     </script>
