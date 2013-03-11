@@ -71,8 +71,8 @@
           
           <% @app_session.events_with_time.each do |session_event| %>
             <tr>
-              <th class="event-time"><%= session_event[:time] %></th>
-              <td class="event-data"><%= session_event[:name] %></td>
+              <th class="event-time" data-duration="<%= session_event[:time] %>"><%= session_event[:time] %></th>
+              <td class="event-data" data-caption="<%= session_event[:name] %>"><%= session_event[:name] %></td>
             </tr>
           <% end %>
 
