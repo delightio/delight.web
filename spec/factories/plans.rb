@@ -4,8 +4,5 @@ FactoryGirl.define do
   factory :plan do
     type ""
     name "MyString"
-    price 1
-    quota 1
-    duration 1
   end
 end

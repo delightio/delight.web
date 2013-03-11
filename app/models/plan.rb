@@ -1,4 +1,6 @@
 class Plan < ActiveRecord::Base
   attr_accessible :name, :price
-end
 
+  has_many :subscriptions
+  has_many :accounts, :through => :subscriptions
+end

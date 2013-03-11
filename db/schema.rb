@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308135825) do
+ActiveRecord::Schema.define(:version => 20130308152011) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -67,9 +67,6 @@ ActiveRecord::Schema.define(:version => 20130308135825) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
-
-# Could not dump table "event_infos" because of following StandardError
-#   Unknown type 'hstore' for column 'properties'
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -169,6 +166,14 @@ ActiveRecord::Schema.define(:version => 20130308135825) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.datetime "notified_at"
+  end
+
+  create_table "subscriptions", :force => true do |t|
+    t.integer  "account_id"
+    t.integer  "plan_id"
+    t.integer  "usage",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "tracks", :force => true do |t|

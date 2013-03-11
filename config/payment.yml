@@ -22,29 +22,7 @@ development:
   <<: *defaults
 
 test:
-  plans:
-   -
-    display: 'A La Carte'
-    name: 'one'
-    price: 5
-    credit: 1
-   -
-    display: 'Launch'
-    name: 'few'
-    price: 50
-    credit: 20
-   -
-    display: 'Unlimited'
-    name: 'volume'
-    price: 500
-    credit: 100
-
-  subscription_plans:
-   -
-    display: 'Unlimited'
-    name: 'volume'
-    price: 200
-    credit: unlimited
+  <<: *defaults
 
 production:
   <<: *defaults
