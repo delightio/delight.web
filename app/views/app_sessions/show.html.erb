@@ -11,9 +11,9 @@
             <p id="browser-compatibility" style="color:white;display:none">
             You are now viewing the flash version, for full experience, please use any H264 compatible browser <a href="www.google.com/chrome" target="_blank">Google Chrome</a>,<a href="http://www.apple.com/safari/download/" target="_blank">Apple Safari 3.1+</a>,<a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home" target="_blank">IE 9.0+</a> to watch videos.
             </p>
-            
-           </div>      
-        
+
+           </div>
+
     </div>
     <div class="span4 session-meta">
       <ul class="nav nav-pills">
@@ -42,7 +42,7 @@
             </tr>
             <tr>
               <th class="meta-entity">Duration:</th>
-              <td class="meta-data"><%= @app_session.duration %></td>
+              <td class="meta-data"><%= Duration.new(@app_session.duration).format("%H:%M:%S") %></td>
             </tr>
             <tr>
               <th class="meta-entity">Date:</th>
@@ -68,10 +68,10 @@
         <div class="tab-pane" id="session-events">
           <!-- <h3>Events</h3> -->
           <table class="table">
-          
+
           <% @app_session.events_with_time.each do |session_event| %>
             <tr>
-              <th class="event-time" data-duration="<%= session_event[:time] %>"><%= session_event[:time] %></th>
+              <th class="event-time" data-duration="<%= session_event[:time] %>"><%= Duration.new(session_event[:time]).format("%H:%M:%S") %></th>
               <td class="event-data" data-caption="<%= session_event[:name] %>"><%= session_event[:name] %></td>
             </tr>
           <% end %>
@@ -108,7 +108,7 @@
       .bind('cbox_complete', function() {
       $("#app-session-show-invite-viewer").text('Share');
     });
-      
+
     if (!Modernizr.video || (Modernizr.video && !Modernizr.video.h264)) { // we have proper way to do that
       $("#browser-compatibility").show();
     }

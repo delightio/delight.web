@@ -13,8 +13,8 @@
                     <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail">
                   </div>
                   <span class="app-session-info">
-                    <span class="session-time"><!-- <i class="icon-time"></i> -->
-                        <%= session.duration %>s
+                    <span class="session-time">
+                      <%= Duration.new(session.duration).format("%H:%M:%S") %>
                     </span>
                   </span>
                   <ul class="app-session-meta">
@@ -28,8 +28,8 @@
                     </li>
                   </ul>
                   <div class="app-session-ops">
-                    <span class="session-fav" 
-                      data-favourite-url="/app_sessions/<%= session.id %>/favourite" 
+                    <span class="session-fav"
+                      data-favourite-url="/app_sessions/<%= session.id %>/favourite"
                       data-unfavourite-url="/app_sessions/<%= session.id %>/unfavourite">
                       <!-- <i class="<%# (session.favorited?) ? 'favorited icon-star':'not-favourited icon-star-empty' %>"></i> -->
                       <i class="not-favourited icon-star-empty"></i>
@@ -99,7 +99,7 @@
         $count = $('#favorite-count');
         $count.html(parseInt($count.html()) - 1);
       }
-      
+
       $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)
       $(".app-session-unfavorite-btn").bind('ajax:success', unfavorite_handler);
 
