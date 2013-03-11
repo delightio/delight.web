@@ -16,47 +16,71 @@
         
     </div>
     <div class="span4 session-meta">
-      <h3>Properties</h3>
-      <table class="table">
-        <tr>
-          <td class="meta-entity">Session:</td>
-          <td class="meta-data"><%= @app_session.id %></td>
-        </tr>
-        <tr>
-          <td class="meta-entity">Version:</td>
-          <td class="meta-data"><%= @app_session.app_version %></td>
-        </tr>
-        <tr>
-          <td class="meta-entity">Build:</td>
-          <td class="meta-data"><%= @app_session.app_build %></td>
-        </tr>
-        <tr>
-          <td class="meta-entity">Locale:</td>
-          <td class="meta-data"><%= @app_session.app_locale %></td>
-        </tr>
-        <tr>
-          <td class="meta-entity">Duration:</td>
-          <td class="meta-data"><%= @app_session.duration %></td>
-        </tr>
-        <tr>
-          <td class="meta-entity">Date:</td>
-          <td class="meta-data"><%= session_time_in_words @app_session.created_at %></td>
-        </tr>
-        <tr>
-          <td class="meta-entity">Device:</td>
-          <td class="meta-data"><%= @app_session.device_hw_version %></td>
-        </tr>
-        <tr>
-          <td class="meta-entity">Device OS:</td>
-          <td class="meta-data"><%= @app_session.device_os_version %></td>
-        </tr>
-        <tr>
-          <td class="meta-entity">Connectivity:</td>
-          <td class="meta-data"><%= @app_session.app_connectivity %></td>
-        </tr>
-      </table>
+      <ul class="nav nav-pills">
+        <li class="active"><a href="#session-props" data-toggle="pill">Properties</a></li>
+        <li><a href="#session-events" data-toggle="pill">Events</a></li>
+      </ul>
+        <div class="tab-content">
+        <div class="tab-pane active" id="session-props">
+          <!-- <h3>Properties</h3> -->
+          <table class="table">
+            <tr>
+              <th class="meta-entity">Session:</th>
+              <td class="meta-data"><%= @app_session.id %></td>
+            </tr>
+            <tr>
+              <th class="meta-entity">Version:</th>
+              <td class="meta-data"><%= @app_session.app_version %></td>
+            </tr>
+            <tr>
+              <th class="meta-entity">Build:</th>
+              <td class="meta-data"><%= @app_session.app_build %></td>
+            </tr>
+            <tr>
+              <th class="meta-entity">Locale:</th>
+              <td class="meta-data"><%= @app_session.app_locale %></td>
+            </tr>
+            <tr>
+              <th class="meta-entity">Duration:</th>
+              <td class="meta-data"><%= @app_session.duration %></td>
+            </tr>
+            <tr>
+              <th class="meta-entity">Date:</th>
+              <td class="meta-data"><%= session_time_in_words @app_session.created_at %></td>
+            </tr>
+            <tr>
+              <th class="meta-entity">Device:</th>
+              <td class="meta-data"><%= @app_session.device_hw_version %></td>
+            </tr>
+            <tr>
+              <th class="meta-entity">Device OS:</th>
+              <td class="meta-data"><%= @app_session.device_os_version %></td>
+            </tr>
+            <tr>
+              <th class="meta-entity">Connectivity:</th>
+              <td class="meta-data"><%= @app_session.app_connectivity %></td>
+            </tr>
+          </table>
 
-      <hr />
+          <hr />
+        </div>
+
+        <div class="tab-pane" id="session-events">
+          <!-- <h3>Events</h3> -->
+          <table class="table">
+          
+          <% @app_session.events_with_time.each do |session_event| %>
+            <tr>
+              <th class="event-time"><%= session_event[:time] %></th>
+              <td class="event-data"><%= session_event[:name] %></td>
+            </tr>
+          <% end %>
+
+          </table>
+
+          <hr />
+        </div>
+      </div>
 
       <% if @is_admin %>
         <%= link_to raw('Share'), new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-success", :style => "color:white", :id => "app-session-show-invite-viewer" %>
