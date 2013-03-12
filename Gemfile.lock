@@ -204,8 +204,6 @@ GEM
     redis (3.0.2)
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
-    redis-objects (0.6.1)
-      redis (>= 3.0.2)
     resque (1.23.0)
       multi_json (~> 1.0)
       redis-namespace (~> 1.0)
@@ -315,7 +313,6 @@ DEPENDENCIES
   pry-rails
   rails
   redis
-  redis-objects
   resque
   rest-client
   rspec-prof

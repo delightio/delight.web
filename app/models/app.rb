@@ -18,9 +18,6 @@ class App < ActiveRecord::Base
   validate :token, :presence => true, :uniqueness => true
   validates :name, :presence => true
 
-  include Redis::Objects
-  hash_key :settings # recordings to get, paused?, wifi only?
-
   module Scopes
     def administered_by(user)
       select('DISTINCT apps.*').joins(:account).where(:accounts => { :administrator_id => user.id })

@@ -12,7 +12,6 @@ gem 'pry-rails'
 gem 'pg'
 gem 'aws-sdk'
 gem 'redis'
-gem 'redis-objects'
 gem 'resque'
 
 gem 'hirefireapp'

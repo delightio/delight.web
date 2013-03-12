@@ -15,9 +15,6 @@ class Account < ActiveRecord::Base
 
   after_create :add_free_credits, :email_new_signup
 
-  # include Redis::Objects
-  # counter :credits
-  # value :plan
   FreeCredits = 50
   SpecialCredits = 10
 
