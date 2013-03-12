@@ -148,25 +148,25 @@ describe AccountsController do
         credits = admin.account.remaining_credits
         put 'add_credit', {
                             :account_id => admin.account.id,
-                            :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "2",
+                            :'add-credit-quantity-silver' => "1",
+                            :'add-credit-quantity-gold' => "1",
                             :'stripeToken' => "token",
-                            :'total_price' => "100",
-                            :'total_credits' => "40",
+                            :'total_price' => "150",
+                            :'total_credits' => "70",
                             :format => :json
                           }
         response.should be_success
         result = JSON.parse(response.body)
         result["result"].should == "success"
-        result["remaining_credits"].should == (credits + 40)
+        result["remaining_credits"].should == (credits + 70)
       end
 
       it "should fail with no purchase" do
         credits = admin.account.remaining_credits
         put 'add_credit', {
                             :account_id => admin.account.id,
-                            :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "0",
+                            :'add-credit-quantity-silver' => "0",
+                            :'add-credit-quantity-gold' => "0",
                             :'stripeToken' => "token",
                             :'total_price' => "0",
                             :'total_credits' => "0",
@@ -182,8 +182,8 @@ describe AccountsController do
         credits = admin.account.remaining_credits
         put 'add_credit', {
                             :account_id => admin.account.id,
-                            :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "2",
+                            :'add-credit-quantity-silver' => "0",
+                            :'add-credit-quantity-gold' => "2",
                             :'stripeToken' => "token",
                             :'total_price' => "98",
                             :'total_credits' => "40",
@@ -199,8 +199,8 @@ describe AccountsController do
         credits = admin.account.remaining_credits
         put 'add_credit', {
                             :account_id => admin.account.id,
-                            :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "2",
+                            :'add-credit-quantity-silver' => "0",
+                            :'add-credit-quantity-gold' => "2",
                             :'stripeToken' => "token",
                             :'total_price' => "100",
                             :'total_credits' => "41",
@@ -219,11 +219,11 @@ describe AccountsController do
         it "should show error failed to add credit" do
           put 'add_credit', {
                             :account_id => admin.account.id,
-                            :'add-credit-quantity-one' => "0",
-                            :'add-credit-quantity-few' => "2",
+                            :'add-credit-quantity-silver' => "0",
+                            :'add-credit-quantity-gold' => "2",
                             :'stripeToken' => "token",
-                            :'total_price' => "100",
-                            :'total_credits' => "40",
+                            :'total_price' => "200",
+                            :'total_credits' => "100",
                             :format => :json
                             }
           response.should be_success
@@ -243,8 +243,8 @@ describe AccountsController do
 #      it "should fail when charge fail" do
 #        put 'add_credit', {
 #                            :account_id => admin.account.id,
-#                            :'add-credit-quantity-one' => "0",
-#                            :'add-credit-quantity-few' => "0",
+#                            :'add-credit-quantity-silver' => "0",
+#                            :'add-credit-quantity-gold' => "0",
 #                            :'add-credit-quantity-volume' => "2",
 #                            :'stripeToken' => "token",
 #                            :'total_price' => "200",

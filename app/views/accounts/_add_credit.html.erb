@@ -2,7 +2,7 @@
     <div class="row-fluid">
       <div class="span12">
         <div id="payment-alert">
-          <% unless account.current_subscription.nil? %>
+          <% if account.subscribed_to_unlimited_plan? %>
             <div class="alert alert-error">Subscribed to unlimited plan. No need to add credits.</div>
           <% end %>
         </div>
@@ -184,7 +184,7 @@
     $field.keyup();
   <% end %>
 
-  <% unless account.current_subscription.nil? %>
+  <% if account.subscribed_to_unlimited_plan? %>
     $("#payment-form input").attr("disabled", "disabled");
   <% end %>
   });

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130305093006) do
+ActiveRecord::Schema.define(:version => 20130308152011) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -67,9 +67,6 @@ ActiveRecord::Schema.define(:version => 20130305093006) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
-
-# Could not dump table "event_infos" because of following StandardError
-#   Unknown type 'hstore' for column 'properties'
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -142,12 +139,41 @@ ActiveRecord::Schema.define(:version => 20130305093006) do
   add_index "permissions", ["viewer_id"], :name => "index_permissions_on_viewer_id"
   add_index "permissions", ["viewer_id"], :name => "perm_viewer_id"
 
+  create_table "plans", :force => true do |t|
+    t.string   "type"
+    t.string   "name"
+    t.integer  "price"
+    t.integer  "quota"
+    t.integer  "duration"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "properties", :force => true do |t|
     t.integer  "app_session_id"
     t.string   "key"
     t.string   "value"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "schedulers", :force => true do |t|
+    t.integer  "app_id"
+    t.string   "state"
+    t.boolean  "wifi_only"
+    t.integer  "scheduled"
+    t.integer  "recorded"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.datetime "notified_at"
+  end
+
+  create_table "subscriptions", :force => true do |t|
+    t.integer  "account_id"
+    t.integer  "plan_id"
+    t.integer  "usage",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "tracks", :force => true do |t|

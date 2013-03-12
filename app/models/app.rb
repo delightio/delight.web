@@ -8,6 +8,8 @@ class App < ActiveRecord::Base
   has_many :group_invitations
   has_many :invitations
 
+  has_one :scheduler
+
   attr_accessible :name
 
   after_create :assign_admin_as_viewer
@@ -36,65 +38,52 @@ class App < ActiveRecord::Base
     app_sessions.recorded.limit(1).count > 0
   end
 
-  # Optimized version of account.enough_credits?
-  def account_enough_credits?
-    weak_account = Account.where(:id=>account_id).limit(1).select(:id).first
-    weak_account.enough_credits?
-  end
-
   def recording?
-    !recording_paused? &&
-    scheduled_recordings > 0 &&
-    account_enough_credits?
-    # account.enough_credits?
-    # GH #30 Use optimized version instead.
+    scheduler.recording? && account.enough_credits?
   end
 
+  # We use this to show the remaining number of recordings.
   def scheduled_recordings
-    settings[:recordings].to_i
+    scheduler.remaining
   end
 
   def schedule_recordings n
-    settings[:recordings] = n
-    settings[:scheduled_at] = Time.now.to_i
+    scheduler.schedule n
   end
 
   def complete_recording cost=1
     # We got more recordings than we expected
-    if scheduled_recordings <= 0
+    if scheduler.completed?
       handle_extra_recordings
       return
     end
 
-    settings.incr :recordings, -1
     account.use_credits cost
-
-    notify_users
+    scheduler.record 1
   end
 
   def handle_extra_recordings
-    schedule_recordings 0
     # TODO we probably want to log this
   end
 
   def resume_recording
-    settings[:recording_state] = 'recording'
+    scheduler.resume
   end
 
   def pause_recording
-    settings[:recording_state] = 'paused'
+    scheduler.pause
   end
 
   def recording_paused?
-    settings[:recording_state] == 'paused'
+    !scheduler.recording?
   end
 
   def uploading_on_wifi_only?
-    settings[:uploading_on_wifi_only] != 'false'
+    scheduler.wifi_only?
   end
 
   def set_uploading_on_wifi_only flag
-    settings[:uploading_on_wifi_only] = flag
+    scheduler.set_wifi_only flag
   end
 
   def administrator
@@ -111,21 +100,6 @@ class App < ActiveRecord::Base
 
   def emails
     (viewers.map &:email).uniq
-  end
-
-  def previously_notified?
-    settings[:scheduled_at].nil?
-  end
-
-  def ready_to_notify?
-    !previously_notified? && scheduled_recordings==0
-  end
-
-  def notify_users
-    if ready_to_notify?
-      REDIS.hdel settings.key, :scheduled_at
-      Resque.enqueue ::AppRecordingCompletion, id
-    end
   end
 
   def last_viewed_at_by_user(user)
@@ -156,8 +130,8 @@ class App < ActiveRecord::Base
   end
 
   def schedule_initial_recording
+    self.scheduler = Scheduler.create app_id: id, wifi_only: false
     schedule_recordings 2 * Account::FreeCredits
-    set_uploading_on_wifi_only false
+    resume_recording
   end
-
 end
