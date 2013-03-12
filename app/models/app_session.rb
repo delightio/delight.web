@@ -96,7 +96,9 @@ class AppSession < ActiveRecord::Base
   extend Scopes
 
   def events_with_time
-    event_infos.map { |ei| { :name => ei.event.name, :time => ei.time.to_f } }
+    event_infos.map do |ei|
+      { name: ei.event.name, time: ei.time.to_f, properties: ei.properties }
+    end
   end
 
   def private_framework?

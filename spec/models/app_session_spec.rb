@@ -12,14 +12,14 @@ describe AppSession do
   end
 
   describe '#events_with_time' do
-    let(:event) { stub :name => "event_name" }
-    let(:event_info) { stub :event => event, :time => 10 }
+    let(:event) { stub name: "event_name" }
+    let(:event_info) { stub event:event, time:10, properties:{a:1,b:2} }
     before do
       subject.stub :event_infos => [event_info]
     end
 
     it 'retuns array of hash with name and time' do
-      subject.events_with_time.should == [{name: "event_name", time: 10.0}]
+      subject.events_with_time.should == [{name: "event_name", time: 10.0, properties:{a:1,b:2}}]
     end
   end
 
