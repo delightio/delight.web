@@ -23,81 +23,96 @@
   <div class="row">
     <!-- Sidebar -->
     <div class="span3 sidebar">
-      <div data-spy="affix" data-offset-top="60" class="sidebar-inner">
+      <div  class="sidebar-inner">
         <div class="dashboard">
           <%= link_to raw('<i class="icon-pause"></i> Pause Recording'), app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :id => "app-show-pause-recording-btn", :style => @app.recording_paused? ? 'display:none' : '' %>
           <%= link_to raw('<i class="icon-play"></i> Start Recording'), app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :class => "btn btn-success btn-large", :id => "app-show-resume-recording-btn", :style => @app.recording_paused? ? '' : 'display:none' %>
+
+          <div class="dropdown clearfix nav-dropdown">
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+
+              <li class="nav-header">Session Recording</li>
+              <li>
+
+                <div id="session-recorder">
+                  <div id="session-recorder-info"><span class="action">Start</span></div>
+                  <div class="round-btn-wrapper" id="session-recorder-btn">
+                    <div class="round-btn-outer">
+                      <div class="round-btn"><i class="control-btn icon-play"></i></div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a href="#">Session Remaining</a>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div class="sidebar-nav" id="funnel-list">
-
-          <ul class="nav" >
-          </ul>
-
-
-          <hr />            
-          
           <input type="hidden" name="favorite" id="app-view-favorite" />
 
           
           <!-- <ul class="nav"> -->
           <!-- <li class=''> -->
 
-          
-          <div class="dropdown clearfix nav-dropdown">
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+         <div class="affix-list" data-spy="affix" data-offset-top="200">
+            <div class="dropdown clearfix nav-dropdown">
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
-              <li class="nav-header">Browse</li>
-              <li class="active">
-                <%= link_to(app_path(@app), remote: true) do %> All <% end %> 
-              </li>
-              <li>
-                <%= link_to(app_path(@app), remote: true) do %>
-                  New
-                  <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
-                  
-                  <span class="badge badge-black pull-right">
-                    <%= count %>
-                  </span>
-                  
-                <% end %>
-              </li>
+                <li class="nav-header">Browse</li>
+                <li class="active">
+                  <%= link_to(app_path(@app), remote: true) do %> All <% end %> 
+                </li>
+                <li>
+                  <%= link_to(app_path(@app), remote: true) do %>
+                    New
+                    <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
+                    
+                    <span class="badge badge-black pull-right">
+                      <%= count %>
+                    </span>
+                    
+                  <% end %>
+                </li>
 
-              <li>
-                <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
-                  Starred
-                  <% count = @app.app_sessions.recorded.favorited.processed_after(@last_viewed_at).length %>
-                  
-                  <span class="badge badge-black pull-right">
-                    <%= count %>
-                  </span>
-                  
-                <% end %>
-              </li>
+                <li>
+                  <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
+                    Starred
+                    <% count = @app.app_sessions.recorded.favorited.processed_after(@last_viewed_at).length %>
+                    
+                    <span class="badge badge-black pull-right">
+                      <%= count %>
+                    </span>
+                    
+                  <% end %>
+                </li>
 
-              <!-- <li class="divider"></li> -->
-              <li class="nav-header">Filters</li>
-              <% @app.funnels.each do |funnel| %>        
-              <li class="dropdown-submenu <% funnel.id == params[:funnel].to_i ? "active" :"" %>">
-                <a tabindex="-1" href="<%= app_path(@app, funnel: funnel) %>" data-remote="true">
-                  <%= funnel.name %>
-                  <span class="badge badge-black">
-                    <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
-                    <%= count %>
-                  </span>
+                <!-- <li class="divider"></li> -->
+                <li class="nav-header">Filters</li>
+                <% @app.funnels.each do |funnel| %>        
+                <li class="dropdown-submenu <% funnel.id == params[:funnel].to_i ? "active" :"" %>">
+                  <a tabindex="-1" href="<%= app_path(@app, funnel: funnel) %>" data-remote="true">
+                    <%= funnel.name %>
+                    <span class="badge badge-black">
+                      <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
+                      <%= count %>
+                    </span>
 
-                </a>
-                <ul class="dropdown-menu">
-                  <li><%= link_to "Edit", [:edit, @app, funnel], class: '', remote: true %></li>
-                  <li><%= link_to "Destroy", [@app, funnel], :method => :delete, class: '', data: {confirm: "Are you sure?"} %></li>
-                </ul>
-              </li>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><%= link_to "Edit", [:edit, @app, funnel], class: '', remote: true %></li>
+                    <li><%= link_to "Destroy", [@app, funnel], :method => :delete, class: '', data: {confirm: "Are you sure?"} %></li>
+                  </ul>
+                </li>
 
-              <%end%>
-              <!-- <li class="dropdown-submenu">
-                <a>Another Item</a>
-              </li> -->
-            </ul>
+                <%end%>
+                <!-- <li class="dropdown-submenu">
+                  <a>Another Item</a>
+                </li> -->
+              </ul>
+            </div>
           </div>
           <!-- </li> -->
           <hr>
@@ -142,7 +157,7 @@
     //   });
     // });
 
-    $(document).ready(function(){
+    //color box
       $(".group-video").colorbox({iframe: true, rel:'group-video', transition:"none", width:"800px", height:"600px"});
       $(".default-open-video").colorbox({iframe: true, rel:'default-group-video', transition:"none", width:"800px", height:"600px", open:true});
       $("#app-show-invite-viewer").colorbox({
@@ -199,8 +214,8 @@
           $("#app-show-pause-recording-btn").show();
         }
       });
-    });
-
+    
+    })
     // function sticky_relocate() {
     //   var window_top = $(window).scrollTop();
     //   var div_top = $('#sticky-anchor').offset().top;
