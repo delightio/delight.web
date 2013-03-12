@@ -18,4 +18,8 @@ class Subscription < ActiveRecord::Base
   def unlimited_plan?
     plan.class == TimePlan
   end
+
+  def enough_quota? n
+    unlimited_plan? || (remaining >= n)
+  end
 end

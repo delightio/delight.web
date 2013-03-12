@@ -27,8 +27,7 @@ class Account < ActiveRecord::Base
   end
 
   def enough_credits? n=1
-    remaining_credits >= n ||
-    subscribed_to_unlimited_plan?
+    subscription.enough_quota? n
   end
 
   def add_credits n
