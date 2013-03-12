@@ -163,7 +163,7 @@ $session-view-margin: 20px;
 			background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(242,242,242,1) 100%);
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 );
 		}
-		& > li > a {
+		& > li > a, & > li > span {
 			padding-left: 15px;
 			position:relative;
 			.badge {
@@ -207,6 +207,15 @@ $session-view-margin: 20px;
 		overflow: hidden;
 		&:hover {
 			cursor:pointer;
+		}
+		&.idle { //nothing recoding, show start
+			#session-recorder-start-info, #session-recorder-start { display: block; }
+			#session-recorder-stop-info, #session-recorder-stop { display: none; }
+
+		}
+		&.recording { //recording in progress, show stop
+			#session-recorder-start-info, #session-recorder-start { display: none; }
+			#session-recorder-stop-info, #session-recorder-stop { display: block; }
 		}
 	}
 	#session-recorder-info {

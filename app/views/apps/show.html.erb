@@ -2,7 +2,7 @@
   <header class="row">
     <div class="span5">
       <h2>
-        <a href=<%= apps_path %>><%= @app.name %></a>
+        <a href="<%= apps_path %>"><%= @app.name %></a>
       </h2>
     </div>
 
@@ -25,26 +25,45 @@
     <div class="span3 sidebar">
       <div  class="sidebar-inner">
         <div class="dashboard">
-          <%= link_to raw('<i class="icon-pause"></i> Pause Recording'), app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :id => "app-show-pause-recording-btn", :style => @app.recording_paused? ? 'display:none' : '' %>
-          <%= link_to raw('<i class="icon-play"></i> Start Recording'), app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :class => "btn btn-success btn-large", :id => "app-show-resume-recording-btn", :style => @app.recording_paused? ? '' : 'display:none' %>
-
+          
+          
           <div class="dropdown clearfix nav-dropdown">
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
               <li class="nav-header">Session Recording</li>
-              <li>
+              <li >
 
-                <div id="session-recorder">
-                  <div id="session-recorder-info"><span class="action">Start</span></div>
-                  <div class="round-btn-wrapper" id="session-recorder-btn">
-                    <div class="round-btn-outer">
-                      <div class="round-btn"><i class="control-btn icon-play"></i></div>
-                    </div>
+                <div id="session-recorder" class="<%= @app.recording_paused? ? 'idle' : 'recording' %>">
+                  <div id="session-recorder-info">
+                    <span class="action" id="session-recorder-start-info">Start</span>
+                    <span class="action" id="session-recorder-stop-info">Stop</span>
                   </div>
-                </div>
+                  
+
+                  <div class="round-btn-wrapper" id="session-recorder-btn">
+
+                    <%= link_to(app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :id => "session-recorder-start" ) do %>
+                      <div class="round-btn-outer">
+                        <div class="round-btn"><i class="control-btn icon-play"></i></div>
+                      </div>
+                    <% end %>
+
+                    <%= link_to(app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :id => "session-recorder-stop") do %>
+                      <div class="round-btn-outer">
+                        <div class="round-btn"><i class="control-btn icon-stop"></i></div>
+                      </div>
+                    <% end %>
+
+
+                  </div>
+
+
+                  
+                </div><!-- /recorder -->
+
               </li>
               <li>
-                <a href="#">Session Remaining</a>
+                <span>Session Remaining</span>
               </li>
             </ul>
           </div>
@@ -187,33 +206,44 @@
 
 
       //filter
-      $("#app-show-filter-input").keydown(function(event) {
-        if (event.which == 13) {
-          querySessions();
-          event.preventDefault();
-        }
-      });
-      $("#app-show-filter-clear").click(function(event) {
-        $("#app-show-filter-input").attr("value", "");
-        querySessions();
-      });
+      // $("#app-show-filter-input").keydown(function(event) {
+      //   if (event.which == 13) {
+      //     querySessions();
+      //     event.preventDefault();
+      //   }
+      // });
+      // $("#app-show-filter-clear").click(function(event) {
+      //   $("#app-show-filter-input").attr("value", "");
+      //   querySessions();
+      // });
 
       //recorder
-      $("#app-show-pause-recording-btn")
-      .bind('ajax:success', function(event, data, status, xhr) {
-        if (data["result"] == "success") {
-          $("#app-show-pause-recording-btn").hide();
-          $("#app-show-resume-recording-btn").show();
+
+      $("#session-recorder-stop")
+      .on('ajax:success', function(event, data, status, xhr) {
+        if (data["result"] === "success") { //recording ended
+          $("#session-recorder").removeClass("recording").addClass("idle");
+        } else {
+          console.warn("Server:Something is wrong", data)
         }
+      })
+      .on('ajax:error', function(xhr, status, err){
+        console.warn("Network Error", err)
       });
 
-      $("#app-show-resume-recording-btn")
-      .bind('ajax:success', function(event, data, status, xhr) {
-        if (data["result"] == "success") {
-          $("#app-show-resume-recording-btn").hide();
-          $("#app-show-pause-recording-btn").show();
+
+      $("#session-recorder-start")
+      .on('ajax:success', function(event, data, status, xhr) {
+        if (data["result"] === "success") { //recording begin
+          $("#session-recorder").removeClass("idle").addClass("recording");
+        } else {
+          console.warn("Server: Something is wrong", data)
         }
+      })
+      .on('ajax:error', function(xhr, status, err){
+        console.warn("Network Error", err)
       });
+
     
     })
     // function sticky_relocate() {
