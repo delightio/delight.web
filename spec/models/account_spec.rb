@@ -39,26 +39,9 @@ describe Account do
   end
 
   describe '#enough_credits?' do
-    it 'is always true if we subscribed to an unlimited plan' do
-      subject.stub :subscribed_to_unlimited_plan? => true
-
-      subject.should be_enough_credits(1000)
-    end
-
-    context 'when we do not subscribe to unlimited plan' do
-      before { subject.stub :subscribed_to_unlimited_plan? => false }
-
-      it 'is true when we have more remaining credit than requested' do
-        subject.stub :remaining_credits => 10
-
-        subject.should be_enough_credits(5)
-      end
-
-      it 'is false if we do not have enough credits' do
-        subject.stub :remaining_credits => 10
-
-        subject.should_not be_enough_credits(20)
-      end
+    it 'asks subscription if we still have enough quota' do
+      subject.subscription.should_receive(:enough_quota?).with(12)
+      subject.enough_credits? 12
     end
   end
 

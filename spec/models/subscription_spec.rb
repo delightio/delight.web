@@ -31,4 +31,17 @@ describe Subscription do
 
     it { should be_unlimited_plan}
   end
+
+  describe '#enough_quota?' do
+    it 'is always true if subscribed to unlimited plan' do
+      plan = FactoryGirl.create :time_plan
+      subject = Subscription.create account_id:10, plan_id: plan.id
+
+      subject.should be_enough_quota(10)
+    end
+
+    it 'is true if we have enough' do
+      subject.should be_enough_quota(subject.remaining/2)
+    end
+  end
 end
