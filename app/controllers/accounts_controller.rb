@@ -215,8 +215,8 @@ class AccountsController < ApplicationController
       return
     end
 
-    # check if subscription exist
-    unless @account.current_subscription.nil?
+    # check if subscription exists
+    if @account.subscribed_to_unlimited_plan?
       result = { 'result' => 'fail',
                  'reason' => 'Subscribed already' }
       respond_to do |format|
@@ -259,15 +259,20 @@ class AccountsController < ApplicationController
       return
     end
 
+    if !@admin.account.subscribed_to_unlimited_plan?
+      result = { 'result' => 'fail',
+                 'reason' => 'Not subscribed yet' }
+      respond_to do |format|
+        format.json { render :json => result }
+      end
+      return
+    end
+
+    @admin.account.unsubscribe
     SystemMailer.unsubscribe_notification(@admin.account).deliver
 
     respond_to do |format|
-      if @admin.account.current_subscription.nil?
-        result = { 'result' => 'fail',
-                   'reason' => 'Not subscribed yet' }
-      else
-        result = { 'result' => 'success' }
-      end
+      result = { 'result' => 'success' }
       format.json { render :json => result }
     end
   end

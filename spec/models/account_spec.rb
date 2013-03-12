@@ -69,6 +69,12 @@ describe Account do
       expect { subject.add_credits credit_change }.
         to change { subject.remaining_credits }.by credit_change
     end
+
+    # Account controller expects #add_credits to return the updated credits
+    it 'returns the updated credits' do
+      original = Account::FreeCredits + Account::SpecialCredits
+      subject.add_credits(credit_change).should == (credit_change + original)
+    end
   end
 
   describe '#use_credits' do
@@ -80,7 +86,7 @@ describe Account do
     context 'when subscribed to unlimited plan' do
       before { subject.stub :subscribed_to_unlimited_plan? => true }
       it 'does not decrement credits' do
-        subject.credits.should_not_receive :decrement
+        subject.subscription.should_not_receive :use
 
         subject.use_credits credit_change
       end

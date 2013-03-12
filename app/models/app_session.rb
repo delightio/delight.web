@@ -87,15 +87,6 @@ class AppSession < ActiveRecord::Base
     expected_track_count == tracks.count + processed_tracks.count
   end
 
-  # Optimized version of app.recording?
-  def app_recording?
-    # We also need account id for app because we need to use it to check if the
-    # account has enough credits. It won't be necessary when we switch on time
-    # based plan.
-    weak_app = App.where(:id=>app_id).limit(1).select([:id, :account_id]).first
-    weak_app.recording?
-  end
-
   def recording?
     return @recording if @recording
 
@@ -104,10 +95,7 @@ class AppSession < ActiveRecord::Base
       return false if app_id == 653 && device_os_version.to_f >= 6.0
     end
 
-    # GH #30 Use optimized version instead.
-    # app.recording?
-    @recording = app_recording?
-
+    @recording = app.recording?
     @recording
   end
 
