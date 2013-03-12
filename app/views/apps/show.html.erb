@@ -30,30 +30,8 @@
         </div>
 
         <div class="sidebar-nav" id="funnel-list">
-          <ul class="nav nav-list" >
-            <li class="active">
-              <%= link_to(app_path(@app), remote: true) do %>
-                New
-                <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
-                
-                <span class="badge badge-black pull-right">
-                  <%= count %>
-                </span>
-                
-              <% end %>
-            </li>
 
-            <li>
-              <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
-                Starred
-                <% count = @app.app_sessions.recorded.favorited.processed_after(@last_viewed_at).length %>
-                
-                <span class="badge badge-black pull-right">
-                  <%= count %>
-                </span>
-                
-              <% end %>
-            </li>
+          <ul class="nav" >
           </ul>
 
 
@@ -65,14 +43,45 @@
           <!-- <ul class="nav"> -->
           <!-- <li class=''> -->
 
-          <h2 class="nav-header">Filters</h2>
+          
           <div class="dropdown clearfix nav-dropdown">
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+
+              <li class="nav-header">Browse</li>
+              <li class="active">
+                <%= link_to(app_path(@app), remote: true) do %> All <% end %> 
+              </li>
+              <li>
+                <%= link_to(app_path(@app), remote: true) do %>
+                  New
+                  <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
+                  
+                  <span class="badge badge-black pull-right">
+                    <%= count %>
+                  </span>
+                  
+                <% end %>
+              </li>
+
+              <li>
+                <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
+                  Starred
+                  <% count = @app.app_sessions.recorded.favorited.processed_after(@last_viewed_at).length %>
+                  
+                  <span class="badge badge-black pull-right">
+                    <%= count %>
+                  </span>
+                  
+                <% end %>
+              </li>
+
               <!-- <li class="divider"></li> -->
+              <li class="nav-header">Filters</li>
               <% @app.funnels.each do |funnel| %>        
               <li class="dropdown-submenu <% funnel.id == params[:funnel].to_i ? "active" :"" %>">
-                <a tabindex="-1" href="<%= app_path(@app, funnel: funnel) %>" data-remote="true"><%= funnel.name %>
-                  <span class="badge badge-info">
+                <a tabindex="-1" href="<%= app_path(@app, funnel: funnel) %>" data-remote="true">
+                  <%= funnel.name %>
+                  <span class="badge badge-black">
                     <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
                     <%= count %>
                   </span>
@@ -85,9 +94,9 @@
               </li>
 
               <%end%>
-              <li class="dropdown-submenu">
+              <!-- <li class="dropdown-submenu">
                 <a>Another Item</a>
-              </li>
+              </li> -->
             </ul>
           </div>
           <!-- </li> -->
