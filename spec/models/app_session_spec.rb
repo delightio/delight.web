@@ -63,21 +63,19 @@ describe AppSession do
   end
 
   describe '#recording?' do
-    let(:recording_app) { FactoryGirl.create :recording_app }
-    before do
-      subject.stub :app => recording_app
-    end
+    let(:recording_scheduler) { FactoryGirl.create :scheduler }
+    before { subject.stub scheduler: recording_scheduler }
 
-    it 'reads from its associated app but uses the optimizedversion' do
-      # subject.app.should_receive :recording?
-      subject.should_receive :app_recording?
+    it 'asks scheduler if it should record' do
+      recording_scheduler.should_receive(:recording?).and_return(true)
+      subject.stub scheduler: recording_scheduler
 
-      subject.recording?
+      subject.should be_recording
     end
 
     it 'is always false when version is less than 2' do
       subject.delight_version = '1.0'
-      subject.app.should_not_receive :recording?
+      recording_scheduler.should_not_receive :recording?
 
       subject.should_not be_recording
     end
@@ -87,8 +85,6 @@ describe AppSession do
       before do
         subject.app.stub :id => 653
         subject.stub :app_id => 653
-        # Since we now by pass loading the :app again.
-        subject.stub :app_recording? => true
       end
 
       it 'is true if iOS is not 6.x' do

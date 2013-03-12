@@ -87,6 +87,11 @@ class AppSession < ActiveRecord::Base
     expected_track_count == tracks.count + processed_tracks.count
   end
 
+  # TODO: Can we use AR to model this instead?
+  def scheduler
+    Scheduler.find_by_app_id app_id
+  end
+
   def recording?
     return @recording if @recording
 
@@ -95,7 +100,7 @@ class AppSession < ActiveRecord::Base
       return false if app_id == 653 && device_os_version.to_f >= 6.0
     end
 
-    @recording = app.recording?
+    @recording = scheduler.recording?
     @recording
   end
 
