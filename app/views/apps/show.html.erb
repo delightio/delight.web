@@ -37,7 +37,6 @@
               </span>
             </a>
           </li>
-          <!--li><a href="#">Credits<span class="badge badge-inverse pull-right"><%= @app.account.remaining_credits %></span></a></li-->
           <hr />
           <%= form_tag(app_path(@app, :format => :js), :remote => true, :method => :get, :id => 'app-show-query-form') do |f| %>
             <li class="nav-header">Properties</li>
