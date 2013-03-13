@@ -29,10 +29,11 @@
                   </ul>
                   <div class="app-session-ops">
                     <span class="session-fav"
-                      data-favourite-url="/app_sessions/<%= session.id %>/favourite"
-                      data-unfavourite-url="/app_sessions/<%= session.id %>/unfavourite">
-                      <!-- <i class="<%# (session.favorited?) ? 'favorited icon-star':'not-favourited icon-star-empty' %>"></i> -->
-                      <i class="not-favourited icon-star-empty"></i>
+                      data-favorite-url="/app_sessions/<%= session.id %>/favorite"
+                      data-unfavorite-url="/app_sessions/<%= session.id %>/unfavorite">
+                      <!-- <i class="<%# (session.favorited?) ? 'favorited icon-star':'not-favorited icon-star-empty' %>"></i> -->
+                      <i class="not-favorited icon-star-empty"></i>
+
                     </span>
                   </div>
                 </a>
@@ -51,13 +52,47 @@
 
     <script>
       $(function(){
-        $(".session-fav").click(function(e){
+        $(".session-fav").on("click", ".not-favorited",function(e){
           e.preventDefault();
           e.stopPropagation();
 
-        })
+          //favouritize
+          var parent = $(e.delegateTarget);
+          var star = $(this)
+          var _url = parent.data("favorite-url");
+          
+          $.ajax({
+             url: _url,
+             type: 'PUT',
+             success: function(data) {
+               if(data.result === 'success'){
+                  //parent.data("status", "favorited")
+                  star.removeClass("not-favorited icon-star-empty").addClass("favorited icon-star")
+               }
+             }
+          });
+        }).on("click", ".favorited", function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          //defavouritize
+          var parent = $(e.delegateTarget);
+          var star = $(this)
+          var _url = parent.data("favorite-url");
 
-      })
+          $.ajax({
+             url: _url,
+             type: 'PUT',
+             success: function(data) {
+               if(data.result === 'success'){
+                  //parent.data("status", "not-favorited")
+                  star.removeClass("favorited icon-star").addClass("not-favorited icon-star-empty")
+               }
+             }
+          });
+      });
+
+      //end
+    });
 /*
       function favorite_handler(event, data, status, xhr) {
         if (data['result'] == 'success') {

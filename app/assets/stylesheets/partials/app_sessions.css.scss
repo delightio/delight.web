@@ -29,8 +29,13 @@ $session-view-margin: 20px;
 
 	}
 	.app-session-ops {
-		.session-fav { display:inline-block; margin: 0.4em; }
-		.session-fav i { font-size: 180%; color: #FFD700; text-shadow: 0 0 1px rgba(0,0,0,0.4); }
+		.session-fav { 
+			display:inline-block; margin: 0.4em; 
+			i { 
+				font-size: 180%; color: #FFD700; text-shadow: 0 0 1px rgba(0,0,0,0.4); 
+			}
+			&:hover { cursor: pointer; }
+		}
 	}
 	.app-session-info {
 		right:0;
@@ -96,7 +101,7 @@ $session-view-margin: 20px;
 	.popover-content {
 		padding-top: 0;
 		padding-bottom: 0;
-		table { margin-bottom: 5px; }
+		table { margin-bottom: 5px;}
 	}
 
 }
