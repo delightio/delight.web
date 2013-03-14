@@ -35,9 +35,17 @@ $session-view-margin: 20px;
 			display:inline-block; margin: 0.4em; 
 			i { 
 				font-size: 180%; color: #FFD700; text-shadow: 0 0 1px rgba(0,0,0,0.4); 
+				
 			}
-			&:hover { cursor: pointer; }
+			&:hover { cursor: pointer;}
+
 		}
+	}
+	& i.not-favorited {
+		visibility: hidden;
+	}
+	&:hover i.not-favorited {
+		visibility: visible;
 	}
 	.app-session-info {
 		right:0;
@@ -145,7 +153,8 @@ $session-view-margin: 20px;
 		width: 80%;
 	}
 	.dashboard {
-		margin-bottom: 20px;
+		margin-bottom: -5px;
+		.nav-dropdown { margin-bottom:0; }
 	}
 	.nav-list {
 		li > a {
@@ -208,6 +217,8 @@ $session-view-margin: 20px;
 		}
 
 		.nav-header {
+			a { padding-left: 0; font-weight: bold; }
+			&:hover a { background:none; color: #777; text-shadow: 1px 0 #fff; }
 			padding-left: 15px;
 			border-top: 1px solid #ccc;
 			border-bottom: 1px solid #ddd;
@@ -264,8 +275,23 @@ $session-view-margin: 20px;
 		float: right;
 		margin-right: 10px;
 	}
-
+	.plan-info a {
+		text-decoration: underline;
+	}
+	.panel {
+		padding-left: 15px;
+	}
 }
+
+	.small-progress {
+		height: 10px;
+		border-radius: 10px;
+		margin: 5px 10px;
+		border: 3px solid rgba(242,242,242,0.5);
+	}
+
+
+
 	.round-btn-wrapper { position:relative; min-height: 80px}
 
 	.round-btn-outer {
