@@ -1,11 +1,15 @@
 class AmazonCredential
   def initialize
-    @credentials = CachedHash.new "#{self.class}", 15.minutes
+    @cached = CachedHash.new "#{self.class}", 15.minutes
   end
 
   def get
-    return @credentials.get unless @credentials.expired?
-    @credentials.set session.credentials
+    # Expired hash will return an empty hash.
+    # Check for empty? instead to save an extra round trip to Redis.
+    credential = @cached.get
+    return credential unless credential.empty?
+
+    @cached.set session.credentials
   end
 
   private
@@ -15,30 +19,5 @@ class AmazonCredential
     AWS::STS.new.new_federated_session("session",
                                        :policy => policy,
                                        :duration => 1.hours)
-  end
-end
-
-class CachedHash
-  def initialize key, max_ttl
-    @key = key
-    @max_ttl = max_ttl
-  end
-
-  def ttl
-    REDIS.ttl @key
-  end
-
-  def expired?
-    ttl == -1
-  end
-
-  def set new_hash
-    REDIS.hmset @key, *new_hash.to_a.flatten
-    REDIS.expire @key, @max_ttl
-    get
-  end
-
-  def get
-    REDIS.hgetall @key
   end
 end
