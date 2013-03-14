@@ -1,14 +1,16 @@
 class S3Storage
 
   attr_reader :filename, :bucket_name
+  attr_writer :credentials
   def initialize filename, bucket_name=ENV['S3_UPLOAD_BUCKET']
     @filename = filename
     @bucket_name = bucket_name
+    @credentials = nil
   end
 
   def presigned_bucket
-    credential = AmazonCredential.new.get
-    s3 = AWS::S3.new credential
+    @credentials ||= AmazonCredential.new.get
+    s3 = AWS::S3.new @credentials
     s3.buckets[@bucket_name]
   end
 

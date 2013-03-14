@@ -1,6 +1,6 @@
 class AmazonCredential
   def initialize
-    @credentials = CachedHash.new "#{self.class}_Credentials", 15.minutes
+    @credentials = CachedHash.new "#{self.class}", 15.minutes
   end
 
   def get
@@ -8,6 +8,7 @@ class AmazonCredential
     @credentials.set session.credentials
   end
 
+  private
   def session
     policy = AWS::STS::Policy.new
     policy.allow(:actions => :any, :resource => :any)

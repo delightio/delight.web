@@ -212,10 +212,13 @@ class AppSession < ActiveRecord::Base
     @upload_uris = {}
     count = 0
     if recording?
-      upload_tracks.each do |track|
-        track_class = track.to_s.camelize.constantize
+      cached_credentials = AmazonCredential.new.get
+      upload_tracks.each do |track_name|
+        track_class = track_name.to_s.camelize.constantize
+        track = track_class.new app_session_id:id
+        track.storage.credentials = cached_credentials
         @upload_uris.merge!(
-          track => track_class.new(app_session_id:id).presigned_write_uri)
+          track_name => track.presigned_write_uri)
       end
       count = processed_tracks.count + @upload_uris.count
     end

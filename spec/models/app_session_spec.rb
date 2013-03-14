@@ -485,6 +485,16 @@ describe AppSession do
       subject.upload_uris.should have_key :screen_track
       subject.upload_uris.should have(1).track
     end
+
+    # TODO: We could verify AmazonCredential.new is only called once but
+    #       spec fails when S3Storage tries to generate the actual presigned uri
+    xit 'reuses Amazon credential' do
+      AmazonCredential.should_receive(:new).once.
+        and_return(AmazonCredential.new)
+      subject.stub :recording? => true
+
+      subject.send :generate_upload_uris
+    end
   end
 
   describe 'association' do
