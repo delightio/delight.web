@@ -10,7 +10,7 @@
               <div class="thumbnails">
                 <a href="<%= app_session_path(session) %>" class="thumbnail group-video <%= (@app_session_id == session.id.to_s) ?  'default-open-video' : '' %> " >
                   <div class="thumbnail-wrapper">
-                    <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail">
+                    <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail %>" >
                   </div>
                   <span class="app-session-info">
                     <span class="session-time">
