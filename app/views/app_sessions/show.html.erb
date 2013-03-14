@@ -42,7 +42,7 @@
             </tr>
             <tr>
               <th class="meta-entity">Duration:</th>
-              <td class="meta-data"><%= Duration.new(@app_session.duration).format("%H:%M:%S") %></td>
+              <td class="meta-data"><%= @app_session.duration.to_f.to_time_format %></td>
             </tr>
             <tr>
               <th class="meta-entity">Date:</th>
@@ -72,7 +72,7 @@
           <% @app_session.events_with_time.each do |session_event| %>
             <tr>
               <th class="event-time" data-duration="<%= session_event[:time] %>">
-                <%= Duration.new(session_event[:time]).format("%H:%M:%S") %></th>
+                <%= session_event[:time].to_time_format %></th>
               <td>
 
                 <% if session_event.key?(:properties) && ! session_event[:properties].empty? %>
@@ -81,7 +81,7 @@
 
               </td>
               <td class="event-data" data-caption="<%= session_event[:name] %>">
-                <span title="<%= session_event[:name] %>"><%= session_event[:name] %></span>      
+                <span title="<%= session_event[:name] %>"><%= session_event[:name] %></span>
               </td>
             </tr>
           <% end %>
@@ -139,7 +139,7 @@
             var json_str = $(this).data("json"); //this = popover link.
             var o = {};
             var _html = "";
-            
+
             console.log("before content", json_str, o)
             if (typeof json_str === "string"){
               try {
