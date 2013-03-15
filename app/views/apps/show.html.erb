@@ -25,7 +25,7 @@
         <ul class="nav nav-list" id="funnel-list">
           <li class="active">
               <%= link_to(app_path(@app), remote: true) do %>
-              Latest
+              Sessions
               <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
               <% if count > 0 %>
               <span class="badge badge-black pull-right">
@@ -34,7 +34,7 @@
               <% end %>
             <% end %>
           </li>
-
+<!--
           <li>
             <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
               Starred
@@ -45,10 +45,9 @@
               </span>
               <% end %>
             <% end %>
-
-            <hr />
           </li>
-
+ -->
+            <hr />
 
 
           <% @app.funnels.each do |funnel| %>
