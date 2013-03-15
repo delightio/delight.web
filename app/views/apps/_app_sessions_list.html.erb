@@ -14,7 +14,7 @@
                   </div>
                   <span class="app-session-info">
                     <span class="session-time">
-                      <%= Duration.new(session.duration).format("%H:%M:%S") %>
+                      <%= session.duration.to_f.to_time_format %>
                     </span>
                   </span>
                   <ul class="app-session-meta">

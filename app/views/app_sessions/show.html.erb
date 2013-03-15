@@ -42,7 +42,7 @@
             </tr>
             <tr>
               <th class="meta-entity">Duration:</th>
-              <td class="meta-data"><%= Duration.new(@app_session.duration).format("%H:%M:%S") %></td>
+              <td class="meta-data"><%= @app_session.duration.to_f.to_time_format %></td>
             </tr>
             <tr>
               <th class="meta-entity">Date:</th>
@@ -71,7 +71,7 @@
 
           <% @app_session.events_with_time.each do |session_event| %>
             <tr>
-              <th class="event-time" data-duration="<%= session_event[:time] %>"><%= Duration.new(session_event[:time]).format("%H:%M:%S") %></th>
+              <th class="event-time" data-duration="<%= session_event[:time] %>"><%= session_event[:time].to_f.to_time_format %></th>
               <td class="event-data" data-caption="<%= session_event[:name] %>"><%= session_event[:name] %></td>
             </tr>
           <% end %>
