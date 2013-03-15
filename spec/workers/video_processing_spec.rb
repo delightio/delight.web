@@ -15,7 +15,7 @@ describe VideoProcessing do
 
     it 'downloads to local, process, and creates new presentation track'
     it 'deletes existing presentation track before creating new one'
-    it "should download .plist file and import data to events" do
+    xit "should download .plist file and import data to events" do
       EventImporter.any_instance.should_receive(:import).with(app_session)
       subject.perform app_session.id
     end

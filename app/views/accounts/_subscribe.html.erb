@@ -6,7 +6,7 @@
     </div>
 <div class="row-fluid">
   <div class="span12">
-    <% if account.current_subscription.nil? %>
+    <% if !account.subscribed_to_unlimited_plan? %>
       <%= form_tag(account_subscribe_path(:account_id => account.id), :remote => true, :method => :put, :id => "payment-form-2", :class => "form-horizontal") do |add_credit_form| %>
         <h3 style="color: #f00; font-size: 14px; text-align:left; margin-top: 20px;">Subscription Details</h3>
         <div class="row">

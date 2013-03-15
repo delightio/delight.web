@@ -50,7 +50,7 @@
           </li>
 
 
-          
+
           <% @app.funnels.each do |funnel| %>
             <li class='<% funnel.id == params[:funnel].to_i ? "active" :"" %>'>
               <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
@@ -62,7 +62,7 @@
                   </span>
                 <% end %>
               <% end %>
-              
+
 
 
               <div id='funnel-edit'>
@@ -77,7 +77,7 @@
             </li>
           <% end %>
 
-          
+
           <li>
             <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
           </li>
@@ -86,7 +86,7 @@
             <a href="#" id="funnel-edit-link">Edit a filter</a>
           </li>
 
-          
+
         </ul>
         <input type="hidden" name="favorite" id="app-view-favorite" />
       </div><!--sidebar-nav-->

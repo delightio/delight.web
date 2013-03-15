@@ -1,27 +1,16 @@
 class S3Storage
 
   attr_reader :filename, :bucket_name
+  attr_writer :credentials
   def initialize filename, bucket_name=ENV['S3_UPLOAD_BUCKET']
     @filename = filename
     @bucket_name = bucket_name
-    @credentials = CachedHash.new "#{self.class}_Credentials", 15.minutes
-  end
-
-  def self.session
-    policy = AWS::STS::Policy.new
-    policy.allow(:actions => :any, :resource => :any)
-    AWS::STS.new.new_federated_session("session",
-                                       :policy => policy,
-                                       :duration => 1.hours)
-  end
-
-  def cached_credentials
-    return @credentials.get unless @credentials.expired?
-    @credentials.set self.class.session.credentials
+    @credentials = nil
   end
 
   def presigned_bucket
-    s3 = AWS::S3.new cached_credentials
+    @credentials ||= AmazonCredential.new.get
+    s3 = AWS::S3.new @credentials
     s3.buckets[@bucket_name]
   end
 
@@ -61,30 +50,5 @@ class S3Storage
 
   def exists?
     presigned_object.exists? && presigned_object.content_length > 0
-  end
-end
-
-class CachedHash
-  def initialize key, max_ttl
-    @key = key
-    @max_ttl = max_ttl
-  end
-
-  def ttl
-    REDIS.ttl @key
-  end
-
-  def expired?
-    ttl == -1
-  end
-
-  def set new_hash
-    REDIS.hmset @key, *new_hash.to_a.flatten
-    REDIS.expire @key, @max_ttl
-    get
-  end
-
-  def get
-    REDIS.hgetall @key
   end
 end

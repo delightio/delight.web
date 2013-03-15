@@ -39,4 +39,8 @@ DelightWeb::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # TODO: The rails environment on the co located mac mini is actually in development mode.
+  #       We used this variable to output the URL for presentation track.
+  config.host = "delight.io"
 end

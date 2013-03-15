@@ -3,8 +3,8 @@
       <h2>Your Apps</h2>
       <%= link_to 'Create a new app', new_app_path, :class => "btn" %>
       <% if current_user.administrator? %>
-        <% view_credit_button_text = current_user.account.current_subscription.nil? ? "Add credits / Subscribe monthly subscription" : "Unsubscribe monthly subscription" %>
-        <% plan_text = current_user.account.current_subscription.nil? ? @show_credit : "volume" %>
+        <% view_credit_button_text = current_user.account.subscribed_to_unlimited_plan? ? "Unsubscribe monthly subscription" : "Add credits / Subscribe monthly subscription" %>
+        <% plan_text = current_user.account.subscribed_to_unlimited_plan? ? "volume" : @show_credit %>
         <%= link_to view_credit_button_text, account_view_credit_path(:account_id => current_user.account, :plan => plan_text), :class => "btn", :id => 'app-index-credit-btn' %>
       <% end %>
 
