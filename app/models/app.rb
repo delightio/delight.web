@@ -131,7 +131,7 @@ class App < ActiveRecord::Base
 
   def schedule_initial_recording
     self.scheduler = Scheduler.create app_id: id, wifi_only: false
-    schedule_recordings 2 * Account::FreeCredits
+    schedule_recordings Account::FreeCredits
     resume_recording
   end
 end
