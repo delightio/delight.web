@@ -135,7 +135,6 @@ class AppSessionsController < ApplicationController
     respond_to do |format|
       if @app_session.save
         puts "App[#{@app.id}, #{@app.name}] AppSession[#{@app_session.id}] created. Recording? #{@app_session.recording?}"
-        puts "App[#{@app.id}, #{@app.name}] #{@app.settings.all}, credits: #{@app.account.remaining_credits}"
         format.xml
       else
         format.xml { render xml: @app_session.errors, status: :bad_request }

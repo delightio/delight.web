@@ -71,5 +71,37 @@ describe TracksController do
         response.should redirect_to(new_user_session_path)
       end
     end
+
+    context "when the request is json" do
+      before(:each) do
+        request.accept = 'application/json'
+        track.app_session = app_session
+        track.save
+      end
+
+      xit "renders presigned read uri" do
+        request.env['HTTP_X_NB_AUTHTOKEN'] = app_session.app.token
+        get 'show', { id: track.id }
+        response.should be_success
+      end
+
+      xit "rejects if missing token" do
+        get 'show', { id: track.id }
+        puts response
+        response.should be_bad_request
+      end
+
+      xit "rejects mismatched token" do
+        request.env['HTTP_X_NB_AUTHTOKEN'] = "badtoken"
+        get 'show', { id: track.id }
+        puts response
+        response.should be_bad_request
+      end
+    end
+  end
+
+  describe "authenicate_by_token!" do
+    it 'rejects missing token'
+    it 'rejects mismatched token'
   end
 end

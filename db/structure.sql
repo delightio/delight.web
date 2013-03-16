@@ -95,9 +95,9 @@ CREATE TABLE app_sessions (
     device_hw_version character varying(255),
     device_os_version character varying(255),
     type character varying(255),
-    event_infos_count integer DEFAULT 0,
     callback_url character varying(255),
-    callback_payload character varying(255)
+    callback_payload text,
+    event_infos_count integer DEFAULT 0
 );
 
 
@@ -458,6 +458,41 @@ ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
 
 
 --
+-- Name: plans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE plans (
+    id integer NOT NULL,
+    type character varying(255),
+    name character varying(255),
+    price integer,
+    quota integer,
+    duration integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: plans_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE plans_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: plans_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE plans_id_seq OWNED BY plans.id;
+
+
+--
 -- Name: properties; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -491,12 +526,81 @@ ALTER SEQUENCE properties_id_seq OWNED BY properties.id;
 
 
 --
+-- Name: schedulers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE schedulers (
+    id integer NOT NULL,
+    app_id integer,
+    state character varying(255),
+    wifi_only boolean,
+    scheduled integer,
+    recorded integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    notified_at timestamp without time zone
+);
+
+
+--
+-- Name: schedulers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE schedulers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: schedulers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE schedulers_id_seq OWNED BY schedulers.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
     version character varying(255) NOT NULL
 );
+
+
+--
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE subscriptions (
+    id integer NOT NULL,
+    account_id integer,
+    plan_id integer,
+    usage integer DEFAULT 0,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
 
 
 --
@@ -512,25 +616,6 @@ CREATE TABLE tracks (
     events_count integer DEFAULT 0,
     event_infos_count integer DEFAULT 0
 );
-
-
---
--- Name: tracks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE tracks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: tracks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE tracks_id_seq OWNED BY tracks.id;
 
 
 --
@@ -580,6 +665,25 @@ CREATE SEQUENCE users_id_seq
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE videos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE videos_id_seq OWNED BY tracks.id;
 
 
 --
@@ -670,6 +774,13 @@ ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY plans ALTER COLUMN id SET DEFAULT nextval('plans_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY properties ALTER COLUMN id SET DEFAULT nextval('properties_id_seq'::regclass);
 
 
@@ -677,7 +788,21 @@ ALTER TABLE ONLY properties ALTER COLUMN id SET DEFAULT nextval('properties_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tracks ALTER COLUMN id SET DEFAULT nextval('tracks_id_seq'::regclass);
+ALTER TABLE ONLY schedulers ALTER COLUMN id SET DEFAULT nextval('schedulers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY subscriptions ALTER COLUMN id SET DEFAULT nextval('subscriptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tracks ALTER COLUMN id SET DEFAULT nextval('videos_id_seq'::regclass);
 
 
 --
@@ -776,11 +901,35 @@ ALTER TABLE ONLY permissions
 
 
 --
+-- Name: plans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY plans
+    ADD CONSTRAINT plans_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: properties_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY properties
     ADD CONSTRAINT properties_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schedulers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY schedulers
+    ADD CONSTRAINT schedulers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1046,3 +1195,13 @@ INSERT INTO schema_migrations (version) VALUES ('20130212085204');
 INSERT INTO schema_migrations (version) VALUES ('20130213000631');
 
 INSERT INTO schema_migrations (version) VALUES ('20130214002036');
+
+INSERT INTO schema_migrations (version) VALUES ('20130305093006');
+
+INSERT INTO schema_migrations (version) VALUES ('20130307060419');
+
+INSERT INTO schema_migrations (version) VALUES ('20130307161916');
+
+INSERT INTO schema_migrations (version) VALUES ('20130308135825');
+
+INSERT INTO schema_migrations (version) VALUES ('20130308152011');

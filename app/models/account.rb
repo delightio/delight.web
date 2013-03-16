@@ -7,50 +7,56 @@ class Account < ActiveRecord::Base
   has_many :permissions
   has_many :viewers, :through => :permissions
 
+  has_one :subscription
+  has_one :plan, :through => :subscriptions
+
   validates :administrator_id, :presence => true
   validates :name, :presence => true
 
   after_create :add_free_credits, :email_new_signup
 
-  include Redis::Objects
-  counter :credits
-  value :plan
   FreeCredits = 50
   SpecialCredits = 10
 
   def remaining_credits
-    credits.to_i
+    return 0 if subscription.nil?
+    subscription.remaining
   end
 
   def enough_credits? n=1
-    remaining_credits >= n ||
-    subscribed_to_unlimited_plan?
+    subscription.enough_quota? n
   end
 
   def add_credits n
-    credits.increment n
+    price = QuotaPlan.price n
+    new_plan = QuotaPlan.customize price, n+remaining_credits
+    subscription.destroy unless subscription.nil?
+    self.subscription = Subscription.create plan_id: new_plan.id, account_id: id
+    remaining_credits
   end
 
   def use_credits n=1
     unless subscribed_to_unlimited_plan?
-      credits.decrement n
+      subscription.use n
     end
   end
 
   def subscribed_to_unlimited_plan?
-    current_subscription == 'unlimited'
+    return false if subscription.nil?
+    subscription.unlimited_plan?
   end
 
   def current_subscription
-    plan.value
+    subscription
   end
 
   def subscribe new_plan
-    plan.value = new_plan.to_s
+    subscription.destroy unless subscription.nil?
+    self.subscription = Subscription.create plan_id: TimePlan::UnlimitedMonthly.id, account_id: id
   end
 
   def unsubscribe
-    plan.delete
+    subscription.destroy
   end
 
   def add_free_credits

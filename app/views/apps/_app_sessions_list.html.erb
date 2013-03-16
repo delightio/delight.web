@@ -1,7 +1,11 @@
     <div class="span9" id="app-view-app-sessions">
       <% if @recorded_sessions.blank? %>
         <div class="alert">
-          No recorded app session or no match
+          We have not received any recordings yet. <br>
+          Note that our SDK uploads only when your app goes into background and<br>
+          it takes a few seconds for our backend to process recently uploaded recordings.<br><br>
+
+          Visit our <a href="/docs" target="_black">QuickStart guide <i class="icon-share"></i></a>
         </div>
       <% else %>
         <div class="row">
@@ -31,8 +35,7 @@
                     <span class="session-fav"
                       data-favorite-url="/app_sessions/<%= session.id %>/favorite"
                       data-unfavorite-url="/app_sessions/<%= session.id %>/unfavorite">
-                      <!-- <i class="<%# (session.favorited?) ? 'favorited icon-star':'not-favorited icon-star-empty' %>"></i> -->
-                      <i class="not-favorited icon-star-empty"></i>
+                      <i class="<%# (session.favorited?) ? 'favorited icon-star':'not-favorited icon-star-empty' %>"></i>
 
                     </span>
                   </div>

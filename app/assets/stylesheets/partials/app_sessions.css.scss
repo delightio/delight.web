@@ -53,7 +53,7 @@ $session-view-margin: 20px;
 		display:inline-block;
 	}
 	.session-time {
-		background: rgba( 255,255, 255, 0.75);
+		background: rgba( 255,255, 255, 1);
 		border-radius: 5px;
 		display: inline-block;
 		padding:0.2em;
@@ -62,8 +62,8 @@ $session-view-margin: 20px;
 		text-shadow: 1px 1px 1px #ccc;
 		margin:0.4em;
 	}
-	ul.app-session-meta { 
-		margin: 0 auto; 
+	ul.app-session-meta {
+		margin: 0 auto;
 		position:absolute;
 		bottom:0;
 		background: rgba(0,0,0,0.8);
@@ -103,8 +103,8 @@ $session-view-margin: 20px;
 }
 .app-session-view {
 	.nav { margin-bottom: 0.5em; }
-	.nav a { 
-		color: rgb(3, 174, 255); 
+	.nav a {
+		color: rgb(3, 174, 255);
 		text-shadow: 1px 1px rgba(255,255,255, 0.4);
 		padding: 0.5em 0.8em;
 		margin: 0.1em 0.4em;
@@ -112,9 +112,9 @@ $session-view-margin: 20px;
 			text-shadow: 1px 1px #ccc;
 		}
 	 }
-	.nav .active a { 
-		color: #fff; 
-		text-shadow: 1px 0 0 rgba( 0,0,0,0.3); 
+	.nav .active a {
+		color: #fff;
+		text-shadow: 1px 0 0 rgba( 0,0,0,0.3);
 	}
 	.video-container {
 		margin-top: $session-view-margin;

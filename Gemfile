@@ -13,7 +13,6 @@ gem 'pg'
 gem 'activerecord-postgres-hstore'
 gem 'aws-sdk'
 gem 'redis'
-gem 'redis-objects'
 gem 'resque'
 
 gem 'hirefireapp'

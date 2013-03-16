@@ -23,8 +23,12 @@ class Track < ActiveRecord::Base
     raise 'Track without type has undefined file file_extension'
   end
 
+  def short_type
+    return "" if type.nil?
+    type.split('::').last.downcase
+  end
+
   def filename
-    short_type = type.split('::').last.downcase
     "session_#{app_session_id}_#{short_type}.#{file_extension}"
   end
 
@@ -42,6 +46,17 @@ class Track < ActiveRecord::Base
 
   def download
     storage.download app_session.working_directory
+  end
+
+  def to_json
+    {
+      url: presigned_read_uri.to_s
+    }
+  end
+
+  def json_url
+    url_helpers = Rails.application.routes.url_helpers
+    "#{url_helpers.track_url(self, :host => Rails.configuration.host)}.json"
   end
 end
 

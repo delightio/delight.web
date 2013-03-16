@@ -63,4 +63,39 @@ describe Track do
       subject.download.should be_an_instance_of File
     end
   end
+
+  describe '#short_type' do
+    context 'when there is a sub type' do
+      before { subject.stub :type => "Track::PresentationTrack" }
+      it 'includes sub type' do
+        subject.short_type.should == "presentationtrack"
+      end
+    end
+
+    context 'when there is no sub type' do
+      before { subject.stub :type => nil }
+      it 'does not include a sub type' do
+        subject.short_type.should be_empty
+      end
+    end
+  end
+
+  describe '#filename' do
+    let(:app_session) { FactoryGirl.create :app_session }
+    subject { FactoryGirl.create(:track, app_session: app_session).tap do |s|
+                s.stub :short_type => "presentationtrack"
+                s.stub :file_extension => "mp4"
+              end
+            }
+
+    it 'contains app session id, short type and file extension' do
+      subject.filename.should == "session_#{app_session.id}_presentationtrack.mp4"
+    end
+  end
+
+  describe '#json_url' do
+    it 'returns endpoint for accessing the json' do
+      subject.json_url.should == "http://#{Rails.configuration.host}/tracks/#{subject.id}.json"
+    end
+  end
 end

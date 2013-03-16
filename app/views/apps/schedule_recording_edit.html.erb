@@ -12,10 +12,10 @@
       <table width="95%">
         <tr>
           <td width="60%"><h2>Available credits: </h2></td>
-          <% remaining_credits = @app.account.current_subscription.nil? ? @app.account.remaining_credits : "Unlimited" %>
+          <% remaining_credits = @app.account.subscribed_to_unlimited_plan? ? "Unlimited" : @app.account.remaining_credits %>
           <td width="20%" id="remaining-credits" style="text-align: left;"><%= remaining_credits %></td>
           <td width="20%">
-            <% if @app.account.current_subscription.nil? %>
+            <% if !@app.account.subscribed_to_unlimited_plan? %>
             <a href="javascript:void(0)" class="btn btn-success" data-toggle="collapse" data-target="#add-credit" id="add-credit-toggle-btn">Add credits</a>
             <% end %>
           </td>

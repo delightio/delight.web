@@ -25,8 +25,8 @@
     <div class="span3 sidebar">
       <div  class="sidebar-inner">
         <div class="dashboard">
-          
-          
+
+
           <div class="dropdown clearfix nav-dropdown">
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
@@ -38,7 +38,7 @@
                     <span class="action" id="session-recorder-start-info">Start</span>
                     <span class="action" id="session-recorder-stop-info">Stop</span>
                   </div>
-                  
+
 
                   <div class="round-btn-wrapper" id="session-recorder-btn">
 
@@ -58,7 +58,7 @@
                   </div>
 
 
-                  
+
                 </div><!-- /recorder -->
 
               </li>
@@ -75,7 +75,7 @@
         <div class="sidebar-nav" id="funnel-list">
           <input type="hidden" name="favorite" id="app-view-favorite" />
 
-          
+
           <!-- <ul class="nav"> -->
           <!-- <li class=''> -->
 
@@ -88,11 +88,11 @@
                   <%= link_to(app_path(@app), remote: true) do %>
                     Latest
                     <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
-                    
+
                     <span class="badge badge-black pull-right">
                       <%= count %>
                     </span>
-                    
+
                   <% end %>
                 </li>
 
@@ -100,17 +100,17 @@
                   <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
                     Starred
                     <% count = @app.app_sessions.recorded.favorited.processed_after(@last_viewed_at).length %>
-                    
+
                     <span class="badge badge-black pull-right">
                       <%= count %>
                     </span>
-                    
+
                   <% end %>
                 </li>
 
                 <!-- <li class="divider"></li> -->
                 <!-- <li class="nav-header">Filters</li> -->
-                <% @app.funnels.each do |funnel| %>        
+                <% @app.funnels.each do |funnel| %>
                 <li class="dropdown-submenu <% funnel.id == params[:funnel].to_i ? "active" :"" %>">
                   <a tabindex="-1" href="<%= app_path(@app, funnel: funnel) %>" data-remote="true">
                     <%= funnel.name %>
@@ -144,7 +144,7 @@
            <!--  <li>
               <a href="#" id="funnel-edit-link">Edit a filter</a>
             </li>
-            --> 
+            -->
           </ul>
         </div><!--sidebar-nav-->
       </div>
@@ -244,7 +244,7 @@
         console.warn("Network Error", err)
       });
 
-    
+
     })
     // function sticky_relocate() {
     //   var window_top = $(window).scrollTop();

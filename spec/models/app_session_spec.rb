@@ -75,20 +75,19 @@ describe AppSession do
   end
 
   describe '#recording?' do
-    let(:recording_app) { FactoryGirl.create :recording_app }
-    before do
-      subject.stub :app => recording_app
-    end
+    let(:recording_scheduler) { FactoryGirl.create :scheduler }
+    before { subject.stub scheduler: recording_scheduler }
 
-    it 'reads from its associated app' do
-      subject.app.should_receive :recording?
+    it 'asks scheduler if it should record' do
+      recording_scheduler.should_receive(:recording?).and_return(true)
+      subject.stub scheduler: recording_scheduler
 
-      subject.recording?
+      subject.should be_recording
     end
 
     it 'is always false when version is less than 2' do
       subject.delight_version = '1.0'
-      subject.app.should_not_receive :recording?
+      recording_scheduler.should_not_receive :recording?
 
       subject.should_not be_recording
     end
@@ -97,6 +96,7 @@ describe AppSession do
     context 'when the app is SimplePrint' do
       before do
         subject.app.stub :id => 653
+        subject.stub :app_id => 653
       end
 
       it 'is true if iOS is not 6.x' do
@@ -531,6 +531,16 @@ describe AppSession do
       subject.send :generate_upload_uris
       subject.upload_uris.should have_key :screen_track
       subject.upload_uris.should have(1).track
+    end
+
+    # TODO: We could verify AmazonCredential.new is only called once but
+    #       spec fails when S3Storage tries to generate the actual presigned uri
+    xit 'reuses Amazon credential' do
+      AmazonCredential.should_receive(:new).once.
+        and_return(AmazonCredential.new)
+      subject.stub :recording? => true
+
+      subject.send :generate_upload_uris
     end
   end
 

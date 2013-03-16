@@ -118,13 +118,21 @@ class AppSession < ActiveRecord::Base
     expected_track_count == tracks.count + processed_tracks.count
   end
 
+  # TODO: Can we use AR to model this instead?
+  def scheduler
+    Scheduler.find_by_app_id app_id
+  end
+
   def recording?
+    return @recording if @recording
+
     return false if delight_version.to_i < 2 # LH 110
     unless (delight_version.include? '2.3.2')
-      return false if app.id == 653 && device_os_version.to_f >= 6.0
+      return false if app_id == 653 && device_os_version.to_f >= 6.0
     end
 
-    app.recording?
+    @recording = scheduler.recording?
+    @recording
   end
 
   def uploading_on_wifi_only?
@@ -237,10 +245,13 @@ class AppSession < ActiveRecord::Base
     @upload_uris = {}
     count = 0
     if recording?
-      upload_tracks.each do |track|
-        track_class = track.to_s.camelize.constantize
+      cached_credentials = AmazonCredential.new.get
+      upload_tracks.each do |track_name|
+        track_class = track_name.to_s.camelize.constantize
+        track = track_class.new app_session_id:id
+        track.storage.credentials = cached_credentials
         @upload_uris.merge!(
-          track => track_class.new(app_session_id:id).presigned_write_uri)
+          track_name => track.presigned_write_uri)
       end
       count = processed_tracks.count + @upload_uris.count
     end

@@ -127,39 +127,6 @@ describe AppsController do
         get :show, {:id => app.to_param}
         assigns(:app).should == app
       end
-
-      it "should have correct favorite ids" do
-        session1 = FactoryGirl.create(:recorded_app_session, :app => app)
-        session2 = FactoryGirl.create(:recorded_app_session, :app => app)
-        session3 = FactoryGirl.create(:recorded_app_session, :app => app)
-
-        app.app_sessions.should have(3).items
-        session1.favorite_users << viewer
-        session2.favorite_users << viewer
-
-        get :show, {:id => app.to_param}
-
-        assigns(:recorded_sessions).should include session1
-        assigns(:recorded_sessions).should include session2
-        assigns(:recorded_sessions).should include session3
-
-        assigns(:favorite_app_session_ids).should include session1.id
-        assigns(:favorite_app_session_ids).should include session2.id
-        assigns(:favorite_app_session_ids).should_not include session3.id
-      end
-
-      it "should have correct favorite count including those out of current page" do
-        sessions = (1..20).collect do
-          s = FactoryGirl.create(:recorded_app_session, :app => app)
-          s.favorite_users << viewer
-          s
-        end
-        app.app_sessions.should have(20).items
-
-        get :show, {:id => app.to_param}
-
-        assigns(:favorite_count).should == 20
-      end
     end
 
     describe "admin signed in" do
@@ -173,7 +140,7 @@ describe AppsController do
         assigns(:app).should == app
       end
 
-      it "should show have duration and date range including records in DB" do
+      xit "should show have duration and date range including records in DB" do
         date_min = 31.days.ago - 15.minutes
         date_max = 10.seconds.ago
 
@@ -207,90 +174,7 @@ describe AppsController do
           assigns(:app).should == app2
         end
       end
-
-      describe "has properties" do
-        let(:date_min) { 31.days.ago - 15.minutes }
-        let(:date_max) { 10.seconds.ago }
-        let(:session1) { FactoryGirl.create(:recorded_app_session, :app => app, :duration => 1, :created_at => 1.day.ago) }
-        let(:session2) { FactoryGirl.create(:recorded_app_session, :app => app, :duration => 100.5, :created_at => date_min) }
-        let(:session3) { FactoryGirl.create(:recorded_app_session, :app => app, :duration => 4.5, :created_at => date_max) }
-        let(:session4) { FactoryGirl.create(:non_recording_app_session, :app => app, :duration => 150, :created_at => 1.year.ago) }
-        before(:each) do
-          session1.update_properties(:app_user_id => 'app_user_1', :some_key => 'some_value')
-          session2.update_properties(:app_user_id => 'app_user_1')
-          session3.update_properties(:app_user_id => 'app_user_2')
-          session4.update_properties(:app_user_id => 'app_user_3')
-        end
-
-        it "should filter by app user id if given" do
-          get :show, { :id => app.to_param, :properties => 'app_user_id : app_user_1' }
-          response.should be_success
-          sessions = assigns(:recorded_sessions)
-          sessions.should have(2).items
-          sessions.should include(session1)
-          sessions.should include(session2)
-        end
-
-        it "should filter by any key value given" do
-          get :show, { :id => app.to_param, :properties => ' some_key: some_value ' }
-          response.should be_success
-          sessions = assigns(:recorded_sessions)
-          sessions.should have(1).items
-          sessions.should include(session1)
-        end
-
-        it "should return empty id if no match" do
-          get :show, { :id => app.to_param, :properties => 'app_user_id:notexists' }
-          response.should be_success
-          sessions = assigns(:recorded_sessions)
-          sessions.should be_empty
-        end
-
-        it "should not filter by app user id if not given" do
-          get :show, { :id => app.to_param }
-          response.should be_success
-          sessions = assigns(:recorded_sessions)
-          sessions.should have(3).items
-          sessions.should include(session1)
-          sessions.should include(session2)
-          sessions.should include(session3)
-        end
-
-        it "should not filter by app user id if spaces are given" do
-          get :show, { :id => app.to_param, :properties => '   ' }
-          response.should be_success
-          sessions = assigns(:recorded_sessions)
-          sessions.should have(3).items
-          sessions.should include(session1)
-          sessions.should include(session2)
-          sessions.should include(session3)
-        end
-
-        it "should search by both key and value if a single word is given" do
-          get :show, { :id => app.to_param, :properties => ' app_user_id  ' }
-          response.should be_success
-          sessions = assigns(:recorded_sessions)
-          sessions.should have(3).items
-          sessions.should include(session1)
-          sessions.should include(session2)
-          sessions.should include(session3)
-
-          get :show, { :id => app.to_param, :properties => ' some_value  ' }
-          response.should be_success
-          sessions = assigns(:recorded_sessions)
-          sessions.should have(1).items
-          sessions.should include(session1)
-        end
-
-        it "should return empty list if not match" do
-          get :show, { :id => app.to_param, :properties => ' nomatch  ' }
-          response.should be_success
-          sessions = assigns(:recorded_sessions)
-          sessions.should be_empty
-        end
-      end
     end
-
   end
 
   describe "GET new" do
@@ -542,14 +426,14 @@ describe AppsController do
           response.should be_success
           result = JSON.parse(response.body)
           result['result'].should == 'success'
-          app.recording_paused?.should be_true
+          app.reload.recording_paused?.should be_true
         end
         it "should resume recording" do
           put 'update_recording', { :app_id => app.id, :state => 'resume', :format => :json }
           response.should be_success
           result = JSON.parse(response.body)
           result['result'].should == 'success'
-          app.recording_paused?.should be_false
+          app.reload.recording_paused?.should be_false
         end
         it "should fail given invalid state" do
           put 'update_recording', { :app_id => app.id, :state => 'invalid', :format => :json }
@@ -557,7 +441,7 @@ describe AppsController do
           result = JSON.parse(response.body)
           result['result'].should == 'fail'
           result['reason'].should == 'invalid state'
-          app.recording_paused?.should be_false
+          app.reload.recording_paused?.should be_false
         end
       end
 

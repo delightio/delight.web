@@ -1,6 +1,6 @@
 <div class="container" style="text-align:center">
   <br>
-  <% remaining_credits = @account.current_subscription.nil? ? @account.remaining_credits : "Unlimited" %>
+  <% remaining_credits = @account.subscribed_to_unlimited_plan? ? "Unlimited" : @account.remaining_credits %>
   <h1 id="available-credits">Available credits: <span id="remaining-credits"><%= remaining_credits %></span></h1>
   <hr/>
 

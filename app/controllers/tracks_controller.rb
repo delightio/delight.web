@@ -35,7 +35,13 @@ class TracksController < ApplicationController
   end
 
   def show
-    authenticate_user!
+    unless request.format.json?
+      authenticate_user!
+    else
+      authenticated = authenticate_by_token
+      return unless authenticated
+    end
+
     @track = model_class.find(params[:id]) # throws exception if not found
     app = @track.app_session.app
     if app.administered_by?(current_user) or app.viewable_by?(current_user)
@@ -44,6 +50,7 @@ class TracksController < ApplicationController
       end
     else
       respond_to do |format|
+        format.json { render json: @track.to_json }
         format.html do
           flash[:type] = 'error'
           flash[:notice] = 'permission denied'
@@ -51,6 +58,27 @@ class TracksController < ApplicationController
         end
       end
     end
+  end
+
+  # TODO: Should put ApplicationController and use before_filter to trigger
+  def authenticate_by_token
+    token = get_token
+    if token.nil?
+      render json: "Missing HTTP_X_NB_AUTHTOKEN HTTP header", status: :bad_request
+      return false
+    end
+
+    # We verify by two ways:
+    # 1. if app session id is present, does the app token match the associated app?
+    # 2. does the current track belongs to the app session which the app token points to?
+    true_token = Track.find(params[:id]).app_session.app.token
+
+    if token != true_token
+      render json: "Token mismatch", status: :bad_request
+      return false
+    end
+
+    true
   end
 
   def sample
