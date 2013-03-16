@@ -114,6 +114,14 @@ class AppSession < ActiveRecord::Base
     expected_track_count > 0
   end
 
+  def favorited?
+    favorites.count > 0
+  end
+
+  def favorited_by
+    favorite_users
+  end
+
   def ready_for_processing?
     expected_track_count == tracks.count + processed_tracks.count
   end
