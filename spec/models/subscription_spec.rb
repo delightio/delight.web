@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Subscription do
-  let(:plan) { FactoryGirl.create :quota_plan }
+  let(:plan) { FactoryGirl.create :volume_plan }
   subject { Subscription.create account_id:10, plan_id: plan.id }
 
   describe '#use' do
@@ -42,6 +42,31 @@ describe Subscription do
 
     it 'is true if we have enough' do
       subject.should be_enough_quota(subject.remaining/2)
+    end
+
+    it 'is false if plan is expired' do
+      subject.stub :expired? => true
+      subject.should_not be_enough_quota(1)
+    end
+  end
+
+  describe '#set_expired_at' do
+    it 'sets expired_at after creation' do
+      subject.expired_at.should_not be_nil
+    end
+  end
+
+  describe '#expired?' do
+    it 'is false if it has not been expired' do
+      plan = FactoryGirl.create :quota_plan
+      subscripton = Subscription.create account_id:10, plan_id: plan.id
+      subscripton.should_not be_expired
+    end
+
+    it 'is true if plan has expired' do
+      DateTime.should_receive(:now).and_return(1.years.from_now)
+
+      subject.should be_expired
     end
   end
 end

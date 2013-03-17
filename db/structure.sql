@@ -580,7 +580,8 @@ CREATE TABLE subscriptions (
     plan_id integer,
     usage integer DEFAULT 0,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    expired_at timestamp without time zone
 );
 
 
@@ -1205,3 +1206,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130307161916');
 INSERT INTO schema_migrations (version) VALUES ('20130308135825');
 
 INSERT INTO schema_migrations (version) VALUES ('20130308152011');
+
+INSERT INTO schema_migrations (version) VALUES ('20130317143913');
