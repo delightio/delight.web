@@ -13,10 +13,25 @@ defaults: &defaults
 
   subscription_plans:
    -
-    display: 'Unlimited'
-    name: 'volume'
-    price: 200
-    credit: unlimited
+    name: 'free'
+    price: 0
+    quota: 3600 # 1.hours
+    duration: 30
+   -
+    name: 'tier1'
+    price: 50
+    quota: 10800 # 3.hours
+    duration: 30
+   -
+    name: 'tier2'
+    price: 150
+    quota: 36000 # 10.hours
+    duration: 30
+   -
+    name: 'tier3'
+    price: 300
+    quota: 108000 # 30.hours
+    duration: 30
 
 development:
   <<: *defaults
