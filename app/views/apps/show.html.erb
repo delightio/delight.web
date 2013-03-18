@@ -22,7 +22,7 @@
 
   <div class="row">
     <!-- Sidebar -->
-    <div class="span3 sidebar">
+    <div class="span3 sidebar app-session-sidebar">
       <div  class="sidebar-inner">
         <div class="dashboard">
 
@@ -30,7 +30,7 @@
           <div class="dropdown clearfix nav-dropdown">
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
-              <li class="nav-header"><a href="<%= apps_path %>"><%= @app.name %></a></li>
+              <li class="nav-header app-header"><a href="<%= app_path(@app) %>"><%= @app.name %></a></li>
               <li >
 
                 <div id="session-recorder" class="<%= @app.recording_paused? ? 'idle' : 'recording' %>">
@@ -64,7 +64,7 @@
               </li>
               <li>
                 <div class="progress small-progress">
-                  <div class="bar" style="width: 60%;"></div>
+                  <div class="bar" style="width: 60%;<%# update by ruby initially %>"></div>
                 </div>
                 <div class="plan-info panel"><small class="plan-status"><a href="#">#hours available, #days till renewal</a></small></div>
               </li>
