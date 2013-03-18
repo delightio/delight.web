@@ -60,8 +60,7 @@ class Account < ActiveRecord::Base
   end
 
   def subscribe_free_plan
-    free_plan = VolumePlan.find_by_name 'free'
-    subscribe free_plan.id
+    subscribe FreePlan.id
   end
 
   def email_new_signup

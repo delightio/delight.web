@@ -8,7 +8,10 @@
       <br>
       <div class="row-fluid">
         <div class="span12">
-          <h2><%= Account::FreeCredits %> free sessions for a limited time only!</h2>
+          <h2>Record your user flow now.</h2>
+          <p>
+            Our free plan gives you 1 hour of recording per month.
+          </p>
           <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
           <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
         </div>

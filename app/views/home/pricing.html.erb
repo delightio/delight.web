@@ -1,16 +1,14 @@
 <div class="row">
   <div class="span12">
-    <h1><span style="font-size:180%">
-      Monthly subscription.</span>
-    </h1>
-    <br>
-    <h1><span style="font-size:180%">
-      Pay as you go.</span>
+    <h1>
+      <div style="font-size:180%">
+        Get insights for $10 an hour.
+      </div>
     </h1>
     <br>
     <h1>
       <div style="font-size:180%">
-        100% Satisfaction Guarantee.
+        100% satisfaction guarantee.
       </div>
     </h1>
     <br>
@@ -18,65 +16,50 @@
   </div>
 </div>
 <br>
-<div class="row-fluid">
-  <div class="span4" align="center">
-    <div style="margin-bottom:8px"><h3>Monthly Plan</h3></div>
-    <div class="row-fluid" align="center">
-    <% payment = PAYMENT_CONFIG['subscription_plans'].first %>
-    <a href="/apps?credit=<%= payment['name'] %>" class="btn" style="width: 80%; margin-bottom: 15px">
-      <!-- <h3><%= payment['display'] %></h3> -->
-      <br><br>
-      <p>
-        <span style="font-size:400%">$<%= payment['price'] %></span>
-        <span style="font-size:large">
-          <br>
-          monthly<br><br>
-          for <strong>10 hours<br>of recordings</strong>
-          <i class="icon-info-sign"></i>
-        </span>
-      </p>
-      <p>
-        <span style="font-size:large;font-style:italic">Best Deal!</span>
-      </p>
-    </a>
+<span style="font-size:large">
+  Select your monthly plan or try us with our free plan:
+</span>
+<br>
+<br>
+<div class="row-fluid" align="center">
+  <% SubscriptionPlans.reverse_each do |plan| %>
+    <div class="span3">
+      <a href="/subscriptions/new?plan_id=<%= plan.id %>" class="btn" style="width: 80%; margin-bottom: 15px">
+        <br>
+        <span style="font-size:150%;font-style:italic"><%= plan.name %></span>
+        <br><br><br>
+        <p>
+          <span style="font-size:400%">$<%= plan.price %></span>
+          <span style="font-size:large">
+            <br>
+            monthly<br><br>
+            for <strong><%= plan.quota/1.hours %> hours<br>of recordings</strong>
+          </span>
+        </p>
+      </a>
     </div>
-  </div>
-  <div class="span6" align="center">
-    <div style="margin-bottom:8px"><h3>Pay as you go</h3></div>
-    <% PAYMENT_CONFIG['plans'].reverse_each do |payment| %>
-    <a href="/apps?credit=<%= payment['name'] %>" class="btn" style="width: 40%; margin-bottom: 15px">
-      <!-- <h3><%= payment['display'] %></h3> -->
-      <br><br>
-      <p>
-        <span style="font-size:400%">$<%= payment['price'] %></span>
-        <br/><br/>
-        <span style="font-size:large">
-          for <strong><%= "#{pluralize(payment['credit'], 'credit')}" %></strong>
-        </span>
-      </p>
-    </a>
-    &nbsp;
-    <% end %>
-  </div>
+  <% end %>
 </div>
 <br>
 
 <div class="row-fluid">
-  <div class="span10">
+  <div class="span12">
     <span style="font-size:large">
       <strong>Questions?</strong> <a href="mailto:pricing@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
     </span>
     <br><br>
-    <div class="well">
+    <div class="">
       <ul>
-        <li>All plans come with full set of <a href="/features" target='_blank'>features <i class='icon-share'></i></a></li>
-        <li>1 credit per recorded session.</li>
-        <li>Purchased credits never expire.</li>
-        <li>Credits can be used on multiple apps under the same account.</li>
+        <li>All plans come with:
+          <ul>
+            <li>full set of <a href="/features" target='_blank'>features <i class='icon-share'></i></a></li>
+            <li>unlimited apps</li>
+            <li>unlimited filters</li>
+            <li>unlimited team members</li>
+          </ul>
+        </li>
         <li>All transaction are in USD and we accept all common credit cards.</li>
         <li>For refund, please email us at <a href="mailto:pricing@delight.io">pricing@delight.io</a>.</li>
-        &nbsp;
-        <li>Unlimited number of recording sessions <i class="icon-info-sign"></i></li>
       </ul>
     </div>
   </div>
