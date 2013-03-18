@@ -27,9 +27,10 @@
               </tr>
               <script>
               $(document).ready(function() {
+                //hook on each input
                 $("#add-credit-quantity-<%= payment['name'] %>").keyup(function(eventObj) {
                   var $target = $(eventObj.target);
-                  var quantity = $target.attr('value');
+                  var quantity = $target.val();
 
                   var price = <%= payment['price'] %>;
                   var credit = <%= payment['credit'] %>;
@@ -180,7 +181,7 @@
   <% if not plan.blank? %>
     // set default plan
     var $field = $("#add-credit-quantity-<%= plan %>");
-    $field.attr('value', 1);
+    $field.val(1);
     $field.keyup();
   <% end %>
 
