@@ -33,8 +33,9 @@
           <li class="dropdown">
 
           <% if user_signed_in? %>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src=<%= current_user.image_url ? current_user.image_url : '/images/profile-pic.jpg' %> width="20" height="20" alt="" class="user-pic"> <%= current_user.nickname %> <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<%= current_user.image_url ? current_user.image_url : '/images/profile-pic.jpg' %>" width="20" height="20" alt="" class="user-pic"> <%= current_user.nickname %> <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li><%= link_to "Apps", apps_path %></li>
               <li><%= link_to "Settings", edit_user_path(current_user) %></li>
               <li class="divider"></li>
               <li><%= link_to "Logout", "/sign_out", :method => :delete %></li>
