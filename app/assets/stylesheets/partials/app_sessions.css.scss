@@ -101,6 +101,11 @@ $session-view-margin: 20px;
 		}
 	}
 }
+.app-sessions-view {
+	.action-bar {
+		height: 38px;
+	}
+}
 .app-session-view {
 	.nav { margin-bottom: 0.5em; }
 	.nav a {
@@ -148,7 +153,7 @@ $session-view-margin: 20px;
 	overflow:hidden;
 	text-align:right;
 }
-.sidebar { 
+.app-session-sidebar { 
 	.sidebar-inner {
 		width: 80%;
 	}
@@ -220,7 +225,7 @@ $session-view-margin: 20px;
 			a { padding-left: 0; font-weight: bold; }
 			&:hover a { background:none; color: #777; text-shadow: 1px 0 #fff; }
 			padding-left: 15px;
-			border-top: 1px solid #ccc;
+			border-top: none;
 			border-bottom: 1px solid #ddd;
 			background: rgb(147,147,147);
 			color: #111;
@@ -283,6 +288,8 @@ $session-view-margin: 20px;
 	}
 }
 
+
+/* Generic elements */
 	.small-progress {
 		height: 10px;
 		border-radius: 10px;
