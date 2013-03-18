@@ -241,6 +241,31 @@ describe AppSession do
       sessions = AppSession.by_funnel(funnel3)
       sessions.sort.should == [session3]
     end
+
+    it "handles app sessions with repeated events" do
+      app = FactoryGirl.create :app
+
+      event1 = app.events.find_or_create_by_name!("item-selected")
+      event4 = app.events.find_or_create_by_name!("item-selected-again")
+      session1 = FactoryGirl.create :app_session_with_event_track
+      session1.events << [event1, event1, event4]
+      funnel1 = app.funnels.create!(name: "selected-funnel", events: [event1])
+      sessions = AppSession.by_funnel(funnel1)
+      sessions.sort.should == [session1]
+
+      event2 = app.events.find_or_create_by_name!("item-purchased")
+      event3 = app.events.find_or_create_by_name!("item-not-selected")
+      session2 = FactoryGirl.create :app_session_with_event_track
+      session2.events << [event2, event3]
+
+      # add event2 to funnel1
+      # None of the app sessions have bothe event1 and event2 so
+      # we expect by_funnel to return zero app sessions.
+      funnel1.events << [event2]
+      funnel1.events.should == [event1, event2]
+      sessions = AppSession.by_funnel(funnel1)
+      sessions.sort.should be_empty
+    end
   end
 
   describe 'date_between' do
