@@ -1,5 +1,36 @@
 <div class='row'>
+  <div class='span3'>
+    <h2><span class='muted'>March 19, 2013</span></h2>
+  </div>
 
+  <div class='span8'>
+    <h2>Watch how your user flows failed with Delight 3.0</h2>
+    <br>
+    <p>
+      With the new 3.0 <i>beta</i> verison of <a href="https://github.com/delightio/ios" target="_blank">Delight</a>, you can easily filter recordings to pin point the user flow you want to optimize. Use <a href='http://www.delight.io/api/Classes/Delight.html#task_Tracking%20events' target='_blank'><code>trackEvent:info:</code></a> to tag events and filter the recordings by the events in your specific user flow.
+    </p>
+    <br>
+
+    <h3>Gesture indicator on video player</h3>
+    <p>
+      Many of you have told us you wanted to know where the gestures happened within the video. Now you can. We have also updated our dashboard to give you a glance on which video you should watch.
+      <img src="images/screenshot_new_player.png">
+    </p>
+    <br>
+
+    <h3>Spring cleaning</h3>
+    <p>
+      Spring is in the air and we did our part to clean up our iOS SDK. We decided to remove the <code>uploadsAutomatically</code> property. We will have new methods for our developers to control recording and uploading in upcoming releases. We have also temporarily disable favoriting a recording on our dashboard. We will be bringing it back in the next update.
+    </p>
+    <p>
+      If any of these has caused any inconvenience to you, please contact us at <a href="mailto:info@delight.io"><email>info@delight.io</email></a> and we will sort this out for you.
+    </p>
+
+  </div>
+</div>
+<br><br>
+
+<div class='row'>
   <div class='span3'>
     <h2><span class='muted'>July 20, 2012</span></h2>
   </div>
@@ -9,7 +40,7 @@
     <br>
     <p>We're excited to announce the release of Delight 2.3, which adds two new highly-requested features: camera recording and the ability to choose which recordings get uploaded.</p>
     <p>If you enable video annotation, you'll be able to capture video and audio from the front-facing camera. When viewing a recording, both the screen track and the camera track will play side-by-side. By seeing how your users' facial expressions change over time, you'll gain insight as to how they really feel while using your app. Note that to protect user privacy, we provide a confirmation dialog that users must consent to before being recorded.</p>
-    <p>To control which sessions get uploaded, we've added a new 'uploadsAutomatically' property. This lets you make efficient use of your credits by choosing which sessions should get uploaded and which ones should get discarded. For example, you can set up Delight to record every session but never upload by default - just start Delight in the usual way and set uploadsAutomatically to false. Then, if the user performs an action that should trigger an upload (such as pressing a &quot;Report Issue&quot; button), set uploadsAutomatically to true. With this feature, you can record as much as you like, but only upload when you need to.</p><br>
+    <p>To control which sessions get uploaded, we've added a new <code>uploadsAutomatically</code> property. This lets you make efficient use of your credits by choosing which sessions should get uploaded and which ones should get discarded. For example, you can set up Delight to record every session but never upload by default - just start Delight in the usual way and set uploadsAutomatically to false. Then, if the user performs an action that should trigger an upload (such as pressing a &quot;Report Issue&quot; button), set uploadsAutomatically to true. With this feature, you can record as much as you like, but only upload when you need to.</p><br>
     <iframe width="400" height="300" src="http://www.youtube.com/embed/aocSalvx5Tg" frameborder="0" allowfullscreen></iframe>
     <p>
       <a href="http://www.delight.io/api/Classes/Delight.html" target="_blank">Visit our API page to learn how to add these features to your app.</a>
