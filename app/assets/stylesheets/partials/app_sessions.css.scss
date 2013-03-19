@@ -6,6 +6,7 @@
 $session-view-margin: 20px;
 .app-session {
 	margin: { bottom:10px; right:10px; }
+	min-width: 180px;
 	.thumbnail {
 		width: 200px;
 		height:200px;
@@ -294,7 +295,7 @@ $session-view-margin: 20px;
 		height: 10px;
 		border-radius: 10px;
 		margin: 5px 10px;
-		border: 3px solid rgba(242,242,242,0.5);
+		//border: 3px solid rgba(242,242,242,0.5);
 	}
 
 
