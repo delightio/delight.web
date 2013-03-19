@@ -56,6 +56,15 @@ class AppSession < ActiveRecord::Base
       by_events(funnel.events)
     end
 
+    def _by_funnel(funnel)
+      events   = funnel.events
+      sessions = all.select do |session|
+                   (session.events & events) == events
+                 end
+
+      AppSession.find(sessions.map(&:id))
+    end
+
     def date_between(min, max)  #inclusive
       if min and max
         where('app_sessions.created_at >= ? and app_sessions.created_at <= ?', min, max)
