@@ -209,13 +209,16 @@ describe AppSession do
   end
 
   describe "#by_funnel" do
-    it "shouldn't by_funnel to filter if argument is nil or blank" do
-      AppSession.by_events([]).should include(subject)
+    let(:app) { FactoryGirl.create :app }
+
+    it 'returns empty array when funnel has no events' do
+      session1 = FactoryGirl.create :app_session_with_event_track
+      funnel1 = app.funnels.create!(name: "selected-funnel", events: [])
+
+      AppSession.by_funnel(funnel1).should be_empty
     end
 
     it "should filter app sessions by funnel" do
-      app = FactoryGirl.create :app
-
       event1 = app.events.find_or_create_by_name!("item-selected")
       event2 = app.events.find_or_create_by_name!("item-purchased")
       event3 = app.events.find_or_create_by_name!("item-not-selected")
@@ -243,8 +246,6 @@ describe AppSession do
     end
 
     it "handles app sessions with repeated events" do
-      app = FactoryGirl.create :app
-
       event1 = app.events.find_or_create_by_name!("item-selected")
       event4 = app.events.find_or_create_by_name!("item-selected-again")
       session1 = FactoryGirl.create :app_session_with_event_track
