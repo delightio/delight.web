@@ -51,7 +51,7 @@ class AppSession < ActiveRecord::Base
         break if ids.empty?
       end
 
-      AppSession.find ids
+      AppSession.where(id: ids)
     end
 
     def date_between(min, max)  #inclusive
