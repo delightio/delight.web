@@ -95,9 +95,9 @@ CREATE TABLE app_sessions (
     device_hw_version character varying(255),
     device_os_version character varying(255),
     type character varying(255),
-    event_infos_count integer DEFAULT 0,
     callback_url character varying(255),
-    callback_payload text
+    callback_payload text,
+    event_infos_count integer DEFAULT 0
 );
 
 
@@ -619,25 +619,6 @@ CREATE TABLE tracks (
 
 
 --
--- Name: tracks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE tracks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: tracks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE tracks_id_seq OWNED BY tracks.id;
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -684,6 +665,25 @@ CREATE SEQUENCE users_id_seq
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE videos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE videos_id_seq OWNED BY tracks.id;
 
 
 --
@@ -802,7 +802,7 @@ ALTER TABLE ONLY subscriptions ALTER COLUMN id SET DEFAULT nextval('subscription
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tracks ALTER COLUMN id SET DEFAULT nextval('tracks_id_seq'::regclass);
+ALTER TABLE ONLY tracks ALTER COLUMN id SET DEFAULT nextval('videos_id_seq'::regclass);
 
 
 --

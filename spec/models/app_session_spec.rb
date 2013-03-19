@@ -263,7 +263,7 @@ describe AppSession do
       # we expect by_funnel to return zero app sessions.
       funnel1.events << [event2]
       funnel1.events.should == [event1, event2]
-      sessions = AppSession._by_funnel(funnel1)
+      sessions = AppSession.by_funnel(funnel1)
       sessions.sort.should be_empty
     end
   end
