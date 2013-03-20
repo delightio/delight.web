@@ -253,20 +253,19 @@ $session-view-margin: 20px;
 			cursor:pointer;
 		}
 		&.idle { //nothing recoding, show start
-			#session-recorder-start-info, #session-recorder-start { display: block; }
-			#session-recorder-stop-info, #session-recorder-stop { display: none; }
-
+			#session-recorder-start-info { display: block; }
+			#session-recorder-stop-info { display: none; }
 		}
 		&.recording { //recording in progress, show stop
-			#session-recorder-start-info, #session-recorder-start { display: none; }
-			#session-recorder-stop-info, #session-recorder-stop { display: block; }
+			#session-recorder-start-info { display: none; }
+			#session-recorder-stop-info	{ display: block; }
 		}
 	}
 	#session-recorder-info {
 		width: 105px;
 		margin-left: 15px;
-		padding-top:15px;
-		max-height: 80px;
+		max-height: 40px;
+		line-height: 32px;
 		float: left;
 		.action {
 			font-size: 200%;
