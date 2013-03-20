@@ -42,6 +42,8 @@
             <li>Recorded Sessions: <%= app.app_sessions.recorded.count %></li>
             <% if app.emails.count > 1 %>
             <li>Shared with: <strong><%= app.emails.join(', ') %></strong></li>
+            <% else %>
+            <li> </li>
             <% end %>
             <br>
             <li>
