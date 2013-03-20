@@ -42,18 +42,16 @@ class AppSession < ActiveRecord::Base
       joins(:favorites)
     end
 
-    def by_events(events)
-      if events.empty?
-        scoped
-      else
-        event_ids = events.all.map(&:id)
-        joins(:events).merge(Event.by_id(event_ids))
-        .group('app_sessions.id').having('COUNT(*) >= ?', events.length)
-      end
-    end
-
     def by_funnel(funnel)
-      by_events(funnel.events)
+      event_ids = funnel.events.map &:id
+      ids = EventInfo.where(:event_id=>event_ids.shift).uniq.pluck(:app_session_id)
+      event_ids.each do |eid|
+        event_app_session_ids = EventInfo.where(:event_id=>eid).uniq.pluck(:app_session_id)
+        ids = (ids & event_app_session_ids)
+        break if ids.empty?
+      end
+
+      AppSession.where(id: ids)
     end
 
     def date_between(min, max)  #inclusive

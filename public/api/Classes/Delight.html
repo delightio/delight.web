@@ -54,19 +54,15 @@
 	
 	<option value="//api/name/setHidesKeyboardInRecording:">&nbsp;&nbsp;&nbsp;&nbsp;+ setHidesKeyboardInRecording:</option>
 	
-	<option value="//api/name/setPropertyValue:forKey:">&nbsp;&nbsp;&nbsp;&nbsp;+ setPropertyValue:forKey:</option>
-	
-	<option value="//api/name/setUploadsAutomatically:">&nbsp;&nbsp;&nbsp;&nbsp;+ setUploadsAutomatically:</option>
-	
 	<option value="//api/name/startWithAppToken:">&nbsp;&nbsp;&nbsp;&nbsp;+ startWithAppToken:</option>
 	
 	<option value="//api/name/startWithAppToken:annotation:">&nbsp;&nbsp;&nbsp;&nbsp;+ startWithAppToken:annotation:</option>
 	
 	<option value="//api/name/stop">&nbsp;&nbsp;&nbsp;&nbsp;+ stop</option>
 	
-	<option value="//api/name/unregisterPrivateView:">&nbsp;&nbsp;&nbsp;&nbsp;+ unregisterPrivateView:</option>
+	<option value="//api/name/trackEvent:info:">&nbsp;&nbsp;&nbsp;&nbsp;+ trackEvent:info:</option>
 	
-	<option value="//api/name/uploadsAutomatically">&nbsp;&nbsp;&nbsp;&nbsp;+ uploadsAutomatically</option>
+	<option value="//api/name/unregisterPrivateView:">&nbsp;&nbsp;&nbsp;&nbsp;+ unregisterPrivateView:</option>
 	
 	
 	
@@ -88,11 +84,9 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Starting and Stopping Recording">Starting and Stopping Recording</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Adding Metadata">Adding Metadata</a></span></li>
-	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Controlling Privacy">Controlling Privacy</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Controlling Uploads">Controlling Uploads</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Tracking events">Tracking events</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Debugging">Debugging</a></span></li>
 	
@@ -118,19 +112,15 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setHidesKeyboardInRecording:">setHidesKeyboardInRecording:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPropertyValue:forKey:">setPropertyValue:forKey:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setUploadsAutomatically:">setUploadsAutomatically:</a></span></li>
-	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/startWithAppToken:">startWithAppToken:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/startWithAppToken:annotation:">startWithAppToken:annotation:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stop">stop</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/unregisterPrivateView:">unregisterPrivateView:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/trackEvent:info:">trackEvent:info:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/uploadsAutomatically">uploadsAutomatically</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/unregisterPrivateView:">unregisterPrivateView:</a></span></li>
 	
 </ul></li>
 
@@ -192,14 +182,14 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/startWithAppToken:">+&nbsp;startWithAppToken:</a></code>
-		<span class="tooltip"><p>Starts capturing the screen and recording gestures, with no <a href="#//api/name/annotation">annotation</a>.</p></span>
+		<span class="tooltip"><p>Starts capturing the screen and recording gestures. The recording will automatically end when the app is sent to the background. A new recording will be started whenever the app is brought to the foreground. Recordings only take place if you have scheduled recordings in your <a href="http://delight.io/apps">control panel</a>.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/startWithAppToken:annotation:">+&nbsp;startWithAppToken:annotation:</a></code>
-		<span class="tooltip"><p>Starts capturing the screen and recording gestures. The recording will automatically end when the app is sent to the background. A new recording will be started whenever the app is brought to the foreground. Recordings only take place if you have scheduled recordings in your <a href="http://delight.io/apps">control panel</a>.</p></span>
+		<span class="tooltip"><p>Starts recording with optional front camera.</p></span>
 	</span>
 	
 	
@@ -214,21 +204,6 @@
 						</ul>
 						
 						
-						<a title="Adding Metadata" name="task_Adding Metadata"></a>
-						<h3 class="subsubtitle task-title">Adding Metadata</h3>
-
-						<ul class="task-list">
-							<li>
-	<span class="tooltip">
-		<code><a href="#//api/name/setPropertyValue:forKey:">+&nbsp;setPropertyValue:forKey:</a></code>
-		<span class="tooltip"><p>Sets a custom property for the current session. Session properties are shown when viewing recordings on delight.io, so this method can be used to attach arbitrary metadata to recordings. If multiple values are set for the same key, only the last value will be used.</p></span>
-	</span>
-	
-	
-</li>
-						</ul>
-						
-						
 						<a title="Controlling Privacy" name="task_Controlling Privacy"></a>
 						<h3 class="subsubtitle task-title">Controlling Privacy</h3>
 
@@ -236,9 +211,7 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/setHidesKeyboardInRecording:">+&nbsp;setHidesKeyboardInRecording:</a></code>
-		<span class="tooltip"><p>Sets whether the on-screen keyboard should be covered up in the recording. Calling this method does not affect whether the on-screen keyboard is hidden for the user.</p>
-
-<p><strong>Note</strong>: The keyboard is automatically hidden in the recording whenever the user is editing a UITextField with <code>secureTextEntry</code> enabled.</p></span>
+		<span class="tooltip"><p>Sets whether the on-screen keyboard should be covered up in the recording. Calling this method does not affect whether the on-screen keyboard is hidden for the user.</p></span>
 	</span>
 	
 	
@@ -274,21 +247,14 @@
 						</ul>
 						
 						
-						<a title="Controlling Uploads" name="task_Controlling Uploads"></a>
-						<h3 class="subsubtitle task-title">Controlling Uploads</h3>
+						<a title="Tracking events" name="task_Tracking events"></a>
+						<h3 class="subsubtitle task-title">Tracking events</h3>
 
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/setUploadsAutomatically:">+&nbsp;setUploadsAutomatically:</a></code>
-		<span class="tooltip"><p>Sets whether the current recording should be automatically uploaded when the app gets sent to the background. By default, the recording will be uploaded. If this property is set to NO, the recording will not be uploaded.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/uploadsAutomatically">+&nbsp;uploadsAutomatically</a></code>
-		<span class="tooltip"><p>Returns a Boolean value indicating whether the current recording will be uploaded when the app gets sent to the background.</p></span>
+		<code><a href="#//api/name/trackEvent:info:">+&nbsp;trackEvent:info:</a></code>
+		<span class="tooltip"><p>Tracks an event.</p></span>
 	</span>
 	
 	
@@ -584,8 +550,6 @@
 	
 	<div class="method-subsection brief-description">
 		<p>Sets whether the on-screen keyboard should be covered up in the recording. Calling this method does not affect whether the on-screen keyboard is hidden for the user.</p>
-
-<p><strong>Note</strong>: The keyboard is automatically hidden in the recording whenever the user is editing a UITextField with <code>secureTextEntry</code> enabled.</p>
 	</div>		
 	
     
@@ -610,102 +574,10 @@
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">Delight.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/setPropertyValue:forKey:" title="setPropertyValue:forKey:"></a>
-	<h3 class="subsubtitle method-title">setPropertyValue:forKey:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Sets a custom property for the current session. Session properties are shown when viewing recordings on delight.io, so this method can be used to attach arbitrary metadata to recordings. If multiple values are set for the same key, only the last value will be used.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>+ (void)setPropertyValue:(id)<em>value</em> forKey:(NSString *)<em>key</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>value</em></dt>
-			<dd><p>The property value. Must be an NSString or NSNumber.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>key</em></dt>
-			<dd><p>The property key.</p></dd>
-		</dl>
-		
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p><strong>Note</strong>: The keyboard is automatically hidden in the recording whenever the user is editing a UITextField with <code>secureTextEntry</code> enabled.</p>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">Delight.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/setUploadsAutomatically:" title="setUploadsAutomatically:"></a>
-	<h3 class="subsubtitle method-title">setUploadsAutomatically:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Sets whether the current recording should be automatically uploaded when the app gets sent to the background. By default, the recording will be uploaded. If this property is set to NO, the recording will not be uploaded.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>+ (void)setUploadsAutomatically:(BOOL)<em>uploadsAutomatically</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>uploadsAutomatically</em></dt>
-			<dd><p>YES if the current recording will be uploaded when the app gets sent to the background; otherwise, NO.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -728,7 +600,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Starts capturing the screen and recording gestures, with no <a href="#//api/name/annotation">annotation</a>.</p>
+		<p>Starts capturing the screen and recording gestures. The recording will automatically end when the app is sent to the background. A new recording will be started whenever the app is brought to the foreground. Recordings only take place if you have scheduled recordings in your <a href="http://delight.io/apps">control panel</a>.</p>
 	</div>		
 	
     
@@ -743,66 +615,6 @@
 		<dl class="argument-def parameter-def">
 			<dt><em>appToken</em></dt>
 			<dd><p>The application token from your <a href="http://delight.io/apps">control panel</a>.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
-			
-			<li><code><p><a href="#//api/name/startWithAppToken:annotation:">+ startWithAppToken:annotation:</a></p></code></li>
-			
-		</ul>
-	</div>
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">Delight.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/startWithAppToken:annotation:" title="startWithAppToken:annotation:"></a>
-	<h3 class="subsubtitle method-title">startWithAppToken:annotation:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Starts capturing the screen and recording gestures. The recording will automatically end when the app is sent to the background. A new recording will be started whenever the app is brought to the foreground. Recordings only take place if you have scheduled recordings in your <a href="http://delight.io/apps">control panel</a>.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>+ (void)startWithAppToken:(NSString *)<em>appToken</em> annotation:(DLAnnotation)<em>annotation</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>appToken</em></dt>
-			<dd><p>The application token from your <a href="http://delight.io/apps">control panel</a>.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>annotation</em></dt>
-			<dd><p>The type of <a href="#//api/name/annotation">annotation</a>. Annotation can be used to capture the front camera, if supported by the device.</p></dd>
 		</dl>
 		
 	</div>
@@ -833,6 +645,57 @@
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/startWithAppToken:annotation:" title="startWithAppToken:annotation:"></a>
+	<h3 class="subsubtitle method-title">startWithAppToken:annotation:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Starts recording with optional front camera.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (void)startWithAppToken:(NSString *)<em>appToken</em> annotation:(DLAnnotation)<em>annotation</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>appToken</em></dt>
+			<dd><p>The application token from your <a href="http://delight.io/apps">control panel</a>.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>annotation</em></dt>
+			<dd><p>Use <code>DLAnnotationFrontVideoAndAudio</code> to capture the front camera.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">Delight.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/stop" title="stop"></a>
 	<h3 class="subsubtitle method-title">stop</h3>
 	
@@ -847,6 +710,57 @@
 	<div class="method-subsection method-declaration"><code>+ (void)stop</code></div>
 
     
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">Delight.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/trackEvent:info:" title="trackEvent:info:"></a>
+	<h3 class="subsubtitle method-title">trackEvent:info:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Tracks an event.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (void)trackEvent:(NSString *)<em>eventName</em> info:(NSDictionary *)<em>eventInfo</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>eventName</em></dt>
+			<dd><p>The name of the event.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>eventInfo</em></dt>
+			<dd><p>A dictionary of additional information to track with the event (optional).</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -925,47 +839,6 @@
 	
 </div>
 						
-						<div class="section-method">
-	<a name="//api/name/uploadsAutomatically" title="uploadsAutomatically"></a>
-	<h3 class="subsubtitle method-title">uploadsAutomatically</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Returns a Boolean value indicating whether the current recording will be uploaded when the app gets sent to the background.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>+ (BOOL)uploadsAutomatically</code></div>
-
-    
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>YES if the current recording will be uploaded when the app gets sent to the background; otherwise, NO.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">Delight.h</code><br />
-	</div>				
-	
-	
-</div>
-						
 					</div>
 					
 					
@@ -981,7 +854,7 @@
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Pipely Inc. All rights reserved. (Last updated: 2012-07-20)</span><br />
+						<p><span class="copyright">&copy; 2013 Pipely Inc. All rights reserved. (Last updated: 2013-03-19)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 789)</a>.</span></p>
 						

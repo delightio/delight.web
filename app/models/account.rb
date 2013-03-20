@@ -51,12 +51,12 @@ class Account < ActiveRecord::Base
   end
 
   def subscribe new_plan
-    subscription.destroy unless subscription.nil?
+    unsubscribe
     self.subscription = Subscription.create plan_id: TimePlan::UnlimitedMonthly.id, account_id: id
   end
 
   def unsubscribe
-    subscription.destroy
+    subscription.destroy unless subscription.nil?
   end
 
   def add_free_credits
