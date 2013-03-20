@@ -59,5 +59,7 @@ module DelightWeb
 
     # for devise over heroku
     config.assets.initialize_on_precompile = false
+
+    config.assets.precompile << "*.js"
   end
 end
