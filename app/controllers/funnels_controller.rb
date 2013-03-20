@@ -8,7 +8,7 @@ class FunnelsController < ApplicationController
   def create
     @funnel = @app.funnels.build(params[:funnel])
     @funnel.save!
-    redirect_to @app, notice: 'Funnel was successfully created.'
+    redirect_to @app, notice: 'Filter was successfully created.'
   end
 
   def edit
@@ -18,13 +18,13 @@ class FunnelsController < ApplicationController
   def update
     @funnel = @app.funnels.find(params[:id])
     @funnel.update_attributes!(params[:funnel])
-    redirect_to @app, notice: 'Funnel was successfully updated.'
+    redirect_to @app, notice: 'Filter was successfully updated.'
   end
 
   def destroy
     @funnel = @app.funnels.find(params[:id])
     @funnel.destroy
-    redirect_to @app, notice: 'Funnel was successfully destroyed.'
+    redirect_to @app, notice: 'Filter was successfully destroyed.'
   end
 
 private

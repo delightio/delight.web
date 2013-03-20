@@ -1,12 +1,19 @@
 <%= simple_form_for [@app, @funnel], html: {class: 'funnel-form'} do |f| %>
 
   <fieldset>
-    <%= f.input :name, :as => :string %>
-    <%= label_tag 'search' %>
-    <%= text_field_tag :search %>
-    <div id="event-list">
-      <%= f.collection_check_boxes :event_ids, @app.events, :id, :name %>
-    </div>
+    <%= f.label "Name of the new filter" %>
+    <%= f.text_field :name %>
+    <% if @funnel.events.count > 0 %>
+      <%= label_tag 'search' %>
+      <%= text_field_tag :search %>
+      <div id="event-list">
+        <%= f.collection_check_boxes :event_ids, @app.events, :id, :name %>
+      </div>
+    <% else %>
+      <div class="alert">
+        Use <a href='http://www.delight.io/api/Classes/Delight.html#task_Tracking%20events' target='_blank'><code>trackEvent:info:</code></a> to tag events with a given recording. Event sent to us will show up here once the recordings are processed.
+      </div>
+    <% end %>
   </fieldset>
   <div class="form-actions">
     <%= f.button :submit, :class => 'btn btn-primary', :value => 'Create' %>
