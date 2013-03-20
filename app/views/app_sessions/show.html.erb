@@ -4,7 +4,7 @@
     <div class="span8 session-video">
           <div class="video-container">
             <!--  class="track-video" id="presentation-track-video" controls="controls" autoplay -->
-            <video id="app-session-video" class="video-js vjs-delight-skin" controls preload="auto" data-gesture-track="<%= @app_session.gesture_track.presigned_read_uri %>" data-duration="<%= @app_session.duration.to_f %>" width="480" height="480">
+            <video id="app-session-video" class="video-js vjs-delight-skin" controls preload="auto" data-gesture-track="<%= @app_session.gesture_track ? @app_session.gesture_track.presigned_read_uri : "" %>" data-duration="<%= @app_session.duration.to_f %>" width="480" height="480">
             <source src="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" type='video/mp4' >
             Your browser does not support video tag.
             </video>
