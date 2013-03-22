@@ -3,84 +3,20 @@ require 'spec_helper'
 describe App do
 
   subject { FactoryGirl.create :app }
-  it { should be_recording } # We schedule recordings on creation
-  its(:token) { should_not be_empty }
+
+  describe "on creation" do
+    its(:scheduler) { should be_recording }
+    its(:token) { should_not be_empty }
+    it "should add admin as viewer" do
+      subject.viewers.should include(subject.account.administrator)
+    end
+  end
 
   describe '#generate_token' do
     it 'is a combination of random keys and own id' do
       SecureRandom.should_receive(:hex).at_least(1).and_return('FFFF')
 
       subject.token.should == "FFFF#{subject.id}"
-    end
-  end
-
-  describe "creation" do
-    it "should have some scheduled recording" do
-      subject.scheduled_recordings.should > 0
-    end
-
-    it 'will record on mobile data' do
-      subject.should_not be_uploading_on_wifi_only
-    end
-
-    it "should add admin as viewer" do
-      subject.viewers.should include(subject.account.administrator)
-    end
-  end
-
-  describe '#recording?' do
-    it 'asks scheduler' do
-      subject.scheduler.should_receive :recording?
-
-      subject.recording?
-    end
-  end
-
-  context 'when checking how many more recordings to do' do
-    describe '#scheduled_recordings' do
-      it 'is a number' do
-        subject.scheduled_recordings.should be_an_instance_of Fixnum
-      end
-    end
-
-    describe '#schedule_recordings' do
-      it 'sets the total scheduled recordings' do
-        expect { subject.schedule_recordings 1000 }.
-          to change { subject.scheduled_recordings }.to 1000
-      end
-    end
-
-    describe '#complete_recording' do
-      it 'decrements recordings to be collected' do
-        expect { subject.complete_recording }.
-          to change { subject.scheduled_recordings }.by(-1)
-          # because scheduled_recordings does not change.
-          # it is the recorded that change. Maybe we should have
-          # a Scheduler#reminaing
-      end
-
-      let(:cost) { 10 }
-      it 'uses credit from associated account' do
-        subject.account.should_receive(:use_credits).with(cost)
-
-        subject.complete_recording cost
-      end
-
-      context 'when we get more recordings than expected' do
-        before { subject.scheduler.stub :completed? => true }
-
-        it 'is no op for the case we have received more recordings than expected' do
-          subject.account.should_not_receive :use_credits
-
-          subject.complete_recording
-        end
-
-        it 'handles extra recordings' do
-          subject.should_receive :handle_extra_recordings
-
-          subject.complete_recording
-        end
-      end
     end
   end
 

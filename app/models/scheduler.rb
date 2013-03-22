@@ -1,42 +1,19 @@
 class Scheduler < ActiveRecord::Base
-  attr_accessible :app_id, :recorded, :scheduled, :state, :wifi_only, :notified_at
+  attr_accessible :app_id, :recording, :wifi_only, :notified_at
 
   belongs_to :app
   validates_presence_of :app_id
 
-  def completed?
-    return false if recorded.nil? || scheduled.nil?
-    recorded >= scheduled
-  end
-
   def recording?
-    state=='recording' && !completed?
+    recording == true
   end
 
-  def schedule n
-    update_attributes scheduled: n, recorded: 0, notified_at: nil
+  def start_recording
+    update_attributes recording: true
   end
 
-  # We could actually check data base and see how many have been recorded
-  # since we started recording.
-  def record n
-    previous = recorded || 0
-    update_attributes recorded: previous + n
-
-    notify_users if completed?
-  end
-
-  def remaining
-    left = scheduled - recorded
-    (left < 0) ? 0 : left
-  end
-
-  def pause
-    update_attributes state: 'paused'
-  end
-
-  def resume
-    update_attributes state: 'recording'
+  def stop_recording
+    update_attributes recording: false
   end
 
   def wifi_only?
@@ -47,6 +24,7 @@ class Scheduler < ActiveRecord::Base
     update_attributes wifi_only: flag
   end
 
+  # TODO: when do we notify users
   def notify_users
     return if notified?
     Resque.enqueue ::AppRecordingCompletion, app_id

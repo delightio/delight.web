@@ -532,13 +532,11 @@ ALTER SEQUENCE properties_id_seq OWNED BY properties.id;
 CREATE TABLE schedulers (
     id integer NOT NULL,
     app_id integer,
-    state character varying(255),
     wifi_only boolean,
-    scheduled integer,
-    recorded integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    notified_at timestamp without time zone
+    notified_at timestamp without time zone,
+    recording boolean
 );
 
 
@@ -1208,3 +1206,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130308135825');
 INSERT INTO schema_migrations (version) VALUES ('20130308152011');
 
 INSERT INTO schema_migrations (version) VALUES ('20130317143913');
+
+INSERT INTO schema_migrations (version) VALUES ('20130322063620');
