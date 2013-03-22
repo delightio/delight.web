@@ -2,6 +2,7 @@ require 'resque/server'
 
 DelightWeb::Application.routes.draw do
 
+  resources :schedulers, only: [:update, :show]
   resources :subscriptions, only: [:create, :update, :show]
 
   resources :invitations, :only => [:show, :new, :create] do
