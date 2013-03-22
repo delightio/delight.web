@@ -93,8 +93,7 @@ describe Account do
 
   describe '#subscribe_free_plan' do
     it 'subscribes to free plan' do
-      free_plan = VolumePlan.find_by_name 'free'
-      subject.should_receive(:subscribe).with(free_plan.id)
+      subject.should_receive(:subscribe).with(FreePlan.id)
 
       subject.subscribe_free_plan
     end
