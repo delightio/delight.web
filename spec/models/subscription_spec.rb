@@ -25,13 +25,6 @@ describe Subscription do
     end
   end
 
-  describe '#unlimited_plan?' do
-    let(:plan) { FactoryGirl.create :time_plan }
-    subject { Subscription.create account_id:10, plan_id: plan.id }
-
-    it { should be_unlimited_plan}
-  end
-
   describe '#enough_quota?' do
     it 'is always true if subscribed to unlimited plan' do
       plan = FactoryGirl.create :time_plan
@@ -68,5 +61,10 @@ describe Subscription do
 
       subject.should be_expired
     end
+  end
+
+  describe '#notify' do
+    it 'emails users about usage close to subscribed plan'
+    it 'does nothing if we have previously notified user'
   end
 end

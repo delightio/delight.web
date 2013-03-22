@@ -16,13 +16,9 @@ class Subscription < ActiveRecord::Base
     update_attributes usage:(self.usage + n)
   end
 
-  def unlimited_plan?
-    plan.class == TimePlan
-  end
-
   def enough_quota? n
     return false if expired?
-    return true if unlimited_plan?
+    return true if plan.unlimited?
 
     remaining >= n
   end
@@ -34,8 +30,19 @@ class Subscription < ActiveRecord::Base
   end
 
   def expired?
-    return false if plan.duration.nil? || unlimited_plan?
+    return false if plan.duration.nil? || plan.unlimited?
 
     expired_at < DateTime.now
+  end
+
+  # notify user when we are close to limit
+  def notify
+    unless notified?
+      Resque.enqueue ::SubscriptionCloseToLimit, account.administrator.email
+    end
+  end
+
+  def notified?
+    true
   end
 end

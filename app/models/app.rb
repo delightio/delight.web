@@ -16,7 +16,7 @@ class App < ActiveRecord::Base
 
   after_create :assign_admin_as_viewer
   after_create :generate_token
-  after_create :create_scheduler
+  after_create :schedule_recordings
   validate :token, :presence => true, :uniqueness => true
   validates :name, :presence => true
 
@@ -38,9 +38,7 @@ class App < ActiveRecord::Base
   end
 
   def complete_recording cost=1
-    if scheduler.recording?
-      account.use_credits cost
-    end
+    account.update_usage cost
   end
 
   def administrator
@@ -87,7 +85,7 @@ class App < ActiveRecord::Base
     update_attribute :token, "#{SecureRandom.hex 12}#{id}"
   end
 
-  def create_scheduler
+  def schedule_recordings
     self.scheduler = Scheduler.create app_id: id
     self.scheduler.set_wifi_only true
     self.scheduler.start_recording
