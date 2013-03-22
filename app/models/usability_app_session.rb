@@ -3,7 +3,7 @@ class UsabilityAppSession < AppSession
     super << :front_track
   end
 
-  def credits
-    2
+  def cost
+    2 * duration.to_f # both screen and front tracks
   end
 end
