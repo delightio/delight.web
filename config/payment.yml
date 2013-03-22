@@ -11,7 +11,7 @@ defaults: &defaults
     price: 100
     credit: 50
 
-  free_plan:
+  free_plans:
    -
     name: 'Free'
     price: 0

@@ -13,7 +13,7 @@ def create_plan plan_info
 end
 
 # Preload volume plans
-FreePlan = create_plan PLANS['free_plan'][0]
+FreePlan = create_plan PLANS['free_plans'][0]
 SubscriptionPlans = []
 PLANS['subscription_plans'].each do |plan_info|
   SubscriptionPlans << (create_plan plan_info)
