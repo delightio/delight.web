@@ -12,6 +12,18 @@ class Subscription < ActiveRecord::Base
     plan.quota - usage
   end
 
+  def usage_percentage
+    [(usage * 100 / plan.quota).floor, 3].max
+  end
+
+  def remaining_hours
+    (remaining / 1.hours.to_f).round(1)
+  end
+
+  def days_till_expired
+    ((expired_at - DateTime.now) / 1.days).floor
+  end
+
   def use n
     update_attributes usage:(self.usage + n)
   end
