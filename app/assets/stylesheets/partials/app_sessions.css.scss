@@ -253,7 +253,7 @@ $session-view-margin: 20px;
 		&:hover {
 			cursor:pointer;
 		}
-		
+
 		&.idle { //nothing recoding, show start
 			//#session-recorder-start-info { display: block; }
 			//#session-recorder-stop-info { display: none; }
@@ -264,7 +264,7 @@ $session-view-margin: 20px;
 		}
 	}
 	#session-recorder-control {
-		padding: 0 15px;
+		padding: { left: 15px; right:10px; top: 0; bottom:0; };
 		h4 { 
 			display: inline; 
 			line-height: 32px;
@@ -294,7 +294,19 @@ $session-view-margin: 20px;
 		text-decoration: underline;
 	}
 	.panel {
-		padding-left: 15px;
+		padding: { left: 15px; right: 10px }
+	}
+	.app-header {
+		padding-right: 10px !important;
+	}
+	.app-header > a {
+		display: inline-block;
+	}
+	#app-setup-btn {
+		display: inline-block;
+		padding: 2px 10px;
+		text-align: center;
+		float: right;
 	}
 }
 

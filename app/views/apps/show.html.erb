@@ -1,25 +1,4 @@
 <%# App Page. Nav here. %>
- <!-- <header class="row">
-    <div class="span5">
-      <h2>
-        <a href="<%= apps_path %>"><%= @app.name %></a>
-      </h2>
-    </div>
-
-    <div class="span7 pull-right app-nav">
-
-      <span><%= link_to(raw("<span id='num-scheduled-recording'>" + @app.scheduled_recordings.to_s + "</span> Sessions Scheduled"), app_schedule_recording_edit_path(:app_id => @app.id), :id => 'app-schedule-recording') %></span>
-      <% if current_user == @app.account.administrator %>
-        <span class="divider">/</span>
-        <%= link_to 'Setup', '#', :id => 'app-setup-btn' %>
-        <% end %>
-
-    </div>
-
-  </header>--><!--/row-->
-
-  <!-- <hr /> -->
-
   <div class="row">
     <!-- Sidebar -->
     <div class="span3 sidebar app-session-sidebar">
@@ -30,7 +9,19 @@
           <div class="dropdown clearfix nav-dropdown">
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
-              <li class="nav-header app-header"><a href="<%= app_path(@app) %>"><%= @app.name %></a></li>
+              <li class="nav-header app-header">
+                <a href="<%= app_path(@app) %>"><%= @app.name %></a>
+                <% if current_user == @app.account.administrator %>
+                  <%= link_to('#', :id => 'app-setup-btn', :class => "btn small-btn") do %>
+                    <i class="icon-cog" title="App Setup"></i>
+                  <% end %>
+                <% else %>
+                  <%# Show something to non admin user %>
+                  <%= app_admin_user = @app.account.administrator %>
+                  <span>By<img src="<%= app_admin_user.image_url ? app_admin_user.image_url : '/images/profile-pic.jpg' %>" width="20" height="20" alt="" class="user-pic"></span>
+                  
+                <% end %>
+              </li>
               <li >
 
                 <div id="session-recorder" class="<%= @app.recording_paused? ? 'idle' : 'recording' %>">
@@ -65,8 +56,6 @@
           <input type="hidden" name="favorite" id="app-view-favorite" />
 
 
-          <!-- <ul class="nav"> -->
-          <!-- <li class=''> -->
 
          <div class="filter-list">
             <div class="dropdown clearfix nav-dropdown">
@@ -97,8 +86,6 @@
                   <% end %>
                 </li>
 
-                <!-- <li class="divider"></li> -->
-                <!-- <li class="nav-header">Filters</li> -->
                 <% @app.funnels.each do |funnel| %>
                 <li class="dropdown-submenu <% funnel.id == params[:funnel].to_i ? "active" :"" %>">
                   <a tabindex="-1" href="<%= app_path(@app, funnel: funnel) %>" data-remote="true">
@@ -116,13 +103,11 @@
                 </li>
 
                 <%end%>
-                <!-- <li class="dropdown-submenu">
-                  <a>Another Item</a>
-                </li> -->
+ 
               </ul>
             </div>
           </div>
-          <!-- </li> -->
+
           <hr>
 
           <ul class="nav filter-actions-nav">
@@ -137,7 +122,7 @@
           </ul>
         </div><!--sidebar-nav-->
       </div>
-      <!-- <div id="sticky-anchor"></div> -->
+     
     </div><!--/span-->
 
     <!-- App session list -->
