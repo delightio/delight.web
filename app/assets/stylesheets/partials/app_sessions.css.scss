@@ -6,6 +6,7 @@
 $session-view-margin: 20px;
 .app-session {
 	margin: { bottom:10px; right:10px; }
+	min-width: 180px;
 	.thumbnail {
 		width: 200px;
 		height:200px;
@@ -101,6 +102,12 @@ $session-view-margin: 20px;
 		}
 	}
 }
+.app-sessions-view {
+	.action-bar {
+		height: 38px;
+	}
+	form fieldset { margin: 0 20px; }
+}
 .app-session-view {
 	.nav { margin-bottom: 0.5em; }
 	.nav a {
@@ -148,7 +155,7 @@ $session-view-margin: 20px;
 	overflow:hidden;
 	text-align:right;
 }
-.sidebar { 
+.app-session-sidebar { 
 	.sidebar-inner {
 		width: 80%;
 	}
@@ -220,7 +227,7 @@ $session-view-margin: 20px;
 			a { padding-left: 0; font-weight: bold; }
 			&:hover a { background:none; color: #777; text-shadow: 1px 0 #fff; }
 			padding-left: 15px;
-			border-top: 1px solid #ccc;
+			border-top: none;
 			border-bottom: 1px solid #ddd;
 			background: rgb(147,147,147);
 			color: #111;
@@ -246,24 +253,32 @@ $session-view-margin: 20px;
 		&:hover {
 			cursor:pointer;
 		}
-		&.idle { //nothing recoding, show start
-			#session-recorder-start-info, #session-recorder-start { display: block; }
-			#session-recorder-stop-info, #session-recorder-stop { display: none; }
 
+		&.idle { //nothing recoding, show start
+			//#session-recorder-start-info { display: block; }
+			//#session-recorder-stop-info { display: none; }
 		}
 		&.recording { //recording in progress, show stop
-			#session-recorder-start-info, #session-recorder-start { display: none; }
-			#session-recorder-stop-info, #session-recorder-stop { display: block; }
+			//#session-recorder-start-info { display: none; }
+			//#session-recorder-stop-info	{ display: block; }
 		}
+	}
+	#session-recorder-control {
+		padding: { left: 15px; right:10px; top: 0; bottom:0; };
+		h4 { 
+			display: inline; 
+			line-height: 32px;
+		}
+		.toggle-btn { float: right; }
 	}
 	#session-recorder-info {
 		width: 105px;
 		margin-left: 15px;
-		padding-top:15px;
-		max-height: 80px;
+		max-height: 40px;
+		line-height: 32px;
 		float: left;
 		.action {
-			font-size: 200%;
+			font-size: 100%;
 			font-weight: bold;
 			text-transform: uppercase;
 			color: #000;
@@ -279,15 +294,29 @@ $session-view-margin: 20px;
 		text-decoration: underline;
 	}
 	.panel {
-		padding-left: 15px;
+		padding: { left: 15px; right: 10px }
+	}
+	.app-header {
+		padding-right: 10px !important;
+	}
+	.app-header > a {
+		display: inline-block;
+	}
+	#app-setup-btn {
+		display: inline-block;
+		padding: 2px 10px;
+		text-align: center;
+		float: right;
 	}
 }
 
+
+/* Generic elements */
 	.small-progress {
 		height: 10px;
 		border-radius: 10px;
 		margin: 5px 10px;
-		border: 3px solid rgba(242,242,242,0.5);
+		//border: 3px solid rgba(242,242,242,0.5);
 	}
 
 
