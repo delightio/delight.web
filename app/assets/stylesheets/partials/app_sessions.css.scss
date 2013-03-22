@@ -253,14 +253,23 @@ $session-view-margin: 20px;
 		&:hover {
 			cursor:pointer;
 		}
+		
 		&.idle { //nothing recoding, show start
-			#session-recorder-start-info { display: block; }
-			#session-recorder-stop-info { display: none; }
+			//#session-recorder-start-info { display: block; }
+			//#session-recorder-stop-info { display: none; }
 		}
 		&.recording { //recording in progress, show stop
-			#session-recorder-start-info { display: none; }
-			#session-recorder-stop-info	{ display: block; }
+			//#session-recorder-start-info { display: none; }
+			//#session-recorder-stop-info	{ display: block; }
 		}
+	}
+	#session-recorder-control {
+		padding: 0 15px;
+		h4 { 
+			display: inline; 
+			line-height: 32px;
+		}
+		.toggle-btn { float: right; }
 	}
 	#session-recorder-info {
 		width: 105px;
@@ -269,7 +278,7 @@ $session-view-margin: 20px;
 		line-height: 32px;
 		float: left;
 		.action {
-			font-size: 200%;
+			font-size: 100%;
 			font-weight: bold;
 			text-transform: uppercase;
 			color: #000;

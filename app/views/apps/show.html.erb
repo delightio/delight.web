@@ -34,16 +34,17 @@
               <li >
 
                 <div id="session-recorder" class="<%= @app.recording_paused? ? 'idle' : 'recording' %>">
-                  <div id="session-recorder-info">
-                    <span class="action" id="session-recorder-start-info">Start</span>
-                    <span class="action" id="session-recorder-stop-info">Stop</span>
-                  </div>
-
+                  <div id="session-recorder-control">
+                  <h4>Recording</h4>
                   <span class="toggle-btn" data-toggle="toggle-switch">
                     <span class="on-btn toggle-handle" data-toggle-handler=".on-btn-handler" data-toggle-status="on">ON</span>
                     <span class="off-btn toggle-handle" data-toggle-handler=".off-btn-handler" data-toggle-status="off">OFF</span>
                   </span>
-                  
+                  </div>
+                  <div id="session-recorder-status" class="hidden">
+                    <span class="action" id="session-recorder-start-info">Start</span>
+                    <span class="action" id="session-recorder-stop-info">Stop</span>
+                  </div>
                   <%= link_to("ON", app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :id => "session-recorder-start", :class => "on-btn-handler toggle-handler hidden" ) %>
                   <%= link_to("OFF", app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :id => "session-recorder-stop", :class=>"off-btn-handler toggle-handler hidden") %>
                 </div><!-- /recorder -->
