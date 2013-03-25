@@ -10,7 +10,7 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
               <li class="nav-header app-header">
-                <a href="<%= app_path(@app) %>"><%= @app.name %></a>
+                <a href="<%= apps_path %>"><%= @app.name %></a>
                 <% if current_user == @app.account.administrator %>
                   <%= link_to('#', :id => 'app-setup-btn', :class => "btn small-btn") do %>
                     <i class="icon-cog" title="App Setup"></i>
@@ -40,14 +40,12 @@
                   <%= link_to("OFF", scheduler_path(:id => @scheduler.id, :scheduler => {:recording => false}, :format => :json), :remote => true, :method => :put, :id => "session-recorder-stop", :class=>"off-btn-handler toggle-handler hidden") %>
                 </div><!-- /recorder -->
 
-              </li>
-              <li>
                 <div class="progress small-progress">
                   <div class="bar" style="width: <%= @subscription.usage_percentage %>%;"></div>
                 </div>
                 <div class="plan-info panel">
                   <small class="plan-status">
-                    <a href="#"><%= @subscription.remaining_hours %> hours available, <%= @subscription.days_till_expired %> days till renewal</a>
+                    <a href="#"><%= pluralize(@subscription.remaining_hours, 'hour') %> left. Renew in <%= pluralize(@subscription.days_till_expired, 'day') %></a>
                   </small>
                 </div>
               </li>
