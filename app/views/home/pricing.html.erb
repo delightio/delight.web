@@ -6,21 +6,13 @@
       </div>
     </h1>
     <br>
-    <h1>
-      <div style="font-size:180%">
-        100% satisfaction guarantee.
-      </div>
-    </h1>
-    <br>
     <br>
   </div>
 </div>
-<br>
 <span style="font-size:large">
-  Select your monthly plan or try us with our free plan:
+  All plans comes with full set of <a href="/features" target='_blank'>features <i class='icon-share'></i></a> and 100% satisfaction guarantee.
 </span>
-<br>
-<br>
+<br><br>
 <div class="row-fluid" align="center">
   <% SubscriptionPlans.reverse_each do |plan| %>
     <div class="span3">
@@ -28,39 +20,31 @@
         <br>
         <span style="font-size:150%;font-style:italic"><%= plan.name %></span>
         <br><br><br>
-        <p>
-          <span style="font-size:400%">$<%= plan.price %></span>
-          <span style="font-size:large">
-            <br>
-            monthly<br><br>
-            for <strong><%= plan.quota/1.hours %> hours<br>of recordings</strong>
-          </span>
-        </p>
+        <div style="font-size:180%">
+          <p>
+            Record<br><br><br>
+            <span style="font-size:150%;font-bold;"><%= pluralize(plan.quota/1.hours, "hour") %></span>
+            <br><br><br>
+            for
+            <br><br><br>
+            <span style="font-size:120%">$<%= plan.price %></span> /month
+          </p>
+        </div>
       </a>
     </div>
   <% end %>
 </div>
 <br>
+<h2>Get started with our free plan</h2>
+<span style="font-size:large">
+  No credit card required. 1 hour of recording free each month.
+</span>
+<br><br>
+<%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large btn-primary", :style=>"font-size:18px;margin-right:5px" %>
+<span style="font-size:large">or&nbsp;</span>
+<%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large btn-primary", :style=>"font-size:18px;margin-right:5px" %>
+<br><br><br>
 
-<div class="row-fluid">
-  <div class="span12">
-    <span style="font-size:large">
-      <strong>Questions?</strong> <a href="mailto:pricing@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
-    </span>
-    <br><br>
-    <div class="">
-      <ul>
-        <li>All plans come with:
-          <ul>
-            <li>full set of <a href="/features" target='_blank'>features <i class='icon-share'></i></a></li>
-            <li>unlimited apps</li>
-            <li>unlimited filters</li>
-            <li>unlimited team members</li>
-          </ul>
-        </li>
-        <li>All transaction are in USD and we accept all common credit cards.</li>
-        <li>For refund, please email us at <a href="mailto:pricing@delight.io">pricing@delight.io</a>.</li>
-      </ul>
-    </div>
-  </div>
-</div>
+<span style="font-size:large">
+  <strong>Questions?</strong> <a href="mailto:pricing@delight.io"> Email</a>, <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call us anytime at <strong>+1 (415) 413-7425</strong>.
+</span>
