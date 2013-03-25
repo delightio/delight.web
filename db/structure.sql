@@ -4,9 +4,10 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET escape_string_warning = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -1041,6 +1042,27 @@ CREATE INDEX index_permissions_on_viewer_id ON permissions USING btree (viewer_i
 
 
 --
+-- Name: index_schedulers_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_schedulers_on_app_id ON schedulers USING btree (app_id);
+
+
+--
+-- Name: index_subscriptions_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_subscriptions_on_account_id ON subscriptions USING btree (account_id);
+
+
+--
+-- Name: index_tracks_on_app_session_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tracks_on_app_session_id ON tracks USING btree (app_session_id);
+
+
+--
 -- Name: index_tracks_on_track_tags_count; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1205,3 +1227,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130307161916');
 INSERT INTO schema_migrations (version) VALUES ('20130308135825');
 
 INSERT INTO schema_migrations (version) VALUES ('20130308152011');
+
+INSERT INTO schema_migrations (version) VALUES ('20130325162228');
