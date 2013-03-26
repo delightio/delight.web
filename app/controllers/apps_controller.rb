@@ -64,6 +64,8 @@ class AppsController < ApplicationController
       end
       return
     end
+    @scheduler = @app.scheduler
+    @subscription = @app.account.subscription
 
     @last_viewed_at = @app.last_viewed_at_by_user(current_user)
     @app.log_view(current_user)

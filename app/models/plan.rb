@@ -3,4 +3,8 @@ class Plan < ActiveRecord::Base
 
   has_many :subscriptions
   has_many :accounts, :through => :subscriptions
+
+  def unlimited?
+    false
+  end
 end

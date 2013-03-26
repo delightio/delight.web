@@ -26,84 +26,44 @@ describe Account do
     end
   end
 
-  describe '#remaining_credits' do
-    it 'is a number' do
-      subject.remaining_credits.should be_an_instance_of Fixnum
+  describe '#update_usage' do
+    let(:cost) { 10.34 }
+    it 'updates subscription' do
+      subject.subscription.should_receive(:use).with(cost)
+
+      subject.update_usage cost
     end
 
-    it 'can be negative' do
-      subject.use_credits subject.remaining_credits + 20
+    it 'handles over usage' do
+      subject.subscription.should_receive(:enough_quota?).
+        and_return(false)
+      subject.should_receive(:handle_over_usage)
 
-      subject.remaining_credits.should < 0
-    end
-  end
-
-  describe '#enough_credits?' do
-    it 'asks subscription if we still have enough quota' do
-      subject.subscription.should_receive(:enough_quota?).with(12)
-      subject.enough_credits? 12
+      subject.update_usage cost
     end
   end
 
-  let(:credit_change) { 20 }
-
-  describe '#add_credits' do
-    it 'increments credits by given amount' do
-      expect { subject.add_credits credit_change }.
-        to change { subject.remaining_credits }.by credit_change
-    end
-
-    # Account controller expects #add_credits to return the updated credits
-    it 'returns the updated credits' do
-      original = Account::FreeCredits + Account::SpecialCredits
-      subject.add_credits(credit_change).should == (credit_change + original)
-    end
-  end
-
-  describe '#use_credits' do
-    it 'decrements credits by given amount' do
-      expect { subject.use_credits credit_change }.
-        to change { subject.remaining_credits }.by (-1*credit_change)
-    end
-
-    context 'when subscribed to unlimited plan' do
-      before { subject.stub :subscribed_to_unlimited_plan? => true }
-      it 'does not decrement credits' do
-        subject.subscription.should_not_receive :use
-
-        subject.use_credits credit_change
+  describe '#handle_over_usage' do
+    it 'stops all recordings' do
+      subject.apps.each do |app|
+        app.should_receive(:stop_recording)
       end
+
+      subject.handle_over_usage
+    end
+
+    it 'notifies user' do
+      subject.subscription.should_receive(:notify)
+
+      subject.handle_over_usage
     end
   end
 
-  describe '#subscribed_to_unlimited_plan?' do
-    let(:unlimited_plan) { 'unlimited' }
-    it 'is true after we subscribe' do
-      subject.subscribe unlimited_plan
+  describe '#subscribe_free_plan' do
+    it 'subscribes to free plan' do
+      subject.should_receive(:subscribe).with(FreePlan.id)
 
-      subject.should be_subscribed_to_unlimited_plan
-    end
-
-    it 'is false if we did not subscribe' do
-      subject.unsubscribe
-
-      subject.should_not be_subscribed_to_unlimited_plan
+      subject.subscribe_free_plan
     end
   end
-
-  describe '#add_free_credits' do
-    it 'add free credits upon creation' do
-      Account.any_instance.should_receive(:add_free_credits).once
-
-      FactoryGirl.create :account
-    end
-
-    it 'add default FreeCredits' do
-      subject.should_receive(:add_credits).
-        with(Account::FreeCredits + Account::SpecialCredits).once
-
-      subject.add_free_credits
-    end
-  end
-
 end

@@ -10,7 +10,7 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
               <li class="nav-header app-header">
-                <a href="<%= app_path(@app) %>"><%= @app.name %></a>
+                <a href="<%= apps_path %>"><%= @app.name %></a>
                 <% if current_user == @app.account.administrator %>
                   <%= link_to('#', :id => 'app-setup-btn', :class => "btn small-btn") do %>
                     <i class="icon-cog" title="App Setup"></i>
@@ -19,12 +19,12 @@
                   <%# Show something to non admin user %>
                   <%= app_admin_user = @app.account.administrator %>
                   <span>By<img src="<%= app_admin_user.image_url ? app_admin_user.image_url : '/images/profile-pic.jpg' %>" width="20" height="20" alt="" class="user-pic"></span>
-                  
+
                 <% end %>
               </li>
               <li >
 
-                <div id="session-recorder" class="<%= @app.recording_paused? ? 'idle' : 'recording' %>">
+                <div id="session-recorder" class="<%= @scheduler.recording? ? 'recording' : 'idle' %>">
                   <div id="session-recorder-control">
                   <h4>Recording</h4>
                   <span class="toggle-btn" data-toggle="toggle-switch">
@@ -36,16 +36,18 @@
                     <span class="action" id="session-recorder-start-info">Start</span>
                     <span class="action" id="session-recorder-stop-info">Stop</span>
                   </div>
-                  <%= link_to("ON", app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :id => "session-recorder-start", :class => "on-btn-handler toggle-handler hidden" ) %>
-                  <%= link_to("OFF", app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :id => "session-recorder-stop", :class=>"off-btn-handler toggle-handler hidden") %>
+                  <%= link_to("ON", scheduler_path(:id => @scheduler.id, :scheduler => {:recording => true}, :format => :json), :remote => true, :method => :put, :id => "session-recorder-start", :class => "on-btn-handler toggle-handler hidden" ) %>
+                  <%= link_to("OFF", scheduler_path(:id => @scheduler.id, :scheduler => {:recording => false}, :format => :json), :remote => true, :method => :put, :id => "session-recorder-stop", :class=>"off-btn-handler toggle-handler hidden") %>
                 </div><!-- /recorder -->
 
-              </li>
-              <li>
                 <div class="progress small-progress">
-                  <div class="bar" style="width: 60%;<%# update by ruby initially %>"></div>
+                  <div class="bar" style="width: <%= @subscription.usage_percentage %>%;"></div>
                 </div>
-                <div class="plan-info panel"><small class="plan-status"><a href="#">#hours available, #days till renewal</a></small></div>
+                <div class="plan-info panel">
+                  <small class="plan-status">
+                    <a href="#"><%= pluralize(@subscription.remaining_hours, 'hour') %> left. Renew in <%= pluralize(@subscription.days_till_expired, 'day') %></a>
+                  </small>
+                </div>
               </li>
             </ul>
           </div>
@@ -104,7 +106,7 @@
                 </li>
 
                 <%end%>
- 
+
               </ul>
             </div>
           </div>
@@ -123,7 +125,7 @@
           </ul>
         </div><!--sidebar-nav-->
       </div>
-     
+
     </div><!--/span-->
 
     <!-- App session list -->
@@ -160,18 +162,18 @@
         width:"550px",
         height:"500px"
       });
-      $("#app-schedule-recording").colorbox({
-        iframe: true,
-        transition:"none",
-        width:"650px",
-        height:"350px",
-        onClosed:function() {
-          $.get('/apps/<%= @app.id %>.json',
-          function(data) {
-            $("#num-scheduled-recording").html(data['scheduled_recordings']);
-          })
-        }
-      });
+      // $("#app-schedule-recording").colorbox({
+      //   iframe: true,
+      //   transition:"none",
+      //   width:"650px",
+      //   height:"350px",
+      //   onClosed:function() {
+      //     $.get('/apps/<%= @app.id %>.json',
+      //     function(data) {
+      //       $("#num-scheduled-recording").html(data['scheduled_recordings']);
+      //     })
+      //   }
+      // });
 
       <% if @setup %>
         $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
@@ -193,11 +195,11 @@
       // });
 
       //recorder
-      var recorder_status = "<%= @app.recording_paused? ? 'idle':'recording' %>";
+      var recorder_status = "<%= @scheduler.recording? ? 'recording' : 'idle' %>";
       var switch_status = (recorder_status === "idle") ? "off" : "on";
-      
+
       $(".toggle-btn").toggleSwitch( {status:switch_status});
-      
+
 
       $("#session-recorder-stop")
       .on('ajax:success', function(event, data, status, xhr) {

@@ -378,25 +378,9 @@ describe AppSession do
     end
   end
 
-  describe 'credits' do
-    its(:credits) { should == 1 }
-  end
-
   describe '#cost' do
-    context 'when the duration is short' do
-      let(:short_session) { FactoryGirl.create :app_session, :duration => 5 }
-
-      it 'is 0' do
-        short_session.cost.should == 0
-      end
-    end
-
-    context 'when the duration is longer than minimum' do
-      let(:normal_session) { FactoryGirl.create :app_session, :duration => 10 }
-
-      it 'is equal to credits' do
-        normal_session.cost.should == normal_session.credits
-      end
+    it 'is the duration' do
+      subject.cost.should == subject.duration
     end
   end
 

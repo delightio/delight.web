@@ -16,7 +16,7 @@ class App < ActiveRecord::Base
 
   after_create :assign_admin_as_viewer
   after_create :generate_token
-  after_create :schedule_initial_recording
+  after_create :schedule_recordings
   validate :token, :presence => true, :uniqueness => true
   validates :name, :presence => true
 
@@ -37,52 +37,8 @@ class App < ActiveRecord::Base
     app_sessions.recorded.limit(1).count > 0
   end
 
-  def recording?
-    scheduler.recording? && account.enough_credits?
-  end
-
-  # We use this to show the remaining number of recordings.
-  def scheduled_recordings
-    scheduler.remaining
-  end
-
-  def schedule_recordings n
-    scheduler.schedule n
-  end
-
   def complete_recording cost=1
-    # We got more recordings than we expected
-    if scheduler.completed?
-      handle_extra_recordings
-      return
-    end
-
-    account.use_credits cost
-    scheduler.record 1
-  end
-
-  def handle_extra_recordings
-    # TODO we probably want to log this
-  end
-
-  def resume_recording
-    scheduler.resume
-  end
-
-  def pause_recording
-    scheduler.pause
-  end
-
-  def recording_paused?
-    !scheduler.recording?
-  end
-
-  def uploading_on_wifi_only?
-    scheduler.wifi_only?
-  end
-
-  def set_uploading_on_wifi_only flag
-    scheduler.set_wifi_only flag
+    account.update_usage cost
   end
 
   def administrator
@@ -129,9 +85,9 @@ class App < ActiveRecord::Base
     update_attribute :token, "#{SecureRandom.hex 12}#{id}"
   end
 
-  def schedule_initial_recording
-    self.scheduler = Scheduler.create app_id: id, wifi_only: false
-    schedule_recordings Account::FreeCredits
-    resume_recording
+  def schedule_recordings
+    self.scheduler = Scheduler.create app_id: id
+    self.scheduler.set_wifi_only true
+    self.scheduler.start_recording
   end
 end

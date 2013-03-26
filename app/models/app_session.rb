@@ -173,14 +173,9 @@ class AppSession < ActiveRecord::Base
     1.hours
   end
 
-  def credits
-    1
-  end
-
-  # Cost is the actual cost for current app session.
+  # Volume plan is based on the duration of the app session
   def cost
-    return 0 if duration < 10.seconds
-    credits
+    duration.to_f
   end
 
   def complete
