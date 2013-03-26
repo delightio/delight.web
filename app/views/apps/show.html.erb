@@ -141,8 +141,9 @@
 
     $(function(){
       $('#funnel-list a').on('click', function(e){
-        $(this).closest('ul').find('li').removeClass('active');
-        $(this).parent().addClass('active');
+        var el = $(this);
+        el.closest('ul').find('li').removeClass('active');
+        el.parent().addClass('active');
       });
 
     //   var funnelNav = $('#funnel-edit nav');

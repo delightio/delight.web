@@ -1,21 +1,10 @@
     <div class="span9 app-sessions-view" id="app-view-app-sessions">
       <div class="row">
-        <div class="action-bar pull-right">
+        <div class="action-bar">
         <%#  Every body view %>
         <%# <span>Some message</span> %>
         <%# Admin view %>
-        <% if current_user == @app.account.administrator %>
-          <span><%#= link_to(raw("<span id='num-scheduled-recording'>" + @app.scheduled_recordings.to_s + "</span> Sessions Scheduled"), app_schedule_recording_edit_path(:app_id => @app.id), :id => 'app-schedule-recording') %></span>
-          <%# link_to(new_invitation_path(:app_id => @app.id), :class => "btn", :id => "app-show-invite-viewer") do %>
-            <!-- <i class="icon-envelope-alt" title="Email invitation to view recordings"></i> -->
-          <%# end %>
-
-        <% else %>
-          <%# Show something to non admin user %>
-          <%= app_admin_user = @app.account.administrator %>
-          <span>App Admin: <a href="#"><img src="<%= app_admin_user.image_url ? app_admin_user.image_url : '/images/profile-pic.jpg' %>" width="20" height="20" alt="" class="user-pic"> <%= app_admin_user.nickname %> </a></span>
-
-        <% end %>
+        <h3 id="view-header">Sessions<%# app funnel name || "Latest" %></h3>
         </div>
       </div>
       <% if @recorded_sessions.blank? %>
