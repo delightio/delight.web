@@ -4,7 +4,7 @@
         <%#  Every body view %>
         <%# <span>Some message</span> %>
         <%# Admin view %>
-        <h3 id="view-header">Sessions<%# app funnel name || "Latest" %></h3>
+          <h3 id="view-header"><%= @sessions_description%>, <%= pluralize(@sessions_count, "session") %></h3>
         </div>
       </div>
       <% if @recorded_sessions.blank? %>
