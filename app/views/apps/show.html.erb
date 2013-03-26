@@ -87,15 +87,16 @@
                 </li>
 
                 <% @app.funnels.each do |funnel| %>
-                <li class="dropdown-submenu <% funnel.id == params[:funnel].to_i ? "active" :"" %>">
+                <li class="dropdown-divemenu <% funnel.id == params[:funnel].to_i ? "active" :"" %>">
                   <a tabindex="-1" href="<%= app_path(@app, funnel: funnel) %>" data-remote="true">
                     <%= funnel.name %>
                     <span class="badge badge-warning">
                       <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
                       <%= count %>
                     </span>
-
                   </a>
+
+                  <i class="icon-pencil menu-handler"></i>
                   <ul class="dropdown-menu">
                     <li><%= link_to "Edit", [:edit, @app, funnel], class: '', remote: true %></li>
                     <li><%= link_to "Destroy", [@app, funnel], :method => :delete, class: '', data: {confirm: "Are you sure?"} %></li>
@@ -228,7 +229,12 @@
         console.warn("Network Error", err)
       });
 
-
+      $(".dropdown-divemenu").on("mouseover", ".menu-handler", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        $(".divemenu-open").removeClass("divemenu-open");
+        $(".dropdown-menu",e.delegateTarget).addClass("divemenu-open");
+      });
     })
     // function sticky_relocate() {
     //   var window_top = $(window).scrollTop();
