@@ -21,7 +21,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def days_till_expired
-    ((expired_at - DateTime.now) / 1.days).floor
+    expired_at ? ((expired_at - DateTime.now) / 1.days).floor : 0
   end
 
   def use n
