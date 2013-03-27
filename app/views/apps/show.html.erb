@@ -101,6 +101,7 @@
                   <i class="icon-pencil menu-handler"></i>
                   <ul class="dropdown-menu">
                     <li><%= link_to "Edit", [:edit, @app, funnel], class: '', remote: true %></li>
+                    <li class="divider"></li>
                     <li><%= link_to "Destroy", [@app, funnel], :method => :delete, class: '', data: {confirm: "Are you sure?"} %></li>
                   </ul>
                 </li>
