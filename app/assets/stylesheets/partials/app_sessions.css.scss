@@ -276,10 +276,11 @@ $session-view-margin: 20px;
 		     -moz-border-radius: 0 6px 6px 6px;
 		          border-radius: 0 6px 6px 6px;
 	  }
+	  &:hover .divemenu-open {
+	  	display: block;
+	  }
 	}
-	&:hover .divemenu-open {
-		display: block;
-	}
+	
 }
 
 .dashboard {
