@@ -276,8 +276,15 @@ $session-view-margin: 20px;
 		     -moz-border-radius: 0 6px 6px 6px;
 		          border-radius: 0 6px 6px 6px;
 	  }
-	  &:hover .divemenu-open {
-	  	display: block;
+	  &:hover, &:focus {
+	  	& > .divemenu-open {
+	  	  	display: block;
+	  	}
+
+	  	& > a {
+	  	  color: #ffffff;
+	  	  background-color: #0081c2;
+	  	}
 	  }
 	}
 	
