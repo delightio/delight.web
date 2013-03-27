@@ -2,40 +2,48 @@
   <div class="span12">
     <h1>
       <div style="font-size:180%">
-        Get insights for $10 an hour.
+        Get insights for $10 an hour
       </div>
     </h1>
     <br>
+    <h1>
+      <div style="font-size:180%">
+        from <i>actual</i> users.
+      </div>
+    </h1>
     <br>
   </div>
 </div>
-<span style="font-size:large">
-  All plans comes with full set of <a href="/features" target='_blank'>features <i class='icon-share'></i></a> and 100% satisfaction guarantee.
-</span>
-<br><br>
-<div class="row-fluid" align="center">
-  <% SubscriptionPlans.reverse_each do |plan| %>
-    <div class="span3">
-      <a href="/subscriptions/new?plan_id=<%= plan.id %>" class="btn" style="width: 80%; margin-bottom: 15px">
-        <br>
-        <span style="font-size:150%;font-style:italic"><%= plan.name %></span>
-        <br><br><br>
-        <div style="font-size:180%">
-          <p>
-            Record<br><br><br>
-            <span style="font-size:150%;font-bold;"><%= pluralize(plan.quota/1.hours, "hour") %></span>
-            <br><br><br>
-            for
-            <br><br><br>
-            <span style="font-size:120%">$<%= plan.price %></span> /month
-          </p>
-        </div>
-      </a>
-    </div>
-  <% end %>
-</div>
 <br>
-<h2>Get started with our free plan</h2>
+
+<div class="row">
+  <div class="span8 well">
+    &nbsp;
+    <table class="table" style="font-size:large">
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Monthly quota</th>
+          <th>Monthly cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% SubscriptionPlans.reverse_each do |plan| %>
+        <tr>
+          <td width="100"><%= plan.name %></td>
+          <td width="150"><%= "#{number_with_delimiter(plan.quota/1.hours)} hours" %></td>
+          <td width="100"><%= number_to_currency(plan.price, precision: 0) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div style="font-size:large;padding-left:8px;">
+      Full set of <a href="/features" target='_blank'>features <i class='icon-share'></i></a> and 100% satisfaction guarantee.
+    </div>
+  </div>
+</div>
+
+<h2>Start recording with our free plan now</h2>
 <span style="font-size:large">
   No credit card required. 1 hour of recording free each month.
 </span>
