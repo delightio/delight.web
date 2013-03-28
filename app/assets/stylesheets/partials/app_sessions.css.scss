@@ -105,6 +105,12 @@ $session-view-margin: 20px;
 .app-sessions-view {
 	.action-bar {
 		height: 38px;
+		line-height: 27px;
+	}
+
+	.view-header { display: inline-block; }
+	.view-message {
+		
 	}
 	form fieldset { margin: 0 20px; }
 }
@@ -135,7 +141,6 @@ $session-view-margin: 20px;
 		padding-bottom: 0;
 		table { margin-bottom: 5px;}
 	}
-
 }
 
 #app-session-video, .app-session .thumbnail {
