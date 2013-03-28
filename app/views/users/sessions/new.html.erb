@@ -1,14 +1,16 @@
   <div class="row">
-    <div class="span12">
-      <h2>Log in <span class="font-normal">to Delight</span></h2>
-      <p>
-        If you are a first time user, we will create a new account after you connect to your Github or Twitter account.
-      </p>
+    <div class="span8">
+      <h2>Welcome<span class="font-normal">, please log in to Delight</span></h2>
+      <div style="font-size:medium">
+        We will create a new account for you if you are a first time user.
+      </div>
     </div>
   </div><!--/row-->
+  <br>
   <div class="row">
     <div class="span12">
-      <%= link_to raw('<i class="icon-github-sign icon-large"></i> Log in with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-      <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Log in in with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
+      <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Log in with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large btn-primary", :style=>"font-size:18px;margin-right:5px" %>
+      <span style="font-size:large">or&nbsp;</span>
+      <%= link_to raw('<i class="icon-github-sign icon-large"></i> Log in with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large btn-primary", :style=>"font-size:18px;margin-right:5px" %>
     </div><!--/span-->
   </div><!--/row-->

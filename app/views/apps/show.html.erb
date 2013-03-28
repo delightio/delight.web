@@ -10,17 +10,7 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
               <li class="nav-header app-header">
-                <a href="<%= apps_path %>"><%= @app.name %></a>
-                <% if current_user == @app.account.administrator %>
-                  <%= link_to('#', :id => 'app-setup-btn', :class => "btn small-btn") do %>
-                    <i class="icon-cog" title="App Setup"></i>
-                  <% end %>
-                <% else %>
-                  <%# Show something to non admin user %>
-                  <%= app_admin_user = @app.account.administrator %>
-                  <span>By<img src="<%= app_admin_user.image_url ? app_admin_user.image_url : '/images/profile-pic.jpg' %>" width="20" height="20" alt="" class="user-pic"></span>
-
-                <% end %>
+                <a href="<%= apps_path %>"><%= truncate_name(@app.name) %></a>
               </li>
               <li >
 
