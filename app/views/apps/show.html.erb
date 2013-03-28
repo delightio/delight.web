@@ -10,7 +10,7 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
               <li class="nav-header app-header">
-                <a href="<%= apps_path %>"><%= @app.name %></a>
+                <a href="<%= apps_path %>"><%= truncate_name(@app.name) %></a>
               </li>
               <li >
 
