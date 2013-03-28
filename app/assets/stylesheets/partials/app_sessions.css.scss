@@ -357,7 +357,36 @@ $session-view-margin: 20px;
 		float: right;
 	}
 }
+//Event
+    /* Large desktop */
+    @media (min-width: 1200px) { 
 
+    	#event-list {
+    		@include column-count(3);
+    	}
+    }
+     
+    /* Portrait tablet to landscape and desktop */
+    /* Landscape phone to portrait tablet */
+    @media (min-width: 768px) and (max-width: 979px) ,
+    (max-width: 767px) { 
+
+    	#event-list {
+    		@include column-count(2);
+    	}
+    }
+
+    @media (max-width: 720px) { 
+    	.app-session { max-width: 200px; float: left; }
+    }
+    /* Landscape phones and down */
+    @media (max-width: 480px) { 
+
+    	#event-list {
+    		@include column-count(1);
+    	}
+
+    }
 
 /* Generic elements */
 	.small-progress {
