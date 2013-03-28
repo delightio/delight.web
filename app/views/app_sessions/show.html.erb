@@ -101,16 +101,16 @@
       <%   star = "icon-star-empty" %>
       <%   text = "Star" %>
       <% end %>
-      <%= link_to raw("<i class=#{star}></i> #{text}"), link, :class => "btn btn-small", :method =>:put, :remote => true %>
+      <%= link_to raw("<i class=#{star}></i> #{text}"), link, :class => "btn btn-small btn-compact", :method =>:put, :remote => true %>
 
       <% if @is_admin %>
-        <%= link_to(new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-small", :id => "app-session-show-invite-viewer") do %>
+        <%= link_to(new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-small btn-compact", :id => "app-session-show-invite-viewer") do %>
           <i class="icon-share-alt"></i>
           Share
         <% end %>
       <% end %>
 
-     <a href="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" target="_blank" class="btn btn-small">
+     <a href="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" target="_blank" class="btn btn-small btn-compact">
           <i class='icon-download-alt'></i>
         Download
       </a>
