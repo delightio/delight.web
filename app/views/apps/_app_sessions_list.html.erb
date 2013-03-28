@@ -4,7 +4,8 @@
         <%#  Every body view %>
         <%# <span>Some message</span> %>
         <%# Admin view %>
-          <h3 id="view-header"><%= @sessions_description%>, <%= pluralize(@sessions_count, "session") %></h3>
+          <h3 class="view-header"><%= @sessions_description%></h3> 
+          <span class="view-message pull-right"><%= pluralize(@sessions_count, "session") %></span>
         </div>
       </div>
       <% if @recorded_sessions.blank? %>

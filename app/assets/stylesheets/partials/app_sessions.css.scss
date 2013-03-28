@@ -105,6 +105,12 @@ $session-view-margin: 20px;
 .app-sessions-view {
 	.action-bar {
 		height: 38px;
+		line-height: 27px;
+	}
+
+	.view-header { display: inline-block; }
+	.view-message {
+		
 	}
 	form fieldset { margin: 0 20px; }
 }
@@ -135,7 +141,6 @@ $session-view-margin: 20px;
 		padding-bottom: 0;
 		table { margin-bottom: 5px;}
 	}
-
 }
 
 #app-session-video, .app-session .thumbnail {
@@ -276,8 +281,15 @@ $session-view-margin: 20px;
 		     -moz-border-radius: 0 6px 6px 6px;
 		          border-radius: 0 6px 6px 6px;
 	  }
-	  &:hover .divemenu-open {
-	  	display: block;
+	  &:hover, &:focus {
+	  	& > .divemenu-open {
+	  	  	display: block;
+	  	}
+
+	  	& > a {
+	  	  color: #ffffff;
+	  	  background-color: #0081c2;
+	  	}
 	  }
 	}
 	
@@ -448,4 +460,7 @@ $session-view-margin: 20px;
 
 			color: #222;	
 		}
+	}
+	.btn-compact {
+		padding: 2px 6px
 	}
