@@ -3,6 +3,7 @@ PAYMENT_CONFIG = PLANS
 
 # quota is in hours and duration is in days
 def create_volume_plan plan_info
+  plan_info['price'] *= 100.0
   plan_info['quota'] *= 1.hours
   plan_info['duration'] *= 1.days if plan_info['duration']
   found = VolumePlan.where plan_info
@@ -13,6 +14,7 @@ def create_volume_plan plan_info
 end
 
 def create_time_plan plan_info
+  plan_info['price'] *= 100.0
   plan_info['duration'] *= 1.days if plan_info['duration']
   found = TimePlan.where plan_info
   if found.empty?

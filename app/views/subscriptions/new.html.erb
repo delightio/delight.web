@@ -1,0 +1,69 @@
+
+<h2>Monthly Subscription</h2>
+<div class="row-fluid">
+  <div class="span8">
+    <table class="table" style="font-size:large">
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Quota</th>
+          <th>Cost</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% plans = SubscriptionPlans.reverse + [FreePlan] %>
+        <% plans.each do |plan| %>
+        <tr>
+          <td width="100"><%= plan.name %></td>
+          <td width="150"><%= "#{plan.quota_in_hours} hours" %></td>
+          <td width="100"><%= number_to_currency(plan.price_in_dollars, precision: 0) %></td>
+          <td>
+          <% button_description = "Subscribed" %>
+          <% if plan.price > @current_plan.price %>
+          <%   button_description = "Upgrade" %>
+          <%   button_class = "btn btn-success" %>
+          <% elsif plan.price < @current_plan.price %>
+          <%   button_description = "Downgrade" %>
+          <%   button_class = "btn btn-warning" %>
+          <% end %>
+
+          <% if plan.price != @current_plan.price %>
+            <% plan_hash = plan.to_hash %>
+            <% plan_hash[:action] = button_description %>
+            <%= content_tag :div, class: button_class, data: { plan: plan_hash } do %>
+              <%= button_description %>
+            <% end %>
+          <% else %>
+          <%= button_description %>
+          <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+<script>
+  $('div.btn').click(function(){
+    var token = function(res){
+      var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+      $('form').append($input).submit();
+    };
+
+    var plan = $('div.btn').data('plan');
+    var name = plan.action + " to " + plan.name;
+    StripeCheckout.open({
+      key:         'pk_mGcggKRI2K6MYCDLpRiCzlEzoag8i',
+      amount:      plan.price,
+      name:        name,
+      description: plan.description,
+      panelLabel:  'Checkout',
+      token:       token
+    });
+
+    return false;
+  });
+</script>

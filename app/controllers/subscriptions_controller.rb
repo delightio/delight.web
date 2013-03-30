@@ -1,6 +1,10 @@
 class SubscriptionsController < ApplicationController
   before_filter :authenticate_user!
 
+  def new
+    @current_plan = current_user.account.subscription.plan
+  end
+
   def create
     @subscription = Subscription.new params[:subscription]
     if @subscription.save

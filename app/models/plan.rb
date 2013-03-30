@@ -7,4 +7,32 @@ class Plan < ActiveRecord::Base
   def unlimited?
     false
   end
+
+  def price_in_dollars
+    price / 100
+  end
+
+  def quota_in_hours
+    quota / 1.hours
+  end
+
+  def duration_in_months
+    duration / 1.months
+  end
+
+  def description
+    period = "month"
+    if duration_in_months > 1
+      period = "#{duration_in_months} months"
+    end
+    "$#{price_in_dollars} for #{quota_in_hours} hours per #{period}"
+  end
+
+  def to_hash
+    {
+      name: name,
+      price: price,
+      description: description
+    }
+  end
 end

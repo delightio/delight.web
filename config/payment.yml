@@ -24,7 +24,7 @@ defaults: &defaults
     price: 0
     duration: 365
 
-  # quota is in hours and duration is in days.
+  # price is in dollars, quota is in hours and duration is in days.
   subscription_plans:
    -
     name: 'Prototype'
