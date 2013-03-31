@@ -3,9 +3,8 @@
       <h2>Your Apps</h2>
       <%= link_to 'Create a new app', new_app_path, :class => "btn" %>
       <% if current_user.administrator? %>
-        <% view_credit_button_text = "Edit subscription plan" %>
         &nbsp;
-        <%= link_to view_credit_button_text, subscription_path(:id => current_user.account.subscription), :class => "btn" %>
+        <%= link_to "Edit subscription plan", subscription_path(id:current_user.account.subscription.id), :class => "btn" %>
       <% end %>
 
     </div>
@@ -76,20 +75,22 @@
 
   <div class="row">
     <% @viewer_apps.each do |app| %>
+      <% scheduler = app.scheduler %>
       <div class="span4">
         <div class="well">
-          <h3><%= link_to(app.name, app_path(app)) %></h3>
-          <% if app.recording? %>
+          <h3>
+            <%= link_to(app.name, app_path(app)) %>
+            <%= link_to 'Show', app, :class => "btn btn-primary pull-right" %>
+          </h3>
+          <% if scheduler.recording? %>
           <span class="label label-important">Recording...</span>
           <% end %>
           <br>
           <br>
           <ul class="unstyled">
             <li>App ID: <%= app.id %></li>
+            <li>App Token: <code><%= app.token %></code></li>
             <li>Recorded Sessions: <%= app.app_sessions.recorded.count %></li>
-            <li>
-              <%= link_to 'Show', app, :class => "btn btn-primary" %>
-            </li>
           </ul>
         </div>
       </div>
