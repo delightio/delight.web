@@ -1,4 +1,6 @@
 class Plan < ActiveRecord::Base
+  include Comparable
+
   attr_accessible :name, :price
 
   has_many :subscriptions
@@ -34,5 +36,9 @@ class Plan < ActiveRecord::Base
       price: price,
       description: description
     }
+  end
+
+  def <=>(another)
+    price <=> another.price
   end
 end
