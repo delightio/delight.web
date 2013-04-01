@@ -1,8 +1,7 @@
 
 <h2>Monthly Subscription</h2>
-Powered by <%= link_to "Stripe", "https://stripe.com/" %>.<br><br>
 
-<div style="font-size:large">
+<div style="font-size:medium">
   You are currently subscribed to our <%= @subscription.plan.name %> plan.<br>
   <%= call_to_action(@subscription) %>
 </div>
@@ -32,9 +31,11 @@ Powered by <%= link_to "Stripe", "https://stripe.com/" %>.<br><br>
             <% name = single_quoted "#{button_description} to #{plan.name}" %>
             <% description = single_quoted plan.description %>
             <% price = single_quoted plan.price %>
+            <% url = single_quoted subscription_path(@subscription, :format => :json) %>
+            <% plan_id = single_quoted plan.id %>
             <%= content_tag(
                   :div, :class => button_class,
-                  :onclick => "stripeCheckout(#{key},#{name},#{description},#{price})"
+                  :onclick => "stripeCheckout(#{key},#{name},#{description},#{price},#{url},#{plan_id})"
                 ) do %>
                 <%= button_description %>
             <% end %>
@@ -58,10 +59,14 @@ Powered by <%= link_to "Stripe", "https://stripe.com/" %>.<br><br>
 
 <script src="https://checkout.stripe.com/v2/checkout.js"></script>
 <script>
-  function stripeCheckout(key, name, description, price) {
+  function stripeCheckout(key, name, description, price, url, plan_id) {
     var token = function(res){
-      var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-      $('form').append($input).submit();
+      $.ajax({
+        type: 'PUT',
+        url: url,
+        data: { 'token': res.id,
+                'subscription': { 'plan_id': plan_id } }
+      });
     };
 
     StripeCheckout.open({

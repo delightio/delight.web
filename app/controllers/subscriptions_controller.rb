@@ -22,10 +22,15 @@ class SubscriptionsController < ApplicationController
         plan = Plan.find params[:subscription][:plan_id]
         notice = "Updated current subscription to #{plan.name} plan."
       end
-
-      redirect_to apps_path, :flash => { :notice => notice }
+      respond_to do |format|
+        format.html { redirect_to apps_path, :flash => { :notice => notice } }
+        format.json { render :nothing => true }
+      end
     else
-      redirect_to apps_path, :flash => { :error => @subscription.errors }
+      respond_to do |format|
+        format.html { redirect_to apps_path, :flash => { :error => @subscription.errors } }
+        format.json { render :json => @subscription.errors, :status => :bad_request}
+      end
     end
   end
 
