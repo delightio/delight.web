@@ -17,14 +17,33 @@ class SubscriptionsController < ApplicationController
   def update
     @subscription = Subscription.find params[:id]
     if @subscription.update_attributes params[:subscription]
-      render json: @subscription
+      notice = "Updated current subscription."
+      if params[:subscription].has_key? :plan_id
+        plan = Plan.find params[:subscription][:plan_id]
+        notice = "Updated current subscription to #{plan.name} plan."
+      end
+
+      redirect_to apps_path, :flash => { :notice => notice }
     else
-      render json: @subscription.errors, status: :bad_request
+      redirect_to apps_path, :flash => { :error => @subscription.errors }
     end
   end
 
   def show
+    if params[:id].to_i != current_user.account.subscription.id
+        respond_to do |format|
+          format.html do
+            flash[:type] = 'error'
+            flash[:notice] = 'You do not have permission to change subscription'
+            redirect_to apps_path
+          end
+        end
+        return
+    end
+
     @subscription = Subscription.find params[:id]
-    render json: @subscription
+    respond_to do |format|
+      format.html # show.html.erb
+    end
   end
 end

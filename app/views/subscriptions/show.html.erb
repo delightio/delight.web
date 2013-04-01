@@ -1,0 +1,78 @@
+
+<h2>Monthly Subscription</h2>
+Powered by <%= link_to "Stripe", "https://stripe.com/" %>.<br><br>
+
+<div style="font-size:large">
+  You are currently subscribed to our <%= @subscription.plan.name %> plan.<br>
+  <%= call_to_action(@subscription) %>
+</div>
+<br>
+
+<div class="row-fluid">
+  <div class="span8">
+    <table class="table" style="font-size:large">
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Quota</th>
+          <th>Cost</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% SubscriptionPlans.reverse_each do |plan| %>
+        <tr>
+          <td width="120"><%= plan.name %></td>
+          <td width="150"><%= "#{plan.quota_in_hours} hours" %></td>
+          <td width="100"><%= number_to_currency(plan.price_in_dollars, precision: 0) %></td>
+          <td width="80">
+          <% if plan != @subscription.plan %>
+            <% button_description, button_class = upgrade_action(@subscription.plan, plan) %>
+            <% key = single_quoted ENV['STRIPE_PUBLISHABLE_KEY'] %>
+            <% name = single_quoted "#{button_description} to #{plan.name}" %>
+            <% description = single_quoted plan.description %>
+            <% price = single_quoted plan.price %>
+            <%= content_tag(
+                  :div, :class => button_class,
+                  :onclick => "stripeCheckout(#{key},#{name},#{description},#{price})"
+                ) do %>
+                <%= button_description %>
+            <% end %>
+          <% else %>
+            Subscribed
+          <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% unless @subscription.plan == FreePlan %>
+    Unsubscribe?
+    <%= link_to("Downgrade to our #{FreePlan.name} plan.",
+                subscription_path(:id=>@subscription.id,:subscription=>{:plan_id=>FreePlan.id}),
+                :method => :put,
+                :confirm => "You will only be entitled to #{FreePlan.quota_in_hours} hours per month.\nAre you sure?") %>
+    <% end %>
+  </div>
+</div>
+
+<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+<script>
+  function stripeCheckout(key, name, description, price) {
+    var token = function(res){
+      var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+      $('form').append($input).submit();
+    };
+
+    StripeCheckout.open({
+      key:         key,
+      amount:      price,
+      name:        name,
+      description: description,
+      panelLabel:  "Checkout",
+      token:       token
+    });
+
+    return false;
+  }
+</script>
