@@ -60,19 +60,13 @@ class Subscription < ActiveRecord::Base
   end
 
   def subscribe plan, token=nil
-    new_customer = payment.nil? && token
-    returning_customer = !new_customer
-
-    if new_customer
-      self.payment = Payment.create_with_email_and_token(
+    if payment.nil? # new customer?
+      self.payment = Payment.create_with_email(
                         account.administrator.email,
-                        token,
                         id)
-      save
     end
 
-    # Returning customer wants to update card as well
-    if returning_customer && token
+    if token
       self.payment.card = token
     end
 

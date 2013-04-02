@@ -7,9 +7,9 @@ class Payment < ActiveRecord::Base
   validates :stripe_customer_id, :presence => true
   validates :subscription_id, :presence => true
 
-  def self.create_with_email_and_token(email, token, subscription_id)
+  def self.create_with_email(email, subscription_id)
     authenticate_stripe
-    stripe = Stripe::Customer.create email: email, card: token
+    stripe = Stripe::Customer.create email: email
     create subscription_id: subscription_id, stripe_customer_id: stripe.id
   end
 
