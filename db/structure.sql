@@ -425,6 +425,38 @@ ALTER SEQUENCE invitations_id_seq OWNED BY invitations.id;
 
 
 --
+-- Name: payments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE payments (
+    id integer NOT NULL,
+    stripe_customer_id character varying(255) NOT NULL,
+    subscription_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
+
+
+--
 -- Name: permissions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -766,6 +798,13 @@ ALTER TABLE ONLY invitations ALTER COLUMN id SET DEFAULT nextval('invitations_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id_seq'::regclass);
 
 
@@ -889,6 +928,14 @@ ALTER TABLE ONLY group_invitations
 
 ALTER TABLE ONLY invitations
     ADD CONSTRAINT invitations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1030,6 +1077,20 @@ CREATE INDEX index_events_on_app_id ON events USING btree (app_id);
 --
 
 CREATE INDEX index_funnels_on_app_id ON funnels USING btree (app_id);
+
+
+--
+-- Name: index_payments_on_stripe_customer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_payments_on_stripe_customer_id ON payments USING btree (stripe_customer_id);
+
+
+--
+-- Name: index_payments_on_subscription_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_payments_on_subscription_id ON payments USING btree (subscription_id);
 
 
 --
@@ -1208,3 +1269,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130308152011');
 INSERT INTO schema_migrations (version) VALUES ('20130317143913');
 
 INSERT INTO schema_migrations (version) VALUES ('20130322063620');
+
+INSERT INTO schema_migrations (version) VALUES ('20130402041619');

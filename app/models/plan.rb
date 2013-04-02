@@ -30,6 +30,10 @@ class Plan < ActiveRecord::Base
     "$#{price_in_dollars} for #{quota_in_hours} hours per #{period}"
   end
 
+  def stripe_id
+    "#{type}_#{name}"
+  end
+
   def to_hash
     {
       name: name,

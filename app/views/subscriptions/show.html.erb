@@ -31,7 +31,7 @@
             <% name = single_quoted "#{button_description} to #{plan.name}" %>
             <% description = single_quoted plan.description %>
             <% price = single_quoted plan.price %>
-            <% url = single_quoted subscription_path(@subscription, :format => :json) %>
+            <% url = single_quoted subscription_subscribe_path(@subscription) %>
             <% plan_id = single_quoted plan.id %>
             <%= content_tag(
                   :div, :class => button_class,
@@ -64,7 +64,7 @@
       $.ajax({
         type: 'PUT',
         url: url,
-        data: { 'token': res.id,
+        data: { 'stripe_token': res.id,
                 'subscription': { 'plan_id': plan_id } }
       });
     };

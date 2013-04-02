@@ -34,6 +34,17 @@ class SubscriptionsController < ApplicationController
     end
   end
 
+  def subscribe
+    stripe_token = params[:stripe_token]
+    plan = Plan.find params[:subscription][:plan_id]
+    @subscription = Subscription.find params[:subscription_id]
+    if (@subscription.subscribe plan, stripe_token)
+      render :json => @subscription
+    else
+      render :json => {"ErrorMessage" => "Subscription[#{@subscription.id}] did not get updated.","Subscription" => @subscription}, status => :bad_request
+    end
+  end
+
   def show
     if params[:id].to_i != current_user.account.subscription.id
         respond_to do |format|

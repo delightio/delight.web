@@ -42,6 +42,10 @@ describe SubscriptionsController do
     end
   end
 
+  describe 'PUT subscribe' do
+    it 'charges and changes subscribed plan to given plan'
+  end
+
   describe 'GET show' do
     let(:subscription) { FactoryGirl.create :subscription }
     it 'shows usage and days to be expired' do

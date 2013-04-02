@@ -3,6 +3,7 @@ class Subscription < ActiveRecord::Base
 
   belongs_to :account
   belongs_to :plan
+  has_one :payment
 
   validates :account_id, :presence => true
   validates :plan_id, :presence => true
@@ -56,5 +57,26 @@ class Subscription < ActiveRecord::Base
 
   def notified?
     true
+  end
+
+  def subscribe plan, token=nil
+    new_customer = payment.nil? && token
+    returning_customer = !new_customer
+
+    if new_customer
+      self.payment = Payment.create_with_email_and_token(
+                        account.administrator.email,
+                        token,
+                        id)
+      save
+    end
+
+    # Returning customer wants to update card as well
+    if returning_customer && token
+      self.payment.card = token
+    end
+
+    self.payment.subscribe plan
+    self.update_attributes plan_id: plan.id
   end
 end

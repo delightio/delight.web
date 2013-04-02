@@ -67,4 +67,10 @@ describe Subscription do
     it 'emails users about usage close to subscribed plan'
     it 'does nothing if we have previously notified user'
   end
+
+  describe '#subscribe' do
+    it 'creates payment object from given token'
+    it 'updates card of existing customer'
+    it 'subscribes to given plan'
+  end
 end
