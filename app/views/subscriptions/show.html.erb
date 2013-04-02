@@ -50,7 +50,7 @@
     <% unless @subscription.plan == FreePlan %>
     Unsubscribe?
     <%= link_to("Downgrade to our #{FreePlan.name} plan.",
-                subscription_path(:id=>@subscription.id,:subscription=>{:plan_id=>FreePlan.id}),
+                subscription_subscribe_path(@subscription, :subscription=>{:plan_id=>FreePlan.id}),
                 :method => :put,
                 :confirm => "You will only be entitled to #{FreePlan.quota_in_hours} hours per month.\nAre you sure?") %>
     <% end %>

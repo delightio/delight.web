@@ -30,19 +30,9 @@ describe SubscriptionsController do
     end
   end
 
-  describe 'PUT update' do
-    let(:subscription) { FactoryGirl.create :subscription }
-
-    it 'updates new plan' do
-      new_plan = FactoryGirl.create :volume_plan
-      params = { plan_id: new_plan.id }
-      put :update, id: subscription.id, subscription: params, format: :json
-      response.should be_success
-      subscription.reload.plan.should == new_plan
-    end
-  end
-
   describe 'PUT subscribe' do
+    it 'requires a stripe_token'
+    it 'requires a new plan id'
     it 'charges and changes subscribed plan to given plan'
   end
 

@@ -14,32 +14,16 @@ class SubscriptionsController < ApplicationController
     end
   end
 
-  def update
-    @subscription = Subscription.find params[:id]
-    if @subscription.update_attributes params[:subscription]
-      notice = "Updated current subscription."
-      if params[:subscription].has_key? :plan_id
-        plan = Plan.find params[:subscription][:plan_id]
-        notice = "Updated current subscription to #{plan.name} plan."
-      end
-      respond_to do |format|
-        format.html { redirect_to apps_path, :flash => { :notice => notice } }
-        format.json { render :nothing => true }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to apps_path, :flash => { :error => @subscription.errors } }
-        format.json { render :json => @subscription.errors, :status => :bad_request}
-      end
-    end
-  end
-
   def subscribe
     stripe_token = params[:stripe_token]
     plan = Plan.find params[:subscription][:plan_id]
     @subscription = Subscription.find params[:subscription_id]
     if (@subscription.subscribe plan, stripe_token)
-      render :json => @subscription
+      notice = "Updated current subscription to #{plan.name} plan."
+      respond_to do |format|
+        format.html { redirect_to apps_path, :flash => { :notice => notice } }
+        format.json { render :json => @subscription }
+      end
     else
       render :json => {"ErrorMessage" => "Subscription[#{@subscription.id}] did not get updated.","Subscription" => @subscription}, status => :bad_request
     end
