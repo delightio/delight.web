@@ -22,19 +22,20 @@ class SubscriptionsController < ApplicationController
       notice = "Updated current subscription to #{plan.name} plan."
       respond_to do |format|
         format.html { redirect_to apps_path, :flash => { :notice => notice } }
-        format.json { 
-          render :json => { 
-            "result" => "success", 
-            "subscription" => @subscription, 
-            "message" => notice 
-          } 
+        format.json {
+          render :json => {
+            "result" => "success",
+            "subscription" => @subscription,
+            "message" => notice
+          }
         }
       end
     else
+      message = @subscription.errors[:payment].join(', ')
       render :json => {
         "result" => "fail",
-        "message" => "Subscription[#{@subscription.id}] did not get updated.",
-        "subscription" => @subscription 
+        "message" => message,
+        "subscription" => @subscription
       }, status => :bad_request
     end
   end
