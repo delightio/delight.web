@@ -1,5 +1,5 @@
     <div class="span9 app-sessions-view" id="app-view-app-sessions">
-      <div class="row">
+      <div class="row-fluid">
         <div class="action-bar">
         <%#  Every body view %>
         <%# <span>Some message</span> %>
@@ -9,7 +9,7 @@
         </div>
       </div>
       <% if @recorded_sessions.blank? %>
-      <div class="row">
+      <div class="row-fluid">
         <div class="alert">
           We have not received any recordings yet. <br>
           Note that our SDK uploads only when your app goes into background and<br>
@@ -19,13 +19,14 @@
         </div>
       </div>
       <% else %>
-        <div class="row">
+      <div class="row-fluid">
+        <div class="thumbnails">
           <% @recorded_sessions.each do |session| %>
-            <div class="span2 app-session" data-session-id="<%=session.id%>">
-              <div class="thumbnails">
+            <div class="span4 app-session" data-session-id="<%=session.id%>">
+
                 <a href="<%= app_session_path(session) %>" class="thumbnail group-video <%= (@app_session_id == session.id.to_s) ?  'default-open-video' : '' %> " >
                   <div class="thumbnail-wrapper">
-                    <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail %>" >
+                    <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail2" >
                   </div>
                   <span class="app-session-info">
                     <span class="session-time">
@@ -50,14 +51,15 @@
                     </span>
                   </div>
                 </a>
-              </div>
+              
             </div>
           <% end %>
         </div>
+      </div>
       <% end %>
 
-      <div class="row">
-        <div class="pull-right">
+      <div class="row-fluid">
+        <div class="pull-right pager">
           <%= paginate @recorded_sessions, :remote => true %>
         </div>
       </div>
@@ -65,44 +67,46 @@
 
     <script>
       $(function(){
-        $(".session-fav").on("click", ".not-favorited",function(e){
-          e.preventDefault();
-          e.stopPropagation();
+        $(".session-fav")
+          .on("click", ".not-favorited",function(e){ //fav a session
+            e.preventDefault();
+            e.stopPropagation();
 
-          //favouritize
-          var parent = $(e.delegateTarget);
-          var star = $(this)
-          var _url = parent.data("favorite-url");
+            //favouritize
+            var parent = $(e.delegateTarget);
+            var star = $(this)
+            var _url = parent.data("favorite-url");
 
-          $.ajax({
-             url: _url,
-             type: 'PUT',
-             success: function(data) {
-               if(data.result === 'success'){
-                  //parent.data("status", "favorited")
-                  star.removeClass("not-favorited icon-star-empty").addClass("favorited icon-star")
+            $.ajax({
+               url: _url,
+               type: 'PUT',
+               success: function(data) {
+                 if(data.result === 'success'){
+                    //parent.data("status", "favorited")
+                    star.removeClass("not-favorited icon-star-empty").addClass("favorited icon-star")
+                 }
                }
-             }
-          });
-        }).on("click", ".favorited", function(e){
-          e.preventDefault();
-          e.stopPropagation();
-          //defavouritize
-          var parent = $(e.delegateTarget);
-          var star = $(this)
-          var _url = parent.data("favorite-url");
+            });
+          })
+          .on("click", ".favorited", function(e){ //un-fav a session
+            e.preventDefault();
+            e.stopPropagation();
+            //defavouritize
+            var parent = $(e.delegateTarget);
+            var star = $(this)
+            var _url = parent.data("favorite-url");
 
-          $.ajax({
-             url: _url,
-             type: 'PUT',
-             success: function(data) {
-               if(data.result === 'success'){
-                  //parent.data("status", "not-favorited")
-                  star.removeClass("favorited icon-star").addClass("not-favorited icon-star-empty")
+            $.ajax({
+               url: _url,
+               type: 'PUT',
+               success: function(data) {
+                 if(data.result === 'success'){
+                    //parent.data("status", "not-favorited")
+                    star.removeClass("favorited icon-star").addClass("not-favorited icon-star-empty")
+                 }
                }
-             }
-          });
-      });
+            });
+        });
 
       //end
     });
