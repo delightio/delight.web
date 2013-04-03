@@ -10,7 +10,7 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
               <li class="nav-header app-header">
-                <a href="<%= apps_path %>"><%= truncate_name(@app.name) %></a>
+                <%= truncate_name(@app.name) %>
               </li>
               <li >
 
@@ -35,7 +35,7 @@
                 </div>
                 <div class="plan-info panel">
                   <small class="plan-status">
-                    <a href=""><%= pluralize(@subscription.remaining_hours, 'hour') %> for next <%= pluralize(@subscription.days_till_expired, 'day') %></a>
+                    <a href=<%= subscription_path(@subscription) %>><%= pluralize(@subscription.remaining_hours, 'hour') %> for next <%= pluralize(@subscription.days_till_expired, 'day') %></a>
                   </small>
                 </div>
               </li>
