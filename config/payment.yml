@@ -11,12 +11,36 @@ defaults: &defaults
     price: 100
     credit: 50
 
+  free_plans:
+   -
+    name: 'Free'
+    price: 0
+    quota: 1
+    duration: 30
+
+  unlimited_plans:
+   -
+    name: 'Unlimited'
+    price: 0
+    duration: 365
+
+  # price is in dollars, quota is in hours and duration is in days.
   subscription_plans:
    -
-    display: 'Unlimited'
-    name: 'volume'
-    price: 200
-    credit: unlimited
+    name: 'Prototype'
+    price: 50
+    quota: 3
+    duration: 30
+   -
+    name: 'Beta'
+    price: 150
+    quota: 10
+    duration: 30
+   -
+    name: 'Production'
+    price: 300
+    quota: 30
+    duration: 30
 
 development:
   <<: *defaults

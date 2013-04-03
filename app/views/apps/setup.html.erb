@@ -2,30 +2,17 @@
 <% if @app %>
   <h1 style="margin-top: 10px">Setup for '<%= @app.name %>'</h1>
   <hr/>
-  <div class="row">
-    <h3>App Token: </h3><code><%= @app.token %></code>
-    <br><br>
-  </div>
-  <div class="row" style="margin-top: 10px">
-    <h3>Get Delight Framework from Github:</h3>
-    <div class="span12">
-      <code>git clone git://github.com/delightio/ios.git</code>
-      <br>
-      <br>
-    </div>
-  </div>
-  <div class="row" style="margin-top: 10px">
-    <h3>Follow tutorial on Documentation</h3>
-    <div class="span12">
-      <%= link_to "Open Documentation in new window", "/docs", :target => "_blank", :class => "btn btn-large" %>
-    </div>
-  </div>
-  <br>
-  <div class="row" style="margin-top: 10px">
-    <h3>Invite team members</h3>
-    <div class="span12">
-      <%= link_to raw('<i class="icon-user"></i> Email invitation to view recordings'), new_invitation_path(:app_id => @app.id), :class => "btn btn-large", :id => "app-show-invite-viewer" %>
-    </div>
-  </div>
+  <h3>App Token</h3>
+  <code><%= @app.token %></code>
+  <br><br>
+  <h3>Delight on Github</h3>
+  <code>git clone git://github.com/delightio/ios.git</code>
+  <br><br>
+  <% if @app.emails.count > 1 %>
+  <h3>Current viewers</h3>
+  <%= @app.emails.join(", ") %>
+  <% end %>
+  <br><br>
+  <%= link_to "Invite team members", new_invitation_path(:app_id => @app.id), :class => "btn btn-large", :id => "app-show-invite-viewer" %>
 <% end %>
 </div>

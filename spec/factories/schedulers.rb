@@ -3,9 +3,7 @@
 FactoryGirl.define do
   factory :scheduler do
     app_id 1
-    state "recording"
+    recording true
     wifi_only false
-    scheduled 10
-    recorded 1
   end
 end

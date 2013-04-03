@@ -13,54 +13,35 @@ class Account < ActiveRecord::Base
   validates :administrator_id, :presence => true
   validates :name, :presence => true
 
-  after_create :add_free_credits, :email_new_signup
+  after_create :subscribe_free_plan, :email_new_signup
 
-  FreeCredits = 50
-  SpecialCredits = 10
+  def update_usage cost
+    subscription.use cost
 
-  def remaining_credits
-    return 0 if subscription.nil?
-    subscription.remaining
-  end
-
-  def enough_credits? n=1
-    subscription.enough_quota? n
-  end
-
-  def add_credits n
-    price = QuotaPlan.price n
-    new_plan = QuotaPlan.customize price, n+remaining_credits
-    subscription.destroy unless subscription.nil?
-    self.subscription = Subscription.create plan_id: new_plan.id, account_id: id
-    remaining_credits
-  end
-
-  def use_credits n=1
-    unless subscribed_to_unlimited_plan?
-      subscription.use n
+    # Check if we still have enough quota for future recordings.
+    # If not, stop all recordings on associated apps
+    unless subscription.enough_quota? 5.minutes
+      handle_over_usage
     end
   end
 
-  def subscribed_to_unlimited_plan?
-    return false if subscription.nil?
-    subscription.unlimited_plan?
+  def handle_over_usage
+    schedulers = apps.map &:scheduler
+    schedulers.each { |sr| sr.stop_recording }
+    subscription.notify
   end
 
-  def current_subscription
-    subscription
-  end
-
-  def subscribe new_plan
+  def subscribe new_plan_id
     unsubscribe
-    self.subscription = Subscription.create plan_id: TimePlan::UnlimitedMonthly.id, account_id: id
+    self.subscription = Subscription.create plan_id: new_plan_id, account_id: id
   end
 
   def unsubscribe
     subscription.destroy unless subscription.nil?
   end
 
-  def add_free_credits
-    add_credits FreeCredits + SpecialCredits
+  def subscribe_free_plan
+    subscribe FreePlan.id
   end
 
   def email_new_signup

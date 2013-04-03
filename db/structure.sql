@@ -44,7 +44,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE accounts (
@@ -77,7 +77,7 @@ ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
 
 
 --
--- Name: app_sessions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: app_sessions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE app_sessions (
@@ -122,7 +122,7 @@ ALTER SEQUENCE app_sessions_id_seq OWNED BY app_sessions.id;
 
 
 --
--- Name: apps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: apps; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE apps (
@@ -156,7 +156,7 @@ ALTER SEQUENCE apps_id_seq OWNED BY apps.id;
 
 
 --
--- Name: beta_signups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: beta_signups; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE beta_signups (
@@ -191,7 +191,7 @@ ALTER SEQUENCE beta_signups_id_seq OWNED BY beta_signups.id;
 
 
 --
--- Name: event_infos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: event_infos; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE event_infos (
@@ -226,7 +226,7 @@ ALTER SEQUENCE event_infos_id_seq OWNED BY event_infos.id;
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE events (
@@ -240,7 +240,7 @@ CREATE TABLE events (
 
 
 --
--- Name: events_funnels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: events_funnels; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE events_funnels (
@@ -291,7 +291,7 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
--- Name: favorites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: favorites; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE favorites (
@@ -323,7 +323,7 @@ ALTER SEQUENCE favorites_id_seq OWNED BY favorites.id;
 
 
 --
--- Name: funnels; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: funnels; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE funnels (
@@ -355,7 +355,7 @@ ALTER SEQUENCE funnels_id_seq OWNED BY funnels.id;
 
 
 --
--- Name: group_invitations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: group_invitations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE group_invitations (
@@ -389,7 +389,7 @@ ALTER SEQUENCE group_invitations_id_seq OWNED BY group_invitations.id;
 
 
 --
--- Name: invitations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: invitations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE invitations (
@@ -426,7 +426,39 @@ ALTER SEQUENCE invitations_id_seq OWNED BY invitations.id;
 
 
 --
--- Name: permissions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: payments; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE payments (
+    id integer NOT NULL,
+    stripe_customer_id character varying(255) NOT NULL,
+    subscription_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
+
+
+--
+-- Name: permissions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE permissions (
@@ -459,7 +491,7 @@ ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
 
 
 --
--- Name: plans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: plans; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE plans (
@@ -494,7 +526,7 @@ ALTER SEQUENCE plans_id_seq OWNED BY plans.id;
 
 
 --
--- Name: properties; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: properties; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE properties (
@@ -527,19 +559,17 @@ ALTER SEQUENCE properties_id_seq OWNED BY properties.id;
 
 
 --
--- Name: schedulers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schedulers; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE schedulers (
     id integer NOT NULL,
     app_id integer,
-    state character varying(255),
     wifi_only boolean,
-    scheduled integer,
-    recorded integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    notified_at timestamp without time zone
+    notified_at timestamp without time zone,
+    recording boolean
 );
 
 
@@ -563,7 +593,7 @@ ALTER SEQUENCE schedulers_id_seq OWNED BY schedulers.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE schema_migrations (
@@ -572,7 +602,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: subscriptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE subscriptions (
@@ -581,7 +611,8 @@ CREATE TABLE subscriptions (
     plan_id integer,
     usage integer DEFAULT 0,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    expired_at timestamp without time zone
 );
 
 
@@ -605,7 +636,7 @@ ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
 
 
 --
--- Name: tracks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tracks; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE tracks (
@@ -620,7 +651,7 @@ CREATE TABLE tracks (
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE users (
@@ -768,6 +799,13 @@ ALTER TABLE ONLY invitations ALTER COLUMN id SET DEFAULT nextval('invitations_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id_seq'::regclass);
 
 
@@ -814,7 +852,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY accounts
@@ -822,7 +860,7 @@ ALTER TABLE ONLY accounts
 
 
 --
--- Name: app_sessions_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: app_sessions_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY event_infos
@@ -830,7 +868,7 @@ ALTER TABLE ONLY event_infos
 
 
 --
--- Name: app_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: app_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY app_sessions
@@ -838,7 +876,7 @@ ALTER TABLE ONLY app_sessions
 
 
 --
--- Name: apps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: apps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY apps
@@ -846,7 +884,7 @@ ALTER TABLE ONLY apps
 
 
 --
--- Name: beta_signups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: beta_signups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY beta_signups
@@ -854,7 +892,7 @@ ALTER TABLE ONLY beta_signups
 
 
 --
--- Name: events_funnels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: events_funnels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY events_funnels
@@ -862,7 +900,7 @@ ALTER TABLE ONLY events_funnels
 
 
 --
--- Name: favorites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: favorites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY favorites
@@ -870,7 +908,7 @@ ALTER TABLE ONLY favorites
 
 
 --
--- Name: funnels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: funnels_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY funnels
@@ -878,7 +916,7 @@ ALTER TABLE ONLY funnels
 
 
 --
--- Name: group_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: group_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY group_invitations
@@ -886,7 +924,7 @@ ALTER TABLE ONLY group_invitations
 
 
 --
--- Name: invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY invitations
@@ -894,7 +932,15 @@ ALTER TABLE ONLY invitations
 
 
 --
--- Name: permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+--
+
+ALTER TABLE ONLY payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY permissions
@@ -902,7 +948,7 @@ ALTER TABLE ONLY permissions
 
 
 --
--- Name: plans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: plans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY plans
@@ -910,7 +956,7 @@ ALTER TABLE ONLY plans
 
 
 --
--- Name: properties_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: properties_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY properties
@@ -918,7 +964,7 @@ ALTER TABLE ONLY properties
 
 
 --
--- Name: schedulers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: schedulers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY schedulers
@@ -926,7 +972,7 @@ ALTER TABLE ONLY schedulers
 
 
 --
--- Name: subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY subscriptions
@@ -934,7 +980,7 @@ ALTER TABLE ONLY subscriptions
 
 
 --
--- Name: track_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: track_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY events
@@ -942,7 +988,7 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY users
@@ -950,7 +996,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: videos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: videos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY tracks
@@ -958,147 +1004,161 @@ ALTER TABLE ONLY tracks
 
 
 --
--- Name: acct_admin_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: acct_admin_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX acct_admin_id ON accounts USING btree (administrator_id);
 
 
 --
--- Name: apps_acct_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: apps_acct_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX apps_acct_id ON apps USING btree (account_id);
 
 
 --
--- Name: as_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: as_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX as_app_id ON app_sessions USING btree (app_id);
 
 
 --
--- Name: as_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: as_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX as_created_at ON app_sessions USING btree (created_at);
 
 
 --
--- Name: as_duration; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: as_duration; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX as_duration ON app_sessions USING btree (duration);
 
 
 --
--- Name: ase_as_event_track_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ase_as_event_track_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX ase_as_event_track_id ON event_infos USING btree (app_session_id, event_id, track_id);
 
 
 --
--- Name: fav_as_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: fav_as_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX fav_as_id ON favorites USING btree (app_session_id);
 
 
 --
--- Name: fav_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: fav_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX fav_user_id ON favorites USING btree (user_id);
 
 
 --
--- Name: index_events_funnels_on_event_id_and_funnel_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_funnels_on_event_id_and_funnel_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_events_funnels_on_event_id_and_funnel_id ON events_funnels USING btree (event_id, funnel_id);
 
 
 --
--- Name: index_events_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_events_on_app_id ON events USING btree (app_id);
 
 
 --
--- Name: index_funnels_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_funnels_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_funnels_on_app_id ON funnels USING btree (app_id);
 
 
 --
--- Name: index_permissions_on_viewer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_payments_on_stripe_customer_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_payments_on_stripe_customer_id ON payments USING btree (stripe_customer_id);
+
+
+--
+-- Name: index_payments_on_subscription_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_payments_on_subscription_id ON payments USING btree (subscription_id);
+
+
+--
+-- Name: index_permissions_on_viewer_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_permissions_on_viewer_id ON permissions USING btree (viewer_id);
 
 
 --
--- Name: index_schedulers_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_schedulers_on_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_schedulers_on_app_id ON schedulers USING btree (app_id);
 
 
 --
--- Name: index_subscriptions_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_subscriptions_on_account_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_subscriptions_on_account_id ON subscriptions USING btree (account_id);
 
 
 --
--- Name: index_tracks_on_app_session_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tracks_on_app_session_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_tracks_on_app_session_id ON tracks USING btree (app_session_id);
 
 
 --
--- Name: index_tracks_on_track_tags_count; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tracks_on_track_tags_count; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_tracks_on_track_tags_count ON tracks USING btree (events_count);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
 
 
 --
--- Name: perm_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: perm_app_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX perm_app_id ON permissions USING btree (app_id);
 
 
 --
--- Name: perm_viewer_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: perm_viewer_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX perm_viewer_id ON permissions USING btree (viewer_id);
 
 
 --
--- Name: tracks_type_as_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: tracks_type_as_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX tracks_type_as_id ON tracks USING btree (type, app_session_id);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);

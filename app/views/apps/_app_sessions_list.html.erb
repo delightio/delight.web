@@ -1,5 +1,15 @@
-    <div class="span9" id="app-view-app-sessions">
+    <div class="span9 app-sessions-view" id="app-view-app-sessions">
+      <div class="row-fluid">
+        <div class="action-bar">
+        <%#  Every body view %>
+        <%# <span>Some message</span> %>
+        <%# Admin view %>
+          <h3 class="view-header"><%= @sessions_description%></h3> 
+          <span class="view-message pull-right"><%= pluralize(@sessions_count, "session") %></span>
+        </div>
+      </div>
       <% if @recorded_sessions.blank? %>
+      <div class="row-fluid">
         <div class="alert">
           We have not received any recordings yet. <br>
           Note that our SDK uploads only when your app goes into background and<br>
@@ -7,14 +17,16 @@
 
           Visit our <a href="/docs" target="_black">QuickStart guide <i class="icon-share"></i></a>
         </div>
+      </div>
       <% else %>
-        <div class="row">
+      <div class="row-fluid">
+        <div class="thumbnails">
           <% @recorded_sessions.each do |session| %>
-            <div class="span2 app-session" data-session-id="<%=session.id%>">
-              <div class="thumbnails">
+            <div class="span4 app-session" data-session-id="<%=session.id%>">
+
                 <a href="<%= app_session_path(session) %>" class="thumbnail group-video <%= (@app_session_id == session.id.to_s) ?  'default-open-video' : '' %> " >
                   <div class="thumbnail-wrapper">
-                    <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail">
+                    <img src="<%= session.presentation_track.thumbnail.presigned_read_uri %>"  alt="screen capture" class="sc-thumbnail2" >
                   </div>
                   <span class="app-session-info">
                     <span class="session-time">
@@ -32,24 +44,22 @@
                     </li>
                   </ul>
                   <div class="app-session-ops">
-<!--
                     <span class="session-fav"
-                      data-favourite-url="/app_sessions/<%= session.id %>/favourite"
-                      data-unfavourite-url="/app_sessions/<%= session.id %>/unfavourite">
-                      <i class="<%# (session.favorited?) ? 'favorited icon-star':'not-favourited icon-star-empty' %>"></i>
-                      <i class="not-favourited icon-star-empty"></i>
+                      data-favorite-url="/app_sessions/<%= session.id %>/favorite"
+                      data-unfavorite-url="/app_sessions/<%= session.id %>/unfavorite">
+                      <i class='<%=(session.favorited?) ? "favorited icon-star" : "not-favorited icon-star-empty"%>'></i>
                     </span>
- -->
                   </div>
                 </a>
-              </div>
+              
             </div>
           <% end %>
         </div>
+      </div>
       <% end %>
 
-      <div class="row">
-        <div class="pull-right">
+      <div class="row-fluid">
+        <div class="pull-right pager">
           <%= paginate @recorded_sessions, :remote => true %>
         </div>
       </div>
@@ -57,59 +67,47 @@
 
     <script>
       $(function(){
-        $(".session-fav").click(function(e){
-          e.preventDefault();
-          e.stopPropagation();
+        $(".session-fav")
+          .on("click", ".not-favorited",function(e){ //fav a session
+            e.preventDefault();
+            e.stopPropagation();
 
-        })
+            //favouritize
+            var parent = $(e.delegateTarget);
+            var star = $(this)
+            var _url = parent.data("favorite-url");
 
-      })
-/*
-      function favorite_handler(event, data, status, xhr) {
-        if (data['result'] == 'success') {
-          // update ui
-          var $target = $(event.target)
-          var session_id = $target.attr('data-session-id');
-          $target.html('<i class="icon-star"></i>');
-          $target.removeClass('app-session-favorite-btn').addClass('app-session-unfavorite-btn');
-          $target.attr('href', '/app_sessions/' + session_id + '/unfavorite');
-          // rebind handler
-          $target.unbind('ajax:success');
-          $target.bind('ajax:success', unfavorite_handler);
-          $target.data('tooltip').options.title = 'Remove this session from your favorites';
-          $target.tooltip('hide');
-          increment_favorite_count();
-        }
-      }
-      function unfavorite_handler(event, data, status, xhr) {
-        if (data['result'] == 'success') {
-          // update ui
-          var $target = $(event.target)
-          var session_id = $target.attr('data-session-id');
-          $target.html('<i class="icon-star-empty"></i>');
-          $target.removeClass('app-session-unfavorite-btn').addClass('app-session-favorite-btn');
-          $target.attr('href', '/app_sessions/' + session_id + '/favorite');
-          // rebind handler
-          $target.unbind('ajax:success');
-          $target.bind('ajax:success', favorite_handler);
-          $target.data('tooltip').options.title = 'Star this session.';
-          $target.tooltip('hide');
-          decrement_favorite_count();
-        }
-      }
-      function increment_favorite_count() {
-        $count = $('#favorite-count');
-        $count.html(parseInt($count.html()) + 1);
-      }
-      function decrement_favorite_count() {
-        $count = $('#favorite-count');
-        $count.html(parseInt($count.html()) - 1);
-      }
+            $.ajax({
+               url: _url,
+               type: 'PUT',
+               success: function(data) {
+                 if(data.result === 'success'){
+                    //parent.data("status", "favorited")
+                    star.removeClass("not-favorited icon-star-empty").addClass("favorited icon-star")
+                 }
+               }
+            });
+          })
+          .on("click", ".favorited", function(e){ //un-fav a session
+            e.preventDefault();
+            e.stopPropagation();
+            //defavouritize
+            var parent = $(e.delegateTarget);
+            var star = $(this)
+            var _url = parent.data("favorite-url");
 
-      $(".app-session-favorite-btn").bind('ajax:success', favorite_handler)
-      $(".app-session-unfavorite-btn").bind('ajax:success', unfavorite_handler);
+            $.ajax({
+               url: _url,
+               type: 'PUT',
+               success: function(data) {
+                 if(data.result === 'success'){
+                    //parent.data("status", "not-favorited")
+                    star.removeClass("favorited icon-star").addClass("not-favorited icon-star-empty")
+                 }
+               }
+            });
+        });
 
-      $(".app-session-favorite-btn").tooltip({ 'title' : 'Star this session.' });
-      $(".app-session-unfavorite-btn").tooltip({ 'title' : 'Remove this session from Starred.' });
-*/
+      //end
+    });
     </script>

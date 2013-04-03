@@ -71,8 +71,18 @@
 
           <% @app_session.events_with_time.each do |session_event| %>
             <tr>
-              <th class="event-time" data-duration="<%= session_event[:time] %>"><%= session_event[:time].to_f.to_time_format %></th>
-              <td class="event-data" data-caption="<%= session_event[:name] %>"><%= session_event[:name] %></td>
+              <th class="event-time" data-duration="<%= session_event[:time] %>">
+                <%= session_event[:time].to_time_format %></th>
+              <td>
+
+                <% if session_event.key?(:properties) && ! session_event[:properties].empty? %>
+                  <a class="icons-link popover-link" data-original-title="Event data" href="#" data-toggle="popover" title="Event Data for '<%= session_event[:name] %>'" data-json="<%= session_event[:properties].to_json %>"><i class="icon-info-sign"></i></a>
+                <% end %>
+
+              </td>
+              <td class="event-data" data-caption="<%= session_event[:name] %>">
+                <span title="<%= session_event[:name] %>"><%= session_event[:name] %></span>
+              </td>
             </tr>
           <% end %>
 
@@ -82,10 +92,28 @@
         </div>
       </div>
 
-      <% if @is_admin %>
-        <%= link_to raw('Share'), new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-success", :style => "color:white", :id => "app-session-show-invite-viewer" %>
+      <% if @app_session.favorited? %>
+      <%   link = app_session_unfavorite_path(app_session_id:@app_session.id) %>
+      <%   star = "icon-star" %>
+      <%   text = "Starred" %>
+      <% else %>
+      <%   link = app_session_favorite_path(app_session_id:@app_session.id) %>
+      <%   star = "icon-star-empty" %>
+      <%   text = "Star" %>
       <% end %>
-      <a href="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" target="_blank" class="btn btn-primary">Download</a>
+      <%= link_to raw("<i class=#{star}></i> #{text}"), link, :class => "btn btn-small btn-compact", :method =>:put, :remote => true %>
+
+      <% if @is_admin %>
+        <%= link_to(new_invitation_path(:app_id => @app_session.app.id, :app_session_id => @app_session.id), :class => "btn btn-small btn-compact", :id => "app-session-show-invite-viewer") do %>
+          <i class="icon-share-alt"></i>
+          Share
+        <% end %>
+      <% end %>
+
+     <a href="<%= @track.presigned_read_uri if @track and @track.presigned_read_uri %>" target="_blank" class="btn btn-small btn-compact">
+          <i class='icon-download-alt'></i>
+        Download
+      </a>
 
     </div>
   </div>
@@ -112,8 +140,41 @@
     if (!Modernizr.video || (Modernizr.video && !Modernizr.video.h264)) { // we have proper way to do that
       $("#browser-compatibility").show();
     }
+
+    //video player
     var $vid = $("#app-session-video");
     var vid = vjs($vid[0]);
     vid.cuepoints({url: $vid.data("gesture-track"), duration: $vid.data("duration") });
+
+    //popover
+    $(".popover-link").clickover({
+        html:true,
+        placement:"left",
+        delay: { show: 200, hide: 40 },
+        trigger: 'click',
+        "class":"clickover popover",
+        content:function () {
+            var json_str = $(this).data("json"); //this = popover link.
+            var o = {};
+            var _html = "";
+
+            console.log("before content", json_str, o)
+            if (typeof json_str === "string"){
+              try {
+                o = $.parseJSON(json_str);
+              } catch(e){
+                return false;
+              }
+            }else{
+              o = json_str;
+            }
+
+            console.log("after content", json_str, o)
+            $.each(o, function( key, val ) {
+              _html += "<tr><th>" + key + "</th><td>" + val + "</td></tr>";
+            });
+            return '<table class="table"><thead><tr><th>key</th><th>value</th></tr></thead><tbody>' + _html + '</tbody></table>';
+        }
+    });
   });
 </script>

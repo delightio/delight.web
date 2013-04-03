@@ -1,96 +1,134 @@
+<%# App Page. Nav here. %>
   <div class="row">
-    <div class="span5">
-      <h2>
-        <a href=<%= apps_path %>><%= @app.name %></a>
-        <% if current_user == @app.account.administrator %>
-        <span class="divider">/</span>
-        <%= link_to 'Setup', 'javascript:void(0)', :id => 'app-setup-btn' %>
-        <% end %>
-      </h2>
-    </div>
-
-    <div class="span7 align-r">
-      <h3 class="font-normal" style="display:inline;vertical-align:middle;margin: 0 10px 0 0"><%= link_to(raw("<span id='num-scheduled-recording'>" + @app.scheduled_recordings.to_s + "</span> Sessions Scheduled"), app_schedule_recording_edit_path(:app_id => @app.id), :id => 'app-schedule-recording') %></h3>
-
-      <%= link_to raw('<i class="icon-pause"></i> Pause Recording'), app_update_recording_path(:app_id => @app.id, :state => 'pause', :format => :json), :remote => true, :method => :put, :class => "btn btn-danger btn-large", :id => "app-show-pause-recording-btn", :style => @app.recording_paused? ? 'display:none' : '' %>
-      <%= link_to raw('<i class="icon-play"></i> Start Recording'), app_update_recording_path(:app_id => @app.id, :state => 'resume', :format => :json), :remote => true, :method => :put, :class => "btn btn-success btn-large", :id => "app-show-resume-recording-btn", :style => @app.recording_paused? ? '' : 'display:none' %>
-    </div>
-
-  </div><!--/row-->
-  <hr />
-  <div class="row">
-    <div class="span3" style="min-height:1px">
-      <div id="sticky-anchor"></div>
-      <div class="sidebar-nav" id="sticky">
-        <ul class="nav nav-list" id="funnel-list">
-          <li class="active">
-              <%= link_to(app_path(@app), remote: true) do %>
-              Sessions
-              <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
-              <% if count > 0 %>
-              <span class="badge badge-black pull-right">
-                <%= count %>
-              </span>
-              <% end %>
-            <% end %>
-          </li>
-<!--
-          <li>
-            <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
-              Starred
-              <% count = @app.app_sessions.recorded.favorited.processed_after(@last_viewed_at).length %>
-              <% if count > 0 %>
-              <span class="badge badge-black pull-right">
-                <%= count %>
-              </span>
-              <% end %>
-            <% end %>
-          </li>
- -->
-            <hr />
+    <!-- Sidebar -->
+    <div class="span3 sidebar app-session-sidebar">
+      <div  class="sidebar-inner">
+        <div class="dashboard">
 
 
-          <% @app.funnels.each do |funnel| %>
-            <li class='<% funnel.id == params[:funnel].to_i ? "active" :"" %>'>
-              <%= link_to(app_path(@app, funnel: funnel), remote: true, class: "funnel-link") do %>
-                <%= funnel.name %>
-                <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
-                <% if count > 0 %>
-                  <span class="badge badge-black pull-right">
-                  <%= count %>
+          <div class="dropdown clearfix nav-dropdown">
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+
+              <li class="nav-header app-header">
+                <%= truncate_name(@app.name) %>
+              </li>
+              <li >
+
+                <div id="session-recorder" class="<%= @scheduler.recording? ? 'recording' : 'idle' %>">
+                  <div id="session-recorder-control">
+                  <h4>Recording</h4>
+                  <span class="toggle-btn" data-toggle="toggle-switch">
+                    <span class="on-btn toggle-handle" data-toggle-handler=".on-btn-handler" data-toggle-status="on">ON</span>
+                    <span class="off-btn toggle-handle" data-toggle-handler=".off-btn-handler" data-toggle-status="off">OFF</span>
                   </span>
-                <% end %>
-              <% end %>
+                  </div>
+                  <div id="session-recorder-status" class="hidden">
+                    <span class="action" id="session-recorder-start-info">Start</span>
+                    <span class="action" id="session-recorder-stop-info">Stop</span>
+                  </div>
+                  <%= link_to("ON", scheduler_path(:id => @scheduler.id, :scheduler => {:recording => true}, :format => :json), :remote => true, :method => :put, :id => "session-recorder-start", :class => "on-btn-handler toggle-handler hidden" ) %>
+                  <%= link_to("OFF", scheduler_path(:id => @scheduler.id, :scheduler => {:recording => false}, :format => :json), :remote => true, :method => :put, :id => "session-recorder-stop", :class=>"off-btn-handler toggle-handler hidden") %>
+                </div><!-- /recorder -->
+
+                <div class="progress small-progress">
+                  <div class="bar" style="width: <%= @subscription.usage_percentage %>%;"></div>
+                </div>
+                <div class="plan-info panel">
+                  <small class="plan-status">
+                    <a href=<%= subscription_path(@subscription) %>><%= pluralize(@subscription.remaining_hours, 'hour') %> for next <%= pluralize(@subscription.days_till_expired, 'day') %></a>
+                  </small>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <br>
+
+        <div class="sidebar-nav" id="funnel-list">
+          <input type="hidden" name="favorite" id="app-view-favorite" />
 
 
 
-              <div id='funnel-edit'>
-                <nav>
-                  <%= link_to "Edit", [:edit, @app, funnel], class: 'btn btn-small', remote: true %>
-                  <%= link_to "Destroy", [@app, funnel], :method => :delete, class: 'btn btn-danger btn-small', data: {confirm: "Are you sure?"} %>
-                  <div style="height: 20px;">&nbsp;</div>
-                </nav>
-              </div>
+         <div class="filter-list">
+            <div class="dropdown clearfix nav-dropdown">
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 
-              <div class="clear"></div>
+                <li class="nav-header">Sessions</li>
+                <li class="active">
+                  <%= link_to(app_path(@app), remote: true) do %>
+                    Latest
+                    <% count = @app.app_sessions.recorded.processed_after(@last_viewed_at).length %>
+
+                    <% if count > 0 %>
+                    <span class="badge badge-black pull-right">
+                      <%= count %>
+                    </span>
+                    <% end %>
+
+                  <% end %>
+                </li>
+
+                <li>
+                  <%= link_to(app_path(@app, favorited: 1), remote: true) do %>
+                    Starred
+                    <% count = @app.app_sessions.recorded.favorited.processed_after(@last_viewed_at).length %>
+
+                    <% if count > 0 %>
+                    <span class="badge badge-black pull-right">
+                      <%= count %>
+                    </span>
+                    <% end %>
+
+                  <% end %>
+                </li>
+
+                <% @app.funnels.each do |funnel| %>
+                <li class="dropdown-divemenu <% funnel.id == params[:funnel].to_i ? "active" :"" %>">
+                  <a tabindex="-1" href="<%= app_path(@app, funnel: funnel) %>" data-remote="true">
+                    <%= funnel.name %>
+                    <% count = @app.app_sessions.by_funnel(funnel).processed_after(@last_viewed_at).length %>
+
+                    <% if count > 0 %>
+                    <span class="badge badge-black">
+                      <%= count %>
+                    </span>
+                    <% end %>
+                  </a>
+
+                  <i class="icon-pencil menu-handler"></i>
+                  <ul class="dropdown-menu">
+                    <li><%= link_to "Edit", [:edit, @app, funnel], class: '', remote: true %></li>
+                    <li class="divider"></li>
+                    <li><%= link_to "Destroy...", [@app, funnel], :method => :delete, class: '', data: {confirm: "Are you sure you want to delete filter:\n\n'#{funnel.name}'?\n\vThis operation does not affect existing recordings and associated data."} %></li>
+                  </ul>
+                </li>
+
+                <%end%>
+
+              </ul>
+            </div>
+          </div>
+
+          <hr>
+
+          <ul class="nav filter-actions-nav">
+            <li>
+              <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
             </li>
-          <% end %>
 
+           <!--  <li>
+              <a href="#" id="funnel-edit-link">Edit a filter</a>
+            </li>
+            -->
+          </ul>
+        </div><!--sidebar-nav-->
+      </div>
 
-          <li>
-            <%= link_to "+ Create a filter", [:new, @app, :funnel], class: 'btn', remote: true %>
-          </li>
-
-          <li>
-            <a href="#" id="funnel-edit-link">Edit a filter</a>
-          </li>
-
-
-        </ul>
-        <input type="hidden" name="favorite" id="app-view-favorite" />
-      </div><!--sidebar-nav-->
     </div><!--/span-->
+
+    <!-- App session list -->
     <%= render :partial => "app_sessions_list" %>
+
   </div><!--/row-->
 
   <% content_for(:javascript) do %>
@@ -101,19 +139,20 @@
 
     $(function(){
       $('#funnel-list a').on('click', function(e){
-        $(this).closest('ul').find('li').removeClass('active');
-        $(this).parent().addClass('active');
+        var el = $(this);
+        el.closest('ul').find('li').removeClass('active');
+        el.parent().addClass('active');
       });
 
-      var funnelNav = $('#funnel-edit nav');
-      funnelNav.hide();
-      $('#funnel-edit-link').on('click', function(e){
-        funnelNav.toggle("slow");
-        e.preventDefault();
-      });
-    });
+    //   var funnelNav = $('#funnel-edit nav');
+    //   funnelNav.hide();
+    //   $('#funnel-edit-link').on('click', function(e){
+    //     funnelNav.toggle("slow");
+    //     e.preventDefault();
+    //   });
+    // });
 
-    $(document).ready(function(){
+    //color box
       $(".group-video").colorbox({iframe: true, rel:'group-video', transition:"none", width:"800px", height:"600px"});
       $(".default-open-video").colorbox({iframe: true, rel:'default-group-video', transition:"none", width:"800px", height:"600px", open:true});
       $("#app-show-invite-viewer").colorbox({
@@ -122,63 +161,95 @@
         width:"550px",
         height:"500px"
       });
-      $("#app-schedule-recording").colorbox({
-        iframe: true,
-        transition:"none",
-        width:"650px",
-        height:"350px",
-        onClosed:function() {
-          $.get('/apps/<%= @app.id %>.json',
-          function(data) {
-            $("#num-scheduled-recording").html(data['scheduled_recordings']);
-          })
-        }
-      });
+      // $("#app-schedule-recording").colorbox({
+      //   iframe: true,
+      //   transition:"none",
+      //   width:"650px",
+      //   height:"350px",
+      //   onClosed:function() {
+      //     $.get('/apps/<%= @app.id %>.json',
+      //     function(data) {
+      //       $("#num-scheduled-recording").html(data['scheduled_recordings']);
+      //     })
+      //   }
+      // });
+
       <% if @setup %>
         $.colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
       <% end %>
+
       $("#app-setup-btn").colorbox({href: "<%= app_setup_path(:app_id => @app.id) %>", iframe: true, transition:"none", width:"600px", height:"450px"});
-      $("#app-show-filter-input").keydown(function(event) {
-        if (event.which == 13) {
-          querySessions();
-          event.preventDefault();
+
+
+      //filter
+      // $("#app-show-filter-input").keydown(function(event) {
+      //   if (event.which == 13) {
+      //     querySessions();
+      //     event.preventDefault();
+      //   }
+      // });
+      // $("#app-show-filter-clear").click(function(event) {
+      //   $("#app-show-filter-input").attr("value", "");
+      //   querySessions();
+      // });
+
+      //recorder
+      var recorder_status = "<%= @scheduler.recording? ? 'recording' : 'idle' %>";
+      var switch_status = (recorder_status === "idle") ? "off" : "on";
+
+      $(".toggle-btn").toggleSwitch( {status:switch_status});
+
+
+      $("#session-recorder-stop")
+      .on('ajax:success', function(event, data, status, xhr) {
+        if (data["result"] === "success") { //recording ended
+          $("#session-recorder").removeClass("recording").addClass("idle");
+        } else {
+          console.warn("Server:Something is wrong", data)
         }
-      });
-      $("#app-show-filter-clear").click(function(event) {
-        $("#app-show-filter-input").attr("value", "");
-        querySessions();
+      })
+      .on('ajax:error', function(xhr, status, err){
+        // TODO: undo button
+        $(".toggle-btn").toggleSwitch('flip');
+        console.warn("Network Error", err)
       });
 
-      $("#app-show-pause-recording-btn")
-      .bind('ajax:success', function(event, data, status, xhr) {
-        if (data["result"] == "success") {
-          $("#app-show-pause-recording-btn").hide();
-          $("#app-show-resume-recording-btn").show();
+
+      $("#session-recorder-start")
+      .on('ajax:success', function(event, data, status, xhr) {
+        if (data["result"] === "success") { //recording begin
+          $("#session-recorder").removeClass("idle").addClass("recording");
+        } else {
+          console.warn("Server: Something is wrong", data)
         }
+      })
+      .on('ajax:error', function(xhr, status, err){
+        // TODO: undo button
+
+        $(".toggle-btn").toggleSwitch('flip');
+        console.warn("Network Error", err)
       });
 
-      $("#app-show-resume-recording-btn")
-      .bind('ajax:success', function(event, data, status, xhr) {
-        if (data["result"] == "success") {
-          $("#app-show-resume-recording-btn").hide();
-          $("#app-show-pause-recording-btn").show();
-        }
+      $(".dropdown-divemenu").on("mouseover", ".menu-handler", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        $(".divemenu-open").removeClass("divemenu-open");
+        $(".dropdown-menu",e.delegateTarget).addClass("divemenu-open");
       });
-    });
+    })
+    // function sticky_relocate() {
+    //   var window_top = $(window).scrollTop();
+    //   var div_top = $('#sticky-anchor').offset().top;
+    //   if (window_top > (div_top - 50))
+    //     $('#sticky').addClass('stick')
+    //   else
+    //     $('#sticky').removeClass('stick');
+    // }
 
-    function sticky_relocate() {
-      var window_top = $(window).scrollTop();
-      var div_top = $('#sticky-anchor').offset().top;
-      if (window_top > (div_top - 50))
-        $('#sticky').addClass('stick')
-      else
-        $('#sticky').removeClass('stick');
-    }
-
-    $(function() {
-      $(window).scroll(sticky_relocate);
-        sticky_relocate();
-    });
+    // $(function() {
+    //   $(window).scroll(sticky_relocate);
+    //     sticky_relocate();
+    // });
     </script>
   <% end %>
 

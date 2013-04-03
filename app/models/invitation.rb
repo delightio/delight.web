@@ -25,7 +25,7 @@ class Invitation < ActiveRecord::Base
     if not self.email.nil?
       self.email.split(",").each do |email|
         if not valid_email?(email)
-          errors.add(:email, "email #{email} is invalid")
+          errors.add(:email, "'#{email}'' is an invalid email.")
         end
       end
     end

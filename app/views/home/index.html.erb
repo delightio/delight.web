@@ -6,105 +6,22 @@
         <strong>Delight</strong> enlightens developers and designers on how their users interact with their iOS applications. We seamlessly <strong>record your application screen</strong> and <strong>automatically capture all gestures</strong>. These recordings are then uploaded in the background to our server for viewing and sharing.
       </p>
       <br>
-      <div class="row-fluid">
-        <div class="span12">
-          <h2><%= Account::FreeCredits %> free sessions for a limited time only!</h2>
-          <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-          <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large", :style=>"font-size:18px;margin-right:5px" %>
-        </div>
-      </div>
-      <br>
+      <h2>Record your user flow now.</h2>
       <p>
-        <strong>Questions?</strong> Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us or visit our <a href="faq">FAQ</a> page.
+        Our free plan gives you <%= pluralize(FreePlan.quota/1.hours,'hour') %> of recording per month.
       </p>
-
     </div>
 
     <div class='span5'>
       <iframe class='youtube-player' type='text/html' src="http://www.youtube.com/embed/uWv4iOF3-3Q?rel=0" width="320" height="240" frameborder="0" rel="0"></iframe>
     </div>
   </div>
-  <hr>
-
-  <div class='row-fluid'>
-    <div class='span7'>
-      <h2><a href='/features'>Top Features</a></h2><br>
-
-      <div class='row-fluid'>
-        <div class='span6' style='font-size:150%'>
-          <i class='icon-ok'></i> One line integration
-        </div>
-        <div class='span6'>
-          No code change per UI iteration
-        </div>
-      </div>
-      <br>
-
-      <div class='row-fluid'>
-        <div class='span6' style='font-size:150%'>
-          <i class='icon-ok'></i> Full privacy control
-        </div>
-        <div class='span6'>
-          Private views & keystrokes
-        </div>
-      </div>
-      <br>
-
-      <div class='row-fluid'>
-        <div class='span6' style='font-size:150%'>
-          <i class='icon-ok'></i> UIKit & OpenGL ES
-        </div>
-        <div class='span6'>
-          Unity, PhoneGap, cocos2d
-        </div>
-      </div>
-      <br>
-
-      <div class='row-fluid'>
-        <div class='span6' style='font-size:150%'>
-          <i class='icon-ok'></i> Capture emotion
-        </div>
-        <div class='span6'>
-          Record from front camera as they use your app
-        </div>
-      </div>
-      <br>
-
-    </div>
-
-
-    <div class='span5'>
-      <h2><a href='https://twitter.com/delightio/favorites' target='_blank'>Buzz</a></h2>
-
-      <div id="myCarousel" class="carousel slide">
-        <!-- Carousel items -->
-        <div class="carousel-inner">
-          <% top_tweets = [
-              '<blockquote class="twitter-tweet"><p>I do not have any iOS code to test out this iOS user research tool but if I did, I would. <a href="http://t.co/Yp0jMowr" title="http://bit.ly/LZVXwV">bit.ly/LZVXwV</a></p>&mdash; David Travis (@userfocus) <a href="https://twitter.com/userfocus/status/213210713404092416" data-datetime="2012-06-14T10:06:09+00:00">June 14, 2012</a></blockquote>',
-              '<blockquote class="twitter-tweet"><p>Very cool.@<a href="https://twitter.com/delightio">delightio</a> allows you to record application screens and user gestures in <a href="https://twitter.com/search/%2523iOS">#iOS</a> for <a href="https://twitter.com/search/%2523usability">#usability</a> research. <a href="http://t.co/VQ4kBbiM" title="http://delight.io/">delight.io</a></p>&mdash; Kevin Hale (@ilikevests) <a href="https://twitter.com/ilikevests/status/197020133359759360" data-datetime="2012-04-30T17:50:34+00:00">April 30, 2012</a></blockquote>',
-              '<blockquote class="twitter-tweet"><p>Nice tekkers here: <a href="http://t.co/a9V2zkBc" title="http://delight.io/">delight.io</a>iOS plugin for recording onscreen activity and playing it back. Impressive.</p>&mdash; Des Traynor (@destraynor) <a href="https://twitter.com/destraynor/status/196942093611057154" data-datetime="2012-04-30T12:40:28+00:00">April 30, 2012</a></blockquote>',
-              '<blockquote class="twitter-tweet"><p>delight.io is blowing my mind right now. @<a href="https://twitter.com/delightio">delightio</a></p>&mdash; Stephen Martin (@stephenmartin) <a href="https://twitter.com/stephenmartin/status/198464169161396224" data-datetime="2012-05-04T17:28:39+00:00">May 4, 2012</a></blockquote>'
-            ].shuffle %>
-          <% top_tweets +=[
-            '<blockquote class="twitter-tweet"><p>Woah! Remote Usability Recording on iOS Devices. With an SDK. <a href="http://t.co/VIo1clAE" title="http://delight.io/">delight.io</a> /cc @<a href="https://twitter.com/akosma">akosma</a> @<a href="https://twitter.com/easybox">easybox</a></p>&mdash; Simon Farine (@simon_bricolo) <a href="https://twitter.com/simon_bricolo/status/197215004192284673" data-datetime="2012-05-01T06:44:55+00:00">May 1, 2012</a></blockquote>',
-            '<blockquote class="twitter-tweet"><p>Wow, like Tealeaf for mobile: <a href="http://t.co/HguBPKci" title="http://www.delight.io/">delight.io</a></p>&mdash; Scott Baldwin (@benry) <a href="https://twitter.com/benry/status/213266575371931650" data-datetime="2012-06-14T13:48:08+00:00">June 14, 2012</a></blockquote>'] %>
-
-          <div class="active item">
-            <%=raw top_tweets.first %>
-          </div>
-          <% top_tweets[1..-1].each do |tweet| %>
-          <div class="item">
-            <%=raw tweet %>
-          </div>
-          <% end %>
-        </div>
-
-      </div>
-      <script>
-        $('.carousel').carousel({interval: 5000})
-      </script>
-    </div>
-
-  </div>
-
+  <%= link_to raw('<i class="icon-twitter-sign icon-large"></i> Sign up with Twitter'), omniauth_authorize_path('user', 'twitter'), :class => "btn btn-large btn-primary", :style=>"font-size:18px;margin-right:5px" %>
+  <span style="font-size:large">or&nbsp;</span>
+  <%= link_to raw('<i class="icon-github-sign icon-large"></i> Sign up with Github'), omniauth_authorize_path('user', 'github'), :class => "btn btn-large btn-primary", :style=>"font-size:18px;margin-right:5px" %>
+  <br>
+  <br>
+  <p>
+    <strong>Questions?</strong> Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> us or visit our <a href="faq">FAQ</a> page.
+  </p>
 </div>

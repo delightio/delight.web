@@ -64,18 +64,24 @@ class AppsController < ApplicationController
       end
       return
     end
+    @scheduler = @app.scheduler
+    @subscription = @app.account.subscription
 
     @last_viewed_at = @app.last_viewed_at_by_user(current_user)
     @app.log_view(current_user)
 
     # Filter
+    @sessions_description = "Latest"
     @recorded_sessions = @app.app_sessions.recorded
     if params[:favorited]
       @recorded_sessions = @recorded_sessions.favorited
+      @sessions_description = "Starred"
     elsif params[:funnel]
       funnel = Funnel.find(params[:funnel])
       @recorded_sessions = @recorded_sessions.by_funnel(funnel)
+      @sessions_description = funnel.name
     end
+    @sessions_count = @recorded_sessions.count
     @recorded_sessions = @recorded_sessions.latest.page(params[:page]).per(12)
 
     respond_to do |format|

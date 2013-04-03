@@ -3,10 +3,8 @@
       <h2>Your Apps</h2>
       <%= link_to 'Create a new app', new_app_path, :class => "btn" %>
       <% if current_user.administrator? %>
-        <% view_credit_button_text = current_user.account.subscribed_to_unlimited_plan? ? "Unsubscribe monthly subscription" : "Add credits / Subscribe monthly subscription" %>
         &nbsp;
-        <% plan_text = current_user.account.subscribed_to_unlimited_plan? ? "volume" : @show_credit %>
-        <%= link_to view_credit_button_text, account_view_credit_path(:account_id => current_user.account, :plan => plan_text), :class => "btn", :id => 'app-index-credit-btn' %>
+        <%= link_to "Edit subscription plan", subscription_path(id:current_user.account.subscription.id), :class => "btn" %>
       <% end %>
 
     </div>
@@ -27,11 +25,15 @@
   <%
     if not @admin_apps.blank?
       @admin_apps.each do |app|
+        scheduler = app.scheduler
   %>
       <div class="span4">
         <div class="well">
-          <h3><%= link_to(app.name, app_path(app)) %></h3>
-          <% if app.recording? %>
+          <h3>
+            <%= link_to(app.name, app_path(app)) %>
+            <%= link_to 'Show', app, :class => "btn btn-primary pull-right" %>
+          </h3>
+          <% if scheduler.recording? %>
           <span class="label label-important">Recording...</span>
           <% end %>
           <br>
@@ -46,9 +48,7 @@
             <li> </li>
             <% end %>
             <br>
-            <li>
-              <%= link_to 'Show', app, :class => "btn btn-primary" %>
-              &nbsp;
+            </li>
               <%= link_to raw('Share'), new_invitation_path(:app_id => app.id), :class => "btn app-show-invite-viewer" %>
               &nbsp;
               <%= link_to 'Edit', edit_app_path(app), :class => "btn" %>
@@ -75,20 +75,22 @@
 
   <div class="row">
     <% @viewer_apps.each do |app| %>
+      <% scheduler = app.scheduler %>
       <div class="span4">
         <div class="well">
-          <h3><%= link_to(app.name, app_path(app)) %></h3>
-          <% if app.recording? %>
+          <h3>
+            <%= link_to(app.name, app_path(app)) %>
+            <%= link_to 'Show', app, :class => "btn btn-primary pull-right" %>
+          </h3>
+          <% if scheduler.recording? %>
           <span class="label label-important">Recording...</span>
           <% end %>
           <br>
           <br>
           <ul class="unstyled">
             <li>App ID: <%= app.id %></li>
+            <li>App Token: <code><%= app.token %></code></li>
             <li>Recorded Sessions: <%= app.app_sessions.recorded.count %></li>
-            <li>
-              <%= link_to 'Show', app, :class => "btn btn-primary" %>
-            </li>
           </ul>
         </div>
       </div>

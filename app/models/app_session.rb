@@ -94,7 +94,9 @@ class AppSession < ActiveRecord::Base
   extend Scopes
 
   def events_with_time
-    event_infos.map { |ei| { :name => ei.event.name, :time => ei.time.to_f } }
+    event_infos.map do |ei|
+      { name: ei.event.name, time: ei.time.to_f, properties: ei.properties }
+    end
   end
 
   def private_framework?
@@ -108,6 +110,14 @@ class AppSession < ActiveRecord::Base
   def recorded?
     completed? &&
     expected_track_count > 0
+  end
+
+  def favorited?
+    favorites.count > 0
+  end
+
+  def favorited_by
+    favorite_users
   end
 
   def ready_for_processing?
@@ -163,14 +173,9 @@ class AppSession < ActiveRecord::Base
     1.hours
   end
 
-  def credits
-    1
-  end
-
-  # Cost is the actual cost for current app session.
+  # Volume plan is based on the duration of the app session
   def cost
-    return 0 if duration < 10.seconds
-    credits
+    duration.to_f
   end
 
   def complete

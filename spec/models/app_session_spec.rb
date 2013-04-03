@@ -12,14 +12,14 @@ describe AppSession do
   end
 
   describe '#events_with_time' do
-    let(:event) { stub :name => "event_name" }
-    let(:event_info) { stub :event => event, :time => 10 }
+    let(:event) { stub name: "event_name" }
+    let(:event_info) { stub event:event, time:10, properties:{a:1,b:2} }
     before do
       subject.stub :event_infos => [event_info]
     end
 
     it 'retuns array of hash with name and time' do
-      subject.events_with_time.should == [{name: "event_name", time: 10.0}]
+      subject.events_with_time.should == [{name: "event_name", time: 10.0, properties:{a:1,b:2}}]
     end
   end
 
@@ -378,25 +378,9 @@ describe AppSession do
     end
   end
 
-  describe 'credits' do
-    its(:credits) { should == 1 }
-  end
-
   describe '#cost' do
-    context 'when the duration is short' do
-      let(:short_session) { FactoryGirl.create :app_session, :duration => 5 }
-
-      it 'is 0' do
-        short_session.cost.should == 0
-      end
-    end
-
-    context 'when the duration is longer than minimum' do
-      let(:normal_session) { FactoryGirl.create :app_session, :duration => 10 }
-
-      it 'is equal to credits' do
-        normal_session.cost.should == normal_session.credits
-      end
+    it 'is the duration' do
+      subject.cost.should == subject.duration
     end
   end
 

@@ -1,0 +1,155 @@
+<div class="monthly-subscription-view">
+  <h2>Monthly Subscription</h2>
+
+  <div class="current-plan">
+    You are currently subscribed to our <em class="plan-name"><%= @subscription.plan.name %></em> plan.<br>
+    <%= call_to_action(@subscription) %>
+  </div>
+  <br>
+
+  <div class="row-fluid plan-table">
+    <div class="span8">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Quota</th>
+            <th>Cost</th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% SubscriptionPlans.reverse_each do |plan| %>
+          <tr>
+            <td class="plan-name" width="120"><%= plan.name %></td>
+            <td class="plan-size" width="150"><%= "#{plan.quota_in_hours} hours" %></td>
+            <td class="plan-price" width="100"><%= number_to_currency(plan.price_in_dollars, precision: 0) %></td>
+            <td class="plan-subscribe" width="80">
+            <% if plan != @subscription.plan %>
+              <% button_description, button_class = upgrade_action(@subscription.plan, plan) %>
+              <% name = "#{button_description} to #{plan.name}" %>
+              <% description = plan.description %>
+              <% price = plan.price %>
+              <% url = subscription_subscribe_path(@subscription) %>
+              <% plan_id = plan.id %>
+              <%= content_tag(
+                    :span, :class => "#{button_class} stripe-checkout-btn",
+                    :data => {
+                      :name => name,
+                      :description => description,
+                      :price => price,
+                      :url => url,
+                      :plan_id => plan_id
+                    }) do %>
+                 <%= button_description %>
+              <% end %>
+            <% else %>
+              Subscribed
+            <% end %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <p>
+        You will be asked to enter a new credit card when switching plan. <br>
+        New plan starts immediately and pro-rated charges will be reflected on your next invoice.
+      </p>
+      <% unless @subscription.plan == FreePlan %>
+      Unsubscribe?
+      <%= link_to("Downgrade to our #{FreePlan.name} plan.",
+                  subscription_subscribe_path(@subscription, :subscription=>{:plan_id=>FreePlan.id}),
+                  :method => :put,
+                  :confirm => "You will only be entitled to #{FreePlan.quota_in_hours} hours per month.\nAre you sure?") %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+<script>
+$(function(){
+  //hook the buttons
+  $(".stripe-checkout-btn").click(function(e){
+    var btn = $(this);
+
+    <% key = ENV['STRIPE_PUBLISHABLE_KEY'] %>
+    var key = "<%=key%>";
+    var name = btn.data("name");
+    var description = btn.data("description");
+    var price = btn.data("price");
+    var url = btn.data("url");
+    var plan_id = btn.data("plan-id");
+
+    var token = function(res){
+      displayErrorMessage("info", "<img src='/assets/spinner.gif' width='28' style='vertical-align:middle'><strong> Processing...Please Wait...</strong>");
+      btn.data("o-klass", btn.attr("class"));
+      btn.data("o-text", btn.text());
+      btn.removeClass("btn-success btn-warning").addClass("disabled").text("Processing...");
+
+      $.ajax({
+        type: 'PUT',
+        dataType: 'json',
+        url: url,
+        data: {
+                'stripe_token': res.id,
+                'subscription': { 'plan_id': plan_id }
+              }
+      })
+      .pipe(function(res){
+
+          var dfd = $.Deferred();
+          if (res.result === "success") {
+              dfd.resolve(res);
+          } else {
+              dfd.reject(res);
+          }
+          return dfd;
+      })
+      .then(
+      function(data){ //success take
+        btn.text("Done!");
+        displayErrorMessage("success", "<strong>Done!</strong> "+data.message+"<br>You will redirect to App list in <span id='redirect-countdown'>10</span> seconds..");
+        window.setTimeout(function(){
+          window.location.href = "/apps";
+        }, 10000)
+        window.setInterval(function(){
+          var o = $("#redirect-countdown");
+          var count = parseInt(o.text());
+          o.text(count - 1);
+        }, 1000)
+
+
+      },
+      function(err){ //error take, include network error.
+        //restore old text and class
+        btn.text(btn.data("o-text"));
+        btn.attr("class", btn.data("o-klass"))
+        //Show the message
+        if (err.message){ //system error
+
+          displayErrorMessage("error", "<strong>Error:</strong> "+err.message);
+
+        } else { //application error
+
+          displayErrorMessage("error", "<strong>Error:</strong> Server Error ("+err.status+")");
+
+        }
+
+        //console.warn(err)
+      });
+    };
+
+    StripeCheckout.open({
+      key:         key,
+      amount:      price,
+      name:        name,
+      description: description,
+      panelLabel:  "Checkout",
+      token:       token
+    });
+
+    return false;
+  });
+  //other hook
+})
+</script>

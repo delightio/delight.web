@@ -1,0 +1,82 @@
+@import "compass/css3/";
+.toggle-btn {
+  border-radius: 16px;
+  line-height: 16px;
+  height:16px;
+  padding: 4px 8px;
+  background-color: #f2f2f2;
+  top:3px;
+  margin:1px;
+  display: inline-block;
+  position:relative;
+  box-shadow: 0 0 4px 1px rgba(0,0,0,0.5) inset;
+  color:black;
+  font-weight:bold;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &:hover {
+    cursor:pointer;
+  }
+  &:after {
+    position:absolute;
+    display:block;
+    top:-2px;
+    width:26px;
+    height:26px;
+    background-color: #f00;
+    border-radius:26px;
+    z-index:100;
+    content:"";
+    box-shadow:0 0 1px 0 rgba(0,0,0,0.4) ,1px 1px 1px 0 rgba(0,0,0,0.2);
+    visibility:visible;
+
+    @include transition(all ease 1s);
+
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #f5f5f5;
+    background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+    border:1px solid rgba(0, 0, 0, 0.45);
+  }
+
+  &[data-toggle-status=off]:after {
+    left:-1px;
+  }
+
+  &[data-toggle-status=on]:after {
+    right:0px;
+  }
+
+
+  &[data-toggle-status=off] {
+    background-color:#f2f2f2;
+    color: black;
+  }
+  &[data-toggle-status=on]{
+    background-color:#DD0000;
+    color: #fff;
+  }
+
+
+  &[data-toggle-status=on] .off-btn, //off hidden
+  &[data-toggle-status=off] .on-btn { //on hidden
+    visibility:hidden;
+  }
+}
+.toggle-handle {
+  display:inline-block;
+  min-width:1.2em;
+  text-align:center;
+  visibility:visible;
+}
