@@ -69,8 +69,21 @@ describe Subscription do
   end
 
   describe '#subscribe' do
+    before {
+      # To ensure we have a payment object
+      subject = (FactoryGirl.create :payment).subscription
+    }
+
     it 'creates payment object from given token'
     it 'updates card of existing customer'
     it 'subscribes to given plan'
+
+    let(:exception) { mock }
+    it 'returns false if payment was not successful' do
+      subject.stub :new_customer? => false
+      Payment.any_instance.should_receive(:subscribe).and_raise
+
+      (subject.subscribe mock).should be_false
+    end
   end
 end

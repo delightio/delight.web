@@ -60,17 +60,22 @@ class Subscription < ActiveRecord::Base
   end
 
   def subscribe plan, token=nil
-    if payment.nil? # new customer?
-      self.payment = Payment.create_with_email(
-                        account.administrator.email,
-                        id)
-    end
+    begin
+      if self.payment.nil?
+        self.payment = Payment.create_with_email(
+                          account.administrator.email,
+                          id)
+      end
 
-    if token
-      self.payment.card = token
-    end
+      if token
+        self.payment.card = token
+      end
 
-    self.payment.subscribe plan
-    self.update_attributes plan_id: plan.id
+      self.payment.subscribe plan
+      self.update_attributes plan_id: plan.id
+    rescue => e
+      errors[:payment] = e
+      return false
+    end
   end
 end
