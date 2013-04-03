@@ -3,7 +3,7 @@
   <fieldset>
     <%= f.label "Name of the new filter" %>
     <%= f.text_field :name %>
-    <% if @funnel.events.count > 0 %>
+    <% if @app.events.count > 0 %>
       <%= label_tag 'search' %>
       <%= text_field_tag :search %>
       <div id="event-list">
