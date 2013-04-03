@@ -74,7 +74,7 @@ class Subscription < ActiveRecord::Base
       self.payment.subscribe plan
       self.update_attributes plan_id: plan.id
     rescue => e
-      errors[:payment] = "raised error: #{e}"
+      errors[:payment] = e
       return false
     end
   end

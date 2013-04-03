@@ -25,7 +25,7 @@ class SubscriptionsController < ApplicationController
         format.json { render :json => @subscription }
       end
     else
-      render :json => {"ErrorMessage" => "Subscription[#{@subscription.id}] did not get updated.","Subscription" => @subscription}, status => :bad_request
+      render :json => {"ErrorMessage" => "Subscription[#{@subscription.id}] did not get updated.","ErrorMessages" => @subscription.errors.inspect}, :status => :bad_request
     end
   end
 
