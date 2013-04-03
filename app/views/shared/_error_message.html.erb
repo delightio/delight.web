@@ -2,7 +2,7 @@
   <div id="error-messages-container">  
     <% if flash[:notice] %>
     <div class="alert <%= (flash[:type].blank? ? "alert-success" : "alert-" + flash[:type]) %> fade in" data-alert="alert">
-  	  <a class="close" data-dismiss="alert">×</a>
+  	  <a class="close" data-dismiss="alert" href="#">×</a>
       <% if flash[:title] %>
         <strong><%= flash[:title] %></strong>
       <% end %>
@@ -11,5 +11,7 @@
     <% end %>
   </div>
 
-  <!-- <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p> -->
+<!-- 
+  <p class="notice"><%# notice %></p>
+  <p class="alert"><%# alert %></p> 
+-->
