@@ -51,6 +51,10 @@
           <% end %>
         </tbody>
       </table>
+      <p>
+        You will be asked to enter a new credit card when switching plan. <br>
+        New plan starts immediately and pro-rated charges will be reflected on your next invoice.
+      </p>
       <% unless @subscription.plan == FreePlan %>
       Unsubscribe?
       <%= link_to("Downgrade to our #{FreePlan.name} plan.",
