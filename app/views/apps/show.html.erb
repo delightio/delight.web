@@ -30,6 +30,7 @@
                   <%= link_to("OFF", scheduler_path(:id => @scheduler.id, :scheduler => {:recording => false}, :format => :json), :remote => true, :method => :put, :id => "session-recorder-stop", :class=>"off-btn-handler toggle-handler hidden") %>
                 </div><!-- /recorder -->
 
+                <% unless @subscription.plan.unlimited? %>
                 <div class="progress small-progress">
                   <div class="bar" style="width: <%= @subscription.usage_percentage %>%;"></div>
                 </div>
@@ -38,6 +39,7 @@
                     <a href=<%= subscription_path(@subscription) %>><%= pluralize(@subscription.remaining_hours, 'hour') %> for next <%= pluralize(@subscription.days_till_expired, 'day') %></a>
                   </small>
                 </div>
+                <% end %>
               </li>
             </ul>
           </div>
