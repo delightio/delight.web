@@ -9,7 +9,7 @@ class Payment < ActiveRecord::Base
 
   def self.create_with_email(email, subscription_id)
     authenticate_stripe
-    stripe = Stripe::Customer.create email: email
+    stripe = Stripe::Customer.create email: email, description: "Subscription[#{subscription_id}]"
     create subscription_id: subscription_id, stripe_customer_id: stripe.id
   end
 
