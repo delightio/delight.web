@@ -33,7 +33,7 @@
               <% url = subscription_subscribe_path(@subscription) %>
               <% plan_id = plan.id %>
               <%= content_tag(
-                    :span, :class => "#{button_class} stripe-checkout-btn", 
+                    :span, :class => "#{button_class} stripe-checkout-btn",
                     :data => {
                       :name => name,
                       :description => description,
@@ -51,6 +51,10 @@
           <% end %>
         </tbody>
       </table>
+      <p>
+        You will be asked to enter a new credit card when switching plan. <br>
+        New plan starts immediately and pro-rated charges will be reflected on your next invoice.
+      </p>
       <% unless @subscription.plan == FreePlan %>
       Unsubscribe?
       <%= link_to("Downgrade to our #{FreePlan.name} plan.",
@@ -75,7 +79,7 @@ $(function(){
     var price = btn.data("price");
     var url = btn.data("url");
     var plan_id = btn.data("plan-id");
-    
+
     var token = function(res){
       displayErrorMessage("info", "<img src='/assets/spinner.gif' width='28' style='vertical-align:middle'><strong> Processing...Please Wait...</strong>");
       btn.data("o-klass", btn.attr("class"));
@@ -86,9 +90,9 @@ $(function(){
         type: 'PUT',
         dataType: 'json',
         url: url,
-        data: { 
+        data: {
                 'stripe_token': res.id,
-                'subscription': { 'plan_id': plan_id } 
+                'subscription': { 'plan_id': plan_id }
               }
       })
       .pipe(function(res){
@@ -104,21 +108,21 @@ $(function(){
       .then(
       function(data){ //success take
         btn.text("Done!");
-        displayErrorMessage("success", "<strong>Done!</strong> "+data.message+"<br>You will redirect to App list in <span id='redirect-countdown'>3</span> seconds..");
-        //console.log(data)
+        displayErrorMessage("success", "<strong>Done!</strong> "+data.message+"<br>You will redirect to App list in <span id='redirect-countdown'>10</span> seconds..");
         window.setTimeout(function(){
           window.location.href = "/apps";
-        }, 3000)
+        }, 10000)
         window.setInterval(function(){
           var o = $("#redirect-countdown");
           var count = parseInt(o.text());
           o.text(count - 1);
         }, 1000)
-        //
+
+
       },
       function(err){ //error take, include network error.
         //restore old text and class
-        btn.text(btn.data("o-text")); 
+        btn.text(btn.data("o-text"));
         btn.attr("class", btn.data("o-klass"))
         //Show the message
         if (err.message){ //system error
