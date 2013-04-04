@@ -17,7 +17,7 @@
 <br>
 
 <div class="row">
-  <div class="span8 well">
+  <div class="span7 well">
     &nbsp;
     <table class="table" style="font-size:large">
       <thead>
@@ -31,8 +31,8 @@
         <% SubscriptionPlans.reverse_each do |plan| %>
         <tr>
           <td width="100"><%= plan.name %></td>
-          <td width="150"><%= "#{number_with_delimiter(plan.quota/1.hours)} hours" %></td>
-          <td width="100"><%= number_to_currency(plan.price, precision: 0) %></td>
+          <td width="100"><%= "#{number_with_delimiter(plan.quota/1.hours)} hours" %></td>
+          <td width="80"><%= number_to_currency(plan.price_in_dollars, precision: 0) %></td>
         </tr>
         <% end %>
       </tbody>

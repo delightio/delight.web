@@ -52,8 +52,9 @@
         </tbody>
       </table>
       <p>
-        You will be asked to enter a new credit card when switching plan. <br>
-        New plan starts immediately and pro-rated charges will be reflected on your next invoice.
+        You will be asked to enter credit card information when switching plan. <br>
+        New plan starts immediately and pro-rated charges will be reflected on your next invoice.<br>
+        Questions? Please <a href="mailto:info@delight.io">email</a> / <a href="https://twitter.com/intent/tweet?screen_name=delightio">tweet</a> or call use anytime at +1 (415) 413-7425.
       </p>
       <% unless @subscription.plan == FreePlan %>
       Unsubscribe?
@@ -108,7 +109,7 @@ $(function(){
       .then(
       function(data){ //success take
         btn.text("Done!");
-        displayErrorMessage("success", "<strong>Done!</strong> "+data.message+"<br>You will redirect to App list in <span id='redirect-countdown'>10</span> seconds..");
+        displayErrorMessage("success", "<strong>Done!</strong> "+data.message+"<br>You will be redirected to your apps in <span id='redirect-countdown'>10</span> seconds...<br>Or use the back button to go back to your apps now.");
         window.setTimeout(function(){
           window.location.href = "/apps";
         }, 10000)
