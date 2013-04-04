@@ -7,7 +7,7 @@ class Subscription < ActiveRecord::Base
 
   validates :account_id, :presence => true
   validates :plan_id, :presence => true
-  after_create :set_expired_at
+  after_create :renew
 
   def remaining
     plan.quota - usage
@@ -36,10 +36,11 @@ class Subscription < ActiveRecord::Base
     remaining >= n
   end
 
-  def set_expired_at
+  def renew
     if plan.duration
-      update_attributes expired_at:(created_at + plan.duration)
+      update_attributes expired_at:(Time.now + plan.duration)
     end
+    update_attributes usage: 0
   end
 
   def expired?

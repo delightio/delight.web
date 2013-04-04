@@ -43,9 +43,15 @@ describe Subscription do
     end
   end
 
-  describe '#set_expired_at' do
-    it 'sets expired_at after creation' do
+  describe '#renew' do
+    it 'reset expired_at' do
       subject.expired_at.should_not be_nil
+    end
+    it 'resets usage' do
+      subject.use 100
+
+      expect { subject.renew }.
+        to change { subject.usage }.from(100).to(0)
     end
   end
 
@@ -80,7 +86,6 @@ describe Subscription do
 
     let(:exception) { mock }
     it 'returns false if payment was not successful' do
-      subject.stub :new_customer? => false
       Payment.any_instance.should_receive(:subscribe).and_raise
 
       (subject.subscribe mock).should be_false
