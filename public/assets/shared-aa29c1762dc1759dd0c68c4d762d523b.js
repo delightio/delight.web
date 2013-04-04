@@ -1,0 +1,1 @@
+function clearErrorMessages(){var e=$("#error-messages-container");e.empty()}function addErrorMessage(e,t){var n=$("#error-messages-container");n.append('<div class="alert alert-'+e+' fade in" data-alert="alert"><a class="close" data-dismiss="alert" href="#">×</a>'+t+"</div>")}function displayErrorMessage(e,t){clearErrorMessages(),addErrorMessage(e,t)};
