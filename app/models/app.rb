@@ -31,6 +31,10 @@ class App < ActiveRecord::Base
   end
   extend Scopes
 
+  def uploading_on_wifi_only?
+    scheduler.wifi_only?
+  end
+
   def activated?
     # #any? triggers pulling in ALL app sessions.
     # app_sessions.any? &:recorded?
