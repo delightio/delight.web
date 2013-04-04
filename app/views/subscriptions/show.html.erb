@@ -83,9 +83,13 @@ $(function(){
 
     var token = function(res){
       displayErrorMessage("info", "<img src='/assets/spinner.gif' width='28' style='vertical-align:middle'><strong> Processing...Please Wait...</strong>");
-      btn.data("o-klass", btn.attr("class"));
-      btn.data("o-text", btn.text());
-      btn.removeClass("btn-success btn-warning").addClass("disabled").text("Processing...");
+
+      btn
+        .data("o-klass", btn.attr("class"))
+        .data("o-text", btn.text());
+
+      $(".stripe-checkout-btn").addClass("disabled");
+      btn.removeClass("btn-success btn-warning").text("Processing...");
 
       $.ajax({
         type: 'PUT',
@@ -123,6 +127,7 @@ $(function(){
       },
       function(err){ //error take, include network error.
         //restore old text and class
+        $(".stripe-checkout-btn").removeClass("disabled");
         btn.text(btn.data("o-text"));
         btn.attr("class", btn.data("o-klass"))
         //Show the message

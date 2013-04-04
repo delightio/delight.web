@@ -373,6 +373,17 @@ $session-view-margin: 20px;
 	}
 }
 
+#event-list {
+	@include column-count(3);
+	& > span { 
+		white-space: nowrap; 
+
+		overflow: hidden;             
+		
+		-o-text-overflow: ellipsis;    /* Opera */
+		text-overflow:    ellipsis;    /* IE, Safari (WebKit) */
+	} //keep the label and checkbox in the same line
+}
 //Media Queries
 /* Large desktop */
 @media (min-width: 1200px) { 
