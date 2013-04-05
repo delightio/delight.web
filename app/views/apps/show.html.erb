@@ -32,11 +32,12 @@
 
                 <% unless @subscription.plan.unlimited? %>
                 <div class="progress small-progress">
-                  <div class="bar" style="width: <%= @subscription.usage_percentage %>%;"></div>
+                  <% percentage = @subscription.usage_percentage %>
+                  <div class='<%= progress_bar_class(percentage) %>' style="width: <%= percentage %>%;"></div>
                 </div>
                 <div class="plan-info panel">
                   <small class="plan-status">
-                    <a href=<%= subscription_path(@subscription) %>><%= pluralize(@subscription.remaining_hours, 'hour') %> for next <%= pluralize(@subscription.days_till_expired, 'day') %></a>
+                    <a href=<%= subscription_path(@subscription) %>><%= subscription_call_to_action(percentage) %></a>
                   </small>
                 </div>
                 <% end %>
