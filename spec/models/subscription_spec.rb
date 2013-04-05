@@ -75,10 +75,9 @@ describe Subscription do
   end
 
   describe '#subscribe' do
-    before {
-      # To ensure we have a payment object
-      subject = (FactoryGirl.create :payment).subscription
-    }
+    # ensure we have a payment object
+    let(:payment) { FactoryGirl.create :payment }
+    before { subject.payment = payment }
 
     it 'creates payment object from given token'
     it 'updates card of existing customer'
@@ -86,7 +85,7 @@ describe Subscription do
 
     let(:exception) { mock }
     it 'returns false if payment was not successful' do
-      Payment.any_instance.should_receive(:subscribe).and_raise
+      subject.payment.should_receive(:subscribe).and_raise
 
       (subject.subscribe mock).should be_false
     end
