@@ -17,6 +17,10 @@ class Subscription < ActiveRecord::Base
     [(usage * 100 / plan.quota).floor, 3].max
   end
 
+  def usage_in_hours
+    usage / 1.hours
+  end
+
   def remaining_hours
     (remaining / 1.hours.to_f).round(1)
   end

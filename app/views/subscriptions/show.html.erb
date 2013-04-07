@@ -2,7 +2,7 @@
   <h2>Monthly Subscription</h2>
 
   <div class="current-plan">
-    You are currently subscribed to our <em class="plan-name"><%= @subscription.plan.name %></em> plan at <strong><%= @subscription.usage_percentage%>%</strong> capacity.<br>
+    You are currently subscribed to our <em class="plan-name"><%= @subscription.plan.name %></em> plan at <strong><%= @subscription.usage_percentage%>%</strong> capacity (<%= pluralize(@subscription.usage_in_hours, 'hour') %>).<br>
     <%= call_to_action(@subscription) %>
   </div>
   <br>

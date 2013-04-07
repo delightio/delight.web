@@ -4,4 +4,8 @@ class TimePlan < Plan
   def unlimited?
     true
   end
+
+  def quota
+    (1/0.0)
+  end
 end
