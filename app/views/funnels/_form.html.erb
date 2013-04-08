@@ -1,11 +1,11 @@
 <%= simple_form_for [@app, @funnel], html: {class: 'funnel-form'} do |f| %>
 
   <fieldset>
-    <%= f.label "Name of the new filter" %>
+    <%= f.label "Name of the filter" %>
     <%= f.text_field :name %>
     <% if @app.events.count > 0 %>
-      <%= label_tag 'search' %>
-      <%= text_field_tag :search %>
+      <%= f.label 'Select events to be included in this filter' %>
+      <%= text_field_tag :search, nil, :placeholder => 'Search for event name' %>
       <div id="event-list">
         <%= f.collection_check_boxes :event_ids, @app.events, :id, :name %>
       </div>
