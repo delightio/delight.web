@@ -1,9 +1,16 @@
 @import "compass/css3/";
+$toggle-btn-height: 16px; //16px vs 18px;
+$toggle-btn-vpadding: 4px;
+$toggle-btn-hpadding: 8px;
+$toggle-btn-handler-offset: -1px;
+$toggle-btn-handler-size: $toggle-btn-height + $toggle-btn-vpadding*2; //26px vs 24px;
 .toggle-btn {
-  border-radius: 16px;
-  line-height: 16px;
-  height:16px;
-  padding: 4px 8px;
+
+  border-radius: $toggle-btn-height;
+  line-height: $toggle-btn-height;
+  height: $toggle-btn-height;
+
+  padding: $toggle-btn-vpadding $toggle-btn-hpadding;
   background-color: #f2f2f2;
   top:3px;
   margin:1px;
@@ -26,11 +33,11 @@
   &:after {
     position:absolute;
     display:block;
-    top:-2px;
-    width:26px;
-    height:26px;
+    top:$toggle-btn-handler-offset;
+    width:$toggle-btn-handler-size;
+    height:$toggle-btn-handler-size;
     background-color: #f00;
-    border-radius:26px;
+    border-radius:$toggle-btn-handler-size;
     z-index:100;
     content:"";
     box-shadow:0 0 1px 0 rgba(0,0,0,0.4) ,1px 1px 1px 0 rgba(0,0,0,0.2);
