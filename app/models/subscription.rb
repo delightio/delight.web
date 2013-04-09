@@ -14,7 +14,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def usage_percentage
-    [(usage * 100 / plan.quota).floor, 3].max
+    (usage * 100 / plan.quota).floor
   end
 
   def usage_in_hours
