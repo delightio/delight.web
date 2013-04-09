@@ -30,7 +30,13 @@
                   <%= link_to("OFF", scheduler_path(:id => @scheduler.id, :scheduler => {:recording => false}, :format => :json), :remote => true, :method => :put, :id => "session-recorder-stop", :class=>"off-btn-handler toggle-handler hidden") %>
                 </div><!-- /recorder -->
 
-                <% unless @subscription.plan.unlimited? %>
+                <% if @subscription.plan.unlimited? %>
+                <div class="plan-info panel">
+                  <small class="plan-status">
+                    <a href=<%= subscription_path(@subscription) %>>Unlimited hours of recording</a>
+                  </small>
+                </div>
+                <% else %>
                 <div class="progress small-progress">
                   <% percentage = @subscription.usage_percentage %>
                   <div class='<%= progress_bar_class(percentage) %>' style="width: <%= percentage %>%;"></div>
