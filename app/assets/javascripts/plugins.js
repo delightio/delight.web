@@ -1,7 +1,6 @@
 ;(function ( $, window, document, undefined ) {
     
     // Toggle switch Plugins
-    // Create the defaults once
     var pluginName = 'toggleSwitch',
         defaults = {
             status: "off",
@@ -12,12 +11,6 @@
     function ToggleSwitch( element, options ) {
         this.element = element;
         this.$element = $(element);
-
-        // jQuery has an extend method that merges the 
-        // contents of two or more objects, storing the 
-        // result in the first object. The first object 
-        // is generally empty because we don't want to alter 
-        // the default options for future instances of the plugin
         this.options = $.extend( {}, defaults, options) ;
         
         this._defaults = defaults;
@@ -29,8 +22,9 @@
     ToggleSwitch.prototype.init = function () {
         var init_status = this.options.status;
         var self = this;
-        console.log(this.element)
-        //$(".toggle-btn")
+        //console.log(this.element)
+
+        // $(".toggle-btn")
         this.$element
         .on("click",function(e){
           var btn = $(e.delegateTarget);
@@ -49,11 +43,11 @@
 
     ToggleSwitch.prototype.flip = function(el){
       var btn = el ? el : this.element;
-      console.log("flipping", btn)
+      //console.log("flipping", btn)
+      
       $(".toggle-handle", btn).toggleClass("active");
       var active = $(".active", btn);
       var status = active.data("toggle-status");
-      
       
       $(btn).attr("data-toggle-status", status);
       return active;

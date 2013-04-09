@@ -4,9 +4,10 @@ class SchedulersController < ApplicationController
   def update
     @scheduler = Scheduler.find params[:id]
     if @scheduler.update_attributes params[:scheduler]
-      render json: @scheduler
+      render json: { :result => "success", :scheduler => @scheduler, :message => (@scheduler.recording ? "recording" : "idle") }
     else
-      render json: @scheduler.errors, status: :bad_request
+      # error object can not return the scheduler object as the message is much more important
+      render json: { :result => "fail", :message => @scheduler.errors } , status: :bad_request
     end
   end
 
