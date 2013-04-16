@@ -208,19 +208,25 @@
 
       $(".toggle-btn").toggleSwitch( {status:switch_status});
 
+      var undo_toggle = function(err,status){
+        $(".toggle-btn").toggleSwitch('flip');
+        //Error Handling
+        console.warn("Error occur when toggling the buttons", err, status);
+      }
 
+      //recorder event handling
       $("#session-recorder-stop")
       .on('ajax:success', function(event, data, status, xhr) {
         if (data["result"] === "success") { //recording ended
           $("#session-recorder").removeClass("recording").addClass("idle");
         } else {
-          console.warn("Server:Something is wrong", data)
+          undo_toggle(data,status);
+          //console.warn("Server:Something is wrong", data)
         }
       })
       .on('ajax:error', function(xhr, status, err){
-        // TODO: undo button
-        $(".toggle-btn").toggleSwitch('flip');
-        console.warn("Network Error", err)
+        undo_toggle(err,status);
+        //console.warn("Network Error", err)
       });
 
 
@@ -229,14 +235,11 @@
         if (data["result"] === "success") { //recording begin
           $("#session-recorder").removeClass("idle").addClass("recording");
         } else {
-          console.warn("Server: Something is wrong", data)
+          undo_toggle(data, status);
         }
       })
       .on('ajax:error', function(xhr, status, err){
-        // TODO: undo button
-
-        $(".toggle-btn").toggleSwitch('flip');
-        console.warn("Network Error", err)
+        undo_toggle(err,status);
       });
 
       $(".dropdown-divemenu").on("mouseover", ".menu-handler", function(e){
@@ -245,20 +248,9 @@
         $(".divemenu-open").removeClass("divemenu-open");
         $(".dropdown-menu",e.delegateTarget).addClass("divemenu-open");
       });
-    })
-    // function sticky_relocate() {
-    //   var window_top = $(window).scrollTop();
-    //   var div_top = $('#sticky-anchor').offset().top;
-    //   if (window_top > (div_top - 50))
-    //     $('#sticky').addClass('stick')
-    //   else
-    //     $('#sticky').removeClass('stick');
-    // }
 
-    // $(function() {
-    //   $(window).scroll(sticky_relocate);
-    //     sticky_relocate();
-    // });
+
+    })
     </script>
   <% end %>
 
