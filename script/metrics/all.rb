@@ -35,6 +35,7 @@ module AgeFormatter
 end
 Time.send :include, AgeFormatter
 
+start_time = Time.now
 puts 'Signups:'
 7.times do |n|
   range = (n+1).days.ago..n.days.ago
@@ -109,3 +110,6 @@ puts "  Accounts: #{Account.after_launch.count - internal_accounts.count}"
 puts "  Apps: #{sorted.count-internal_apps.count}/#{App.after_launch.count-internal_apps.count}"
 puts "  App Sessions: #{AppSession.after_launch.recorded.count-internal_recorded_sessions.count} / #{AppSession.after_launch.count-internal_sessions.count}"
 
+puts
+puts "Started at #{Time.now}"
+puts "Done in #{Time.now-start_time}"
