@@ -172,7 +172,7 @@ class AccountsController < ApplicationController
 
     # add credit
     # payment
-    Stripe.api_key = ENV['STRIPE_SECRET']
+    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
     token = params[:stripeToken]
 
     charge = Stripe::Charge.create(
@@ -226,7 +226,7 @@ class AccountsController < ApplicationController
     end
 
     # create customer and subscribe to unlimited plan
-    Stripe.api_key = ENV['STRIPE_SECRET']
+    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
     token = params[:stripeToken]
 
 
