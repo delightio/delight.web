@@ -41,11 +41,12 @@ class SubscriptionsController < ApplicationController
   end
 
   def show
-    if params[:id].to_i != current_user.account.subscription.id
+    if (!current_user.administrator? ||
+        params[:id].to_i != current_user.account.subscription.id)
         respond_to do |format|
           format.html do
             flash[:type] = 'error'
-            flash[:notice] = 'You do not have permission to change subscription'
+            flash[:notice] = 'You are not the adminstrator of this account. You do not have permission to change subscription.'
             redirect_to apps_path
           end
         end
