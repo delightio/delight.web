@@ -41,7 +41,6 @@
           <ul class="unstyled">
             <li>App ID: <%= app.id %></li>
             <li>App Token: <code><%= app.token %></code></li>
-            <li>Recorded Sessions: <%= app.app_sessions.recorded.count %></li>
             <% if app.emails.count > 1 %>
             <li>Shared with: <strong><%= app.emails.join(', ') %></strong></li>
             <% else %>
