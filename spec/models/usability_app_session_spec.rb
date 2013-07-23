@@ -27,9 +27,4 @@ describe UsabilityAppSession do
     end
   end
 
-  describe '#cost' do
-    it 'is twice the duration since it includes front track' do
-      subject.cost.should == (2 * subject.duration)
-    end
-  end
 end
