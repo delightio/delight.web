@@ -26,8 +26,8 @@ class Account < ActiveRecord::Base
   end
 
   def handle_over_usage
-    schedulers = apps.map &:scheduler
-    schedulers.each { |sr| sr.stop_recording }
+    # schedulers = apps.map &:scheduler
+    # schedulers.each { |sr| sr.stop_recording }
     subscription.notify
   end
 
