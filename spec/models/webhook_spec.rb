@@ -10,8 +10,8 @@ describe Webhook do
       lambda { webhook.process }.should_not raise_error
     end
 
-    it 'raises error if event was not successful subscription payment' do
-      lambda { invalid_webhook.process }.should raise_error
+    it 'does not raise error even if we do not support given type' do
+      lambda { invalid_webhook.process }.should_not raise_error
     end
   end
 end

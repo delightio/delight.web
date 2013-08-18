@@ -14,8 +14,6 @@ class Webhook
 
       stripe_invoice = StripeInvoice.new stripe_invoice_id, card_description
       stripe_invoice.on_successful_payment
-    else
-      raise "Unsupported webhook"
     end
   end
 end
