@@ -1,11 +1,12 @@
 class StripeInvoice
-  attr_reader :stripe_id
-	def initialize stripe_id
+  attr_reader :stripe_id, :card_description
+	def initialize stripe_id, card_description=nil
     @stripe_id = stripe_id
+    @card_description = card_description
 	end
 
   def on_successful_payment
-    self.cached_subscription.renew
+    self.subscription.renew
     self.notify_by_email
   end
 
@@ -13,29 +14,30 @@ class StripeInvoice
     Resque.enqueue ::SuccessfulSubscriptionRenewal, self.admin_email,
                                                     self.stripe_id,
                                                     self.amount_due,
+                                                    self.card_description,
                                                     self.email_body
   end
 
-  def cached_invoice
+  def invoice
     return @invoice if @invoice
 
     @invoice = Stripe::Invoice.retrieve @stripe_id
   end
 
-  def cached_payment
+  def payment
     return @payment if @payment
 
     @payment = payment.find_by_stripe_customer_id @customer_id
   end
 
-  def cached_subscription
+  def subscription
     return @subscription if @subscription
 
     @subscription = Subscription.find_by_payment_id self.payment.id
   end
 
   def admin_email
-    self.cached_subscription.account.administrator.email
+    self.subscription.account.administrator.email
   end
 
   def formatted_lines
@@ -44,12 +46,12 @@ class StripeInvoice
     # subscriptions
     lines = ""
 
-    self.cached_invoice.lines.invoiceitems.each do |invoiceitem|
+    self.invoice.lines.invoiceitems.each do |invoiceitem|
       lines += self.format_line(invoiceitem.amount, invoiceitem.description, invoiceitem.date)
     end
 
     # prorations: TODO: still haven't seen one thru Stripe
-    self.cached_invoice.lines.subscriptions.each do |sub|
+    self.invoice.lines.subscriptions.each do |sub|
       plan = sub.plan
       line = "Subscription to #{plan.name} ($#{plan.amount/100.0}/#{plan.interval})"
       lines += self.format_line(sub.amount, line, sub.period.start, sub.period.end)
@@ -92,19 +94,19 @@ class StripeInvoice
   end
 
   def amount_due
-    self.cached_invoice.amount_due / 100.00
+    self.invoice.amount_due / 100.00
   end
 
   def subtotal
-    self.cached_invoice.subtotal / 100.0
+    self.invoice.subtotal / 100.0
   end
 
   def total
-    self.cached_invoice.total / 100.0
+    self.invoice.total / 100.0
   end
 
   def starting_balance
-    self.cached_invoice.starting_balance / 100.0
+    self.invoice.starting_balance / 100.0
   end
 end
 

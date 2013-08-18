@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe StripeInvoice do
-  subject { StripeInvoice.new mock}
+  subject { StripeInvoice.new mock, mock}
 
   describe '#on_successful_payment' do
     let(:subscription) { mock.as_null_object }
     before do
-      subject.stub :cached_subscription => subscription
+      subject.stub :subscription => subscription
     end
 
     it 'renews subscription and notifies user' do
@@ -22,6 +22,7 @@ describe StripeInvoice do
       subject.stub :admin_email => mock
       subject.stub :email_body => mock
       subject.stub :amount_due => mock
+      subject.stub :card_description => mock
     end
 
     it 'emails user' do
@@ -29,6 +30,7 @@ describe StripeInvoice do
                                            subject.admin_email,
                                            subject.stripe_id,
                                            subject.amount_due,
+                                           subject.card_description,
                                            subject.email_body)
 
       subject.notify_by_email
