@@ -7,10 +7,13 @@ class SuccessfulSubscriptionRenewal < EmailNotification
       from:    'thomas@delight.io',
       bcc:     'thomas@delight.io',
       subject: "[Delight] Successful subscription renewal and payment receipt",
-      text:    "We have received your payment of $#{amount} for the following items:\n\n"\
-               "Invoice ID: #{invoice_ref}\n#{formatted_lines}\n\n"\
-               "If you have any questions, please contact us anytime.\n"\
-               "Thank you for your business!\n\n"\
-               "Thomas Pun\nCEO\nhttp://twitter.com/delightio")
+      html:    "We have received your payment of $#{amount} for the following items:\n\n"\
+               "<pre> Invoice ID: #{invoice_ref}\n"\
+               "#{formatted_lines}\n\n</pre>"\
+               "If you have any questions, please contact us anytime.<br>"\
+               "Thank you for your business!<br><br>"\
+               "Thomas Pun<br>"\
+               "CEO<br>"\
+               "https://twitter.com/delightio")
   end
 end

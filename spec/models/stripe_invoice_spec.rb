@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe StripeInvoice do
-  subject { StripeInvoice.new mock, mock, mock, [mock]}
+  subject { StripeInvoice.new mock}
 
   describe '#on_successful_payment' do
     let(:subscription) { mock.as_null_object }
@@ -20,11 +20,16 @@ describe StripeInvoice do
   describe '#notify_by_email' do
     before do
       subject.stub :admin_email => mock
-      subject.stub :formatted_lines => mock
+      subject.stub :email_body => mock
+      subject.stub :amount_due => mock
     end
 
     it 'emails user' do
-      Resque.should_receive(:enqueue).with(::SuccessfulSubscriptionRenewal, subject.admin_email, subject.invoice_id, subject.amount, subject.formatted_lines)
+      Resque.should_receive(:enqueue).with(::SuccessfulSubscriptionRenewal,
+                                           subject.admin_email,
+                                           subject.stripe_id,
+                                           subject.amount_due,
+                                           subject.email_body)
 
       subject.notify_by_email
     end
@@ -36,5 +41,9 @@ describe StripeInvoice do
 
   describe '#formatted_lines' do
     it 'formats line items'
+  end
+
+  describe '#amount_due' do
+    it 'returns amount due (to be charged)'
   end
 end
