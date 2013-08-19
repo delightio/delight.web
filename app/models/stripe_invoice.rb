@@ -24,16 +24,20 @@ class StripeInvoice
     @invoice = Stripe::Invoice.retrieve @stripe_id
   end
 
+  def customer_id
+    self.invoice.customer
+  end
+
   def payment
     return @payment if @payment
 
-    @payment = payment.find_by_stripe_customer_id @customer_id
+    @payment = Payment.find_by_stripe_customer_id self.customer_id
   end
 
   def subscription
     return @subscription if @subscription
 
-    @subscription = Subscription.find_by_payment_id self.payment.id
+    @subscription = self.payment.subscription
   end
 
   def admin_email
