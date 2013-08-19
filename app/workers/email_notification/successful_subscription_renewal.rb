@@ -2,7 +2,7 @@ class SuccessfulSubscriptionRenewal < EmailNotification
   @queue = :email
 
   def self.perform admin_email, invoice_ref, amount, charge_card, charged_at, formatted_lines
-    charge_date = (Time.at charged_at).strftime "%b %-d, %Y"
+    charged_date = (Time.at charged_at).strftime "%b %-d, %Y"
     send_individual(
       to:      admin_email,
       from:    'thomas@delight.io',
