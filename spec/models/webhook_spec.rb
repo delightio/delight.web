@@ -6,7 +6,7 @@ describe Webhook do
     let(:invalid_webhook) { Webhook.new "", ""}
 
     it 'processes successful subscription payment' do
-      StripeInvoice.any_instance.stub(:on_successful_payment).and_return(:true)
+      StripeCharge.any_instance.stub(:on_succeeded).and_return(:true)
       lambda { webhook.process }.should_not raise_error
     end
 

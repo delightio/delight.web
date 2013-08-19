@@ -1,8 +1,9 @@
 class StripeInvoice
-  attr_reader :stripe_id, :card_description
-	def initialize stripe_id, card_description=nil
+  attr_reader :stripe_id, :card_description, :card_charged_at
+	def initialize(stripe_id, card_description, card_charged_at)
     @stripe_id = stripe_id
     @card_description = card_description
+    @card_charged_at = card_charged_at
 	end
 
   def on_successful_payment
@@ -15,6 +16,7 @@ class StripeInvoice
                                                     self.stripe_id,
                                                     self.amount_due,
                                                     self.card_description,
+                                                    self.card_charged_at,
                                                     self.email_body
   end
 
