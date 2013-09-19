@@ -44,18 +44,28 @@ describe Account do
   end
 
   describe '#handle_over_usage' do
-    it 'stops all recordings' do
-      subject.apps.each do |app|
-        app.should_receive(:stop_recording)
+    context 'when subscription is not on free plan' do
+      before do
+        subject.subscription.stub :auto_renew? => false
       end
 
-      subject.handle_over_usage
+      it 'notifies user' do
+        subject.subscription.should_receive(:notify)
+
+        subject.handle_over_usage
+      end
     end
 
-    it 'notifies user' do
-      subject.subscription.should_receive(:notify)
+    context 'when subscription is on free plan' do
+      before do
+        subject.subscription.stub :auto_renew? => true
+      end
 
-      subject.handle_over_usage
+      it 'renews subscription automatically' do
+        subject.subscription.should_receive(:renew)
+
+        subject.handle_over_usage
+      end
     end
   end
 

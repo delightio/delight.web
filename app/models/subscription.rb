@@ -40,6 +40,10 @@ class Subscription < ActiveRecord::Base
     remaining >= n
   end
 
+  def auto_renew?
+    plan.auto_renew?
+  end
+
   def renew
     if plan.duration
       update_attributes expired_at:(Time.now + plan.duration)

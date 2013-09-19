@@ -10,6 +10,14 @@ class Plan < ActiveRecord::Base
     false
   end
 
+  def free?
+    price.nil? || price.to_i == 0
+  end
+
+  def auto_renew?
+    free?
+  end
+
   def price_in_dollars
     price / 100
   end

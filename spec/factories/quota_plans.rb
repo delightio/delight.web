@@ -7,4 +7,11 @@ FactoryGirl.define do
     price 100
     quota 100
   end
+
+  factory :free_plan, :parent => :quota_plan do
+  	type "QuotaPlan"
+  	name "FreePlan"
+  	price 0
+  	quota 200
+  end
 end

@@ -43,6 +43,15 @@ describe Subscription do
     end
   end
 
+  describe '#auto_renew?' do
+    it 'is true if plan is also auto renew' do
+      free_plan = FactoryGirl.create :free_plan
+      subject = Subscription.create account_id:10, plan_id:free_plan.id
+
+      subject.should be_auto_renew
+    end
+  end
+
   describe '#renew' do
     it 'reset expired_at' do
       subject.expired_at.should_not be_nil

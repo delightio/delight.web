@@ -20,4 +20,24 @@ describe Plan do
       plan10.should < plan20
     end
   end
+
+  describe '#free?' do
+    let(:free_plan) { Plan.new }
+    let(:paid_plan) { Plan.new price:10 }
+
+    it 'is true if plan has no price' do
+      free_plan.should be_free
+    end
+
+    it 'is false if plan has a price' do
+      paid_plan.should_not be_free
+    end
+  end
+
+  describe '#auto_renew?' do
+    let(:free_plan) { Plan.new price: 0 }
+    it 'does when plan is free' do
+      free_plan.should be_auto_renew
+    end
+  end
 end
