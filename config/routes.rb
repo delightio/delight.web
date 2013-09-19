@@ -2,6 +2,7 @@ require 'resque/server'
 
 DelightWeb::Application.routes.draw do
 
+  resources :webhooks, only: [:create]
   resources :schedulers, only: [:update, :show]
   resources :subscriptions, only: [:new, :create, :show] do
     put 'subscribe' => 'subscriptions#subscribe', :as => :subscribe
