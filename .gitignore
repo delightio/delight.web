@@ -18,9 +18,9 @@
 /tmp
 .DS_Store*
 
-# Ignore config/database.yml to allow using different DB for local development
+# Ignore config/database.yml to allow using different DB for local development 
 # Heroku does not read the file anyway
 /config/database.yml
 
-# /config/secret.rb
+/config/secret.rb
 /.rvmrc
